@@ -1,4 +1,4 @@
-const CACHE_NAME = 'portfolio-cache-v1';
+const CACHE_NAME = 'portfolio-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
@@ -7,6 +7,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
@@ -15,7 +16,26 @@ self.addEventListener('install', event => {
   );
 });
 
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
 self.addEventListener('fetch', event => {
+  // Only intercept HTTP/HTTPS requests
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -31,6 +51,8 @@ self.addEventListener('fetch', event => {
             caches.open(CACHE_NAME)
               .then(function (cache) {
                 cache.put(event.request, responseToCache);
+              }).catch(err => {
+                // Silently handle any quota or caching errors
               });
             return response;
           }
