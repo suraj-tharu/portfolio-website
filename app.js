@@ -755,8 +755,16 @@ var QRCode; !function () { function a(a) { this.mode = c.MODE_8BIT_BYTE, this.da
 
     function playSound(type) {
       if (type === 'hover' && (!audioCtx || audioCtx.state === 'suspended')) return;
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (!audioCtx) {
+        if (type !== 'click') return; // Only allow audio init on explicit clicks
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        } catch(e) { return; }
+      }
+      if (audioCtx.state === 'suspended') {
+        const p = audioCtx.resume();
+        if (p && p.catch) p.catch(() => {});
+      }
       if (document.body.classList.contains('a11y-reduce-motion')) return; // Mute if accessibility mode is on
 
       const osc = audioCtx.createOscillator();
