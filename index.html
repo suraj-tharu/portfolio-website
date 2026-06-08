@@ -300,7 +300,7 @@
             </div>
             <div class="flex items-center gap-2 px-4 py-2 border-t dark:border-slate-700 border-slate-200">
               <span class="font-mono text-xs text-brand-400">❯</span>
-              <input id="term-in" type="text"
+              <input id="term-in" type="text" aria-label="Terminal input"
                 class="flex-1 bg-transparent font-mono text-xs outline-none dark:text-slate-200 text-slate-800"
                 placeholder="type a command..." autocomplete="off" spellcheck="false" />
             </div>
@@ -898,10 +898,12 @@
               <h3 class="font-mono text-sm text-brand-400 mb-4 flex items-center gap-2">Interactive Logic Sandbox</h3>
               <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800 p-4 rounded-lg">
                 <div class="flex flex-col gap-2">
-                  <label class="flex items-center gap-2 cursor-pointer dark:text-white"><input type="checkbox"
-                      id="gate-in-a" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none"> Input A</label>
-                  <label class="flex items-center gap-2 cursor-pointer dark:text-white"><input type="checkbox"
-                      id="gate-in-b" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none"> Input B</label>
+                  <label for="gate-in-a" class="flex items-center gap-2 cursor-pointer dark:text-white"><input
+                      type="checkbox" id="gate-in-a" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none">
+                    Input A</label>
+                  <label for="gate-in-b" class="flex items-center gap-2 cursor-pointer dark:text-white"><input
+                      type="checkbox" id="gate-in-b" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none">
+                    Input B</label>
                 </div>
                 <div class="font-mono text-xl font-bold dark:text-brand-400 text-brand-500">AND</div>
                 <div
@@ -1012,7 +1014,7 @@
       </div>
     </div>
     <div class="p-3 border-t dark:border-slate-700 border-slate-200 bg-white dark:bg-slate-900 flex gap-2">
-      <input type="text" id="chat-input"
+      <input type="text" id="chat-input" aria-label="Chat input"
         class="w-full bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg text-sm outline-none dark:text-white"
         placeholder="Type a message..." autocomplete="off">
       <button id="voice-btn"
@@ -1084,23 +1086,24 @@
 
         <form id="contact-form" class="space-y-5">
           <div>
-            <label class="block mb-2 text-slate-300">Name</label>
+            <label for="c-name" class="block mb-2 text-slate-300">Name</label>
             <input type="text" id="c-name" required
               class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
           </div>
           <div>
-            <label class="block mb-2 text-slate-300">Email</label>
+            <label for="c-email" class="block mb-2 text-slate-300">Email</label>
             <input type="email" id="c-email" required
               class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
           </div>
           <div>
-            <label class="block mb-2 text-slate-300">Subject</label>
+            <label for="c-subject" class="block mb-2 text-slate-300">Subject</label>
             <input type="text" id="c-subject"
               class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
           </div>
           <div>
-            <label class="block mb-2 text-slate-300">Message</label>
-            <input type="text" name="honeypot" id="c-hp" style="display:none" tabindex="-1" autocomplete="off">
+            <label for="c-msg" class="block mb-2 text-slate-300">Message</label>
+            <input type="text" name="honeypot" id="c-hp" style="display:none" tabindex="-1" autocomplete="off"
+              aria-label="Honeypot">
             <textarea id="c-msg" required rows="4"
               class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors"></textarea>
           </div>
@@ -1123,7 +1126,7 @@
         <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
-        <input type="text" id="cmd-input"
+        <input type="text" id="cmd-input" aria-label="Command search"
           class="w-full bg-transparent border-none outline-none px-3 text-lg dark:text-white"
           placeholder="Search commands, sections, or type 'help'..." autocomplete="off">
         <button id="cmd-close"
@@ -1147,17 +1150,17 @@
   <div id="a11y-menu"
     class="hidden fixed bottom-20 left-6 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex flex-col gap-3 chat-msg">
     <h3 class="text-sm font-bold border-b pb-2 dark:border-slate-700 dark:text-white">Accessibility</h3>
-    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+    <label for="a11y-motion" class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
       <span>Reduce Motion</span>
       <input type="checkbox" id="a11y-motion"
         class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
     </label>
-    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+    <label for="a11y-contrast" class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
       <span>High Contrast</span>
       <input type="checkbox" id="a11y-contrast"
         class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
     </label>
-    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+    <label for="a11y-font" class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
       <span>Dyslexia Font</span>
       <input type="checkbox" id="a11y-font" class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
     </label>
