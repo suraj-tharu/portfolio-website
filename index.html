@@ -2135,8 +2135,9 @@
     });
 
     // --- 16. Web Audio API Synth ---
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let audioCtx;
     function playSound(type) {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
       if (document.body.classList.contains('a11y-reduce-motion')) return; // Mute if accessibility mode is on
 

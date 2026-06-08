@@ -36,6 +36,12 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // The Cache API only supports GET requests. 
+  // Attempting to cache POST requests will throw a TypeError.
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
