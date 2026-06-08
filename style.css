@@ -1,0 +1,297 @@
+/* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #0ea5e9;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+
+    /* ===== SKIP LINK ===== */
+    .skip-link {
+      position: fixed;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0ea5e9;
+      color: #fff;
+      padding: .5rem 1.5rem;
+      border-radius: 0 0 .5rem .5rem;
+      z-index: 9999;
+      transition: top .3s;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    #progress-bar {
+      transition: width .15s linear;
+    }
+
+    /* ===== CUSTOM CURSOR ===== */
+    #cur-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transition: transform .1s;
+    }
+
+    #cur-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 2px solid rgba(56, 189, 248, .5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transition: transform .15s ease-out, width .3s, height .3s, border-color .3s;
+    }
+
+    body:not(.has-custom-cursor) #cur-dot,
+    body:not(.has-custom-cursor) #cur-ring {
+      display: none;
+    }
+
+    body.cur-hover #cur-dot {
+      transform: scale(2);
+      background: #fff;
+    }
+
+    body.cur-hover #cur-ring {
+      width: 50px;
+      height: 50px;
+      border-color: #38bdf8;
+      opacity: .6;
+    }
+
+    /* ===== BODY GRID ===== */
+    html.dark {
+      background: #0f172a;
+    }
+
+    html:not(.dark) {
+      background: #f1f5f9;
+    }
+
+    body {
+      background-image: radial-gradient(rgba(56, 189, 248, .07) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    html:not(.dark) body {
+      background-image: radial-gradient(rgba(14, 165, 233, .1) 1px, transparent 1px);
+    }
+
+    /* ===== TYPEWRITER CURSOR ===== */
+    .tw-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #38bdf8;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink .7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ===== GRADIENTS ===== */
+    .grad-rotate {
+      background-size: 200% 200%;
+      animation: grad-shift 6s ease infinite;
+    }
+
+    @keyframes grad-shift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ===== PHOTO RING ===== */
+    .photo-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #38bdf8;
+      border-right-color: #0ea5e9;
+      animation: ring-pulse 3s linear infinite;
+    }
+
+    @keyframes ring-pulse {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ===== GLOW BUTTON ===== */
+    .glow-btn {
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(56, 189, 248, .35);
+    }
+
+    .glow-btn:hover {
+      box-shadow: 0 0 30px rgba(56, 189, 248, .6);
+    }
+
+    .glow-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(56, 189, 248, .15) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform .6s;
+    }
+
+    .glow-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* ===== UTILITIES ===== */
+    .nav-glass {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+    }
+
+    .magnetic {
+      display: inline-block;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .soc-link {
+      transition: transform .2s, color .2s;
+      display: inline-block;
+    }
+
+    .soc-link:hover {
+      transform: translateY(-4px);
+      color: #38bdf8;
+    }
+
+    .sec-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: #38bdf8;
+      margin-right: .75rem;
+    }
+
+    /* ===== LENIS ===== */
+    html.lenis {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    /* ===== CHAT UI ===== */
+    #chat-widget {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      transform: translateY(120%) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #chat-widget.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .chat-msg {
+      animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== ENCRYPT ANIMATION ===== */
+    @keyframes encrypt-flash {
+
+      0%,
+      100% {
+        color: #38bdf8;
+      }
+
+      50% {
+        color: #22d3ee;
+      }
+    }
+
+    .encrypting {
+      animation: encrypt-flash 0.3s ease infinite;
+    }
+
+    /* ===== DYNAMIC HOVER LIFT ===== */
+    .hover-lift {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.4s ease !important;
+      position: relative;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.3) !important;
+      border-color: rgba(14, 165, 233, 0.8) !important;
+      z-index: 20;
+    }
+
+    /* ===== ACCESSIBILITY MODES ===== */
+    body.a11y-reduce-motion * {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    body.a11y-high-contrast {
+      filter: contrast(1.5) saturate(1.2);
+    }
+
+    body.a11y-dyslexia * {
+      font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important;
+      letter-spacing: 0.1em !important;
+    }
