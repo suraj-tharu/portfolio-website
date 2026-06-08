@@ -21,7 +21,14 @@ app.disable('x-powered-by');
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 
-const allowedOrigins = [`http://localhost:${port}`, `http://127.0.0.1:${port}`];
+const allowedOrigins = [
+  `http://localhost:${port}`, 
+  `http://127.0.0.1:${port}`,
+  'https://portfolio-website-vto2.onrender.com'
+];
+if (process.env.RENDER_EXTERNAL_HOSTNAME) {
+  allowedOrigins.push(`https://${process.env.RENDER_EXTERNAL_HOSTNAME}`);
+}
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, or same-origin)
