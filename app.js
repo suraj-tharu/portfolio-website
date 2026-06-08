@@ -752,18 +752,9 @@ var QRCode; !function () { function a(a) { this.mode = c.MODE_8BIT_BYTE, this.da
 
     // --- 16. Web Audio API Synth ---
     let audioCtx;
-    let audioUnlocked = false;
-
-    function initAudio() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      audioUnlocked = true;
-      ['click', 'keydown', 'touchstart'].forEach(evt => document.removeEventListener(evt, initAudio));
-    }
-    ['click', 'keydown', 'touchstart'].forEach(evt => document.addEventListener(evt, initAudio));
 
     function playSound(type) {
-      if (!audioUnlocked) return;
+      if (type === 'hover' && (!audioCtx || audioCtx.state === 'suspended')) return;
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
       if (document.body.classList.contains('a11y-reduce-motion')) return; // Mute if accessibility mode is on
