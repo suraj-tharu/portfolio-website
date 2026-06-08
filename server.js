@@ -7,15 +7,47 @@ const { Pool } = require('pg');
 
 const http = require('http');
 const { Server } = require('socket.io');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const xss = require('xss');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
 const port = process.env.PORT || 3000;
 
+const allowedOrigins = [`http://localhost:${port}`, `http://127.0.0.1:${port}`];
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, or same-origin)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+const io = new Server(server, { cors: corsOptions });
+
+// Use Helmet for basic security headers (CSP disabled to allow existing CDNs)
+app.use(helmet({ contentSecurityPolicy: false }));
+
 // Enable CORS and JSON parsing
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Set up rate limiters
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+});
+
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 10, // Limit each IP to 10 contact requests per hour
+  message: { error: 'Too many contact requests from this IP, please try again after an hour' }
+});
 
 // Serve static files from the current directory (for index.html, etc.)
 app.use(express.static(path.join(__dirname, '.')));
@@ -33,13 +65,16 @@ He has built a 32-bit pipelined RV32I softcore from scratch and an IoT Weather S
 He also writes bare-metal drivers in C for STM32.
 Keep your answers professional, concise, and enthusiastic. Never break character.`;
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', apiLimiter, async (req, res) => {
   try {
-    const { message, context } = req.body;
+    let { message, context } = req.body;
 
     if (!message) {
       return res.status(400).json({ error: 'Message is required' });
     }
+
+    message = xss(message);
+    context = context ? xss(context) : context;
 
     if (!process.env.CLOUDFLARE_API_KEY) {
       return res.json({
@@ -98,11 +133,16 @@ pool.connect((err, client, release) => {
 });
 
 // Contact form API route
-app.post('/api/contact', async (req, res) => {
-  const { name, email, subject, message } = req.body;
+app.post('/api/contact', contactLimiter, async (req, res) => {
+  let { name, email, subject, message } = req.body;
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Name, email, and message are required.' });
   }
+
+  name = xss(name);
+  email = xss(email);
+  subject = subject ? xss(subject) : '';
+  message = xss(message);
 
   try {
     const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
