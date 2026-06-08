@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suraj Tharu Chaudhary - CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .a4-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .a4-page {
+                margin: 0;
+                box-shadow: none;
+                width: 100%;
+                padding: 10mm;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .section-title {
+            color: #1e3a8a;
+            border-bottom: 2px solid #bfdbfe;
+            padding-bottom: 0.25rem;
+            margin-bottom: 1rem;
+            margin-top: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 1.125rem;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+    
+    <div class="fixed top-4 right-4 no-print">
+        <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+            Print to PDF
+        </button>
+    </div>
+
+    <div class="a4-page">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-extrabold text-slate-900 mb-2">Suraj Tharu Chaudhary</h1>
+            <p class="text-lg text-blue-600 font-semibold mb-3">Computer Engineering Professional | Educator | Researcher</p>
+            <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-600">
+                <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Ramgram-18, Nawalparasi West, Nepal
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    suraj.tharu@example.com
+                </span>
+                <span class="flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    <a href="https://surajtharu.com" class="text-blue-600 hover:underline">surajtharu.com</a>
+                </span>
+            </div>
+        </header>
+
+        <!-- Professional Summary -->
+        <section>
+            <h2 class="section-title">Professional Summary</h2>
+            <p class="text-sm leading-relaxed text-slate-700">
+                Highly motivated Computer Engineering professional, educator, and researcher with a Master's degree in Information System Engineering. Extensive experience in technical education, curriculum implementation, and ICT integration. Proven research capabilities in Geographic Information Systems (GIS), Remote Sensing, Land Use and Land Cover (LULC) Change Detection, and Machine Learning applications utilizing Google Earth Engine and Random Forest classification. Adept at coordinating technical programs and delivering comprehensive computer engineering education.
+            </p>
+        </section>
+
+        <!-- Education -->
+        <section>
+            <h2 class="section-title">Education</h2>
+            <div class="mb-4">
+                <div class="flex justify-between items-baseline mb-1">
+                    <h3 class="font-bold text-slate-900">Master of Science (M.Sc.) in Information System Engineering</h3>
+                </div>
+                <div class="text-sm font-medium text-blue-600 mb-1">Purbanchal University</div>
+            </div>
+            <div>
+                <div class="flex justify-between items-baseline mb-1">
+                    <h3 class="font-bold text-slate-900">Bachelor of Engineering (B.E.) in Computer Engineering</h3>
+                </div>
+                <div class="text-sm font-medium text-blue-600 mb-1">Mid-West University</div>
+            </div>
+        </section>
+
+        <!-- Professional Experience -->
+        <section>
+            <h2 class="section-title">Professional Experience</h2>
+            
+            <div class="mb-4">
+                <div class="flex justify-between items-baseline mb-1">
+                    <h3 class="font-bold text-slate-900">Senior Instructor</h3>
+                    <span class="text-sm text-slate-500 font-medium">Current</span>
+                </div>
+                <div class="text-sm font-medium text-blue-600 mb-2">Shree Tri Shaheed Model Secondary School, Andhikhola-1, Syangja</div>
+                <ul class="list-disc list-outside ml-4 text-sm text-slate-700 space-y-1">
+                    <li>Deliver technical and computer engineering education to students.</li>
+                    <li>Lead curriculum implementation and actively integrate Information and Communication Technology (ICT) into the educational framework.</li>
+                    <li>Coordinate technical programs and facilitate hands-on learning experiences.</li>
+                </ul>
+            </div>
+
+            <div class="mb-4">
+                <div class="flex justify-between items-baseline mb-1">
+                    <h3 class="font-bold text-slate-900">Instructor</h3>
+                    <span class="text-sm text-slate-500 font-medium">2 Years</span>
+                </div>
+                <div class="text-sm font-medium text-blue-600 mb-2">Shree Buddhi Bikash Secondary School and Additional Technical School, Ratamata-6, Rolpa</div>
+                <ul class="list-disc list-outside ml-4 text-sm text-slate-700 space-y-1">
+                    <li>Delivered comprehensive technical and vocational computer engineering education.</li>
+                    <li>Developed and executed practical lesson plans to enhance student engagement and technical proficiency.</li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-baseline mb-1">
+                    <h3 class="font-bold text-slate-900">Professional Intern</h3>
+                    <span class="text-sm text-slate-500 font-medium">6 Months</span>
+                </div>
+                <div class="text-sm font-medium text-blue-600 mb-2">Nepal Telecom</div>
+                <ul class="list-disc list-outside ml-4 text-sm text-slate-700 space-y-1">
+                    <li>Gained practical, hands-on experience in telecommunications systems.</li>
+                    <li>Assisted in managing and maintaining information technology infrastructure.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Research Experience -->
+        <section>
+            <h2 class="section-title">Research Experience</h2>
+            
+            <div class="mb-4">
+                <h3 class="font-bold text-slate-900 mb-1">Land Use and Land Cover Analysis of Birendranagar Municipality, Surkhet Using Random Forest Algorithm</h3>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    Analyzed spatial and temporal land use/land cover patterns within Birendranagar Municipality using satellite imagery and the Random Forest machine learning algorithm. The study evaluated changes in urban areas, forests, agricultural land, and water bodies to support sustainable planning and resource management.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-slate-900 mb-1">Decadal Land Use/Land Cover Dynamics in the Nepal Terai: A Multi-Temporal Sentinel-2 and Random Forest Analysis of Nawalparasi West (2016–2026)</h3>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    Investigated ten years of land use and land cover changes in Nawalparasi West using multi-temporal Sentinel-2 satellite imagery and Random Forest classification techniques. Examined urban expansion, agricultural transformation, forest dynamics, and environmental changes to provide insights for sustainable development and land management in the Nepal Terai region.
+                </p>
+            </div>
+        </section>
+
+        <!-- Key Qualifications & Skills -->
+        <section>
+            <h2 class="section-title">Key Qualifications & Skills</h2>
+            <div class="grid grid-cols-2 gap-4 text-sm text-slate-700">
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-2">Technical Domains</h4>
+                    <ul class="list-disc list-outside ml-4 space-y-1">
+                        <li>Information Systems Engineering</li>
+                        <li>Geographic Information Systems (GIS)</li>
+                        <li>Remote Sensing & Satellite Image Processing</li>
+                        <li>Mobile and Web Technologies</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 mb-2">Tools & Algorithms</h4>
+                    <ul class="list-disc list-outside ml-4 space-y-1">
+                        <li>Machine Learning (Random Forest Classification)</li>
+                        <li>Google Earth Engine (GEE)</li>
+                        <li>QGIS / ArcGIS</li>
+                        <li>Python for Geospatial Analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</body>
+</html>

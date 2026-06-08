@@ -1,0 +1,2500 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suraj Tharu Chaudhary | Computer Engineer</title>
+  <meta name="description"
+    content="Suraj Tharu Chaudhary – Computer Engineer specializing in embedded systems, FPGA design, and RISC-V architecture. Based in Nepal.">
+  <meta name="keywords"
+    content="Computer Engineer, Embedded Systems, FPGA, RISC-V, Nepal, Suraj Tharu Chaudhary, Hardware Engineer">
+  <meta name="author" content="Suraj Tharu Chaudhary">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Suraj Tharu Chaudhary | Computer Engineer">
+  <meta property="og:description"
+    content="Portfolio showcasing work in embedded systems, FPGA design, and full-stack development.">
+  <meta property="og:image" content="https://api.dicebear.com/7.x/initials/svg?seed=STC&backgroundColor=0ea5e9">
+
+  <meta name="theme-color" content="#0f172a">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+  <!-- Scripts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+  <!-- Monaco -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+  <!-- Socket.io -->
+  <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+  <!-- Physics & Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Syne', 'sans-serif'],
+            mono: ['Space Mono', 'monospace']
+          },
+          colors: {
+            brand: { 50: '#f0f9ff', 400: '#38bdf8', 500: '#0ea5e9', 900: '#0f172a' }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #0ea5e9;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #38bdf8;
+    }
+
+    /* ===== SKIP LINK ===== */
+    .skip-link {
+      position: fixed;
+      top: -100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0ea5e9;
+      color: #fff;
+      padding: .5rem 1.5rem;
+      border-radius: 0 0 .5rem .5rem;
+      z-index: 9999;
+      transition: top .3s;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    #progress-bar {
+      transition: width .15s linear;
+    }
+
+    /* ===== CUSTOM CURSOR ===== */
+    #cur-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 6px;
+      height: 6px;
+      background: #38bdf8;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transition: transform .1s;
+    }
+
+    #cur-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border: 2px solid rgba(56, 189, 248, .5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transition: transform .15s ease-out, width .3s, height .3s, border-color .3s;
+    }
+
+    body:not(.has-custom-cursor) #cur-dot,
+    body:not(.has-custom-cursor) #cur-ring {
+      display: none;
+    }
+
+    body.cur-hover #cur-dot {
+      transform: scale(2);
+      background: #fff;
+    }
+
+    body.cur-hover #cur-ring {
+      width: 50px;
+      height: 50px;
+      border-color: #38bdf8;
+      opacity: .6;
+    }
+
+    /* ===== BODY GRID ===== */
+    html.dark {
+      background: #0f172a;
+    }
+
+    html:not(.dark) {
+      background: #f1f5f9;
+    }
+
+    body {
+      background-image: radial-gradient(rgba(56, 189, 248, .07) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    html:not(.dark) body {
+      background-image: radial-gradient(rgba(14, 165, 233, .1) 1px, transparent 1px);
+    }
+
+    /* ===== TYPEWRITER CURSOR ===== */
+    .tw-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #38bdf8;
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink .7s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ===== GRADIENTS ===== */
+    .grad-rotate {
+      background-size: 200% 200%;
+      animation: grad-shift 6s ease infinite;
+    }
+
+    @keyframes grad-shift {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* ===== PHOTO RING ===== */
+    .photo-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #38bdf8;
+      border-right-color: #0ea5e9;
+      animation: ring-pulse 3s linear infinite;
+    }
+
+    @keyframes ring-pulse {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ===== GLOW BUTTON ===== */
+    .glow-btn {
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(56, 189, 248, .35);
+    }
+
+    .glow-btn:hover {
+      box-shadow: 0 0 30px rgba(56, 189, 248, .6);
+    }
+
+    .glow-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(56, 189, 248, .15) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform .6s;
+    }
+
+    .glow-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    /* ===== UTILITIES ===== */
+    .nav-glass {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+    }
+
+    .magnetic {
+      display: inline-block;
+      transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
+    }
+
+    .soc-link {
+      transition: transform .2s, color .2s;
+      display: inline-block;
+    }
+
+    .soc-link:hover {
+      transform: translateY(-4px);
+      color: #38bdf8;
+    }
+
+    .sec-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: #38bdf8;
+      margin-right: .75rem;
+    }
+
+    /* ===== LENIS ===== */
+    html.lenis {
+      height: auto;
+    }
+
+    .lenis.lenis-smooth {
+      scroll-behavior: auto;
+    }
+
+    .lenis.lenis-smooth [data-lenis-prevent] {
+      overscroll-behavior: contain;
+    }
+
+    /* ===== CHAT UI ===== */
+    #chat-widget {
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+      transform: translateY(120%) scale(0.9);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #chat-widget.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .chat-msg {
+      animation: slideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== ENCRYPT ANIMATION ===== */
+    @keyframes encrypt-flash {
+
+      0%,
+      100% {
+        color: #38bdf8;
+      }
+
+      50% {
+        color: #22d3ee;
+      }
+    }
+
+    .encrypting {
+      animation: encrypt-flash 0.3s ease infinite;
+    }
+
+    /* ===== DYNAMIC HOVER LIFT ===== */
+    .hover-lift {
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease, border-color 0.4s ease !important;
+      position: relative;
+    }
+
+    .hover-lift:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px -10px rgba(14, 165, 233, 0.3) !important;
+      border-color: rgba(14, 165, 233, 0.8) !important;
+      z-index: 20;
+    }
+
+    /* ===== ACCESSIBILITY MODES ===== */
+    body.a11y-reduce-motion * {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+
+    body.a11y-high-contrast {
+      filter: contrast(1.5) saturate(1.2);
+    }
+
+    body.a11y-dyslexia * {
+      font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important;
+      letter-spacing: 0.1em !important;
+    }
+  </style>
+</head>
+
+<body
+  class="dark:text-slate-300 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white has-custom-cursor">
+  <!-- CURSOR -->
+  <div id="cur-dot"></div>
+  <div id="cur-ring"></div>
+
+  <!-- SKIP LINK -->
+  <a href="#main-content" class="skip-link font-mono">Skip to Content</a>
+
+  <!-- PROGRESS BAR -->
+  <div class="fixed top-0 left-0 h-1 z-[60] bg-gradient-to-r from-brand-500 via-blue-400 to-brand-500" id="progress-bar"
+    style="width:0%"></div>
+
+  <!-- NAVIGATION -->
+  <nav
+    class="fixed top-0 w-full z-50 nav-glass dark:bg-slate-900/70 bg-white/70 border-b dark:border-slate-800 border-slate-200"
+    id="main-nav">
+    <div class="max-w-6xl mx-auto px-4 flex items-center justify-between h-16">
+      <a href="#" class="font-mono font-bold text-lg dark:text-white text-slate-900">&lt;Er.Suraj /&gt;</a>
+
+      <div class="hidden md:flex items-center gap-6">
+        <span class="font-mono text-xs dark:text-slate-400 text-slate-500" id="live-clock">--:--:--</span>
+        <button id="dark-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic"
+          aria-label="Toggle dark mode">
+          <svg id="icon-moon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+          </svg>
+          <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        </button>
+        <button id="lang-toggle"
+          class="font-mono text-xs px-2 py-1 rounded border dark:border-slate-700 border-slate-300 hover:border-brand-500 transition magnetic"
+          aria-label="Toggle language">EN</button>
+
+        <a href="#about" class="text-sm hover:text-brand-400 transition">About</a>
+        <a href="#experience" class="text-sm hover:text-brand-400 transition">Experience</a>
+        <a href="#skills" class="text-sm hover:text-brand-400 transition">Skills</a>
+        <a href="#projects" class="text-sm hover:text-brand-400 transition">Projects</a>
+        <a href="#contact" class="text-sm hover:text-brand-400 transition">Contact</a>
+        <button id="open-cmd"
+          class="font-mono text-xs px-3 py-1.5 rounded-lg dark:bg-slate-800 bg-slate-200 hover:bg-brand-500 hover:text-white transition flex items-center gap-1 magnetic">⌘K</button>
+      </div>
+
+      <button id="mob-btn" class="md:hidden p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200"
+        aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mob-menu"
+      class="md:hidden hidden border-t dark:border-slate-800 border-slate-200 dark:bg-slate-900/95 bg-white/95 nav-glass">
+      <div class="px-4 py-4 flex flex-col gap-3">
+        <a href="#about" class="text-sm py-2">About</a>
+        <a href="#experience" class="text-sm py-2">Experience</a>
+        <a href="#skills" class="text-sm py-2">Skills</a>
+        <a href="#projects" class="text-sm py-2">Projects</a>
+        <a href="#contact" class="text-sm py-2">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+    <canvas id="hero-canvas" class="fixed inset-0 w-full h-full pointer-events-none" style="z-index:-2"></canvas>
+
+    <!-- HERO -->
+    <section id="hero" class="min-h-screen relative flex items-center overflow-hidden pt-16">
+      <div class="max-w-6xl mx-auto px-4 w-full relative z-10 grid lg:grid-cols-2 gap-12 items-center py-20">
+        <!-- LEFT -->
+        <div>
+          <p class="font-mono text-xs dark:text-slate-500 text-slate-400 mb-4" data-aos="fade-up">~$ initialize_profile
+            --user=suraj --mode=available</p>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold dark:text-white text-slate-900 leading-tight"
+            id="hero-title">
+            <span class="hero-word inline-block opacity-0 translate-y-4" data-i18n="hi">Hi,</span>
+            <span class="hero-word inline-block opacity-0 translate-y-4" data-i18n="im">I'm</span><br />
+            <span
+              class="hero-word inline-block opacity-0 translate-y-4 bg-gradient-to-r from-brand-400 to-brand-500 bg-clip-text text-transparent grad-rotate">Suraj
+              Tharu Chaudhary</span>
+          </h1>
+          <h2 class="mt-4 text-xl md:text-2xl dark:text-slate-300 text-slate-700" data-aos="fade-up"
+            data-aos-delay="200">
+            <span id="greeting">Good evening</span>, I build <span id="typewriter"
+              class="text-brand-400 font-semibold"></span><span class="tw-cursor"></span>
+          </h2>
+          <p class="mt-6 dark:text-slate-400 text-slate-600 max-w-lg leading-relaxed" data-aos="fade-up"
+            data-aos-delay="300">
+            Computer Engineering professional, educator, and researcher from Nepal 🇳🇵. Specializing in Information
+            Systems, GIS, Remote Sensing, and Machine Learning.
+          </p>
+
+          <div class="mt-8 flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="400">
+            <a href="#projects"
+              class="glow-btn inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white font-semibold rounded-xl transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+              View Projects
+            </a>
+            <a href="./Suraj_Tharu_CV.pdf" target="_blank"
+              class="inline-flex items-center gap-2 px-6 py-3 border dark:border-slate-700 border-slate-300 rounded-xl hover:border-brand-500 transition font-semibold">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 5v14M5 12l7 7 7-7" />
+              </svg>
+              Download Resume ↓
+            </a>
+            <button onclick="document.getElementById('term-in').focus()"
+              class="inline-flex items-center gap-2 px-4 py-3 border dark:border-slate-700 border-slate-300 rounded-xl hover:border-brand-500 transition font-mono text-sm">{
+              JSON }</button>
+          </div>
+
+          <!-- Social -->
+          <div class="mt-8 flex items-center gap-5" data-aos="fade-up" data-aos-delay="500">
+            <a href="https://github.com/surajtharu" target="_blank" rel="noopener"
+              class="soc-link dark:text-slate-400 text-slate-500" aria-label="GitHub">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+            </a>
+            <a href="https://linkedin.com/in/surajtharu" target="_blank" rel="noopener"
+              class="soc-link dark:text-slate-400 text-slate-500" aria-label="LinkedIn">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Badges -->
+          <div class="mt-6 flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="600">
+            <span
+              class="inline-flex items-center gap-1.5 font-mono text-xs dark:bg-slate-800/80 bg-slate-200 px-3 py-1.5 rounded-full">
+              <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              <span>Visitors</span>: <span id="visit-count">0</span>
+            </span>
+            <span
+              class="inline-flex items-center gap-1.5 font-mono text-xs dark:bg-slate-800/80 bg-slate-200 px-3 py-1.5 rounded-full">⚡
+              Perf: 100</span>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="flex flex-col items-center gap-8" data-aos="fade-left">
+          <div class="relative" style="clip-path:inset(0 100% 0 0)" id="hero-photo-wrap">
+            <div
+              class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden relative border-2 border-brand-400/40 shadow-2xl shadow-brand-500/20">
+              <div class="photo-ring"></div>
+              <img src="./IMG_20250922_201902.jpg" alt="Suraj Tharu Chaudhary" class="w-full h-full object-cover"
+                loading="eager" />
+            </div>
+            <span
+              class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-green-500 text-white text-xs font-mono px-3 py-1 rounded-full whitespace-nowrap shadow-lg">Open
+              to work</span>
+            <span class="absolute -top-1 -right-1 text-2xl shadow-lg rounded-full" title="Nepal">🇳🇵</span>
+          </div>
+
+          <!-- Terminal -->
+          <div
+            class="w-full max-w-md dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-200 rounded-xl overflow-hidden shadow-xl"
+            data-aos="fade-up" data-aos-delay="400">
+            <div
+              class="flex items-center gap-2 px-4 py-2.5 dark:bg-slate-800 bg-slate-100 border-b dark:border-slate-700 border-slate-200">
+              <span class="w-3 h-3 rounded-full bg-red-500"></span>
+              <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+              <span class="w-3 h-3 rounded-full bg-green-500"></span>
+              <span class="ml-2 font-mono text-xs dark:text-slate-500 text-slate-400">suraj@dev ~ %</span>
+            </div>
+            <div id="term-output"
+              class="p-4 font-mono text-xs h-32 overflow-y-auto dark:text-green-400 text-green-600 space-y-1">
+              <p>Welcome! Type <span class="text-brand-400">'help'</span> for commands.</p>
+            </div>
+            <div class="flex items-center gap-2 px-4 py-2 border-t dark:border-slate-700 border-slate-200">
+              <span class="font-mono text-xs text-brand-400">❯</span>
+              <input id="term-in" type="text"
+                class="flex-1 bg-transparent font-mono text-xs outline-none dark:text-slate-200 text-slate-800"
+                placeholder="type a command..." autocomplete="off" spellcheck="false" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-12" data-aos="fade-up">
+          <span class="sec-num">01</span>
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900">About Me</h2>
+          <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-12">
+          <!-- Left 2 cols -->
+          <div class="lg:col-span-2 space-y-6" data-aos="fade-right">
+            <p class="dark:text-slate-300 text-slate-600 leading-relaxed">
+              I am a Computer Engineering professional, educator, and researcher from Ramgram-18, Nawalparasi West,
+              Nepal. I completed my Bachelor of Engineering (B.E.) in Computer Engineering from Mid-West University and
+              earned a Master of Science (M.Sc.) in Information System Engineering from Purbanchal University.
+            </p>
+            <p class="dark:text-slate-300 text-slate-600 leading-relaxed">
+              With over 5 years of experience in technical education and vocational training, I have a strong passion
+              for teaching, curriculum implementation, and ICT integration in education. I currently serve as a Senior
+              Instructor at Shree Tri Shaheed Model Secondary School, where I coordinate technical programs and deliver
+              computer engineering education.
+            </p>
+            <div class="dark:bg-slate-800/50 bg-slate-100 rounded-xl p-5 border dark:border-slate-700 border-slate-200">
+              <h3 class="font-mono text-sm text-brand-400 mb-2">🔭 Research Focus</h3>
+              <p class="text-sm dark:text-slate-300 text-slate-600">Currently exploring Geographic Information Systems
+                (GIS), Remote Sensing, Land Use and Land Cover (LULC) Change Detection, and Machine Learning
+                applications in Geospatial Analysis using Random Forest Classification and Google Earth Engine (GEE).
+              </p>
+            </div>
+          </div>
+
+          <!-- Right 1 col - Stats -->
+          <div class="space-y-4" data-aos="fade-left">
+            <div
+              class="dark:bg-slate-800/50 bg-slate-100 rounded-xl p-6 border dark:border-slate-700 border-slate-200 text-center">
+              <span class="text-3xl font-extrabold text-brand-400 block">5+</span>
+              <span class="text-sm dark:text-slate-400 text-slate-500">Years Experience</span>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-1 gap-4">
+              <div
+                class="dark:bg-slate-800/50 bg-slate-100 rounded-lg p-4 border dark:border-slate-700 border-slate-200">
+                <span class="font-mono text-xs text-brand-400 block mb-1">Education</span>
+                <span class="dark:text-white text-slate-900 font-medium">M.Sc. Information System Engineering</span>
+              </div>
+              <div
+                class="dark:bg-slate-800/50 bg-slate-100 rounded-lg p-4 border dark:border-slate-700 border-slate-200">
+                <span class="font-mono text-xs text-brand-400 block mb-1">Languages</span>
+                <span class="dark:text-white text-slate-900 font-medium">Nepali · English · Hindi</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center mb-12" data-aos="fade-up">
+          <span class="sec-num">02</span>
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900">Experience</h2>
+          <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+          <button id="play-resume"
+            class="ml-4 font-mono text-xs px-3 py-1.5 bg-brand-500 text-white rounded hover:bg-brand-400 transition flex items-center gap-2"><span
+              class="text-lg">🎮</span> Play Resume</button>
+        </div>
+
+        <div class="max-w-4xl mx-auto">
+          <!-- Timeline Item 1 -->
+          <div class="relative pl-8 sm:pl-32 py-6 group" data-aos="fade-up">
+            <div class="font-mono text-sm text-brand-400 mb-1 sm:absolute sm:left-0 sm:top-8 sm:w-24 sm:text-right">
+              Current</div>
+            <div
+              class="absolute left-0 sm:left-[112px] top-8 w-3 h-3 bg-brand-500 rounded-full border-4 dark:border-slate-900 border-white tl-dot z-10 group-hover:bg-brand-400 transition-colors">
+            </div>
+            <div
+              class="absolute left-1.5 sm:left-[117px] top-8 bottom-0 w-px dark:bg-slate-800 bg-slate-200 group-last:hidden">
+            </div>
+
+            <div
+              class="dark:bg-slate-800/50 bg-slate-100 p-6 rounded-xl border dark:border-slate-700 border-slate-200 magnetic w-full">
+              <h3 class="text-xl font-bold dark:text-white text-slate-900">Senior Instructor</h3>
+              <div class="text-brand-500 font-medium mb-4">Shree Tri Shaheed Model Secondary School, Syangja</div>
+              <ul class="space-y-2 dark:text-slate-400 text-slate-600 text-sm">
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Coordinated technical programs and
+                  delivered comprehensive computer engineering education.</li>
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Led curriculum implementation and active
+                  ICT integration in education.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2 -->
+          <div class="relative pl-8 sm:pl-32 py-6 group" data-aos="fade-up" data-aos-delay="100">
+            <div class="font-mono text-sm text-brand-400 mb-1 sm:absolute sm:left-0 sm:top-8 sm:w-24 sm:text-right">2
+              Years</div>
+            <div
+              class="absolute left-0 sm:left-[112px] top-8 w-3 h-3 bg-slate-500 rounded-full border-4 dark:border-slate-900 border-white tl-dot z-10 group-hover:bg-brand-400 transition-colors">
+            </div>
+            <div
+              class="absolute left-1.5 sm:left-[117px] top-8 bottom-0 w-px dark:bg-slate-800 bg-slate-200 group-last:hidden">
+            </div>
+
+            <div
+              class="dark:bg-slate-800/50 bg-slate-100 p-6 rounded-xl border dark:border-slate-700 border-slate-200 magnetic w-full">
+              <h3 class="text-xl font-bold dark:text-white text-slate-900">Instructor</h3>
+              <div class="text-brand-500 font-medium mb-4">Shree Buddhi Bikash Secondary School, Rolpa</div>
+              <ul class="space-y-2 dark:text-slate-400 text-slate-600 text-sm">
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Delivered technical and vocational computer
+                  engineering education to students.</li>
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Facilitated hands-on technical sessions to
+                  enhance practical learning.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3 -->
+          <div class="relative pl-8 sm:pl-32 py-6 group" data-aos="fade-up" data-aos-delay="200">
+            <div class="font-mono text-sm text-brand-400 mb-1 sm:absolute sm:left-0 sm:top-8 sm:w-24 sm:text-right">6
+              Months</div>
+            <div
+              class="absolute left-0 sm:left-[112px] top-8 w-3 h-3 bg-slate-500 rounded-full border-4 dark:border-slate-900 border-white tl-dot z-10 group-hover:bg-brand-400 transition-colors">
+            </div>
+            <div
+              class="absolute left-1.5 sm:left-[117px] top-8 bottom-0 w-px dark:bg-slate-800 bg-slate-200 group-last:hidden">
+            </div>
+
+            <div
+              class="dark:bg-slate-800/50 bg-slate-100 p-6 rounded-xl border dark:border-slate-700 border-slate-200 magnetic w-full">
+              <h3 class="text-xl font-bold dark:text-white text-slate-900">Professional Intern</h3>
+              <div class="text-brand-500 font-medium mb-4">Nepal Telecom</div>
+              <ul class="space-y-2 dark:text-slate-400 text-slate-600 text-sm">
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Gained practical experience in
+                  telecommunications systems.</li>
+                <li class="flex gap-2"><span class="text-brand-400">▹</span> Managed and maintained information
+                  technology infrastructure.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section id="research" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center justify-center mb-16" data-aos="fade-up">
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 flex items-center gap-3">
+            <span class="text-brand-400 font-mono text-4xl italic">//</span> Research Experience
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Research 1 -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-8 rounded-2xl border dark:border-slate-800 border-slate-200 hover:border-brand-500/50 transition duration-300"
+            data-aos="fade-up">
+            <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center mb-6">
+              <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold dark:text-white text-slate-900 mb-3">LULC Analysis of Birendranagar
+              Municipality</h3>
+            <p class="text-sm dark:text-slate-400 text-slate-600 leading-relaxed mb-4">
+              Focuses on analyzing spatial and temporal land use/land cover patterns within Birendranagar Municipality,
+              Surkhet using satellite imagery and the Random Forest machine learning algorithm. Evaluates changes in
+              urban areas, forests, agricultural land, and water bodies to support sustainable planning and resource
+              management.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">Random
+                Forest</span>
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">Machine
+                Learning</span>
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">GIS</span>
+            </div>
+          </div>
+
+          <!-- Research 2 -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-8 rounded-2xl border dark:border-slate-800 border-slate-200 hover:border-brand-500/50 transition duration-300"
+            data-aos="fade-up" data-aos-delay="100">
+            <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center mb-6">
+              <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
+                </path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold dark:text-white text-slate-900 mb-3">Decadal LULC Dynamics in the Nepal Terai
+            </h3>
+            <p class="text-sm dark:text-slate-400 text-slate-600 leading-relaxed mb-4">
+              Investigates ten years of land use and land cover changes in Nawalparasi West (2016–2026) using
+              multi-temporal Sentinel-2 satellite imagery and Random Forest classification techniques. Examines urban
+              expansion, agricultural transformation, and forest dynamics for sustainable development.
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">Sentinel-2</span>
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">Remote
+                Sensing</span>
+              <span
+                class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">Spatial
+                Analysis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex items-center justify-center mb-16" data-aos="fade-up">
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 flex items-center gap-3">
+            <span class="text-brand-400 font-mono text-4xl italic">//</span> Technical Skills
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- GIS & Remote Sensing -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-6 rounded-xl border dark:border-slate-800 border-slate-200 hover-lift hover:border-brand-500/50 transition-all duration-300"
+            data-aos="fade-up">
+            <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                </path>
+              </svg>
+              GIS & Remote Sensing
+            </h3>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">QGIS / ArcGIS</span>
+                  <span class="text-brand-400 font-mono">90%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Google Earth Engine (GEE)</span>
+                  <span class="text-brand-400 font-mono">85%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Satellite Image Processing</span>
+                  <span class="text-brand-400 font-mono">80%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Machine Learning -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-6 rounded-xl border dark:border-slate-800 border-slate-200 hover-lift hover:border-brand-500/50 transition-all duration-300"
+            data-aos="fade-up" data-aos-delay="100">
+            <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+              Machine Learning
+            </h3>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Random Forest</span>
+                  <span class="text-brand-400 font-mono">90%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 90%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Geospatial Analysis</span>
+                  <span class="text-brand-400 font-mono">85%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 85%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Python (Pandas, Scikit)</span>
+                  <span class="text-brand-400 font-mono">80%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 80%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Web & Mobile -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-6 rounded-xl border dark:border-slate-800 border-slate-200 hover-lift hover:border-brand-500/50 transition-all duration-300"
+            data-aos="fade-up" data-aos-delay="200">
+            <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              Web & Mobile Tech
+            </h3>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">JavaScript / React</span>
+                  <span class="text-brand-400 font-mono">75%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 75%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Mobile App Development</span>
+                  <span class="text-brand-400 font-mono">70%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 70%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info Systems -->
+          <div
+            class="dark:bg-slate-900/40 bg-slate-50 p-6 rounded-xl border dark:border-slate-800 border-slate-200 hover-lift hover:border-brand-500/50 transition-all duration-300"
+            data-aos="fade-up" data-aos-delay="300">
+            <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
+              <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+              </svg>
+              Information Systems
+            </h3>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Database Management</span>
+                  <span class="text-brand-400 font-mono">80%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 80%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span class="dark:text-slate-300 text-slate-700">Systems Engineering</span>
+                  <span class="text-brand-400 font-mono">85%</span>
+                </div>
+                <div class="h-1.5 w-full dark:bg-slate-800 bg-slate-200 rounded-full">
+                  <div class="h-full bg-gradient-to-r from-brand-500 to-green-400 rounded-full shadow-[0_0_8px_#38bdf8]"
+                    style="width: 85%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Network Graph (D3) -->
+        <div
+          class="mt-12 dark:bg-slate-900/50 bg-white rounded-xl border dark:border-slate-700 border-slate-200 overflow-hidden shadow-xl"
+          data-aos="fade-up" data-aos-delay="200">
+          <div class="p-4 border-b dark:border-slate-700 border-slate-200 bg-slate-100 dark:bg-slate-800 text-center">
+            <span class="font-mono text-xs text-brand-400">Interactive Skills Network (Drag Nodes)</span>
+          </div>
+          <div id="d3-skills-graph" class="w-full h-[400px]"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-12" data-aos="fade-up">
+          <span class="sec-num">04</span>
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900">Featured Projects</h2>
+          <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Project 1 -->
+          <div
+            class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
+            data-aos="fade-up">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+              </div>
+              <div class="flex gap-3">
+                <a href="#" class="dark:text-slate-400 text-slate-500 hover:text-brand-400 transition"
+                  aria-label="Github Repo">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3
+              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
+              32-bit RISC-V Softcore</h3>
+            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+              Designed a 5-stage pipelined RISC-V RV32I processor in Verilog from scratch. Implemented instruction/data
+              caches, UART controller, and deployed on an Artix-7 FPGA to run custom C programs.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">Verilog</span>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">ModelSim</span>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">Artix-7</span>
+              <button
+                onclick="navigator.xr ? alert('Starting WebXR Session...') : alert('WebXR not supported on this device.')"
+                class="font-mono text-xs dark:bg-brand-500/20 bg-brand-500 text-white dark:text-brand-400 px-2 py-1 rounded border border-brand-500 hover:bg-brand-500 hover:text-white transition cursor-pointer ml-auto">AR
+                View</button>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div
+            class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
+            data-aos="fade-up" data-aos-delay="100">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div class="flex gap-3">
+                <a href="#" class="dark:text-slate-400 text-slate-500 hover:text-brand-400 transition"
+                  aria-label="Github Repo">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3
+              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
+              IoT Weather Station</h3>
+            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+              Built a custom PCB incorporating an ESP32, BME280, and a solar charging IC. Wrote firmware to read sensor
+              data over I2C and publish telemetry via MQTT to a custom web dashboard.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">C++</span>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">ESP-IDF</span>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">KiCad</span>
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div
+            class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
+            data-aos="fade-up" data-aos-delay="200">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div class="flex gap-3">
+                <a href="#" class="dark:text-slate-400 text-slate-500 hover:text-brand-400 transition"
+                  aria-label="Github Repo">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <h3
+              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
+              Bare-metal STM32 Drivers</h3>
+            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+              Developed a custom hardware abstraction layer (HAL) for STM32F4 series microcontrollers directly writing
+              to memory-mapped registers, bypassing standard bloated vendor HALs.
+            </p>
+            <div class="flex flex-wrap gap-2 mt-auto">
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">C</span>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">ARM Cortex-M4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAYGROUND & PCB VIEWER -->
+    <section id="playground" class="py-24 relative bg-slate-900/20">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="flex items-center gap-3 mb-12" data-aos="fade-up">
+          <span class="sec-num">04.5</span>
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900" data-i18n="playground_title">
+            Engineering Playground</h2>
+          <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-8">
+          <!-- Monaco Editor -->
+          <div
+            class="dark:bg-slate-900 bg-slate-100 rounded-xl border dark:border-slate-700 border-slate-300 overflow-hidden shadow-2xl flex flex-col"
+            data-aos="fade-right">
+            <div
+              class="flex items-center justify-between px-4 py-2 dark:bg-slate-800 bg-slate-200 border-b dark:border-slate-700 border-slate-300">
+              <div class="flex gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                <span class="w-3 h-3 rounded-full bg-green-500"></span>
+              </div>
+              <span class="font-mono text-xs dark:text-slate-400 text-slate-500">riscv_core.v</span>
+              <button onclick="runCode()"
+                class="font-mono text-xs px-2 py-1 bg-brand-500 text-white rounded hover:bg-brand-400 transition">Run
+                Synthesis</button>
+            </div>
+            <div id="monaco-container" class="h-64 w-full"></div>
+            <div id="monaco-output"
+              class="h-24 bg-black text-green-400 font-mono text-xs p-3 overflow-y-auto border-t dark:border-slate-700 border-slate-300">
+              [Info] Elaborating design... Ready.
+            </div>
+          </div>
+
+          <!-- PCB Viewer / Radar Chart -->
+          <div class="space-y-8" data-aos="fade-left">
+            <!-- Radar Chart -->
+            <div
+              class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 shadow-xl">
+              <h3 class="font-mono text-sm text-brand-400 mb-4 text-center">Project Complexity Radar</h3>
+              <div class="h-48 w-full relative">
+                <canvas id="radarChart"></canvas>
+              </div>
+            </div>
+
+            <!-- GitHub Feed -->
+            <div
+              class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 shadow-xl">
+              <h3 class="font-mono text-sm text-brand-400 mb-4 flex items-center gap-2">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                </svg>
+                Live GitHub Feed
+              </h3>
+              <div id="gh-feed"
+                class="space-y-3 font-mono text-xs dark:text-slate-300 text-slate-700 h-24 overflow-y-auto pr-2">
+                <div class="animate-pulse">Fetching latest commits from @surajtharu...</div>
+              </div>
+            </div>
+
+            <!-- Logic Simulator -->
+            <div
+              class="dark:bg-slate-900/50 bg-white rounded-xl p-6 border dark:border-slate-700 border-slate-200 shadow-xl">
+              <h3 class="font-mono text-sm text-brand-400 mb-4 flex items-center gap-2">Interactive Logic Sandbox</h3>
+              <div class="flex items-center justify-between bg-slate-100 dark:bg-slate-800 p-4 rounded-lg">
+                <div class="flex flex-col gap-2">
+                  <label class="flex items-center gap-2 cursor-pointer dark:text-white"><input type="checkbox"
+                      id="gate-in-a" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none"> Input A</label>
+                  <label class="flex items-center gap-2 cursor-pointer dark:text-white"><input type="checkbox"
+                      id="gate-in-b" class="w-4 h-4 text-brand-500 rounded bg-slate-700 border-none"> Input B</label>
+                </div>
+                <div class="font-mono text-xl font-bold dark:text-brand-400 text-brand-500">AND</div>
+                <div
+                  class="w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-600 flex items-center justify-center transition-colors dark:text-white font-bold"
+                  id="gate-out">0</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BUILD LOG & CERTS -->
+    <section id="build-log" class="py-24 relative">
+      <div class="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-12">
+
+        <!-- Build Log -->
+        <div data-aos="fade-right">
+          <div class="flex items-center gap-3 mb-8">
+            <h2 class="text-3xl font-bold dark:text-white text-slate-900">Build Logs</h2>
+            <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+          </div>
+          <div class="space-y-6">
+            <div class="dark:bg-slate-900/50 bg-slate-50 p-5 rounded-xl border dark:border-slate-700 border-slate-200">
+              <div class="flex justify-between text-xs font-mono text-brand-400 mb-2">
+                <span>RISC-V Core</span><span>Day 12</span>
+              </div>
+              <p class="dark:text-slate-300 text-slate-700 text-sm">Finally closed timing on the 5-stage pipeline! The
+                critical path was in the ALU forwarding logic. Bypassing the EX/MEM register solved it.</p>
+            </div>
+            <div class="dark:bg-slate-900/50 bg-slate-50 p-5 rounded-xl border dark:border-slate-700 border-slate-200">
+              <div class="flex justify-between text-xs font-mono text-brand-400 mb-2">
+                <span>ESP32 Weather</span><span>Day 4</span>
+              </div>
+              <p class="dark:text-slate-300 text-slate-700 text-sm">Got MQTT publishing working over WiFi. Next step:
+                Deep sleep mode optimization to hit that 1-year battery life target.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Certifications -->
+        <div data-aos="fade-left">
+          <div class="flex items-center gap-3 mb-8">
+            <h2 class="text-3xl font-bold dark:text-white text-slate-900">Certifications</h2>
+            <div class="flex-1 h-px dark:bg-slate-800 bg-slate-200 ml-4"></div>
+          </div>
+          <div class="space-y-4">
+            <div
+              class="flex items-center gap-4 dark:bg-slate-900/50 bg-slate-50 p-4 rounded-xl border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition group">
+              <div id="qr-1" class="w-16 h-16 bg-white p-1 rounded border dark:border-slate-700 border-slate-200"></div>
+              <div>
+                <h4 class="font-bold dark:text-slate-200 text-slate-800 group-hover:text-brand-400 transition">Embedded
+                  Systems Specialization</h4>
+                <div class="text-xs dark:text-slate-400 text-slate-600">Coursera · Dec 2023</div>
+                <div class="text-xs font-mono text-brand-500 mt-1">Scan to Verify</div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-4 dark:bg-slate-900/50 bg-slate-50 p-4 rounded-xl border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition group">
+              <div id="qr-2" class="w-16 h-16 bg-white p-1 rounded border dark:border-slate-700 border-slate-200"></div>
+              <div>
+                <h4 class="font-bold dark:text-slate-200 text-slate-800 group-hover:text-brand-400 transition">AWS
+                  Certified Cloud Practitioner</h4>
+                <div class="text-xs dark:text-slate-400 text-slate-600">Amazon Web Services · Jan 2024</div>
+                <div class="text-xs font-mono text-brand-500 mt-1">Scan to Verify</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="py-24 relative">
+      <div class="max-w-4xl mx-auto px-4 text-center" data-aos="fade-up">
+        <span class="sec-num mb-4 block text-brand-400 text-sm font-mono tracking-widest uppercase">05 . Next
+          Steps</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold dark:text-white text-slate-900 mb-6">Let's Connect</h2>
+        <p class="dark:text-slate-400 text-slate-600 mb-10 max-w-lg mx-auto leading-relaxed">
+          I'm currently looking for new opportunities in embedded systems, FPGA design, or hardware engineering. Whether
+          you have a question or just want to say hi, my inbox is always open!
+        </p>
+        <button id="init-conn-btn"
+          class="glow-btn inline-block px-8 py-4 bg-transparent border-2 border-brand-500 text-brand-500 hover:bg-brand-500 hover:text-white font-mono font-bold rounded-xl transition-colors">
+          Initialize Connection()
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CHAT WIDGET -->
+  <div id="chat-widget"
+    class="fixed bottom-6 right-6 w-80 dark:bg-slate-900 bg-white border dark:border-slate-700 border-slate-300 rounded-2xl shadow-2xl z-[100] flex flex-col overflow-hidden">
+    <div class="px-4 py-3 bg-brand-500 text-white flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+        <span class="font-bold text-sm">Ask Suraj AI</span>
+      </div>
+      <button id="close-chat" class="hover:text-slate-200 transition">✕</button>
+    </div>
+    <div id="chat-messages" class="p-4 h-64 overflow-y-auto flex flex-col gap-3 text-sm dark:bg-slate-900 bg-slate-50">
+      <div
+        class="bg-slate-200 dark:bg-slate-800 p-3 rounded-xl rounded-tl-sm self-start max-w-[85%] chat-msg dark:text-slate-200 text-slate-800">
+        Hi! I'm an AI assistant trained on Suraj's resume. Ask me about his FPGA experience, skills, or projects!
+      </div>
+    </div>
+    <div class="p-3 border-t dark:border-slate-700 border-slate-200 bg-white dark:bg-slate-900 flex gap-2">
+      <input type="text" id="chat-input"
+        class="w-full bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-lg text-sm outline-none dark:text-white"
+        placeholder="Type a message..." autocomplete="off">
+      <button id="voice-btn"
+        class="w-10 h-10 flex-shrink-0 bg-slate-200 dark:bg-slate-800 rounded-lg flex items-center justify-center hover:text-brand-500 transition"
+        aria-label="Use voice">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- FLOATING CHAT BUTTON -->
+  <button id="chat-btn"
+    class="fixed bottom-6 right-6 w-14 h-14 bg-brand-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-brand-400 transition transform hover:scale-110 z-[90]">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+    </svg>
+  </button>
+
+  <!-- GAME MODAL -->
+  <div id="game-modal" class="fixed inset-0 z-[200] hidden flex justify-center items-center">
+    <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" id="game-backdrop"></div>
+    <div class="relative bg-slate-800 border border-brand-500 rounded-xl overflow-hidden shadow-2xl">
+      <div
+        class="px-4 py-2 bg-slate-900 border-b border-brand-500 flex justify-between items-center text-brand-400 font-mono text-sm">
+        <span>Score: <span id="game-score">0</span></span>
+        <button id="close-game" class="hover:text-white transition">✕</button>
+      </div>
+      <canvas id="game-canvas" width="600" height="400" class="block bg-[#0f172a]"></canvas>
+      <div id="game-overlay"
+        class="absolute inset-0 flex items-center justify-center bg-slate-900/80 font-mono text-white text-center">
+        <div>
+          <h2 class="text-3xl font-bold text-brand-400 mb-2">Skill Catcher</h2>
+          <p class="mb-4 text-slate-300">Use <kbd class="bg-slate-700 px-2 py-1 rounded">⬅️</kbd> <kbd
+              class="bg-slate-700 px-2 py-1 rounded">➡️</kbd> Arrow Keys to catch falling skills!</p>
+          <button id="start-game-btn"
+            class="px-6 py-2 bg-brand-500 rounded-lg hover:bg-brand-400 transition font-bold shadow-lg shadow-brand-500/20">Start
+            Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT MODAL -->
+  <div id="contact-modal" class="fixed inset-0 z-[200] hidden flex justify-center items-center">
+    <div class="absolute inset-0 bg-[#060b13]/80 backdrop-blur-md" id="contact-backdrop"></div>
+    <div
+      class="relative w-full max-w-2xl bg-[#0f172a] border border-[#1e293b] rounded-xl shadow-[0_0_40px_rgba(14,165,233,0.15)] overflow-hidden font-mono mx-4 transform scale-95 opacity-0 transition-all duration-300"
+      id="contact-box">
+      <!-- Terminal Header -->
+      <div class="flex items-center px-4 py-3 bg-[#0b1121] border-b border-[#1e293b]">
+        <div class="flex gap-2">
+          <div class="w-3 h-3 rounded-full bg-red-500"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <div class="mx-auto text-xs text-slate-400">contact.sh</div>
+        <button id="close-contact" class="text-slate-400 hover:text-white absolute right-4 transition">✕</button>
+      </div>
+      <!-- Terminal Body -->
+      <div class="p-6 text-sm text-slate-300">
+        <div class="mb-6 flex items-center gap-2">
+          <span class="text-green-400">user@contact:~$</span> <span class="text-slate-100">compose message<span
+              class="animate-pulse">_</span></span>
+        </div>
+
+        <form id="contact-form" class="space-y-5">
+          <div>
+            <label class="block mb-2 text-slate-300">Name</label>
+            <input type="text" id="c-name" required
+              class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
+          </div>
+          <div>
+            <label class="block mb-2 text-slate-300">Email</label>
+            <input type="email" id="c-email" required
+              class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
+          </div>
+          <div>
+            <label class="block mb-2 text-slate-300">Subject</label>
+            <input type="text" id="c-subject"
+              class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors">
+          </div>
+          <div>
+            <label class="block mb-2 text-slate-300">Message</label>
+            <textarea id="c-msg" required rows="4"
+              class="w-full bg-[#1e293b]/50 border border-[#334155] rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-[#38bdf8] transition-colors"></textarea>
+          </div>
+          <button type="submit"
+            class="w-full bg-[#0ea5e9] hover:bg-[#38bdf8] text-white font-bold py-3 rounded-lg transition-colors mt-4">
+            Execute Send
+          </button>
+        </form>
+        <div id="contact-status" class="mt-4 hidden text-center font-bold"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE MODAL -->
+  <div id="cmd-palette" class="fixed inset-0 z-[200] hidden flex justify-center items-start pt-[15vh]">
+    <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" id="cmd-backdrop"></div>
+    <div
+      class="relative w-full max-w-xl bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden chat-msg">
+      <div class="flex items-center px-4 py-3 border-b dark:border-slate-700">
+        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="cmd-input"
+          class="w-full bg-transparent border-none outline-none px-3 text-lg dark:text-white"
+          placeholder="Search commands, sections, or type 'help'..." autocomplete="off">
+        <button id="cmd-close"
+          class="text-xs font-mono bg-slate-200 dark:bg-slate-800 px-2 py-1 rounded text-slate-500 hover:bg-slate-300 dark:hover:bg-slate-700 transition">ESC</button>
+      </div>
+      <div class="max-h-64 overflow-y-auto p-2" id="cmd-results">
+        <!-- Results injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- A11Y TOGGLE -->
+  <button id="a11y-toggle"
+    class="fixed bottom-6 left-6 w-12 h-12 bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-700 transition z-[90] magnetic"
+    aria-label="Accessibility Settings">
+    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
+    </svg>
+  </button>
+
+  <div id="a11y-menu"
+    class="hidden fixed bottom-20 left-6 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex flex-col gap-3 chat-msg">
+    <h3 class="text-sm font-bold border-b pb-2 dark:border-slate-700 dark:text-white">Accessibility</h3>
+    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+      <span>Reduce Motion</span>
+      <input type="checkbox" id="a11y-motion"
+        class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
+    </label>
+    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+      <span>High Contrast</span>
+      <input type="checkbox" id="a11y-contrast"
+        class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
+    </label>
+    <label class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
+      <span>Dyslexia Font</span>
+      <input type="checkbox" id="a11y-font" class="form-checkbox text-brand-500 rounded bg-slate-800 border-slate-700">
+    </label>
+  </div>
+
+  <script>
+    // Initialize AOS
+    AOS.init({
+      once: true,
+      offset: 50,
+      duration: 800,
+    });
+
+    // Dark mode toggle
+    const dmToggle = document.getElementById('dark-toggle');
+    const html = document.documentElement;
+    const moonIcon = document.getElementById('icon-moon');
+    const sunIcon = document.getElementById('icon-sun');
+
+    function updateIcons(isDark) {
+      if (isDark) {
+        moonIcon.classList.add('hidden');
+        sunIcon.classList.remove('hidden');
+      } else {
+        moonIcon.classList.remove('hidden');
+        sunIcon.classList.add('hidden');
+      }
+    }
+
+    dmToggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      updateIcons(html.classList.contains('dark'));
+    });
+
+    // Mobile menu toggle
+    const mobBtn = document.getElementById('mob-btn');
+    const mobMenu = document.getElementById('mob-menu');
+    mobBtn.addEventListener('click', () => {
+      mobMenu.classList.toggle('hidden');
+    });
+
+    // Typewriter effect
+    const phrases = ["Hardware.", "Software.", "RISC-V Cores.", "Web Apps."];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    const typewriterElement = document.getElementById('typewriter');
+
+    function type() {
+      const currentPhrase = phrases[phraseIdx];
+
+      if (isDeleting) {
+        typewriterElement.textContent = currentPhrase.substring(0, charIdx - 1);
+        charIdx--;
+      } else {
+        typewriterElement.textContent = currentPhrase.substring(0, charIdx + 1);
+        charIdx++;
+      }
+
+      let typeSpeed = isDeleting ? 50 : 100;
+
+      if (!isDeleting && charIdx === currentPhrase.length) {
+        typeSpeed = 2000;
+        isDeleting = true;
+      } else if (isDeleting && charIdx === 0) {
+        isDeleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        typeSpeed = 500;
+      }
+
+      setTimeout(type, typeSpeed);
+    }
+
+    setTimeout(type, 1000);
+
+    // Hero image reveal animation
+    gsap.to("#hero-photo-wrap", {
+      clipPath: "inset(0 0% 0 0)",
+      duration: 1.5,
+      ease: "power3.inOut",
+      delay: 0.5
+    });
+
+    // Cursor tracking
+    const curDot = document.getElementById('cur-dot');
+    const curRing = document.getElementById('cur-ring');
+    document.addEventListener('mousemove', (e) => {
+      curDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+      curRing.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+    });
+
+    // Interactive Terminal
+    const termIn = document.getElementById('term-in');
+    const termOut = document.getElementById('term-output');
+
+    termIn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const cmd = termIn.value.trim();
+        if (cmd) {
+          termOut.innerHTML += `<div><span class="text-slate-400">❯ ${cmd}</span></div>`;
+          let out = "";
+          if (cmd === 'help') {
+            out = 'Available commands: whoami, clear, skills, contact, connect usb, connect bt';
+          } else if (cmd === 'clear') {
+            termOut.innerHTML = '';
+          } else if (cmd === 'whoami') {
+            out = 'Suraj Tharu Chaudhary - Computer Engineer';
+          } else if (cmd === 'contact') {
+            out = 'Reach out at suraj.tharu@example.com';
+          } else if (cmd === 'connect usb') {
+            if (navigator.usb) { navigator.usb.requestDevice({ filters: [] }).catch(e => console.log(e)); out = 'Scanning for WebUSB devices...'; }
+            else out = 'WebUSB not supported in this browser.';
+          } else if (cmd === 'connect bt') {
+            if (navigator.bluetooth) { navigator.bluetooth.requestDevice({ acceptAllDevices: true }).catch(e => console.log(e)); out = 'Scanning for Web Bluetooth devices...'; }
+            else out = 'Web Bluetooth not supported in this browser.';
+          } else {
+            out = `Command not found: ${cmd}. Type 'help'.`;
+          }
+          if (out) termOut.innerHTML += `<div>${out}</div>`;
+          termOut.scrollTop = termOut.scrollHeight;
+        }
+        termIn.value = '';
+      }
+    });
+
+    // Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('live-clock').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Progress Bar
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + '%';
+    });
+
+    // --- 2. 3D Solar System Background (Three.js) ---
+    const canvas = document.getElementById('hero-canvas');
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.set(0, 100, 300);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.PointLight(0xffddaa, 3, 1000);
+    scene.add(sunLight);
+
+    const solarSystem = new THREE.Group();
+    scene.add(solarSystem);
+
+    // Sun
+    const sunGeo = new THREE.SphereGeometry(15, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    solarSystem.add(sun);
+
+    // Planets
+    const planets = [];
+    const planetData = [
+      { radius: 2, distance: 30, speed: 0.04, color: 0x888888 }, // Mercury
+      { radius: 4, distance: 50, speed: 0.015, color: 0xeebb88 }, // Venus
+      { radius: 4.5, distance: 75, speed: 0.01, color: 0x2266ff }, // Earth
+      { radius: 3, distance: 100, speed: 0.008, color: 0xff4422 }, // Mars
+      { radius: 10, distance: 150, speed: 0.002, color: 0xffaa55 }, // Jupiter
+      { radius: 8, distance: 200, speed: 0.001, color: 0xddbb99 } // Saturn
+    ];
+
+    planetData.forEach(data => {
+      // Orbit path
+      const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
+      const orbitMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, side: THREE.DoubleSide });
+      const orbit = new THREE.Mesh(orbitGeo, orbitMat);
+      orbit.rotation.x = Math.PI / 2;
+      solarSystem.add(orbit);
+
+      // Planet
+      const planetGeo = new THREE.SphereGeometry(data.radius, 16, 16);
+      const planetMat = new THREE.MeshStandardMaterial({ color: data.color, roughness: 0.8, metalness: 0.2 });
+      const planet = new THREE.Mesh(planetGeo, planetMat);
+
+      const pivot = new THREE.Group();
+      pivot.add(planet);
+      planet.position.x = data.distance;
+      solarSystem.add(pivot);
+
+      planets.push({ pivot, speed: data.speed });
+    });
+
+    // Milky Way Galaxy
+    const milkyWayGeo = new THREE.BufferGeometry();
+    const mwStarsCount = 20000; // Increased density
+    const mwPosArray = new Float32Array(mwStarsCount * 3);
+    const mwColorArray = new Float32Array(mwStarsCount * 3);
+    const color1 = new THREE.Color(0x7c3aed); // Vibrant violet
+    const color2 = new THREE.Color(0x06b6d4); // Bright cyan
+    const color3 = new THREE.Color(0xf472b6); // Neon pink
+    const color4 = new THREE.Color(0xfacc15); // Stardust yellow
+
+    for (let i = 0; i < mwStarsCount; i++) {
+      const r = 350 + Math.random() * 1100; // Wider spread
+      const theta = Math.random() * Math.PI * 2;
+      const spread = (Math.random() - 0.5) * (Math.random() * 500); // Thicker band
+
+      const x = r * Math.cos(theta);
+      const y = spread;
+      const z = r * Math.sin(theta);
+
+      // Tilt the Milky Way
+      const tilt = Math.PI / 3;
+      mwPosArray[i * 3] = x;
+      mwPosArray[i * 3 + 1] = y * Math.cos(tilt) - z * Math.sin(tilt);
+      mwPosArray[i * 3 + 2] = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+      // Mix colors based on radius and random
+      const rand = Math.random();
+      let mixedColor;
+      if (rand < 0.4) mixedColor = color1.clone().lerp(color2, Math.random());
+      else if (rand < 0.7) mixedColor = color2.clone().lerp(color3, Math.random());
+      else if (rand < 0.9) mixedColor = color3.clone().lerp(color1, Math.random());
+      else mixedColor = color4.clone().lerp(color3, Math.random()); // Splashes of yellow/pink
+
+      mwColorArray[i * 3] = mixedColor.r;
+      mwColorArray[i * 3 + 1] = mixedColor.g;
+      mwColorArray[i * 3 + 2] = mixedColor.b;
+    }
+    milkyWayGeo.setAttribute('position', new THREE.BufferAttribute(mwPosArray, 3));
+    milkyWayGeo.setAttribute('color', new THREE.BufferAttribute(mwColorArray, 3));
+    const mwMat = new THREE.PointsMaterial({ size: 2.5, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
+    const milkyWay = new THREE.Points(milkyWayGeo, mwMat);
+    scene.add(milkyWay);
+
+    // Scattered Stars
+    const starsGeo = new THREE.BufferGeometry();
+    const starsCount = 2500;
+    const posArray = new Float32Array(starsCount * 3);
+    for (let i = 0; i < starsCount * 3; i++) {
+      posArray[i] = (Math.random() - 0.5) * 2500;
+    }
+    starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const starsMat = new THREE.PointsMaterial({ size: 1.8, color: 0xffffff, transparent: true, opacity: 0.9 });
+    const stars = new THREE.Points(starsGeo, starsMat);
+    scene.add(stars);
+
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (event) => {
+      mouseX = (event.clientX / window.innerWidth) - 0.5;
+      mouseY = (event.clientY / window.innerHeight) - 0.5;
+    });
+
+    let scrollY = 0;
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY;
+    });
+
+    const clock = new THREE.Clock();
+    let targetOpacity = document.documentElement.classList.contains('dark') ? 1 : 0;
+    let currentOpacity = targetOpacity;
+
+    // Day and Night visual configurations
+    const dayColor = new THREE.Color(0xf4f7f6); // Clean soft light gray/blue
+    const nightColor = new THREE.Color(0x050510); // Deep space
+    scene.background = new THREE.Color();
+    scene.fog = new THREE.FogExp2(0xf4f7f6, 0); // Dynamic fog to hide stars in day
+
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!document.body.classList.contains('a11y-reduce-motion')) {
+        const t = clock.getElapsedTime();
+
+        // Rotate planets
+        planets.forEach(p => {
+          p.pivot.rotation.y += p.speed;
+        });
+
+        // Slightly faster dynamic rotation for Milky Way
+        milkyWay.rotation.y = t * 0.0035;
+        milkyWay.rotation.z = Math.sin(t * 0.05) * 0.02; // Subtle breathing tilt
+        stars.rotation.y = t * 0.0015;
+
+        // Parallax effect on camera
+        camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
+        camera.position.y = 100 - scrollY * 0.05; // Move down as we scroll
+        camera.position.z += (300 - mouseY * 50 - camera.position.z) * 0.05;
+        camera.lookAt(scene.position);
+
+        solarSystem.rotation.x = Math.PI / 8; // slight tilt
+
+        // Day/Night transition
+        const isDark = document.documentElement.classList.contains('dark');
+        targetOpacity = isDark ? 1 : 0.0;
+        currentOpacity += (targetOpacity - currentOpacity) * 0.05;
+
+        // Transition background and fog
+        scene.background.lerpColors(dayColor, nightColor, currentOpacity);
+        scene.fog.color.lerpColors(dayColor, nightColor, currentOpacity);
+        scene.fog.density = (1 - currentOpacity) * 0.003; // Fog thickens in day mode to hide deep space
+
+        // Transition Milky Way and stars
+        mwMat.opacity = currentOpacity * 0.85;
+        starsMat.opacity = currentOpacity;
+
+        // Lighting transitions
+        ambientLight.intensity = isDark ? 0.2 : 0.9;
+        sunLight.intensity = isDark ? 4.0 : 1.5;
+      }
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // --- 1. Service Worker for PWA ---
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(reg => console.log('SW registered')).catch(err => console.log('SW error: ', err));
+      });
+    }
+
+    // --- 2. Lenis Smooth Scroll ---
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+    });
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // --- 3. Easter Egg Console Art ---
+    console.log("%c", "padding:100px 200px;background:url('https://api.dicebear.com/7.x/initials/svg?seed=STC&backgroundColor=0ea5e9') no-repeat;");
+    console.log("%c🚀 You found the Easter Egg! 🚀\n\nCheckout my secret side projects at: /secret\nOr read my JSON resume at: /resume.json", "color: #0ea5e9; font-size: 16px; font-weight: bold; font-family: monospace;");
+
+    // --- 4. Monaco Editor Initialization ---
+    require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      window.editor = monaco.editor.create(document.getElementById('monaco-container'), {
+        value: [
+          'module riscv_core (',
+          '    input wire clk,',
+          '    input wire rst_n,',
+          '    output wire [31:0] pc,',
+          '    input wire [31:0] instr',
+          ');',
+          '',
+          '    // Core logic goes here...',
+          '    always @(posedge clk) begin',
+          '        if (!rst_n) pc <= 32\'b0;',
+          '        else pc <= pc + 4;',
+          '    end',
+          'endmodule'
+        ].join('\n'),
+        language: 'verilog',
+        theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
+        minimap: { enabled: false },
+        fontSize: 12,
+        scrollBeyondLastLine: false
+      });
+      // Theme sync
+      document.getElementById('dark-toggle').addEventListener('click', () => {
+        setTimeout(() => {
+          monaco.editor.setTheme(document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs');
+        }, 50);
+      });
+    });
+
+    window.runCode = function () {
+      const out = document.getElementById('monaco-output');
+      out.innerHTML += `<br/><span class="text-white">❯ synth_design -top riscv_core</span><br/><span class="text-yellow-400">[Warn] No constraints found.</span><br/>[Info] Synthesis complete. Logic elements: 42.`;
+      out.scrollTop = out.scrollHeight;
+    };
+
+    // --- 5. Chart.js Radar Chart ---
+    const ctx = document.getElementById('radarChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'radar',
+      data: {
+        labels: ['Hardware Complexity', 'Software Depth', 'Innovation', 'Research', 'Performance'],
+        datasets: [{
+          label: 'RISC-V Softcore',
+          data: [95, 80, 85, 90, 75],
+          backgroundColor: 'rgba(14, 165, 233, 0.2)',
+          borderColor: 'rgba(14, 165, 233, 1)',
+          pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+          borderWidth: 2,
+        }, {
+          label: 'IoT Weather Station',
+          data: [70, 95, 60, 50, 85],
+          backgroundColor: 'rgba(234, 179, 8, 0.2)',
+          borderColor: 'rgba(234, 179, 8, 1)',
+          borderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        scales: {
+          r: {
+            angleLines: { color: 'rgba(148, 163, 184, 0.2)' },
+            grid: { color: 'rgba(148, 163, 184, 0.2)' },
+            pointLabels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } },
+            ticks: { display: false }
+          }
+        },
+        plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } } } }
+      }
+    });
+
+    // --- 6. Live GitHub Feed (Mocked via API) ---
+    async function fetchGitHubFeed() {
+      const feedDiv = document.getElementById('gh-feed');
+      try {
+        const res = await fetch('https://api.github.com/users/surajtharu/events/public');
+        if (res.ok) {
+          const events = await res.json();
+          const pushes = events.filter(e => e.type === 'PushEvent').slice(0, 3);
+          if (pushes.length > 0) {
+            feedDiv.innerHTML = pushes.map(p => `
+              <div class="border-l-2 border-brand-500 pl-3 mt-2">
+                <div class="text-brand-400">${p.repo.name}</div>
+                <div class="opacity-80 truncate">${p.payload.commits[0]?.message || 'Push event'}</div>
+                <div class="text-[10px] opacity-50">${new Date(p.created_at).toLocaleString()}</div>
+              </div>
+            `).join('');
+          } else {
+            feedDiv.innerHTML = '<div class="opacity-50">No recent pushes.</div>';
+          }
+        } else { throw new Error('API limit'); }
+      } catch (e) {
+        feedDiv.innerHTML = `
+          <div class="border-l-2 border-brand-500 pl-3"><div class="text-brand-400">surajtharu/riscv-core</div><div class="opacity-80">Added pipeline flush logic</div><div class="text-[10px] opacity-50">2 hours ago</div></div>
+          <div class="border-l-2 border-slate-500 pl-3 mt-2"><div class="text-brand-400">surajtharu/stm32-hal</div><div class="opacity-80">Refactored I2C driver</div><div class="text-[10px] opacity-50">1 day ago</div></div>
+        `;
+      }
+    }
+    fetchGitHubFeed();
+
+    // --- 7. Chat Assistant Logic ---
+    const chatBtn = document.getElementById('chat-btn');
+    const chatWidget = document.getElementById('chat-widget');
+    const closeChat = document.getElementById('close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
+
+    const chatIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>';
+    const closeIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+    function toggleChat() {
+      chatWidget.classList.toggle('open');
+      if (chatWidget.classList.contains('open')) {
+        chatBtn.innerHTML = closeIcon;
+        chatBtn.classList.add('bg-slate-700', 'hover:bg-slate-600');
+        chatBtn.classList.remove('bg-brand-500', 'hover:bg-brand-400');
+        chatInput.focus();
+      } else {
+        chatBtn.innerHTML = chatIcon;
+        chatBtn.classList.remove('bg-slate-700', 'hover:bg-slate-600');
+        chatBtn.classList.add('bg-brand-500', 'hover:bg-brand-400');
+      }
+    }
+
+    chatBtn.addEventListener('click', toggleChat);
+    closeChat.addEventListener('click', () => { if (chatWidget.classList.contains('open')) toggleChat(); });
+
+    // Context-Aware Logic
+    let currentContext = 'Hero Section';
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('section');
+      let current = '';
+      sections.forEach(section => {
+        if (window.pageYOffset >= section.offsetTop - 200) current = section.getAttribute('id') || current;
+      });
+      if (current) currentContext = current;
+    });
+
+    chatInput.addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter' && chatInput.value.trim() !== '') {
+        const msg = chatInput.value.trim();
+        chatInput.value = '';
+        chatInput.disabled = true;
+        chatMessages.innerHTML += `<div class="bg-brand-500 text-white p-3 rounded-xl rounded-tr-sm self-end max-w-[85%] chat-msg">${msg}</div>`;
+
+        // Typing indicator
+        const typingId = 'typing-' + Date.now();
+        chatMessages.innerHTML += `<div id="${typingId}" class="bg-slate-200 dark:bg-slate-800 p-3 rounded-xl rounded-tl-sm self-start max-w-[85%] chat-msg dark:text-slate-400 text-slate-500 text-xs flex items-center gap-1">
+          <span class="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style="animation-delay: 0s"></span>
+          <span class="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style="animation-delay: 0.1s"></span>
+          <span class="w-1.5 h-1.5 bg-current rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+        </div>`;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        try {
+          const res = await fetch('http://localhost:3000/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg, context: currentContext })
+          });
+          const data = await res.json();
+          document.getElementById(typingId)?.remove();
+
+          if (data.reply) {
+            chatMessages.innerHTML += `<div class="bg-slate-200 dark:bg-slate-800 p-3 rounded-xl rounded-tl-sm self-start max-w-[85%] chat-msg dark:text-slate-200 text-slate-800">${data.reply}</div>`;
+            if (isVoiceMode) {
+              const speech = new SpeechSynthesisUtterance(data.reply);
+              window.speechSynthesis.speak(speech);
+            }
+          } else {
+            chatMessages.innerHTML += `<div class="bg-red-500/10 text-red-500 p-3 rounded-xl rounded-tl-sm self-start max-w-[85%] chat-msg text-xs">${data.error || 'Server error'}</div>`;
+          }
+        } catch (error) {
+          console.error(error);
+          document.getElementById(typingId)?.remove();
+          chatMessages.innerHTML += `<div class="bg-red-500/10 text-red-500 border border-red-500/20 p-3 rounded-xl rounded-tl-sm self-start max-w-[85%] chat-msg text-xs">Error connecting to AI Server. Please ensure the backend is running.</div>`;
+        }
+
+        chatInput.disabled = false;
+        chatInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        isVoiceMode = false;
+      }
+    });
+
+    // Voice Input Logic
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let isVoiceMode = false;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+
+      document.getElementById('voice-btn').addEventListener('click', () => {
+        isVoiceMode = true;
+        try {
+          recognition.start();
+          document.getElementById('voice-btn').classList.add('text-brand-500', 'animate-pulse');
+        } catch (e) { }
+      });
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        chatInput.value = transcript;
+        document.getElementById('voice-btn').classList.remove('text-brand-500', 'animate-pulse');
+        const ke = new KeyboardEvent('keypress', { key: 'Enter' });
+        chatInput.dispatchEvent(ke);
+      };
+      recognition.onend = () => document.getElementById('voice-btn').classList.remove('text-brand-500', 'animate-pulse');
+    } else {
+      document.getElementById('voice-btn').style.display = 'none';
+    }
+
+    // --- 8. Simulated Visitor Counter ---
+    setInterval(() => {
+      const el = document.getElementById('visit-count');
+      if (el) el.textContent = parseInt(el.textContent || '42') + Math.floor(Math.random() * 2);
+    }, 5000);
+    document.getElementById('visit-count').textContent = '42';
+
+    // --- 9. Encrypted Form Simulation ---
+    const contactBtn = document.querySelector('a[href="mailto:suraj.tharu@example.com"]');
+    if (contactBtn) {
+      contactBtn.addEventListener('click', (e) => {
+        if (!contactBtn.classList.contains('secure-ready')) {
+          e.preventDefault();
+          contactBtn.classList.add('encrypting');
+          contactBtn.innerHTML = 'Encrypting via PGP...';
+          setTimeout(() => {
+            contactBtn.classList.remove('encrypting');
+            contactBtn.classList.add('secure-ready');
+            contactBtn.innerHTML = 'Connection Secure ✅';
+            setTimeout(() => { window.location.href = "mailto:suraj.tharu@example.com"; }, 500);
+          }, 1500);
+        }
+      });
+    }
+
+    // --- 10. GSAP Hero Text Reveal ---
+    gsap.to(".hero-word", {
+      y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)", delay: 0.2
+    });
+
+    // --- 11. D3 Force Directed Skills Graph ---
+    const width = document.getElementById('d3-skills-graph').clientWidth;
+    const height = 400;
+    const nodes = [
+      { id: "Embedded", group: 1, radius: 25 },
+      { id: "C/C++", group: 1, radius: 20 },
+      { id: "FreeRTOS", group: 1, radius: 18 },
+      { id: "FPGA", group: 2, radius: 25 },
+      { id: "Verilog", group: 2, radius: 20 },
+      { id: "RISC-V", group: 2, radius: 22 },
+      { id: "Vivado", group: 2, radius: 15 },
+      { id: "Python", group: 3, radius: 18 },
+      { id: "Linux", group: 3, radius: 20 }
+    ];
+    const links = [
+      { source: "Embedded", target: "C/C++" },
+      { source: "Embedded", target: "FreeRTOS" },
+      { source: "Embedded", target: "Linux" },
+      { source: "FPGA", target: "Verilog" },
+      { source: "FPGA", target: "RISC-V" },
+      { source: "FPGA", target: "Vivado" },
+      { source: "RISC-V", target: "Verilog" },
+      { source: "RISC-V", target: "C/C++" },
+      { source: "Linux", target: "Python" }
+    ];
+
+    const svg = d3.select("#d3-skills-graph").append("svg")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("viewBox", [0, 0, width, height]);
+
+    const simulation = d3.forceSimulation(nodes)
+      .force("link", d3.forceLink(links).id(d => d.id).distance(80))
+      .force("charge", d3.forceManyBody().strength(-300))
+      .force("center", d3.forceCenter(width / 2, height / 2));
+
+    const link = svg.append("g")
+      .attr("stroke", "#334155")
+      .attr("stroke-opacity", 0.6)
+      .selectAll("line")
+      .data(links).join("line")
+      .attr("stroke-width", 2);
+
+    const node = svg.append("g")
+      .selectAll("circle")
+      .data(nodes).join("circle")
+      .attr("r", d => d.radius)
+      .attr("fill", d => d.group === 1 ? "#0ea5e9" : d.group === 2 ? "#eab308" : "#10b981")
+      .attr("stroke", "#fff")
+      .attr("stroke-width", 1.5)
+      .call(drag(simulation));
+
+    const labels = svg.append("g")
+      .selectAll("text")
+      .data(nodes).join("text")
+      .text(d => d.id)
+      .attr("font-size", "10px")
+      .attr("font-family", "Space Mono")
+      .attr("fill", document.documentElement.classList.contains('dark') ? "#f8fafc" : "#0f172a")
+      .attr("dx", 12).attr("dy", 4);
+
+    simulation.on("tick", () => {
+      link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+      node.attr("cx", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
+        .attr("cy", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
+      labels.attr("x", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
+        .attr("y", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
+    });
+
+    function drag(simulation) {
+      function dragstarted(event) { if (!event.active) simulation.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; }
+      function dragged(event) { event.subject.fx = event.x; event.subject.fy = event.y; }
+      function dragended(event) { if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; }
+      return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+    }
+
+    // --- 12. QR Code Generation ---
+    setTimeout(() => {
+      new QRCode(document.getElementById("qr-1"), { text: "https://coursera.org/verify/example", width: 56, height: 56, colorDark: "#0f172a", colorLight: "#ffffff" });
+      new QRCode(document.getElementById("qr-2"), { text: "https://aws.amazon.com/verification", width: 56, height: 56, colorDark: "#0f172a", colorLight: "#ffffff" });
+    }, 1000);
+
+    // --- 14. i18n Translation Logic ---
+    const dict = {
+      'EN': { 'hi': 'Hi,', 'im': "I'm", 'playground_title': 'Engineering Playground' },
+      'NP': { 'hi': 'नमस्ते,', 'im': 'म हुँ', 'playground_title': 'इन्जिनियरिङ खेल मैदान' }
+    };
+    let currentLang = 'EN';
+    document.getElementById('lang-toggle').addEventListener('click', (e) => {
+      currentLang = currentLang === 'EN' ? 'NP' : 'EN';
+      e.target.innerText = currentLang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[currentLang][key]) el.innerText = dict[currentLang][key];
+      });
+    });
+
+    // --- 15. Global Hover Lift ---
+    // Apply stunning hover animations to all major section cards
+    document.querySelectorAll('.rounded-xl.border, .rounded-lg.border').forEach(el => {
+      if (el.id !== 'chat-widget') {
+        el.classList.add('hover-lift');
+      }
+    });
+
+    // --- 16. Web Audio API Synth ---
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (document.body.classList.contains('a11y-reduce-motion')) return; // Mute if accessibility mode is on
+
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      const now = audioCtx.currentTime;
+      if (type === 'hover') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(600, now + 0.05);
+        gain.gain.setValueAtTime(0.02, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.start(now); osc.stop(now + 0.05);
+      } else if (type === 'click') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(800, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'type') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(300 + Math.random() * 200, now);
+        gain.gain.setValueAtTime(0.03, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+        osc.start(now); osc.stop(now + 0.05);
+      }
+    }
+    document.querySelectorAll('a, button, .hover-lift, .magnetic').forEach(el => {
+      el.addEventListener('mouseenter', () => playSound('hover'));
+      el.addEventListener('click', () => playSound('click'));
+    });
+    document.getElementById('term-in').addEventListener('keydown', () => playSound('type'));
+    document.getElementById('cmd-input').addEventListener('keydown', () => playSound('type'));
+    document.getElementById('chat-input').addEventListener('keydown', () => playSound('type'));
+
+    // --- 17. Dynamic Ambient Theming ---
+    function updateAmbientLight() {
+      const hour = new Date().getHours();
+      let color = 'transparent';
+      if (hour >= 5 && hour < 8) color = 'rgba(252, 211, 77, 0.04)'; // Sunrise (Amber)
+      else if (hour >= 18 && hour < 20) color = 'rgba(244, 63, 94, 0.04)'; // Sunset (Rose)
+      else if (hour >= 20 || hour < 5) color = 'rgba(56, 189, 248, 0.02)'; // Night (Sky)
+
+      let ambientOverlay = document.getElementById('ambient-light');
+      if (!ambientOverlay) {
+        ambientOverlay = document.createElement('div');
+        ambientOverlay.id = 'ambient-light';
+        ambientOverlay.className = 'fixed inset-0 pointer-events-none z-[-1] mix-blend-screen transition-colors duration-1000';
+        document.body.appendChild(ambientOverlay);
+      }
+      ambientOverlay.style.backgroundColor = color;
+    }
+    setInterval(updateAmbientLight, 60000);
+    updateAmbientLight();
+
+    // --- 18. Spotlight Command Palette ---
+    const cmdPalette = document.getElementById('cmd-palette');
+    const cmdBackdrop = document.getElementById('cmd-backdrop');
+    const cmdInput2 = document.getElementById('cmd-input');
+    const cmdResults = document.getElementById('cmd-results');
+
+    const commands = [
+      { title: 'Toggle Dark Mode', icon: '🌙', action: () => document.getElementById('dark-toggle').click() },
+      { title: 'Navigate: About', icon: '👤', action: () => window.location.hash = '#about' },
+      { title: 'Navigate: Projects', icon: '🚀', action: () => window.location.hash = '#projects' },
+      { title: 'Navigate: Experience', icon: '💼', action: () => window.location.hash = '#experience' },
+      { title: 'Download Resume', icon: '📄', action: () => { playSound('click'); window.open('./Suraj_Tharu_CV.pdf', '_blank'); } },
+      { title: 'Open AI Assistant', icon: '🤖', action: () => toggleChat() },
+      { title: 'Accessibility Settings', icon: '👁️', action: () => document.getElementById('a11y-toggle').click() }
+    ];
+
+    function toggleCmdPalette() {
+      if (cmdPalette.classList.contains('hidden')) {
+        cmdPalette.classList.remove('hidden');
+        cmdInput2.value = '';
+        cmdInput2.focus();
+        renderCmdResults('');
+      } else {
+        cmdPalette.classList.add('hidden');
+      }
+    }
+
+    document.getElementById('open-cmd').addEventListener('click', toggleCmdPalette);
+    cmdBackdrop.addEventListener('click', toggleCmdPalette);
+    document.getElementById('cmd-close').addEventListener('click', toggleCmdPalette);
+
+    window.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        toggleCmdPalette();
+      }
+      if (e.key === 'Escape' && !cmdPalette.classList.contains('hidden')) toggleCmdPalette();
+    });
+
+    cmdInput2.addEventListener('input', (e) => renderCmdResults(e.target.value));
+
+    function renderCmdResults(query) {
+      const filtered = commands.filter(c => c.title.toLowerCase().includes(query.toLowerCase()));
+      cmdResults.innerHTML = filtered.map((c, i) => `
+        <div class="cmd-item flex items-center gap-3 px-4 py-3 hover:bg-brand-500/10 dark:hover:bg-brand-500/20 cursor-pointer rounded-lg text-sm dark:text-slate-300 transition-colors" data-idx="${i}">
+          <span class="text-xl">${c.icon}</span>
+          <span>${c.title}</span>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.cmd-item').forEach(el => {
+        el.addEventListener('mouseenter', () => playSound('hover'));
+        el.addEventListener('click', () => {
+          playSound('click');
+          commands[el.dataset.idx].action();
+          toggleCmdPalette();
+        });
+      });
+    }
+
+    // --- 19. Accessibility Logic ---
+    document.getElementById('a11y-toggle').addEventListener('click', () => {
+      document.getElementById('a11y-menu').classList.toggle('hidden');
+    });
+    document.getElementById('a11y-motion').addEventListener('change', (e) => document.body.classList.toggle('a11y-reduce-motion', e.target.checked));
+    document.getElementById('a11y-contrast').addEventListener('change', (e) => document.body.classList.toggle('a11y-high-contrast', e.target.checked));
+    document.getElementById('a11y-font').addEventListener('change', (e) => document.body.classList.toggle('a11y-dyslexia', e.target.checked));
+
+    // --- 20. Multiplayer Cursors (Socket.io) ---
+    try {
+      const socket = io();
+      const cursors = {};
+
+      document.addEventListener('mousemove', (e) => {
+        if (socket.connected && document.hasFocus()) {
+          socket.emit('cursor-move', { x: e.pageX / window.innerWidth, y: e.pageY / window.innerHeight });
+        }
+      });
+
+      socket.on('cursor-update', (data) => {
+        let el = cursors[data.id];
+        if (!el) {
+          el = document.createElement('div');
+          el.className = 'absolute w-3 h-3 rounded-full pointer-events-none z-[99999] shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-all duration-75 ease-out';
+          el.style.backgroundColor = data.color;
+          document.body.appendChild(el);
+          cursors[data.id] = el;
+        }
+        el.style.left = (data.x * window.innerWidth) + 'px';
+        el.style.top = (data.y * window.innerHeight) + 'px';
+      });
+
+      socket.on('cursor-remove', (id) => {
+        if (cursors[id]) {
+          cursors[id].remove();
+          delete cursors[id];
+        }
+      });
+    } catch (e) { console.log('Socket.io not loaded.'); }
+
+    // --- 21. Live GitHub Dashboard ---
+    async function fetchGitHub() {
+      try {
+        const res = await fetch('https://api.github.com/users/surajtharu/events/public?per_page=5');
+        if (!res.ok) throw new Error('API limit');
+        const events = await res.json();
+        const feed = document.getElementById('gh-feed');
+        if (!events || events.length === 0) {
+          feed.innerHTML = '<div>No recent activity found.</div>';
+          return;
+        }
+
+        feed.innerHTML = events.map(ev => {
+          let action = ev.type;
+          if (ev.type === 'PushEvent') action = `Pushed to ${ev.repo.name}`;
+          else if (ev.type === 'CreateEvent') action = `Created ${ev.payload.ref_type} in ${ev.repo.name}`;
+          else if (ev.type === 'WatchEvent') action = `Starred ${ev.repo.name}`;
+          return `<div class="flex gap-2 items-center"><span class="text-brand-500">→</span><span class="truncate" title="${action}">${action}</span></div>`;
+        }).join('');
+      } catch (err) {
+        document.getElementById('gh-feed').innerHTML = '<div class="text-red-400">Cannot load GitHub data (API Rate Limited).</div>';
+      }
+    }
+    fetchGitHub();
+
+    // --- 22. GSAP ScrollTrigger Storytelling ---
+    try {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.from("#projects .group", {
+        scrollTrigger: {
+          trigger: "#projects",
+          start: "top 70%",
+        },
+        y: 100,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "back.out(1.7)"
+      });
+    } catch (e) { }
+
+    // --- 23. Logic Simulator ---
+    const inA = document.getElementById('gate-in-a');
+    const inB = document.getElementById('gate-in-b');
+    const outGate = document.getElementById('gate-out');
+    function updateGate() {
+      if (!inA || !inB || !outGate) return;
+      const res = inA.checked && inB.checked;
+      outGate.innerText = res ? '1' : '0';
+      outGate.className = res
+        ? 'w-12 h-12 rounded-full border-4 border-green-400 bg-green-400/20 shadow-[0_0_15px_rgba(74,222,128,0.5)] flex items-center justify-center transition-all text-green-400 font-bold'
+        : 'w-12 h-12 rounded-full border-4 border-slate-300 dark:border-slate-600 flex items-center justify-center transition-all dark:text-white font-bold';
+      if (res) playSound('click');
+    }
+    if (inA && inB) {
+      inA.addEventListener('change', updateGate);
+      inB.addEventListener('change', updateGate);
+    }
+
+    // --- 24. Contact Modal Logic ---
+    const initConnBtn = document.getElementById('init-conn-btn');
+    const contactModal = document.getElementById('contact-modal');
+    const closeContact = document.getElementById('close-contact');
+    const contactBackdrop = document.getElementById('contact-backdrop');
+    const contactBox = document.getElementById('contact-box');
+    const contactForm = document.getElementById('contact-form');
+    const contactStatus = document.getElementById('contact-status');
+
+    function openContactModal() {
+      contactModal.classList.remove('hidden');
+      setTimeout(() => {
+        contactBox.classList.remove('scale-95', 'opacity-0');
+        contactBox.classList.add('scale-100', 'opacity-100');
+        document.getElementById('c-name').focus();
+      }, 10);
+    }
+
+    function closeContactModal() {
+      contactBox.classList.remove('scale-100', 'opacity-100');
+      contactBox.classList.add('scale-95', 'opacity-0');
+      setTimeout(() => {
+        contactModal.classList.add('hidden');
+        contactStatus.classList.add('hidden');
+        contactForm.reset();
+      }, 300);
+    }
+
+    if (initConnBtn) initConnBtn.addEventListener('click', () => { playSound('click'); openContactModal(); });
+    if (closeContact) closeContact.addEventListener('click', closeContactModal);
+    if (contactBackdrop) contactBackdrop.addEventListener('click', closeContactModal);
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+          name: document.getElementById('c-name').value,
+          email: document.getElementById('c-email').value,
+          subject: document.getElementById('c-subject').value,
+          message: document.getElementById('c-msg').value
+        };
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        submitBtn.innerText = 'Transmitting...';
+        submitBtn.disabled = true;
+
+        try {
+          const response = await fetch('http://localhost:3000/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+          if (response.ok) {
+            contactStatus.innerText = 'Message transmitted successfully.';
+            contactStatus.className = 'mt-4 text-center font-bold text-green-400';
+            contactForm.reset();
+            setTimeout(closeContactModal, 2000);
+          } else {
+            throw new Error('Transmission failed');
+          }
+        } catch (error) {
+          contactStatus.innerText = 'Error: Transmission failed.';
+          contactStatus.className = 'mt-4 text-center font-bold text-red-500';
+        } finally {
+          contactStatus.classList.remove('hidden');
+          submitBtn.innerText = 'Execute Send';
+          submitBtn.disabled = false;
+        }
+      });
+    }
+
+    // --- 25. Gamified Resume Mini-Game ---
+    const playBtn = document.getElementById('play-resume');
+    const gameModal = document.getElementById('game-modal');
+    const gameCanvas = document.getElementById('game-canvas');
+    const gameOverlay = document.getElementById('game-overlay');
+    const startGameBtn = document.getElementById('start-game-btn');
+    const closeGame = document.getElementById('close-game');
+    const scoreEl = document.getElementById('game-score');
+    let gameCtx, gameLoopId, gameScore = 0;
+    let player, fallingItems = [];
+    const skillsList = ['GIS', 'QGIS', 'Python', 'GEE', 'React', 'Linux'];
+
+    if (playBtn && gameCanvas) {
+      gameCtx = gameCanvas.getContext('2d');
+      playBtn.addEventListener('click', () => {
+        playSound('click');
+        gameModal.classList.remove('hidden');
+        gameOverlay.classList.remove('hidden');
+      });
+
+      closeGame.addEventListener('click', () => {
+        gameModal.classList.add('hidden');
+        cancelAnimationFrame(gameLoopId);
+      });
+
+      startGameBtn.addEventListener('click', () => {
+        gameOverlay.classList.add('hidden');
+        resetGame();
+        gameLoopId = requestAnimationFrame(gameLoop);
+      });
+
+      const keys = {};
+      window.addEventListener('keydown', e => keys[e.key] = true);
+      window.addEventListener('keyup', e => keys[e.key] = false);
+
+      function resetGame() {
+        gameScore = 0;
+        scoreEl.innerText = gameScore;
+        player = { x: 275, y: 350, w: 50, h: 20, speed: 6 };
+        fallingItems = [];
+      }
+
+      function gameLoop() {
+        gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+        // Move player
+        if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+        if (keys['ArrowRight'] && player.x < gameCanvas.width - player.w) player.x += player.speed;
+
+        // Draw player
+        gameCtx.fillStyle = '#0ea5e9';
+        gameCtx.fillRect(player.x, player.y, player.w, player.h);
+
+        // Spawn items
+        if (Math.random() < 0.02) {
+          fallingItems.push({
+            x: Math.random() * (gameCanvas.width - 40),
+            y: 0,
+            text: skillsList[Math.floor(Math.random() * skillsList.length)],
+            speed: 2 + Math.random() * 2
+          });
+        }
+
+        // Update items
+        for (let i = fallingItems.length - 1; i >= 0; i--) {
+          let item = fallingItems[i];
+          item.y += item.speed;
+
+          gameCtx.fillStyle = '#38bdf8';
+          gameCtx.font = '14px monospace';
+          gameCtx.fillText(item.text, item.x, item.y);
+
+          // Collision
+          if (item.y > player.y && item.y < player.y + player.h && item.x > player.x - 30 && item.x < player.x + player.w) {
+            gameScore += 10;
+            scoreEl.innerText = gameScore;
+            playSound('click');
+            fallingItems.splice(i, 1);
+            continue;
+          }
+
+          if (item.y > gameCanvas.height) {
+            fallingItems.splice(i, 1);
+          }
+        }
+
+        gameLoopId = requestAnimationFrame(gameLoop);
+      }
+    }
+
+  </script>
+</body>
+
+</html>
