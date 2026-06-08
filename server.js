@@ -149,32 +149,39 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 });
 
 // Initialize Postgres database
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false // Required for some managed databases like Neon or Supabase
-  }
-});
-
-pool.connect((err, client, release) => {
-  if (err) {
-    return console.error('Error acquiring client', err.stack);
-  }
-  console.log('Connected to the PostgreSQL database.');
-  client.query(`CREATE TABLE IF NOT EXISTS messages (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    email TEXT,
-    subject TEXT,
-    message TEXT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  )`, (err, result) => {
-    release();
-    if (err) {
-      return console.error('Error creating table', err.stack);
+let pool = null;
+if (process.env.DATABASE_URL) {
+  pool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false // Required for some managed databases like Neon or Supabase
     }
   });
-});
+
+  pool.connect((err, client, release) => {
+    if (err) {
+      console.error('Error acquiring client. Check your DATABASE_URL.', err.message);
+      pool = null; // Disable DB if connection fails
+      return;
+    }
+    console.log('Connected to the PostgreSQL database.');
+    client.query(`CREATE TABLE IF NOT EXISTS messages (
+      id SERIAL PRIMARY KEY,
+      name TEXT,
+      email TEXT,
+      subject TEXT,
+      message TEXT,
+      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`, (err, result) => {
+      release();
+      if (err) {
+        console.error('Error creating table', err.stack);
+      }
+    });
+  });
+} else {
+  console.warn("WARNING: DATABASE_URL is not set. Contact form messages will not be saved to a database.");
+}
 
 const contactSchema = z.object({
   name: z.string().min(1).max(100),
@@ -205,9 +212,15 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   message = xss(message);
 
   try {
-    const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
-    const result = await pool.query(query, [name, email, subject, message]);
-    res.json({ success: true, id: result.rows[0].id });
+    if (pool) {
+      const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
+      const result = await pool.query(query, [name, email, subject, message]);
+      res.json({ success: true, id: result.rows[0].id });
+    } else {
+      console.log('Contact message received (no DB configured):', { name, email, subject, message });
+      // Return a simulated success response
+      res.json({ success: true, id: Math.floor(Math.random() * 1000) });
+    }
   } catch (err) {
     console.error('Error inserting message:', err.message);
     res.status(500).json({ error: 'Failed to save message.' });
