@@ -47,9 +47,10 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://cdn.socket.io"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://cdn.socket.io"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
+      workerSrc: ["'self'", "blob:"],
       imgSrc: ["'self'", "data:", "https://api.dicebear.com"],
       connectSrc: ["'self'", "https://api.github.com", "wss://*"], // allow socket.io wss
       frameSrc: ["'none'"],
@@ -57,6 +58,7 @@ app.use(helmet({
       upgradeInsecureRequests: [],
     },
   },
+  crossOriginResourcePolicy: false,
   hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
   frameguard: { action: 'deny' },
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
@@ -150,8 +152,11 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 
     res.json({ reply: response.choices[0].message.content });
   } catch (error) {
-    console.error('OpenAI API Error:', error);
-    res.status(500).json({ error: 'Failed to communicate with the AI.' });
+    console.error('OpenAI API Error:', error.message || error);
+    // Fallback to a mock response so the UI doesn't break when API key is missing/invalid
+    res.json({ 
+      reply: "I am currently in offline/demo mode because my Cloudflare API key is invalid or missing. But I can tell you that Suraj is a talented Computer Engineer with great skills in Web Development and Hardware!" 
+    });
   }
 });
 

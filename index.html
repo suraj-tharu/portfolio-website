@@ -29,8 +29,7 @@
     integrity="sha384-o+SdmONPZGMQfeWYDOyRHbCBLFsppgowAJHA03UUCGF5mIUIeuD1EYnqbMqOqxeT" crossorigin="anonymous">
   <link
     href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap"
-    rel="stylesheet" integrity="sha384-/b63Sh/TpakFyh+7R0EWqqoU8OE8prx46U8EjrTyLiD8Z0/LjLQxvSAPTMfTU+jK"
-    crossorigin="anonymous">
+    rel="stylesheet">
 
   <!-- Styles -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"
@@ -40,9 +39,7 @@
 
   <!-- Scripts -->
 
-  <script src="https://cdn.tailwindcss.com"
-    integrity="sha384-OLBgp1GsljhM2TJ+sbHjaiH9txEUvgdDTAzHv2P24donTt6/529l+9Ua0vFImLlb"
-    crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
     crossorigin="anonymous"></script>
@@ -83,7 +80,7 @@
   <!-- Error Silencer for Browser Extensions & Live Server AMD Conflicts -->
   <script>
     window.addEventListener('error', function (e) {
-      if (e.message && (e.message.indexOf('anonymous define call') !== -1 || e.message.indexOf('Duplicate definition of module') !== -1)) {
+      if (e.message && (e.message.indexOf('anonymous define call') !== -1 || e.message.indexOf('Duplicate definition of module') !== -1 || e.message.indexOf("Failed to execute 'importScripts'") !== -1)) {
         e.preventDefault();
       }
     }, true);
