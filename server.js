@@ -52,7 +52,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       workerSrc: ["'self'", "blob:"],
       imgSrc: ["'self'", "data:", "https://api.dicebear.com"],
-      connectSrc: ["'self'", "https://api.github.com", "wss://*"], // allow socket.io wss
+      connectSrc: ["'self'", "https:", "wss://*"], // allow socket.io wss and all HTTPS CDNs for Service Worker fetching
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
       upgradeInsecureRequests: [],
