@@ -1,0 +1,23 @@
+{
+  // Tell the built-in CSS linter to ignore @tailwind, @apply, @layer, @config directives.
+  // These are valid Tailwind CSS syntax — not real errors.
+  "css.lint.unknownAtRules": "ignore",
+
+  // Disable the default CSS validator so Tailwind IntelliSense can take over.
+  "css.validate": false,
+
+  // If you install the "Tailwind CSS IntelliSense" VS Code extension (recommended),
+  // it provides autocomplete, hover docs, and proper linting for Tailwind classes.
+  // Extension ID: bradlc.vscode-tailwindcss
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+
+  // Auto-format on save
+  "editor.formatOnSave": true,
+
+  // Associate .css files so Tailwind IntelliSense activates
+  "files.associations": {
+    "*.css": "css"
+  }
+}
