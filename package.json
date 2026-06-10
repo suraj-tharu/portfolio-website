@@ -4,6 +4,7 @@
   "description": "Backend for Suraj Portfolio",
   "main": "server.js",
   "scripts": {
+    "prisma:generate": "prisma generate",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "build:css": "node node_modules/tailwindcss/lib/cli.js -i ./tailwind.input.css -o ./dist/tailwind.css --minify",
@@ -12,7 +13,7 @@
     "watch:js": "npx esbuild src/index.js --bundle --target=es2020 --outfile=dist/bundle.js --watch",
     "build": "npm run build:css && npm run build:js",
     "dev:all": "concurrently \"nodemon server.js\" \"npm run watch:css\" \"npm run watch:js\"",
-    "postinstall": "npm run build:css && npm run build:js || true",
+    "postinstall": "npm run prisma:generate && npm run build:css && npm run build:js",
     "test": "node test.js",
     "test:e2e": "npx playwright test",
     "lint": "eslint . --ext .js --ignore-path .gitignore"
