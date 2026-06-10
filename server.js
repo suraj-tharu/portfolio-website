@@ -4,6 +4,7 @@ const cors = require('cors');
 const { OpenAI } = require('openai');
 const path = require('path');
 const { Pool } = require('pg');
+const nodemailer = require('nodemailer');
 
 const http = require('http');
 const { Server } = require('socket.io');
@@ -22,7 +23,7 @@ const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
-  `http://localhost:${port}`, 
+  `http://localhost:${port}`,
   `http://127.0.0.1:${port}`,
   'https://portfolio-website-vto2.onrender.com'
 ];
@@ -31,7 +32,7 @@ if (process.env.RENDER_EXTERNAL_HOSTNAME) {
 }
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, or same-origin)
+    // Allow requests with no origin (mobile apps, curl, same-origin)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -43,19 +44,27 @@ const corsOptions = {
 const io = new Server(server, { cors: corsOptions });
 
 // Use Helmet for advanced security headers
+// NOTE: 'unsafe-eval' removed. Tailwind CDN in production should be replaced with
+// a built CSS file. For dev, use the CDN and run behind a dev proxy.
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com", "https://unpkg.com", "https://cdn.jsdelivr.net", "https://cdn.socket.io"],
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdnjs.cloudflare.com",
+        "https://unpkg.com",
+        "https://cdn.jsdelivr.net",
+        "https://cdn.socket.io"
+      ],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       workerSrc: ["'self'", "blob:"],
-      imgSrc: ["'self'", "data:", "https://api.dicebear.com"],
-      connectSrc: ["'self'", "https:", "wss://*"], // allow socket.io wss and all HTTPS CDNs for Service Worker fetching
+      imgSrc: ["'self'", "data:", "https://api.dicebear.com", "https://avatars.githubusercontent.com"],
+      connectSrc: ["'self'", "https:", "wss://*", "https://api.github.com"],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
     },
   },
   crossOriginResourcePolicy: false,
@@ -64,7 +73,7 @@ app.use(helmet({
   referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
 }));
 
-// Permissions Policy (Helmet doesn't support this natively yet, set manually)
+// Permissions Policy
 app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   next();
@@ -72,7 +81,7 @@ app.use((req, res, next) => {
 
 // Enable CORS and Strict JSON parsing
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '5kb' })); // DDoS Protection
+app.use(express.json({ limit: '10kb' })); // DDoS Protection
 
 // Strict Origin/Referer Checking for APIs
 app.use('/api', (req, res, next) => {
@@ -87,45 +96,50 @@ app.use('/api', (req, res, next) => {
 // Set up rate limiters
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 100,
   message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
 });
 
 const contactLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 10, // Limit each IP to 10 contact requests per hour
+  max: 10,
   message: { error: 'Too many contact requests from this IP, please try again after an hour' }
 });
 
-// Serve static files from the current directory (for index.html, etc.)
+// Serve static files
 app.use(express.static(path.join(__dirname, '.')));
 
+// ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────────
 const openai = new OpenAI({
   apiKey: process.env.CLOUDFLARE_API_KEY,
   baseURL: "https://api.cloudflare.com/client/v4/accounts/05511958e1d4f6bea91d7577b9d72db5/ai/v1",
 });
 
-// System prompt to define the AI's behavior
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio website of Suraj Tharu Chaudhary, a Computer Engineer from Nepal.
 Your goal is to answer questions about Suraj's skills, experience, and projects.
-Suraj specializes in embedded systems, FPGA architectures (Verilog, Xilinx Artix-7), and RISC-V processor design.
-He has built a 32-bit pipelined RV32I softcore from scratch and an IoT Weather Station using ESP32 and MQTT.
-He also writes bare-metal drivers in C for STM32.
+Suraj specializes in GIS, Remote Sensing, Land Use/Land Cover Analysis, and Machine Learning (Random Forest, Google Earth Engine).
+He has a M.Sc. in Information System Engineering and B.E. in Computer Engineering.
+He also teaches computer engineering at Shree Tri Shaheed Model Secondary School.
 Keep your answers professional, concise, and enthusiastic. Never break character.`;
 
 const chatSchema = z.object({
   message: z.string().min(1).max(500),
-  context: z.string().max(100).optional()
+  context: z.string().max(100).optional(),
+  history: z.array(z.object({
+    role: z.enum(['user', 'assistant']),
+    content: z.string().max(500)
+  })).max(10).optional() // max 10 turns of history
 });
 
+// ─── /api/chat ────────────────────────────────────────────────────────────────
 app.post('/api/chat', apiLimiter, async (req, res) => {
   try {
     const parseResult = chatSchema.safeParse(req.body);
     if (!parseResult.success) {
       return res.status(400).json({ error: 'Invalid input data' });
     }
-    
-    let { message, context } = parseResult.data;
+
+    let { message, context, history } = parseResult.data;
     message = xss(message);
     if (context) context = xss(context);
 
@@ -140,40 +154,67 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
       dynamicSystemPrompt += `\n\nCURRENT CONTEXT: The user is currently looking at: ${context}. If relevant, tailor your response to this section.`;
     }
 
+    // Build messages array with history for multi-turn conversation
+    const messages = [{ role: 'system', content: dynamicSystemPrompt }];
+
+    if (history && history.length > 0) {
+      history.forEach(turn => {
+        messages.push({ role: turn.role, content: xss(turn.content) });
+      });
+    }
+
+    messages.push({ role: 'user', content: message });
+
     const response = await openai.chat.completions.create({
       model: '@cf/meta/llama-3.1-8b-instruct',
-      messages: [
-        { role: 'system', content: dynamicSystemPrompt },
-        { role: 'user', content: message }
-      ],
-      max_tokens: 150,
+      messages,
+      max_tokens: 200,
       temperature: 0.7,
     });
 
     res.json({ reply: response.choices[0].message.content });
   } catch (error) {
-    console.error('OpenAI API Error:', error.message || error);
-    // Fallback to a mock response so the UI doesn't break when API key is missing/invalid
-    res.json({ 
-      reply: "I am currently in offline/demo mode because my Cloudflare API key is invalid or missing. But I can tell you that Suraj is a talented Computer Engineer with great skills in Web Development and Hardware!" 
+    console.error('AI API Error:', error.message || error);
+    res.json({
+      reply: "I'm currently in offline/demo mode. Suraj is a talented Computer Engineer specializing in GIS, Remote Sensing, Machine Learning, and full-stack development!"
     });
   }
 });
 
-// Initialize Postgres database
+// ─── Nodemailer Email Transporter ─────────────────────────────────────────────
+let emailTransporter = null;
+if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+  emailTransporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE || 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+  emailTransporter.verify((err) => {
+    if (err) {
+      console.warn('[EMAIL] Transporter verification failed:', err.message);
+      emailTransporter = null;
+    } else {
+      console.log('[EMAIL] Transporter ready. Contact form will send email notifications.');
+    }
+  });
+} else {
+  console.warn('[EMAIL] EMAIL_USER / EMAIL_PASS not set. Email notifications disabled.');
+}
+
+// ─── PostgreSQL ───────────────────────────────────────────────────────────────
 let pool = null;
 if (process.env.DATABASE_URL) {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false // Required for some managed databases like Neon or Supabase
-    }
+    ssl: { rejectUnauthorized: false }
   });
 
   pool.connect((err, client, release) => {
     if (err) {
       console.error('Error acquiring client. Check your DATABASE_URL.', err.message);
-      pool = null; // Disable DB if connection fails
+      pool = null;
       return;
     }
     console.log('Connected to the PostgreSQL database.');
@@ -184,11 +225,9 @@ if (process.env.DATABASE_URL) {
       subject TEXT,
       message TEXT,
       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`, (err, result) => {
+    )`, (err) => {
       release();
-      if (err) {
-        console.error('Error creating table', err.stack);
-      }
+      if (err) console.error('Error creating table', err.stack);
     });
   });
 } else {
@@ -200,10 +239,10 @@ const contactSchema = z.object({
   email: z.string().email().max(150),
   subject: z.string().max(200).optional(),
   message: z.string().min(1).max(2000),
-  honeypot: z.string().max(0).optional() // must be empty
+  honeypot: z.string().max(0).optional()
 });
 
-// Contact form API route
+// ─── /api/contact ─────────────────────────────────────────────────────────────
 app.post('/api/contact', contactLimiter, async (req, res) => {
   const parseResult = contactSchema.safeParse(req.body);
   if (!parseResult.success) {
@@ -214,7 +253,6 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
 
   // Honeypot check for bots
   if (honeypot && honeypot.length > 0) {
-    // Pretend it was successful to trick the bot
     return res.json({ success: true, id: Math.floor(Math.random() * 1000) });
   }
 
@@ -223,48 +261,84 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   subject = subject ? xss(subject) : '';
   message = xss(message);
 
+  let savedId = Math.floor(Math.random() * 1000);
+
   try {
     if (pool) {
       const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
       const result = await pool.query(query, [name, email, subject, message]);
-      res.json({ success: true, id: result.rows[0].id });
+      savedId = result.rows[0].id;
     } else {
       console.log('Contact message received (no DB configured):', { name, email, subject, message });
-      // Return a simulated success response
-      res.json({ success: true, id: Math.floor(Math.random() * 1000) });
     }
+
+    // Send email notification if transporter is configured
+    if (emailTransporter && process.env.EMAIL_TO) {
+      const mailOptions = {
+        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_TO,
+        subject: `[Portfolio] New Message from ${name}: ${subject || '(no subject)'}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #0ea5e9; border-bottom: 2px solid #0ea5e9; padding-bottom: 10px;">
+              New Contact Form Submission
+            </h2>
+            <table style="width:100%; border-collapse: collapse;">
+              <tr><td style="padding:8px; font-weight:bold; width:100px;">From:</td><td style="padding:8px;">${name}</td></tr>
+              <tr><td style="padding:8px; font-weight:bold;">Email:</td><td style="padding:8px;"><a href="mailto:${email}">${email}</a></td></tr>
+              <tr><td style="padding:8px; font-weight:bold;">Subject:</td><td style="padding:8px;">${subject || '(none)'}</td></tr>
+              <tr><td style="padding:8px; font-weight:bold; vertical-align:top;">Message:</td><td style="padding:8px; white-space:pre-wrap;">${message}</td></tr>
+            </table>
+            <p style="color:#94a3b8; font-size:12px; margin-top:20px;">
+              Received at ${new Date().toLocaleString()} · Portfolio ID: ${savedId}
+            </p>
+          </div>
+        `
+      };
+
+      emailTransporter.sendMail(mailOptions).catch(err => {
+        console.error('[EMAIL] Failed to send notification:', err.message);
+      });
+    }
+
+    res.json({ success: true, id: savedId });
   } catch (err) {
     console.error('Error inserting message:', err.message);
     res.status(500).json({ error: 'Failed to save message.' });
   }
 });
 
-// Socket.io for Multiplayer Cursors
+// ─── /api/health ──────────────────────────────────────────────────────────────
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    db: pool ? 'connected' : 'disconnected',
+    email: emailTransporter ? 'configured' : 'not configured',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ─── Socket.io — Multiplayer Cursors ─────────────────────────────────────────
 const activeUsers = new Map();
 
-// Zod schema for socket data
 const cursorSchema = z.object({
-  x: z.number().min(-10000).max(10000),
-  y: z.number().min(-10000).max(10000)
+  x: z.number().min(0).max(1),
+  y: z.number().min(0).max(1)
 });
 
 io.on('connection', (socket) => {
-  // Assign random color
   const hue = Math.floor(Math.random() * 360);
   const color = `hsl(${hue}, 80%, 60%)`;
-  
-  // Rate limiting map per socket
+
   let msgCount = 0;
   const rateLimitInterval = setInterval(() => { msgCount = 0; }, 1000);
 
   socket.on('cursor-move', (data) => {
-    // Rate limit: max 50 events per second
     if (++msgCount > 50) {
       console.warn(`[SECURITY] Socket ${socket.id} rate limited`);
       return;
     }
-    
-    // Payload validation
+
     const parsed = cursorSchema.safeParse(data);
     if (!parsed.success) return;
 
@@ -279,9 +353,18 @@ io.on('connection', (socket) => {
   });
 });
 
+// ─── Fallback: serve index.html for any unmatched routes ──────────────────────
+app.get('*', (req, res) => {
+  // Only serve index.html for non-API routes
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'index.html'));
+  }
+});
+
 server.listen(port, () => {
   console.log(`\n=========================================`);
   console.log(`🚀 Server running at http://localhost:${port}`);
-  console.log(`🌐 Open http://localhost:${port}/index.html in your browser`);
+  console.log(`🌐 Open http://localhost:${port} in your browser`);
+  console.log(`🏥 Health check: http://localhost:${port}/api/health`);
   console.log(`=========================================\n`);
 });

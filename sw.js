@@ -1,18 +1,19 @@
-const CACHE_NAME = 'portfolio-cache-v4';
+const CACHE_NAME = 'portfolio-cache-v5';
 const urlsToCache = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/resume.json'
+  '/resume.json',
+  '/style.css',
+  '/app.js'
 ];
 
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+      .then(cache => cache.addAll(urlsToCache))
+      .catch(err => console.warn('[SW] Cache install failed:', err))
   );
 });
 
@@ -22,6 +23,7 @@ self.addEventListener('activate', event => {
       return Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
+            console.log('[SW] Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
@@ -31,38 +33,47 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Only intercept HTTP/HTTPS requests
-  if (!event.request.url.startsWith('http')) {
+  // Only intercept HTTP/HTTPS GET requests
+  if (!event.request.url.startsWith('http')) return;
+  if (event.request.method !== 'GET') return;
+
+  // Skip API requests — always fetch fresh from network
+  const url = new URL(event.request.url);
+  if (url.pathname.startsWith('/api/')) {
     return;
   }
 
-  // The Cache API only supports GET requests. 
-  // Attempting to cache POST requests will throw a TypeError.
-  if (event.request.method !== 'GET') {
+  // Network-first for HTML pages (always get fresh content)
+  if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
     return;
   }
 
+  // Cache-first for static assets (CSS, JS, images, fonts)
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
+    caches.match(event.request).then(cached => {
+      if (cached) return cached;
+
+      return fetch(event.request).then(response => {
+        if (!response || response.status !== 200 || response.type === 'error') {
           return response;
         }
-        return fetch(event.request).then(
-          function (response) {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-            var responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then(function (cache) {
-                cache.put(event.request, responseToCache);
-              }).catch(err => {
-                // Silently handle any quota or caching errors
-              });
-            return response;
-          }
-        );
-      })
+        const responseToCache = response.clone();
+        caches.open(CACHE_NAME).then(cache => {
+          cache.put(event.request, responseToCache);
+        }).catch(() => {});
+        return response;
+      });
+    })
   );
 });

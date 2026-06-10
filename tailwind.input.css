@@ -1,0 +1,8 @@
+/* Tailwind CSS v3 entry point
+   Built output → dist/tailwind.css
+   Run: npm run build:css
+   Dev:  npm run watch:css
+*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

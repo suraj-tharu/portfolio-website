@@ -4,18 +4,31 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suraj Tharu Chaudhary | Computer Engineer</title>
+  <title>Suraj Tharu Chaudhary | Computer Engineer & GIS Researcher</title>
   <meta name="description"
-    content="Suraj Tharu Chaudhary – Computer Engineer specializing in embedded systems, FPGA design, and RISC-V architecture. Based in Nepal.">
+    content="Suraj Tharu Chaudhary – Computer Engineer and GIS Researcher from Nepal. Specializing in GIS, Remote Sensing, LULC Change Detection, Machine Learning, and Information Systems.">
   <meta name="keywords"
-    content="Computer Engineer, Embedded Systems, FPGA, RISC-V, Nepal, Suraj Tharu Chaudhary, Hardware Engineer">
+    content="Computer Engineer, GIS, Remote Sensing, LULC, Machine Learning, Random Forest, Google Earth Engine, Nepal, Suraj Tharu Chaudhary, Information Systems">
   <meta name="author" content="Suraj Tharu Chaudhary">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
 
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Suraj Tharu Chaudhary | Computer Engineer">
+  <meta property="og:url" content="https://portfolio-website-vto2.onrender.com/">
+  <meta property="og:title" content="Suraj Tharu Chaudhary | Computer Engineer & GIS Researcher">
   <meta property="og:description"
-    content="Portfolio showcasing work in embedded systems, FPGA design, and full-stack development.">
+    content="Portfolio showcasing work in GIS, Remote Sensing, LULC Analysis, Machine Learning, and full-stack development. Based in Nepal.">
   <meta property="og:image" content="https://api.dicebear.com/7.x/initials/svg?seed=STC&backgroundColor=0ea5e9">
+  <meta property="og:site_name" content="Suraj Tharu Chaudhary Portfolio">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://portfolio-website-vto2.onrender.com/">
+  <meta name="twitter:title" content="Suraj Tharu Chaudhary | Computer Engineer & GIS Researcher">
+  <meta name="twitter:description" content="Portfolio showcasing GIS, Remote Sensing, Machine Learning, and full-stack development work.">
+  <meta name="twitter:image" content="https://api.dicebear.com/7.x/initials/svg?seed=STC&backgroundColor=0ea5e9">
 
   <meta name="theme-color" content="#0f172a">
   <link rel="icon"
@@ -39,42 +52,50 @@
 
   <!-- Scripts -->
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind CSS — locally built (npm run build:css), no CDN dependency -->
+  <!-- Three.js — deferred: non-blocking 3D background -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
     integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- GSAP Animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
     integrity="sha384-d+vyQ0dYcymoP8ndq2hW7FGC50nqGdXUEgoOUGxbbkAJwZqL7h+jKN0GGgn9hFDS"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
     integrity="sha384-poC0r6usQOX2Ayt/VGA+t81H6V3iN9L+Irz9iO8o+s0X20tLpzc9DOOtnKxhaQSE"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- D3.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"
     integrity="sha384-su5kReKyYlIFrI62mbQRKXHzFobMa7BHp1cK6julLPbnYcCW9NIZKJiTODjLPeDh"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- Chart.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"
     integrity="sha384-DhxhYObIMeMNGyAG7iK11OHzBIKyEIeRL0ad1iFPAOwZB8iirUlTT0O/WJJUk8+o"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- Highlight.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"
     integrity="sha384-F/bZzf7p3Joyp5psL90p/p89AZJsndkSoGwRpXcZhleCWhd8SnRuoYo4d0yirjJp"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
     integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- AOS Animations -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"
     integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
+  <!-- Lenis Smooth Scroll -->
   <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"
     integrity="sha384-1WGQkFnxW1xGT/hA+gFwSPtqEcYgEcv19oBIue7bnFPZo4zeeFhqBLWXwL7IBkY9"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
   <!-- Socket.io -->
   <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
     integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
-    crossorigin="anonymous"></script>
-  <!-- Physics & Animations -->
+    crossorigin="anonymous" defer></script>
+  <!-- Matter.js Physics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"
     integrity="sha384-OqQP3UcU7efkEYDRjGmQou2uEvzGFGRtwdYXTjnupeB9cWogSgQ4BOhyklFBYbBR"
-    crossorigin="anonymous"></script>
+    crossorigin="anonymous" defer></script>
   <!-- Inline QRCode library to ensure it always loads even if CDN is blocked -->
 
   <!-- Error Silencer for Browser Extensions & Live Server AMD Conflicts -->
@@ -95,23 +116,10 @@
     integrity="sha384-UcP5/iVWyRzIhnVjcB2o9W1eoYKL5fAhHTRzvFZg8ctOsoAoDeBQyQuyIk+BJ/nh"
     crossorigin="anonymous"></script>
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Syne', 'sans-serif'],
-            mono: ['Space Mono', 'monospace']
-          },
-          colors: {
-            brand: { 50: '#f0f9ff', 400: '#38bdf8', 500: '#0ea5e9', 900: '#0f172a' }
-          }
-        }
-      }
-    }
-  </script>
 
+
+  <!-- Built Tailwind CSS (run `npm run build:css` to regenerate) -->
+  <link rel="stylesheet" href="/dist/tailwind.css">
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -1035,7 +1043,7 @@
   </button>
 
   <!-- GAME MODAL -->
-  <div id="game-modal" class="fixed inset-0 z-[200] hidden flex justify-center items-center">
+  <div id="game-modal" class="fixed inset-0 z-[200] hidden justify-center items-center">
     <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" id="game-backdrop"></div>
     <div class="relative bg-slate-800 border border-brand-500 rounded-xl overflow-hidden shadow-2xl max-w-[95vw]">
       <div
@@ -1059,7 +1067,7 @@
   </div>
 
   <!-- CONTACT MODAL -->
-  <div id="contact-modal" class="fixed inset-0 z-[200] hidden flex justify-center items-center">
+  <div id="contact-modal" class="fixed inset-0 z-[200] hidden justify-center items-center">
     <div class="absolute inset-0 bg-[#060b13]/80 backdrop-blur-md" id="contact-backdrop"></div>
     <div
       class="relative w-full max-w-2xl bg-[#0f172a] border border-[#1e293b] rounded-xl shadow-[0_0_40px_rgba(14,165,233,0.15)] overflow-hidden font-mono mx-4 transform scale-95 opacity-0 transition-all duration-300"
@@ -1115,7 +1123,7 @@
   </div>
 
   <!-- COMMAND PALETTE MODAL -->
-  <div id="cmd-palette" class="fixed inset-0 z-[200] hidden flex justify-center items-start pt-[15vh]">
+  <div id="cmd-palette" class="fixed inset-0 z-[200] hidden justify-center items-start pt-[15vh]">
     <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" id="cmd-backdrop"></div>
     <div
       class="relative w-full max-w-xl bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden chat-msg">
@@ -1145,7 +1153,7 @@
   </button>
 
   <div id="a11y-menu"
-    class="hidden fixed bottom-20 left-6 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex flex-col gap-3 chat-msg">
+    class="hidden fixed bottom-20 left-6 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex-col gap-3 chat-msg">
     <h3 class="text-sm font-bold border-b pb-2 dark:border-slate-700 dark:text-white">Accessibility</h3>
     <label for="a11y-motion" class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
       <span>Reduce Motion</span>
