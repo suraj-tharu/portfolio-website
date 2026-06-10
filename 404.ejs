@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Not Found | Suraj Tharu Chaudhary</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="/dist/tailwind.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }
+    h1 { font-family: 'Space Mono', monospace; font-weight: bold; }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-200 h-screen flex flex-col items-center justify-center">
+
+  <div class="text-center">
+    <h1 class="text-9xl text-brand-500 font-extrabold mb-4">404</h1>
+    <h2 class="text-3xl font-semibold mb-6">Page Not Found</h2>
+    <p class="text-slate-400 mb-8 max-w-md mx-auto">
+      <%= locals.message || 'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.' %>
+    </p>
+    <a href="/" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 px-8 rounded-lg transition-colors inline-block">
+      Return Home
+    </a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="absolute bottom-6 w-full text-center">
+    <p class="text-slate-500 font-mono text-sm">&copy; <%= new Date().getFullYear() %> Suraj Tharu Chaudhary.</p>
+  </footer>
+
+</body>
+</html>
