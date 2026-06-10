@@ -13,7 +13,7 @@
     "watch:js": "npx esbuild src/index.js --bundle --target=es2020 --outfile=dist/bundle.js --watch",
     "build": "npm run build:css && npm run build:js",
     "dev:all": "concurrently \"nodemon server.js\" \"npm run watch:css\" \"npm run watch:js\"",
-    "postinstall": "npm run prisma:generate && npm run build:css && npm run build:js",
+    "postinstall": "npm run prisma:generate",
     "test": "node test.js",
     "test:e2e": "npx playwright test",
     "lint": "eslint . --ext .js --ignore-path .gitignore"
