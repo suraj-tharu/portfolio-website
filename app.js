@@ -27,12 +27,32 @@ function updateTimeAndGreeting() {
 updateTimeAndGreeting();
 setInterval(updateTimeAndGreeting, 1000);
 
-// Initialize AOS
-AOS.init({
-  once: true,
-  offset: 50,
-  duration: 800,
-});
+// Initialize AOS (wrapped in guard — AOS CDN failure would hide ALL data-aos sections)
+if (typeof AOS !== 'undefined') {
+  AOS.init({ once: true, offset: 50, duration: 800 });
+} else {
+  // AOS not loaded — reveal all data-aos elements immediately
+  document.querySelectorAll('[data-aos]').forEach(el => {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  });
+}
+
+// --- 1b. GSAP Hero Text Reveal (moved early so Three.js/D3 errors can't block it) ---
+if (typeof gsap !== 'undefined') {
+  gsap.from('.hero-word', { y: 16, opacity: 0, duration: 0.8, stagger: 0.12, ease: 'back.out(1.7)', delay: 0.2 });
+}
+
+// Safety net: force-show any still-invisible AOS elements after 1.5s (if AOS JS stalled)
+setTimeout(() => {
+  document.querySelectorAll('[data-aos]').forEach(el => {
+    if (getComputedStyle(el).opacity === '0') {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    }
+  });
+}, 1500);
 
 // Dark mode toggle
 const dmToggle = document.getElementById('dark-toggle');
@@ -165,8 +185,14 @@ window.addEventListener('scroll', () => {
   document.getElementById('progress-bar').style.width = scrolled + '%';
 });
 
+// --- 10. GSAP Hero Text Reveal (kept here for backward compat; actual reveal is above) ---
+// Note: hero word reveal was moved earlier (section 1b) to prevent Three.js crash from blocking it.
+
 // --- 2. 3D Solar System Background (Three.js) ---
 const canvas = document.getElementById('hero-canvas');
+if (typeof THREE === 'undefined') {
+  console.warn('[Three.js] Library not loaded — skipping 3D background.');
+} else try {
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
 camera.position.set(0, 100, 300);
@@ -346,10 +372,8 @@ window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  if (window.editor) {
-    window.editor.layout();
-  }
 });
+} catch(e) { console.warn('[Three.js] Render error:', e.message); }
 
 // --- 1. Service Worker for PWA ---
 if ('serviceWorker' in navigator) {
@@ -359,22 +383,21 @@ if ('serviceWorker' in navigator) {
 }
 
 // --- 2. Lenis Smooth Scroll ---
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  direction: 'vertical',
-  gestureDirection: 'vertical',
-  smooth: true,
-  mouseMultiplier: 1,
-  smoothTouch: false,
-  touchMultiplier: 2,
-  infinite: false,
-});
-function raf(time) {
-  lenis.raf(time);
+if (typeof Lenis !== 'undefined') try {
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    direction: 'vertical',
+    gestureDirection: 'vertical',
+    smooth: true,
+    mouseMultiplier: 1,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    infinite: false,
+  });
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
-}
-requestAnimationFrame(raf);
+} catch(e) { console.warn('[Lenis] Smooth scroll error:', e.message); }
 
 // --- 3. Easter Egg Console Art (Removed) ---
 
@@ -418,6 +441,7 @@ window.runCode = function () {
 };
 
 // --- 5. Chart.js Radar Chart ---
+if (typeof Chart !== 'undefined') try {
 const ctx = document.getElementById('radarChart').getContext('2d');
 new Chart(ctx, {
   type: 'radar',
@@ -451,6 +475,7 @@ new Chart(ctx, {
     plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } } } }
   }
 });
+} catch(e) { console.warn('[Chart.js] Radar chart error:', e.message); }
 
 // --- Utility: Escape HTML to prevent XSS ---
 function escapeHTML(str) {
@@ -669,12 +694,12 @@ if (contactBtn) {
   });
 }
 
-// --- 10. GSAP Hero Text Reveal ---
-gsap.to(".hero-word", {
-  y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "back.out(1.7)", delay: 0.2
-});
+// --- 10. GSAP Hero Text Reveal (moved to top of file — see section 1b) ---
 
 // --- 11. D3 Force Directed Skills Graph ---
+if (typeof d3 === 'undefined') {
+  console.warn('[D3] Library not loaded — skipping skills graph.');
+} else try {
 const width = document.getElementById('d3-skills-graph').clientWidth;
 const height = 400;
 const nodes = [
@@ -750,6 +775,7 @@ function drag(simulation) {
   function dragended(event) { if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; }
   return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
 }
+} catch(e) { console.warn('[D3] Skills graph error:', e.message); }
 
 // --- 12. QR Code Generation ---
 setTimeout(() => {

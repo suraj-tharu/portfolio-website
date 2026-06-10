@@ -5,4 +5,19 @@ npm-debug.log*
 coverage/
 .DS_Store
 Thumbs.db
-dist/
+
+# NOTE: dist/ is intentionally NOT ignored.
+# dist/tailwind.css must be committed so Render can serve it
+# without running a build step.
+
+# Debug and temp files
+debug.js
+debug2.js
+debug_console.log
+debug_screenshot.png
+extract.js
+generate_debug.js
+generate_pdf.js
+sri.js
+test.js
+clear_cache.html

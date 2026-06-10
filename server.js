@@ -106,8 +106,9 @@ const contactLimiter = rateLimit({
   message: { error: 'Too many contact requests from this IP, please try again after an hour' }
 });
 
-// Serve static files
+// Serve all static files
 app.use(express.static(path.join(__dirname, '.')));
+
 
 // ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────────
 const openai = new OpenAI({
@@ -351,12 +352,21 @@ io.on('connection', (socket) => {
   });
 });
 
-// ─── Fallback: serve index.html for any unmatched routes ──────────────────────
+// ─── Fallback: serve index.html for any unmatched GET routes ──────────────────
 app.get('*', (req, res) => {
-  // Only serve index.html for non-API routes
   if (!req.path.startsWith('/api')) {
     res.sendFile(path.join(__dirname, 'index.html'));
+  } else {
+    res.status(404).json({ error: 'API endpoint not found' });
   }
+});
+
+// ─── Error handling middleware ─────────────────────────────────────────────────
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  console.error('[ERROR]', err.message || err);
+  const status = err.status || err.statusCode || 500;
+  res.status(status).json({ error: err.message || 'Internal Server Error' });
 });
 
 server.listen(port, () => {
@@ -366,3 +376,27 @@ server.listen(port, () => {
   console.log(`🏥 Health check: http://localhost:${port}/api/health`);
   console.log(`=========================================\n`);
 });
+
+// ─── Graceful Shutdown ────────────────────────────────────────────────────────
+function gracefulShutdown(signal) {
+  console.log(`\n[SHUTDOWN] Received ${signal}. Closing server...`);
+  server.close(async () => {
+    console.log('[SHUTDOWN] HTTP server closed.');
+    if (pool) {
+      await pool.end();
+      console.log('[SHUTDOWN] DB pool closed.');
+    }
+    process.exit(0);
+  });
+  // Force exit after 10s if server doesn't close
+  setTimeout(() => process.exit(1), 10000);
+}
+
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason) => {
+  console.error('[UNHANDLED REJECTION]', reason);
+});
+
