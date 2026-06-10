@@ -6,6 +6,8 @@ const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 
 const http = require('http');
 const { Server } = require('socket.io');
@@ -24,6 +26,8 @@ const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 
 const allowedOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
   `http://localhost:${port}`,
   `http://127.0.0.1:${port}`,
   'https://portfolio-website-vto2.onrender.com'
@@ -33,7 +37,6 @@ if (process.env.RENDER_EXTERNAL_HOSTNAME) {
 }
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (mobile apps, curl, same-origin)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -44,9 +47,6 @@ const corsOptions = {
 
 const io = new Server(server, { cors: corsOptions });
 
-// Use Helmet for advanced security headers
-// NOTE: 'unsafe-eval' removed. Tailwind CDN in production should be replaced with
-// a built CSS file. For dev, use the CDN and run behind a dev proxy.
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -56,58 +56,82 @@ app.use(helmet({
         "'unsafe-inline'",
         "https://cdnjs.cloudflare.com",
         "https://unpkg.com",
-        "https://cdn.jsdelivr.net",
-        "https://cdn.socket.io"
+        "https://cdn.jsdelivr.net"
       ],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
-      workerSrc: ["'self'", "blob:"],
-      imgSrc: ["'self'", "data:", "https://api.dicebear.com", "https://avatars.githubusercontent.com", "https://images.unsplash.com", "https://*.tile.openstreetmap.org"],
-      connectSrc: ["'self'", "https:", "wss://*", "https://api.github.com"],
-      frameSrc: ["'none'"],
-      objectSrc: ["'none'"],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        "https://cdnjs.cloudflare.com",
+        "https://unpkg.com",
+        "https://fonts.googleapis.com"
+      ],
+      imgSrc: [
+        "'self'",
+        "data:",
+        "https://api.dicebear.com",
+        "https://images.unsplash.com",
+        "https://tile.openstreetmap.org",
+        "https://a.tile.openstreetmap.org",
+        "https://b.tile.openstreetmap.org",
+        "https://c.tile.openstreetmap.org",
+        "blob:"
+      ],
+      fontSrc: [
+        "'self'",
+        "data:",
+        "https://fonts.gstatic.com",
+        "https://cdnjs.cloudflare.com"
+      ],
+      connectSrc: [
+        "'self'",
+        "ws://localhost:3000",
+        "wss://localhost:3000",
+        "https://nominatim.openstreetmap.org"
+      ],
     },
   },
-  crossOriginResourcePolicy: false,
-  hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
-  frameguard: { action: 'deny' },
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
 }));
 
-// Permissions Policy
-app.use((req, res, next) => {
-  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  next();
-});
-
-// Enable CORS and Strict JSON parsing
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10kb' })); // DDoS Protection
+app.use(express.json({ limit: '10kb' })); 
+app.use(cookieParser());
 
-// Strict Origin/Referer Checking for APIs
 app.use('/api', (req, res, next) => {
-  const origin = req.headers.origin || req.headers.referer;
-  if (origin && !allowedOrigins.some(o => origin.startsWith(o))) {
-    console.warn(`[SECURITY] Blocked cross-origin request from: ${origin}`);
-    return res.status(403).json({ error: 'Strict Origin Policy Violation' });
+  const referer = req.get('Referer');
+  const origin = req.get('Origin');
+  
+  if (process.env.NODE_ENV === 'production') {
+    if (!referer && !origin) {
+      return res.status(403).json({ error: 'Direct API access forbidden.' });
+    }
+    
+    let isAllowed = false;
+    for (const allowed of allowedOrigins) {
+      if ((referer && referer.startsWith(allowed)) || (origin && origin === allowed)) {
+        isAllowed = true;
+        break;
+      }
+    }
+    
+    if (!isAllowed) {
+      return res.status(403).json({ error: 'Origin not allowed' });
+    }
   }
   next();
 });
 
-// Set up rate limiters
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 100,
-  message: { error: 'Too many requests from this IP, please try again after 15 minutes' }
+  message: { error: 'Too many requests from this IP' }
 });
 
 const contactLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
+  windowMs: 60 * 60 * 1000,
   max: 10,
-  message: { error: 'Too many contact requests from this IP, please try again after an hour' }
+  message: { error: 'Too many contact requests from this IP' }
 });
 
-// Security: Block access to sensitive files
 app.use((req, res, next) => {
   const sensitiveRegex = /(^\.|\/\.|\.env|\.git|package\.json|server\.js)/;
   if (sensitiveRegex.test(req.url)) {
@@ -117,14 +141,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Set EJS as view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
-// Serve static assets from root
 app.use(express.static(path.join(__dirname, '.')));
 
-// Server-Side Rendered Main Page
 app.get('/', async (req, res) => {
   try {
     const projects = await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
@@ -136,8 +156,102 @@ app.get('/', async (req, res) => {
   }
 });
 
+// ─── ADMIN ROUTES & AUTH ──────────────────────────────────────────────────
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
-// ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────────
+function authenticateAdmin(req, res, next) {
+  const token = req.cookies.admin_token;
+  if (!token) return res.redirect('/admin/login');
+  try {
+    jwt.verify(token, JWT_SECRET);
+    next();
+  } catch (err) {
+    return res.redirect('/admin/login');
+  }
+}
+
+app.get('/admin/login', (req, res) => {
+  res.render('login', { error: null });
+});
+
+app.post('/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  const validUser = process.env.ADMIN_USERNAME || 'admin';
+  const validPass = process.env.ADMIN_PASSWORD || 'password123';
+  
+  if (username === validUser && password === validPass) {
+    const token = jwt.sign({ user: username }, JWT_SECRET, { expiresIn: '2h' });
+    res.cookie('admin_token', token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 });
+    res.redirect('/admin');
+  } else {
+    res.render('login', { error: 'Invalid username or password' });
+  }
+});
+
+app.get('/admin/logout', (req, res) => {
+  res.clearCookie('admin_token');
+  res.redirect('/admin/login');
+});
+
+app.get('/admin', authenticateAdmin, async (req, res) => {
+  const projects = await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
+  const blogs = await prisma.blogPost.findMany({ orderBy: { createdAt: 'desc' } });
+  const messages = await prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } });
+  res.render('admin', { projects, blogs, messages });
+});
+
+app.post('/admin/api/projects', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, description, imageUrl, githubUrl, liveUrl, tags } = req.body;
+    await prisma.project.create({ data: { title, description, imageUrl, githubUrl, liveUrl, tags } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error creating project'); }
+});
+
+app.post('/admin/api/projects/:id/delete', authenticateAdmin, async (req, res) => {
+  try {
+    await prisma.project.delete({ where: { id: parseInt(req.params.id) } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error deleting project'); }
+});
+
+app.post('/admin/api/blogs', authenticateAdmin, async (req, res) => {
+  try {
+    const { title, slug, content, published } = req.body;
+    await prisma.blogPost.create({ data: { title, slug, content, published: published === 'on' } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error creating blog'); }
+});
+
+app.post('/admin/api/blogs/:id/delete', authenticateAdmin, async (req, res) => {
+  try {
+    await prisma.blogPost.delete({ where: { id: parseInt(req.params.id) } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error deleting blog'); }
+});
+
+app.post('/admin/api/messages/:id/delete', authenticateAdmin, async (req, res) => {
+  try {
+    await prisma.contactMessage.delete({ where: { id: parseInt(req.params.id) } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error deleting message'); }
+});
+
+// ─── Blog Detail Page ─────────────────────────────────────────────────────────
+app.get('/blog/:slug', async (req, res) => {
+  try {
+    const post = await prisma.blogPost.findUnique({ where: { slug: req.params.slug } });
+    if (!post || !post.published) {
+      return res.status(404).render('404', { message: 'Blog post not found.' });
+    }
+    res.render('blog-post', { post });
+  } catch (error) {
+    console.error('[BLOG] Error fetching post:', error);
+    res.status(500).send('Server error');
+  }
+});
+
+// ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────
 const openai = new OpenAI({
   apiKey: process.env.CLOUDFLARE_API_KEY,
   baseURL: "https://api.cloudflare.com/client/v4/accounts/05511958e1d4f6bea91d7577b9d72db5/ai/v1",
@@ -145,9 +259,8 @@ const openai = new OpenAI({
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio website of Suraj Tharu Chaudhary, a Computer Engineer from Nepal.
 Your goal is to answer questions about Suraj's skills, experience, and projects.
-Suraj specializes in GIS, Remote Sensing, Land Use/Land Cover Analysis, and Machine Learning (Random Forest, Google Earth Engine).
+Suraj specializes in GIS, Remote Sensing, Land Use/Land Cover Analysis, and Machine Learning.
 He has a M.Sc. in Information System Engineering and B.E. in Computer Engineering.
-He also teaches computer engineering at Shree Tri Shaheed Model Secondary School.
 Keep your answers professional, concise, and enthusiastic. Never break character.`;
 
 const chatSchema = z.object({
@@ -156,10 +269,9 @@ const chatSchema = z.object({
   history: z.array(z.object({
     role: z.enum(['user', 'assistant']),
     content: z.string().max(500)
-  })).max(10).optional() // max 10 turns of history
+  })).max(10).optional()
 });
 
-// ─── /api/chat ────────────────────────────────────────────────────────────────
 app.post('/api/chat', apiLimiter, async (req, res) => {
   try {
     const parseResult = chatSchema.safeParse(req.body);
@@ -173,24 +285,21 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 
     if (!process.env.CLOUDFLARE_API_KEY) {
       return res.json({
-        reply: "Error: The Cloudflare API key has not been configured on the server yet. Please update the .env file with your key."
+        reply: "Error: The Cloudflare API key has not been configured on the server yet."
       });
     }
 
     let dynamicSystemPrompt = SYSTEM_PROMPT;
     if (context) {
-      dynamicSystemPrompt += `\n\nCURRENT CONTEXT: The user is currently looking at: ${context}. If relevant, tailor your response to this section.`;
+      dynamicSystemPrompt += `\n\nCURRENT CONTEXT: The user is looking at: ${context}.`;
     }
 
-    // Build messages array with history for multi-turn conversation
     const messages = [{ role: 'system', content: dynamicSystemPrompt }];
-
     if (history && history.length > 0) {
       history.forEach(turn => {
         messages.push({ role: turn.role, content: xss(turn.content) });
       });
     }
-
     messages.push({ role: 'user', content: message });
 
     const response = await openai.chat.completions.create({
@@ -204,12 +313,12 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
   } catch (error) {
     console.error('AI API Error:', error.message || error);
     res.json({
-      reply: "I'm currently in offline/demo mode. Suraj is a talented Computer Engineer specializing in GIS, Remote Sensing, Machine Learning, and full-stack development!"
+      reply: "I'm currently offline. Suraj is a talented Computer Engineer specializing in GIS and full-stack!"
     });
   }
 });
 
-// ─── Nodemailer Email Transporter ─────────────────────────────────────────────
+// ─── Nodemailer Email Transporter ─────────────────────────────────────────
 let emailTransporter = null;
 if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
   emailTransporter = nodemailer.createTransport({
@@ -219,31 +328,6 @@ if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       pass: process.env.EMAIL_PASS
     }
   });
-  emailTransporter.verify((err) => {
-    if (err) {
-      console.warn('[EMAIL] Transporter verification failed:', err.message);
-      emailTransporter = null;
-    } else {
-      console.log('[EMAIL] Transporter ready. Contact form will send email notifications.');
-    }
-  });
-} else {
-  console.warn('[EMAIL] EMAIL_USER / EMAIL_PASS not set. Email notifications disabled.');
-}
-
-// ─── PostgreSQL ───────────────────────────────────────────────────────────────
-let pool = null;
-if (process.env.DATABASE_URL) {
-  pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: false }
-  });
-
-  // Initialize PostgreSQL pool; connection errors will be handled per query.
-  // Optional: create messages table on first use.
-
-} else {
-  console.warn("WARNING: DATABASE_URL is not set. Contact form messages will not be saved to a database.");
 }
 
 const contactSchema = z.object({
@@ -254,7 +338,6 @@ const contactSchema = z.object({
   honeypot: z.string().max(0).optional()
 });
 
-// ─── /api/contact ─────────────────────────────────────────────────────────────
 app.post('/api/contact', contactLimiter, async (req, res) => {
   const parseResult = contactSchema.safeParse(req.body);
   if (!parseResult.success) {
@@ -262,8 +345,6 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   }
 
   let { name, email, subject, message, honeypot } = parseResult.data;
-
-  // Honeypot check for bots
   if (honeypot && honeypot.length > 0) {
     return res.json({ success: true, id: Math.floor(Math.random() * 1000) });
   }
@@ -276,154 +357,68 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   let savedId = Math.floor(Math.random() * 1000);
 
   try {
-    // Ensure messages table exists before any insert
-    if (pool) {
-      await pool.query(`CREATE TABLE IF NOT EXISTS messages (
-        id SERIAL PRIMARY KEY,
-        name TEXT,
-        email TEXT,
-        subject TEXT,
-        message TEXT,
-        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )`);
-    }
+    const newMsg = await prisma.contactMessage.create({
+      data: { name, email, subject, message }
+    });
+    savedId = newMsg.id;
 
-    if (pool) {
-      const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
-      const result = await pool.query(query, [name, email, subject, message]);
-      savedId = result.rows[0].id;
-    } else {
-      console.log('Contact message received (no DB configured):', { name, email, subject, message });
-    }
-
-    // Send email notification if transporter is configured
     if (emailTransporter && process.env.EMAIL_TO) {
       const mailOptions = {
         from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
         to: process.env.EMAIL_TO,
         subject: `[Portfolio] New Message from ${name}: ${subject || '(no subject)'}`,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #0ea5e9; border-bottom: 2px solid #0ea5e9; padding-bottom: 10px;">
-              New Contact Form Submission
-            </h2>
-            <table style="width:100%; border-collapse: collapse;">
-              <tr><td style="padding:8px; font-weight:bold; width:100px;">From:</td><td style="padding:8px;">${name}</td></tr>
-              <tr><td style="padding:8px; font-weight:bold;">Email:</td><td style="padding:8px;"><a href="mailto:${email}">${email}</a></td></tr>
-              <tr><td style="padding:8px; font-weight:bold;">Subject:</td><td style="padding:8px;">${subject || '(none)'}</td></tr>
-              <tr><td style="padding:8px; font-weight:bold; vertical-align:top;">Message:</td><td style="padding:8px; white-space:pre-wrap;">${message}</td></tr>
-            </table>
-            <p style="color:#94a3b8; font-size:12px; margin-top:20px;">
-              Received at ${new Date().toLocaleString()} · Portfolio ID: ${savedId}
-            </p>
-          </div>
-        `
+        html: `<p>From: ${name} (${email})</p><p>${message}</p>`
       };
-
-      emailTransporter.sendMail(mailOptions).catch(err => {
-        console.error('[EMAIL] Failed to send notification:', err.message);
-      });
-    } else {
-      console.warn('[EMAIL] Email transporter not configured; skipping notification.');
+      await emailTransporter.sendMail(mailOptions);
     }
-
+    
     res.json({ success: true, id: savedId });
-  } catch (err) {
-    console.error('Error inserting message:', err.message);
-    res.status(500).json({ error: 'Failed to save message.' });
+  } catch (error) {
+    console.error('[CONTACT DB] Error saving message:', error);
+    res.status(500).json({ error: 'Failed to process request.' });
   }
 });
 
-// ─── /api/health ──────────────────────────────────────────────────────────────
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    db: pool ? 'connected' : 'disconnected',
-    email: emailTransporter ? 'configured' : 'not configured',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// ─── Socket.io — Multiplayer Cursors ─────────────────────────────────────────
+// ─── Socket.io Logic ──────────────────────────────────────────────────────
 const activeUsers = new Map();
 
-const cursorSchema = z.object({
-  x: z.number().min(0).max(1),
-  y: z.number().min(0).max(1)
-});
-
 io.on('connection', (socket) => {
-  const hue = Math.floor(Math.random() * 360);
-  const color = `hsl(${hue}, 80%, 60%)`;
+  const ip = socket.handshake.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
+  
+  activeUsers.set(socket.id, {
+    id: socket.id,
+    color: `hsl(${Math.random() * 360}, 80%, 60%)`,
+    x: 0,
+    y: 0,
+    ip: ip
+  });
 
-  let msgCount = 0;
-  const rateLimitInterval = setInterval(() => { msgCount = 0; }, 1000);
+  io.emit('user-joined', { count: activeUsers.size, id: socket.id, color: activeUsers.get(socket.id).color });
+  socket.emit('current-users', Array.from(activeUsers.entries()));
 
   socket.on('cursor-move', (data) => {
-    if (++msgCount > 50) {
-      console.warn(`[SECURITY] Socket ${socket.id} rate limited`);
-      return;
+    const user = activeUsers.get(socket.id);
+    if (user) {
+      user.x = data.x;
+      user.y = data.y;
+      socket.broadcast.emit('cursor-update', { id: socket.id, x: data.x, y: data.y, color: user.color });
     }
-
-    const parsed = cursorSchema.safeParse(data);
-    if (!parsed.success) return;
-
-    activeUsers.set(socket.id, { x: parsed.data.x, y: parsed.data.y, color });
-    socket.broadcast.emit('cursor-update', { id: socket.id, x: parsed.data.x, y: parsed.data.y, color });
   });
 
   socket.on('disconnect', () => {
-    clearInterval(rateLimitInterval);
     activeUsers.delete(socket.id);
-    io.emit('cursor-remove', socket.id);
+    io.emit('user-left', { count: activeUsers.size, id: socket.id });
   });
 });
 
-// ─── Fallback: serve index.html for any unmatched GET routes ──────────────────
-app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'index.html'));
-  } else {
-    res.status(404).json({ error: 'API endpoint not found' });
-  }
-});
-
-// ─── Error handling middleware ─────────────────────────────────────────────────
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  console.error('[ERROR]', err.message || err);
-  const status = err.status || err.statusCode || 500;
-  res.status(status).json({ error: err.message || 'Internal Server Error' });
+  console.error('[EXPRESS ERROR]', err.stack);
+  res.status(500).json({ error: 'Something broke!' });
 });
 
 server.listen(port, () => {
   console.log(`\n=========================================`);
   console.log(`🚀 Server running at http://localhost:${port}`);
   console.log(`🌐 Open http://localhost:${port} in your browser`);
-  console.log(`🏥 Health check: http://localhost:${port}/api/health`);
   console.log(`=========================================\n`);
 });
-
-// ─── Graceful Shutdown ────────────────────────────────────────────────────────
-function gracefulShutdown(signal) {
-  console.log(`\n[SHUTDOWN] Received ${signal}. Closing server...`);
-  server.close(async () => {
-    console.log('[SHUTDOWN] HTTP server closed.');
-    if (pool) {
-      await pool.end();
-      console.log('[SHUTDOWN] DB pool closed.');
-    }
-    process.exit(0);
-  });
-  // Force exit after 10s if server doesn't close
-  setTimeout(() => process.exit(1), 10000);
-}
-
-process.on('SIGINT', () => gracefulShutdown('SIGINT'));
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason) => {
-  console.error('[UNHANDLED REJECTION]', reason);
-});
-
