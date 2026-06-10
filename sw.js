@@ -1,11 +1,11 @@
-const CACHE_NAME = 'portfolio-cache-v6';
+const CACHE_NAME = 'portfolio-cache-v7';
 const urlsToCache = [
   '/',
-  '/index.html',
   '/manifest.json',
   '/resume.json',
   '/style.css',
-  '/app.js'
+  '/dist/bundle.js',
+  '/dist/tailwind.css'
 ];
 
 self.addEventListener('install', event => {

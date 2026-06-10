@@ -21,3 +21,9 @@ generate_pdf.js
 sri.js
 test.js
 clear_cache.html
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+
+/generated/prisma

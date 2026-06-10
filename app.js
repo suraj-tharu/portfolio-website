@@ -6,6 +6,14 @@ var QRCode; !function () { function a(a) { this.mode = c.MODE_8BIT_BYTE, this.da
 
 // --- Extracted Script 3 ---
 // Dynamic Greeting & Live Clock
+window.addEventListener('load', () => {
+  const p = document.getElementById('preloader');
+  if (p) {
+    p.style.opacity = '0';
+    setTimeout(() => p.remove(), 700);
+  }
+});
+
 function updateTimeAndGreeting() {
   const now = new Date();
   
@@ -401,38 +409,47 @@ if (typeof Lenis !== 'undefined') try {
 
 // --- 3. Easter Egg Console Art (Removed) ---
 
-// --- 4. Monaco Editor Initialization ---
-require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
-require(['vs/editor/editor.main'], function () {
-  window.editor = monaco.editor.create(document.getElementById('monaco-container'), {
-    value: [
-      'module riscv_core (',
-      '    input wire clk,',
-      '    input wire rst_n,',
-      '    output wire [31:0] pc,',
-      '    input wire [31:0] instr',
-      ');',
-      '',
-      '    // Core logic goes here...',
-      '    always @(posedge clk) begin',
-      '        if (!rst_n) pc <= 32\'b0;',
-      '        else pc <= pc + 4;',
-      '    end',
-      'endmodule'
-    ].join('\n'),
-    language: 'verilog',
-    theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
-    minimap: { enabled: false },
-    fontSize: 12,
-    scrollBeyondLastLine: false
+// --- 4. Monaco Editor Initialization (Deferred for Performance) ---
+const monacoContainer = document.getElementById('monaco-container');
+if (monacoContainer && typeof require !== 'undefined') {
+  const observer = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      observer.disconnect();
+      require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
+      require(['vs/editor/editor.main'], function () {
+        window.editor = monaco.editor.create(monacoContainer, {
+          value: [
+            'module riscv_core (',
+            '    input wire clk,',
+            '    input wire rst_n,',
+            '    output wire [31:0] pc,',
+            '    input wire [31:0] instr',
+            ');',
+            '',
+            '    // Core logic goes here...',
+            '    always @(posedge clk) begin',
+            '        if (!rst_n) pc <= 32\'b0;',
+            '        else pc <= pc + 4;',
+            '    end',
+            'endmodule'
+          ].join('\n'),
+          language: 'verilog',
+          theme: document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs',
+          minimap: { enabled: false },
+          fontSize: 12,
+          scrollBeyondLastLine: false
+        });
+        // Theme sync
+        document.getElementById('dark-toggle').addEventListener('click', () => {
+          setTimeout(() => {
+            monaco.editor.setTheme(document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs');
+          }, 50);
+        });
+      });
+    }
   });
-  // Theme sync
-  document.getElementById('dark-toggle').addEventListener('click', () => {
-    setTimeout(() => {
-      monaco.editor.setTheme(document.documentElement.classList.contains('dark') ? 'vs-dark' : 'vs');
-    }, 50);
-  });
-});
+  observer.observe(monacoContainer);
+}
 
 window.runCode = function () {
   const out = document.getElementById('monaco-output');
@@ -802,7 +819,14 @@ document.getElementById('lang-toggle').addEventListener('click', (e) => {
 // Apply stunning hover animations to all major section cards
 document.querySelectorAll('.rounded-xl.border, .rounded-lg.border').forEach(el => {
   if (el.id !== 'chat-widget') {
-    el.classList.add('hover-lift');
+    el.classList.add('hover-lift', 'backdrop-blur-md', 'bg-white/5', 'dark:bg-slate-900/40');
+  }
+});
+
+// Auto-apply magnetic to all buttons and links for a premium feel
+document.querySelectorAll('a, button').forEach(el => {
+  if (!el.classList.contains('magnetic')) {
+    el.classList.add('magnetic');
   }
 });
 
@@ -1221,4 +1245,41 @@ if (playBtn && gameCanvas) {
 
     gameLoopId = requestAnimationFrame(gameLoop);
   }
+}
+
+// --- 26. Interactive GIS Map (Leaflet.js) ---
+const mapContainer = document.getElementById('gis-map');
+if (mapContainer) {
+  const mapObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting && typeof L !== 'undefined') {
+      mapObserver.disconnect();
+      
+      // Initialize map centered on Nepal (dark theme to match website)
+      const map = L.map('gis-map').setView([28.3949, 84.1240], 7);
+      
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+
+      // Add Research Markers
+      const surkhetMarker = L.marker([28.6015, 81.6322]).addTo(map);
+      surkhetMarker.bindPopup(`
+        <div style="color: #0f172a; font-family: 'Space Mono', monospace;">
+          <h4 style="font-weight: bold; margin-bottom: 4px;">Birendranagar, Surkhet</h4>
+          <p style="font-size: 12px; margin:0;">LULC Analysis using Random Forest</p>
+        </div>
+      `).openPopup();
+
+      const nawalparasiMarker = L.marker([27.5319, 83.6922]).addTo(map);
+      nawalparasiMarker.bindPopup(`
+        <div style="color: #0f172a; font-family: 'Space Mono', monospace;">
+          <h4 style="font-weight: bold; margin-bottom: 4px;">Nawalparasi West</h4>
+          <p style="font-size: 12px; margin:0;">Decadal LULC Dynamics (2016-2026)</p>
+        </div>
+      `);
+    }
+  });
+  mapObserver.observe(mapContainer);
 }

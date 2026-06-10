@@ -3,7 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const { OpenAI } = require('openai');
 const path = require('path');
-const { Pool } = require('pg');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 const nodemailer = require('nodemailer');
 
 const http = require('http');
@@ -61,7 +62,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com", "https://cdnjs.cloudflare.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdnjs.cloudflare.com"],
       workerSrc: ["'self'", "blob:"],
-      imgSrc: ["'self'", "data:", "https://api.dicebear.com", "https://avatars.githubusercontent.com"],
+      imgSrc: ["'self'", "data:", "https://api.dicebear.com", "https://avatars.githubusercontent.com", "https://images.unsplash.com", "https://*.tile.openstreetmap.org"],
       connectSrc: ["'self'", "https:", "wss://*", "https://api.github.com"],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
@@ -106,8 +107,34 @@ const contactLimiter = rateLimit({
   message: { error: 'Too many contact requests from this IP, please try again after an hour' }
 });
 
-// Serve all static files
+// Security: Block access to sensitive files
+app.use((req, res, next) => {
+  const sensitiveRegex = /(^\.|\/\.|\.env|\.git|package\.json|server\.js)/;
+  if (sensitiveRegex.test(req.url)) {
+    console.warn(`[SECURITY] Blocked access to sensitive file: ${req.url}`);
+    return res.status(403).send('Forbidden');
+  }
+  next();
+});
+
+// Set EJS as view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+
+// Serve static assets from root
 app.use(express.static(path.join(__dirname, '.')));
+
+// Server-Side Rendered Main Page
+app.get('/', async (req, res) => {
+  try {
+    const projects = await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
+    const blogs = await prisma.blogPost.findMany({ where: { published: true }, orderBy: { createdAt: 'desc' } });
+    res.render('index', { projects, blogs });
+  } catch (error) {
+    console.error('[DATABASE] Error fetching data:', error);
+    res.render('index', { projects: [], blogs: [] });
+  }
+});
 
 
 // ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────────
