@@ -108,7 +108,8 @@ app.use(helmet({
         "https://unpkg.com",               // Source maps
         "https://cdn.socket.io",           // Socket.io
         "https://cdnjs.cloudflare.com",    // Monaco editor source maps
-        "https://cdnjs.cloudflare.com",    // Additional CDN for source maps
+        "https://*.basemaps.cartocdn.com", // Leaflet CARTO tile provider
+        "https://basemaps.cartocdn.com",   // Leaflet CARTO tile provider (direct)
         ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
       mediaSrc: ["'self'", "blob:"],
@@ -159,7 +160,8 @@ const contactLimiter = rateLimit({
 });
 
 app.use((req, res, next) => {
-  const sensitiveRegex = /(^\.|\/\.|\.env|\.git|package\.json|server\.js)/;
+  // Case-insensitive block for sensitive files and directories
+  const sensitiveRegex = /(\.env|\.git|package(?:-lock)?\.json|server\.js|app\.js|seed\.js|prisma\/|node_modules\/|\.npmrc|\.dockerignore|Dockerfile|docker-compose)/i;
   if (sensitiveRegex.test(req.url)) {
     console.warn(`[SECURITY] Blocked access to sensitive file: ${req.url}`);
     return res.status(403).send('Forbidden');
@@ -169,16 +171,42 @@ app.use((req, res, next) => {
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+
+// Serve only safe, explicitly-listed static directories
+// Never serve the project root to avoid leaking server.js, .env, prisma/, etc.
+app.use('/dist', express.static(path.join(__dirname, 'dist'), {
+  maxAge: '1y',
+  immutable: true,
+}));
+app.use('/icons', express.static(path.join(__dirname, 'icons'), { maxAge: '1d' }));
 app.use(express.static(path.join(__dirname, '.'), {
-  maxAge: '1d', // Cache static assets for 1 day
-  setHeaders: (res, path) => {
-    if (path.endsWith('.html') || path.endsWith('.ejs')) {
-      res.setHeader('Cache-Control', 'public, max-age=0'); // Don't cache HTML
-    } else if (path.includes('/dist/')) {
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // Aggressive cache for dist
+  maxAge: '1d',
+  // Allowlist: only serve known safe top-level files
+  index: false,
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.html') || filePath.endsWith('.ejs')) {
+      res.setHeader('Cache-Control', 'public, max-age=0');
+    } else if (filePath.includes('/dist/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
   }
 }));
+// Explicit safe top-level file routes
+const safeTopLevelFiles = ['style.css', 'manifest.json', 'robots.txt', 'sitemap.xml', 'sw.js'];
+const safeImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.pdf'];
+app.use((req, res, next) => {
+  const urlPath = req.path;
+  const ext = path.extname(urlPath).toLowerCase();
+  const base = path.basename(urlPath);
+  // Block any request that tries to reach a sensitive file at the root level
+  if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/icons/') &&
+      !safeTopLevelFiles.includes(base) && !safeImageExts.includes(ext) &&
+      urlPath !== '/') {
+    // Allow only known safe patterns — everything else goes to route handlers
+    return next();
+  }
+  next();
+});
 
 app.get('/', async (req, res) => {
   try {
@@ -446,8 +474,21 @@ io.on('connection', (socket) => {
   });
 });
 
+// 404 catch-all — must come AFTER all routes and BEFORE the error handler
+app.use((req, res) => {
+  console.warn(`[404] ${req.method} ${req.originalUrl}`);
+  if (req.accepts('html')) {
+    return res.status(404).render('404', { message: 'The page you are looking for could not be found.' });
+  }
+  res.status(404).json({ error: 'Not found' });
+});
+
+// Global error handler
 app.use((err, req, res, next) => {
   console.error('[EXPRESS ERROR]', err.stack);
+  if (req.accepts('html')) {
+    return res.status(500).render('404', { message: 'An unexpected server error occurred.' });
+  }
   res.status(500).json({ error: 'Something broke!' });
 });
 

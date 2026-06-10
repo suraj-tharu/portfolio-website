@@ -6,6 +6,7 @@ module.exports = {
     './app.js',
     './*.html',
     './*.js',
+    './views/**/*.ejs'
   ],
   darkMode: 'class',
   theme: {
