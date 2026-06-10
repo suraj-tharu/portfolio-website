@@ -316,7 +316,7 @@ app.get('/blog/:slug', async (req, res) => {
 
 // ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────
 const openai = new OpenAI({
-  apiKey: process.env.CLOUDFLARE_API_KEY,
+  apiKey: process.env.CLOUDFLARE_API_KEY || process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash',
   baseURL: "https://api.cloudflare.com/client/v4/accounts/05511958e1d4f6bea91d7577b9d72db5/ai/v1",
 });
 
