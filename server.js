@@ -110,6 +110,10 @@ app.use(helmet({
         "https://cdnjs.cloudflare.com",    // Monaco editor source maps
         "https://*.basemaps.cartocdn.com", // Leaflet CARTO tile provider
         "https://basemaps.cartocdn.com",   // Leaflet CARTO tile provider (direct)
+        "https://fonts.googleapis.com",    // Google Fonts (needed by SW fetch)
+        "https://fonts.gstatic.com",       // Google Fonts actual font files
+        "https://images.unsplash.com",     // Unsplash project/blog images
+        "https://api.dicebear.com",        // DiceBear avatar API
         ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
       mediaSrc: ["'self'", "blob:"],

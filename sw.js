@@ -1,4 +1,4 @@
-const CACHE_NAME = 'portfolio-cache-v7';
+const CACHE_NAME = 'portfolio-cache-v8';
 const urlsToCache = [
   '/',
   '/manifest.json',
@@ -37,11 +37,16 @@ self.addEventListener('fetch', event => {
   if (!event.request.url.startsWith('http')) return;
   if (event.request.method !== 'GET') return;
 
-  // Skip API requests — always fetch fresh from network
   const url = new URL(event.request.url);
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
+
+  // Skip API requests — always fetch fresh from network
+  if (url.pathname.startsWith('/api/')) return;
+
+  // IMPORTANT: Skip ALL cross-origin requests (CDN fonts, images, external assets).
+  // The Service Worker runs under the page's CSP, so fetching cross-origin URLs
+  // via the SW Fetch API violates connect-src and causes ERR_FAILED errors.
+  // Let the browser handle external resources natively.
+  if (url.origin !== self.location.origin) return;
 
   // Network-first for HTML pages (always get fresh content)
   if (event.request.headers.get('accept') && event.request.headers.get('accept').includes('text/html')) {
@@ -59,7 +64,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  // Cache-first for static assets (CSS, JS, images, fonts)
+  // Cache-first for same-origin static assets (CSS, JS, images)
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
@@ -73,7 +78,7 @@ self.addEventListener('fetch', event => {
           cache.put(event.request, responseToCache);
         }).catch(() => {});
         return response;
-      });
+      }).catch(() => caches.match(event.request));
     })
   );
 });
