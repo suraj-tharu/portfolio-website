@@ -211,25 +211,9 @@ if (process.env.DATABASE_URL) {
     ssl: { rejectUnauthorized: false }
   });
 
-  pool.connect((err, client, release) => {
-    if (err) {
-      console.error('Error acquiring client. Check your DATABASE_URL.', err.message);
-      pool = null;
-      return;
-    }
-    console.log('Connected to the PostgreSQL database.');
-    client.query(`CREATE TABLE IF NOT EXISTS messages (
-      id SERIAL PRIMARY KEY,
-      name TEXT,
-      email TEXT,
-      subject TEXT,
-      message TEXT,
-      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`, (err) => {
-      release();
-      if (err) console.error('Error creating table', err.stack);
-    });
-  });
+  // Initialize PostgreSQL pool; connection errors will be handled per query.
+  // Optional: create messages table on first use.
+
 } else {
   console.warn("WARNING: DATABASE_URL is not set. Contact form messages will not be saved to a database.");
 }
@@ -264,6 +248,18 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
   let savedId = Math.floor(Math.random() * 1000);
 
   try {
+    // Ensure messages table exists before any insert
+    if (pool) {
+      await pool.query(`CREATE TABLE IF NOT EXISTS messages (
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        email TEXT,
+        subject TEXT,
+        message TEXT,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )`);
+    }
+
     if (pool) {
       const query = `INSERT INTO messages (name, email, subject, message) VALUES ($1, $2, $3, $4) RETURNING id`;
       const result = await pool.query(query, [name, email, subject, message]);
@@ -299,6 +295,8 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
       emailTransporter.sendMail(mailOptions).catch(err => {
         console.error('[EMAIL] Failed to send notification:', err.message);
       });
+    } else {
+      console.warn('[EMAIL] Email transporter not configured; skipping notification.');
     }
 
     res.json({ success: true, id: savedId });
