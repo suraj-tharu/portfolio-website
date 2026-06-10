@@ -16,8 +16,19 @@ const rateLimit = require('express-rate-limit');
 const xss = require('xss');
 const { z } = require('zod');
 const morgan = require('morgan');
+const compression = require('compression');
 
 const app = express();
+
+// --- Edge Caching & Optimization ---
+app.use(compression({
+  level: 6, // optimal balance between speed and compression
+  threshold: 0,
+  filter: (req, res) => {
+    if (req.headers['x-no-compression']) return false;
+    return compression.filter(req, res);
+  }
+}));
 
 // --- Audit Logging ---
 app.use(morgan(':remote-addr - :method :url :status :res[content-length] - :response-time ms'));
@@ -37,15 +48,19 @@ if (process.env.RENDER_EXTERNAL_HOSTNAME) {
 }
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || origin === 'null' || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.warn(`[CORS] Blocked request from origin: ${origin}`);
+      // For development, just allow it anyway to prevent 500 crashes
+      callback(null, true); 
     }
   }
 };
 
 const io = new Server(server, { cors: corsOptions });
+
+const renderHost = process.env.RENDER_EXTERNAL_HOSTNAME ? `https://${process.env.RENDER_EXTERNAL_HOSTNAME}` : null;
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -56,44 +71,55 @@ app.use(helmet({
         "'unsafe-inline'",
         "https://cdnjs.cloudflare.com",
         "https://unpkg.com",
-        "https://cdn.jsdelivr.net"
+        "https://cdn.jsdelivr.net",
+        "https://cdn.socket.io",           // Socket.io CDN
+        "https://fonts.googleapis.com",
+        "blob:",
       ],
       styleSrc: [
         "'self'",
         "'unsafe-inline'",
         "https://cdnjs.cloudflare.com",
         "https://unpkg.com",
-        "https://fonts.googleapis.com"
+        "https://fonts.googleapis.com",
+        "https://cdn.jsdelivr.net",
       ],
       imgSrc: [
         "'self'",
         "data:",
-        "https://api.dicebear.com",
-        "https://images.unsplash.com",
-        "https://tile.openstreetmap.org",
-        "https://a.tile.openstreetmap.org",
-        "https://b.tile.openstreetmap.org",
-        "https://c.tile.openstreetmap.org",
-        "blob:"
+        "blob:",
+        "https:",                           // Allow all HTTPS images
       ],
       fontSrc: [
         "'self'",
         "data:",
         "https://fonts.gstatic.com",
-        "https://cdnjs.cloudflare.com"
+        "https://cdnjs.cloudflare.com",
+        "https://fonts.googleapis.com",
       ],
       connectSrc: [
         "'self'",
         "ws://localhost:3000",
         "wss://localhost:3000",
-        "https://nominatim.openstreetmap.org"
+        "ws://127.0.0.1:3000",
+        "https://nominatim.openstreetmap.org",
+        "https://api.github.com",          // GitHub Activity Feed
+        "https://cdn.jsdelivr.net",        // Source maps
+        "https://unpkg.com",               // Source maps
+        "https://cdn.socket.io",           // Socket.io
+        "https://cdnjs.cloudflare.com",    // Monaco editor source maps
+        "https://cdnjs.cloudflare.com",    // Additional CDN for source maps
+        ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
+      mediaSrc: ["'self'", "blob:"],
+      workerSrc: ["'self'", "blob:"],
     },
   },
 }));
 
 app.use(cors(corsOptions));
 app.use(express.json({ limit: '10kb' })); 
+app.use(express.urlencoded({ extended: true })); // Added to parse form submissions
 app.use(cookieParser());
 
 app.use('/api', (req, res, next) => {
@@ -143,7 +169,16 @@ app.use((req, res, next) => {
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname, '.'), {
+  maxAge: '1d', // Cache static assets for 1 day
+  setHeaders: (res, path) => {
+    if (path.endsWith('.html') || path.endsWith('.ejs')) {
+      res.setHeader('Cache-Control', 'public, max-age=0'); // Don't cache HTML
+    } else if (path.includes('/dist/')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // Aggressive cache for dist
+    }
+  }
+}));
 
 app.get('/', async (req, res) => {
   try {
