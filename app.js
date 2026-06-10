@@ -871,11 +871,13 @@ const commands = [
 function toggleCmdPalette() {
   if (cmdPalette.classList.contains('hidden')) {
     cmdPalette.classList.remove('hidden');
+    cmdPalette.classList.add('flex');
     cmdInput2.value = '';
     cmdInput2.focus();
     renderCmdResults('');
   } else {
     cmdPalette.classList.add('hidden');
+    cmdPalette.classList.remove('flex');
   }
 }
 
@@ -1040,6 +1042,7 @@ const contactStatus = document.getElementById('contact-status');
 
 function openContactModal() {
   contactModal.classList.remove('hidden');
+  contactModal.classList.add('flex');
   setTimeout(() => {
     contactBox.classList.remove('scale-95', 'opacity-0');
     contactBox.classList.add('scale-100', 'opacity-100');
@@ -1052,6 +1055,7 @@ function closeContactModal() {
   contactBox.classList.add('scale-95', 'opacity-0');
   setTimeout(() => {
     contactModal.classList.add('hidden');
+    contactModal.classList.remove('flex');
     contactStatus.classList.add('hidden');
     contactForm.reset();
   }, 300);
@@ -1118,11 +1122,13 @@ if (playBtn && gameCanvas) {
   playBtn.addEventListener('click', () => {
     playSound('click');
     gameModal.classList.remove('hidden');
+    gameModal.classList.add('flex');
     gameOverlay.classList.remove('hidden');
   });
 
   closeGame.addEventListener('click', () => {
     gameModal.classList.add('hidden');
+    gameModal.classList.remove('flex');
     cancelAnimationFrame(gameLoopId);
   });
 
