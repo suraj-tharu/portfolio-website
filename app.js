@@ -257,7 +257,7 @@ planetData.forEach(data => {
 
 // Milky Way Galaxy
 const milkyWayGeo = new THREE.BufferGeometry();
-const mwStarsCount = 20000; // Increased density
+const mwStarsCount = 30000; // Increased density for premium feel
 const mwPosArray = new Float32Array(mwStarsCount * 3);
 const mwColorArray = new Float32Array(mwStarsCount * 3);
 const color1 = new THREE.Color(0x7c3aed); // Vibrant violet
