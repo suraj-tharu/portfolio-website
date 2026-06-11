@@ -5,8 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Suraj's Portfolio</title>
   <link href="/dist/tailwind.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
   <style>
     body { background-color: #0f172a; color: white; }
+    /* SimpleMDE Dark Theme Overrides */
+    .editor-toolbar { background-color: #1e293b; border-color: #334155; opacity: 1 !important; }
+    .editor-toolbar a { color: #94a3b8 !important; }
+    .editor-toolbar a:hover, .editor-toolbar a.active { background-color: #334155; border-color: #334155; color: #fff !important; }
+    .CodeMirror { background-color: #0f172a !important; color: #e2e8f0 !important; border-color: #334155 !important; }
+    .editor-preview { background-color: #0f172a; color: #e2e8f0; }
   </style>
 </head>
 <body class="bg-slate-950 font-sans min-h-screen">
@@ -91,8 +99,8 @@
             <input type="text" name="slug" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="my-awesome-post">
           </div>
           <div>
-            <label class="block text-xs text-slate-400 mb-1">Content (HTML)</label>
-            <textarea name="content" required rows="4" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none font-mono"></textarea>
+            <label class="block text-xs text-slate-400 mb-1">Content (Markdown supported)</label>
+            <textarea name="content" id="blog-content-editor" required rows="4" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none font-mono"></textarea>
           </div>
           <div class="flex items-center gap-2">
             <input type="checkbox" name="published" id="published" class="rounded bg-slate-900 border-slate-800" checked>
@@ -157,5 +165,16 @@
     </div>
     
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Initialize SimpleMDE for the Blog Content
+      var simplemde = new SimpleMDE({ 
+        element: document.getElementById("blog-content-editor"),
+        spellChecker: false,
+        placeholder: "Write your amazing blog post here in Markdown..."
+      });
+    });
+  </script>
 </body>
 </html>

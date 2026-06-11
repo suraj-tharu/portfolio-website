@@ -18,6 +18,10 @@ const { z } = require('zod');
 const morgan = require('morgan');
 const compression = require('compression');
 
+const { marked } = require('marked');
+const { JSDOM } = require('jsdom');
+const DOMPurify = require('dompurify')(new JSDOM('').window);
+
 const app = express();
 
 // --- Edge Caching & Optimization ---
@@ -311,7 +315,29 @@ app.get('/blog/:slug', async (req, res) => {
     if (!post || !post.published) {
       return res.status(404).render('404', { message: 'Blog post not found.' });
     }
-    res.render('blog-post', { post });
+
+    // Parse Markdown to HTML
+    const rawHtml = marked.parse(post.content);
+    const cleanHtml = DOMPurify.sanitize(rawHtml);
+
+    // Calculate Read Time
+    const wordCount = post.content.split(/\s+/).length;
+    const readTime = Math.ceil(wordCount / 200); // 200 WPM
+
+    // Extract Table of Contents
+    const toc = [];
+    const renderer = new marked.Renderer();
+    renderer.heading = function ({ text, depth }) {
+      const id = text.toLowerCase().replace(/[^\w]+/g, '-');
+      if (depth <= 3) {
+        toc.push({ id, text, depth });
+      }
+      return `<h${depth} id="${id}">${text}</h${depth}>`;
+    };
+    const htmlWithIds = marked.parse(post.content, { renderer });
+    const finalHtml = DOMPurify.sanitize(htmlWithIds);
+
+    res.render('blog-post', { post, htmlContent: finalHtml, readTime, toc });
   } catch (error) {
     console.error('[BLOG] Error fetching post:', error);
     res.status(500).send('Server error');

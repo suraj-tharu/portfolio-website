@@ -57,7 +57,7 @@ export function initUI() {
   updateTimeAndGreeting();
   setInterval(updateTimeAndGreeting, 1000);
 
-  // --- Dark Mode Toggle ---
+  // --- Dark Mode Toggle & Persistence ---
   const dmToggle = document.getElementById('dark-toggle');
   const html = document.documentElement;
   const moonIcon = document.getElementById('icon-moon');
@@ -66,9 +66,18 @@ export function initUI() {
     if (isDark) { moonIcon?.classList.add('hidden'); sunIcon?.classList.remove('hidden'); }
     else { moonIcon?.classList.remove('hidden'); sunIcon?.classList.add('hidden'); }
   }
+  
+  // Initialize dark mode from localStorage or system preference
+  const isDarkMode = localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  if (isDarkMode) html.classList.add('dark');
+  else html.classList.remove('dark');
+  updateIcons(isDarkMode);
+
   dmToggle?.addEventListener('click', () => {
     html.classList.toggle('dark');
-    updateIcons(html.classList.contains('dark'));
+    const isDarkNow = html.classList.contains('dark');
+    localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
+    updateIcons(isDarkNow);
   });
 
   // --- Mobile Menu ---
@@ -187,7 +196,7 @@ export function initUI() {
     if (out) { out.innerHTML += `<br/><span class="text-white">❯ python gee_script.py</span><br/><span class="text-yellow-400">[Info] Authenticating with Earth Engine...</span><br/>[Info] NDVI computed successfully. Values: -0.04 to 0.82`; out.scrollTop = out.scrollHeight; }
   };
 
-  // --- GitHub Feed ---
+  // --- GitHub Feed & Calendar ---
   async function fetchGitHub() {
     const feed = document.getElementById('gh-feed');
     if (!feed) return;
@@ -214,6 +223,44 @@ export function initUI() {
     }
   }
   fetchGitHub();
+
+  if (typeof GitHubCalendar !== 'undefined') {
+    try {
+      GitHubCalendar(".calendar", "surajtharu", { responsive: true, global_stats: false });
+    } catch (e) {
+      console.warn('GitHub Calendar failed to load', e);
+    }
+  }
+
+  // --- Project Filtering & Search ---
+  const projectSearch = document.getElementById('project-search');
+  const projectFilter = document.getElementById('project-filter');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  function filterProjects() {
+    if (!projectSearch || !projectFilter || projectCards.length === 0) return;
+    const query = projectSearch.value.toLowerCase();
+    const filter = projectFilter.value.toLowerCase();
+    
+    projectCards.forEach(card => {
+      const title = card.getAttribute('data-title') || '';
+      const tags = card.getAttribute('data-tags') || '';
+      const matchesSearch = title.includes(query) || tags.includes(query);
+      const matchesFilter = filter === 'all' || tags.includes(filter);
+      
+      if (matchesSearch && matchesFilter) {
+        card.style.display = 'block';
+        setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'scale(1)'; }, 50);
+      } else {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.95)';
+        setTimeout(() => { card.style.display = 'none'; }, 300);
+      }
+    });
+  }
+
+  projectSearch?.addEventListener('input', filterProjects);
+  projectFilter?.addEventListener('change', filterProjects);
 
   // --- Global Hover Lift ---
   document.querySelectorAll('.rounded-xl.border, .rounded-lg.border').forEach(el => {
@@ -251,6 +298,7 @@ export function initUI() {
       { title: 'Navigate: Projects', icon: '🔭', action: () => { window.location.hash = '#projects'; } },
       { title: 'Navigate: Skills', icon: '🛠️', action: () => { window.location.hash = '#skills'; } },
       { title: 'Navigate: Contact', icon: '📬', action: () => { window.location.hash = '#contact'; } },
+      { title: 'Open Admin Panel', icon: '⚙️', action: () => { window.location.href = '/admin'; } },
       { title: 'Download Resume', icon: '📄', action: () => { playSound('click'); window.open('./Suraj_Tharu_CV.pdf', '_blank'); } },
       { title: 'Open AI Assistant', icon: '🤖', action: () => window.toggleChat?.() },
       { title: 'Accessibility Settings', icon: '👁️', action: () => document.getElementById('a11y-toggle')?.click() }
@@ -374,11 +422,78 @@ export function initUI() {
     }
   }
 
-  // --- Audio hooks for all interactive elements ---
+  // --- Konami Code Easter Egg (Matrix Rain) ---
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let konamiIdx = 0;
+  window.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIdx]) {
+      konamiIdx++;
+      if (konamiIdx === konamiCode.length) {
+        konamiIdx = 0;
+        triggerMatrixRain();
+      }
+    } else {
+      konamiIdx = 0;
+    }
+  });
+
+  function triggerMatrixRain() {
+    playSound('click');
+    const c = document.createElement('canvas');
+    c.style.position = 'fixed'; c.style.top = '0'; c.style.left = '0'; c.style.width = '100vw'; c.style.height = '100vh';
+    c.style.zIndex = '99999'; c.style.pointerEvents = 'none'; c.style.opacity = '0.8';
+    document.body.appendChild(c);
+    const ctx = c.getContext('2d');
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    const font_size = 14;
+    const columns = c.width / font_size;
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
+    function draw() {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.fillStyle = '#0F0';
+      ctx.font = font_size + 'px monospace';
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * font_size, drops[i] * font_size);
+        if (drops[i] * font_size > c.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+    }
+    const rainInt = setInterval(draw, 33);
+    setTimeout(() => { clearInterval(rainInt); c.style.transition = 'opacity 2s'; c.style.opacity = '0'; setTimeout(() => c.remove(), 2000); }, 10000);
+  }
+
+  // --- Mobile Gestures (Swipe to close contact modal) ---
+  let touchstartY = 0;
+  let touchendY = 0;
+  contactBox?.addEventListener('touchstart', e => { touchstartY = e.changedTouches[0].screenY; }, {passive: true});
+  contactBox?.addEventListener('touchend', e => {
+    touchendY = e.changedTouches[0].screenY;
+    if (touchendY - touchstartY > 100) closeContactModal(); // Swipe down to close
+  }, {passive: true});
+
+  // --- Audio hooks & Magnetic Buttons ---
   document.querySelectorAll('a, button, .hover-lift, .magnetic').forEach(el => {
     el.addEventListener('mouseenter', () => playSound('hover'));
     el.addEventListener('click', () => playSound('click'));
   });
+  
+  // Magnetic effect logic
+  document.querySelectorAll('.magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0px, 0px)';
+    });
+  });
+
   document.getElementById('term-in')?.addEventListener('keydown', () => playSound('type'));
   document.getElementById('cmd-input')?.addEventListener('keydown', () => playSound('type'));
   document.getElementById('chat-input')?.addEventListener('keydown', () => playSound('type'));

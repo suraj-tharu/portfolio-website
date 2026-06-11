@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= post.title %> - Suraj Tharu Chaudhary</title>
+  <meta name="description" content="<%= post.content.substring(0, 150).replace(/<[^>]*>?/gm, '') %>...">
+  <meta property="og:title" content="<%= post.title %>">
+  <meta property="og:description" content="<%= post.content.substring(0, 150).replace(/<[^>]*>?/gm, '') %>...">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= post.title %>">
+  <meta name="twitter:description" content="<%= post.content.substring(0, 150).replace(/<[^>]*>?/gm, '') %>...">
   <link href="/dist/tailwind.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Space+Mono&display=swap" rel="stylesheet">
@@ -46,11 +53,34 @@
           <time datetime="<%= post.createdAt.toISOString() %>">
             <%= new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
           </time>
+          <% if (typeof readTime !== 'undefined') { %>
+            <span>•</span>
+            <span><%= readTime %> min read</span>
+          <% } %>
         </div>
       </header>
 
-      <div class="prose prose-invert prose-lg">
-        <%- post.content %>
+      <div class="flex flex-col lg:flex-row gap-12">
+        <!-- Main Content -->
+        <div class="prose prose-invert prose-lg lg:w-3/4">
+          <%- htmlContent %>
+        </div>
+
+        <!-- Table of Contents Sidebar -->
+        <% if (typeof toc !== 'undefined' && toc.length > 0) { %>
+          <aside class="lg:w-1/4">
+            <div class="sticky top-24 p-6 glass-panel rounded-xl">
+              <h4 class="text-brand-400 font-mono font-bold mb-4 uppercase tracking-wider text-sm">Table of Contents</h4>
+              <ul class="space-y-2 text-sm text-slate-400">
+                <% toc.forEach(item => { %>
+                  <li style="margin-left: <%= (item.depth - 1) * 1 %>rem;">
+                    <a href="#<%= item.id %>" class="hover:text-brand-500 transition-colors"><%= item.text %></a>
+                  </li>
+                <% }) %>
+              </ul>
+            </div>
+          </aside>
+        <% } %>
       </div>
     </article>
   </main>
