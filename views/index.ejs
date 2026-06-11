@@ -59,8 +59,6 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"
-    integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
     integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07" crossorigin="anonymous">
 
@@ -76,12 +74,8 @@
     integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
     crossorigin="anonymous"></script>
   <!-- GSAP Animation -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
-    integrity="sha384-d+vyQ0dYcymoP8ndq2hW7FGC50nqGdXUEgoOUGxbbkAJwZqL7h+jKN0GGgn9hFDS"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"
-    integrity="sha384-poC0r6usQOX2Ayt/VGA+t81H6V3iN9L+Irz9iO8o+s0X20tLpzc9DOOtnKxhaQSE"
-    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
   <!-- D3.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"
     integrity="sha384-su5kReKyYlIFrI62mbQRKXHzFobMa7BHp1cK6julLPbnYcCW9NIZKJiTODjLPeDh"
@@ -98,14 +92,8 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
     integrity="sha384-0esPaJH+F9evp2lsJYN36SW7XkRbaYviuyF+PpnbjDXBC9i1CWGiJyGrXCyiyGqZ"
     crossorigin="anonymous"></script>
-  <!-- AOS Animations -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"
-    integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu"
-    crossorigin="anonymous"></script>
   <!-- Lenis Smooth Scroll -->
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"
-    integrity="sha384-1WGQkFnxW1xGT/hA+gFwSPtqEcYgEcv19oBIue7bnFPZo4zeeFhqBLWXwL7IBkY9"
-    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js" defer></script>
   <!-- Socket.io -->
   <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"
     integrity="sha384-Gr6Lu2Ajx28mzwyVR8CFkULdCU7kMlZ9UthllibdOSo6qAiN+yXNHqtgdTvFXMT4"
@@ -176,19 +164,7 @@
 
       <div class="hidden md:flex items-center gap-6">
         <span class="font-mono text-xs dark:text-slate-400 text-slate-600" id="live-clock">--:--:--</span>
-        <button id="dark-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic"
-          aria-label="Toggle dark mode">
-          <svg id="icon-moon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
-          </svg>
-          <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="5" />
-            <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-          </svg>
-        </button>
+
         <button id="lang-toggle"
           class="font-mono text-xs px-2 py-1 rounded border dark:border-slate-700 border-slate-300 hover:border-brand-500 transition magnetic"
           aria-label="Toggle language">EN</button>
@@ -202,12 +178,34 @@
           class="font-mono text-xs px-3 py-1.5 rounded-lg dark:bg-slate-800 bg-slate-200 hover:bg-brand-500 hover:text-white transition flex items-center gap-1 magnetic">⌘K</button>
       </div>
 
-      <button id="mob-btn" class="md:hidden p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200"
-        aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
+      <div class="flex items-center gap-2">
+        <button id="dark-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic"
+          aria-label="Toggle dark mode">
+          <svg id="icon-moon" class="w-5 h-5 dark:hidden" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+          </svg>
+          <svg id="icon-sun" class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+        </button>
+
+        <button id="a11y-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic" aria-label="Accessibility Settings">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
+          </svg>
+        </button>
+
+        <button id="mob-btn" class="md:hidden p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200"
+          aria-label="Menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile menu -->
@@ -1295,17 +1293,8 @@
     </div>
   </div>
 
-  <!-- A11Y TOGGLE -->
-  <button id="a11y-toggle"
-    class="fixed bottom-6 left-6 w-12 h-12 bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-700 transition z-[90] magnetic"
-    aria-label="Accessibility Settings">
-    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
-    </svg>
-  </button>
-
   <div id="a11y-menu"
-    class="hidden fixed bottom-20 left-6 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex-col gap-3 chat-msg">
+    class="hidden fixed top-20 right-4 w-64 bg-white dark:bg-slate-900 border dark:border-slate-700 rounded-2xl shadow-2xl p-4 z-[100] flex-col gap-3 chat-msg">
     <h3 class="text-sm font-bold border-b pb-2 dark:border-slate-700 dark:text-white">Accessibility</h3>
     <label for="a11y-motion" class="flex items-center justify-between text-sm cursor-pointer dark:text-slate-300">
       <span>Reduce Motion</span>

@@ -102,24 +102,52 @@ export function initUI() {
     setTimeout(type, 1000);
   }
 
-  // --- Custom Cursor ---
+  // --- Custom Cursor (GSAP-powered for buttery smoothness) ---
   const curDot = document.getElementById('cur-dot');
   const curRing = document.getElementById('cur-ring');
-  if (curDot && curRing) {
-    document.addEventListener('mousemove', (e) => {
-      curDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
-      curRing.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
-    });
+  if (curDot && curRing && window.matchMedia('(pointer: fine)').matches) {
+    let mouseX = 0, mouseY = 0;
+    if (typeof gsap !== 'undefined') {
+      const dotX = gsap.quickTo(curDot, 'x', { duration: 0.1, ease: 'power3' });
+      const dotY = gsap.quickTo(curDot, 'y', { duration: 0.1, ease: 'power3' });
+      const ringX = gsap.quickTo(curRing, 'x', { duration: 0.5, ease: 'power3' });
+      const ringY = gsap.quickTo(curRing, 'y', { duration: 0.5, ease: 'power3' });
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        dotX(mouseX - 3); dotY(mouseY - 3);
+        ringX(mouseX - 18); ringY(mouseY - 18);
+      });
+
+      // Scale ring on hoverable elements
+      document.querySelectorAll('a, button, .project-card, [data-cursor-hover]').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          gsap.to(curRing, { scale: 2, duration: 0.3, ease: 'power2.out' });
+        });
+        el.addEventListener('mouseleave', () => {
+          gsap.to(curRing, { scale: 1, duration: 0.3, ease: 'power2.out' });
+        });
+      });
+    } else {
+      document.addEventListener('mousemove', (e) => {
+        curDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
+        curRing.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+      });
+    }
+  } else if (curDot && curRing) {
+    curDot.style.display = 'none';
+    curRing.style.display = 'none';
   }
 
-  // --- Progress Bar ---
-  window.addEventListener('scroll', () => {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  // --- Progress Bar (works with both Lenis and native scroll) ---
+  function updateProgressBar() {
+    const winScroll = document.documentElement.scrollTop;
     const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (winScroll / height) * 100;
-    const progressBar = document.getElementById('progress-bar');
+    const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    const progressBar = document.getElementById('scroll-progress');
     if (progressBar) progressBar.style.width = scrolled + '%';
-  });
+  }
+  window.addEventListener('scroll', updateProgressBar, { passive: true });
 
   // --- Interactive Terminal ---
   const termIn = document.getElementById('term-in');
@@ -162,14 +190,7 @@ export function initUI() {
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
   }
 
-  // --- Lenis Smooth Scroll ---
-  if (typeof Lenis !== 'undefined') try {
-    const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), direction: 'vertical', smooth: true });
-    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-    requestAnimationFrame(raf);
-  } catch (e) { console.warn('[Lenis] Smooth scroll error:', e.message); }
 
-  // --- Monaco Editor ---
   const monacoContainer = document.getElementById('monaco-container');
   if (monacoContainer && typeof require !== 'undefined') {
     const observer = new IntersectionObserver((entries) => {

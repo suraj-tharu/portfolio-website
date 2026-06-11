@@ -1,11 +1,40 @@
 // src/animations.js — GSAP Animations, Scroll Effects & Skill Charts
 
 export function initAnimations() {
+  // --- Lenis Smooth Scrolling ---
+  let lenis;
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    // Sync GSAP ScrollTrigger with Lenis
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0, 0);
+    }
+  }
+
   // --- GSAP Hero Text Reveal ---
   if (typeof gsap !== 'undefined') {
     gsap.from('.hero-word', {
-      y: 16, opacity: 0, duration: 0.8,
-      stagger: 0.12, ease: 'back.out(1.7)', delay: 0.2
+      y: 30, opacity: 0, duration: 1,
+      stagger: 0.1, ease: 'power4.out', delay: 0.2
     });
 
     gsap.to('#hero-photo-wrap', {
@@ -13,38 +42,94 @@ export function initAnimations() {
       duration: 1.5, ease: 'power3.inOut', delay: 0.5
     });
 
-    // --- GSAP ScrollTrigger Storytelling ---
+    // --- GSAP ScrollTrigger Storytelling (Replacing AOS) ---
     try {
       gsap.registerPlugin(ScrollTrigger);
-      gsap.from('#projects .group', {
-        scrollTrigger: { trigger: '#projects', start: 'top 70%' },
-        y: 100, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'back.out(1.7)'
+
+      // Animate elements that originally had data-aos
+      const aosElements = document.querySelectorAll('[data-aos]');
+      
+      aosElements.forEach(el => {
+        const animationType = el.getAttribute('data-aos');
+        const delayRaw = el.getAttribute('data-aos-delay');
+        const delay = delayRaw ? parseInt(delayRaw) / 1000 : 0;
+        
+        let fromVars = { opacity: 0, duration: 1, delay: delay, ease: 'power3.out' };
+        
+        if (animationType === 'fade-up') {
+          fromVars.y = 50;
+        } else if (animationType === 'fade-down') {
+          fromVars.y = -50;
+        } else if (animationType === 'fade-right') {
+          fromVars.x = -50;
+        } else if (animationType === 'fade-left') {
+          fromVars.x = 50;
+        } else if (animationType === 'zoom-in') {
+          fromVars.scale = 0.8;
+        }
+        
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse'
+          },
+          ...fromVars
+        });
       });
+
+      // Special animation for Project Cards (Staggered)
+      const projectSections = document.querySelectorAll('#projects, #featured-projects');
+      projectSections.forEach(section => {
+        const cards = section.querySelectorAll('.project-card');
+        if (cards.length > 0) {
+          gsap.from(cards, {
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 75%',
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'back.out(1.7)'
+          });
+        }
+      });
+
+      // --- Parallax on Background Orbs ---
+      document.querySelectorAll('.orb').forEach((orb, i) => {
+        const speed = i % 2 === 0 ? -0.3 : 0.3;
+        gsap.to(orb, {
+          yPercent: speed * 100,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: orb.closest('section') || document.body,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          }
+        });
+      });
+
+      // --- Stagger Section Headings ---
+      document.querySelectorAll('.sec-num, .section-heading').forEach(el => {
+        gsap.from(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+          },
+          x: -30,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+        });
+      });
+
     } catch (e) {
       console.warn('[GSAP] ScrollTrigger not available:', e.message);
     }
   }
-
-  // --- AOS Init ---
-  if (typeof AOS !== 'undefined') {
-    AOS.init({ once: true, offset: 50, duration: 800 });
-  } else {
-    document.querySelectorAll('[data-aos]').forEach(el => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-  }
-
-  // Safety net: reveal all AOS elements after 1.5s if stalled
-  setTimeout(() => {
-    document.querySelectorAll('[data-aos]').forEach(el => {
-      if (getComputedStyle(el).opacity === '0') {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-      }
-    });
-  }, 1500);
 
   // --- Chart.js Radar Chart ---
   if (typeof Chart !== 'undefined') {

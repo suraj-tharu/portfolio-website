@@ -34,10 +34,73 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 4px;
-  background: theme('colors.brand.500');
+  height: 3px;
+  background: linear-gradient(90deg, theme('colors.brand.400'), theme('colors.brand.600'));
   width: 0%;
   z-index: 9999;
-  transition: width 0.1s ease-out;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px theme('colors.brand.400');
 }
 
+/* Lenis smooth scroll setup */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Custom GSAP Cursor */
+#cur-dot, #cur-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+}
+#cur-dot {
+  width: 6px;
+  height: 6px;
+  background: theme('colors.brand.400');
+  border-radius: 50%;
+  transform-origin: center center;
+}
+#cur-ring {
+  width: 36px;
+  height: 36px;
+  border: 2px solid theme('colors.brand.500');
+  border-radius: 50%;
+  opacity: 0.6;
+  transform-origin: center center;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  @apply bg-brand-500 text-white px-4 py-2 z-[9999];
+  transition: top 0.3s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Section separator */
+.section-sep {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, theme('colors.brand.500') 50%, transparent);
+  opacity: 0.2;
+  margin: 0 auto;
+}
+
+/* Prevent AOS-style hidden elements from staying invisible if GSAP loaded */
+[data-aos] {
+  opacity: 1 !important;
+  transform: none !important;
+}
