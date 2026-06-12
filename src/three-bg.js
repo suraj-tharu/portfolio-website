@@ -1,139 +1,135 @@
-// src/three-bg.js — Interactive 3D GIS Earth Background
+// src/three-bg.js — Interactive 3D Cosmic Origin (Solar System) Background
 
 export function initThreeBackground() {
   const canvas = document.getElementById('hero-canvas');
   if (typeof THREE === 'undefined' || !canvas) {
-    console.warn('[Three.js] Library not loaded or canvas missing — skipping 3D Earth.');
+    console.warn('[Three.js] Library not loaded or canvas missing — skipping 3D Solar System.');
     return;
   }
 
   try {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(0, 0, 300);
+    // Camera positioned to view the solar system at an angle
+    camera.position.set(0, 150, 450);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
     // --- Lighting ---
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    sunLight.position.set(500, 300, 500);
-    scene.add(sunLight);
+    // The Sun emits light outward
+    const pointLight = new THREE.PointLight(0xffffff, 2, 800);
+    scene.add(pointLight);
 
-    const backLight = new THREE.DirectionalLight(0x0ea5e9, 1.2);
-    backLight.position.set(-500, -300, -500);
-    scene.add(backLight);
+    const solarSystemGroup = new THREE.Group();
+    // Tilt the entire solar system slightly for better viewing angle
+    solarSystemGroup.rotation.x = Math.PI / 8;
+    scene.add(solarSystemGroup);
 
-    // --- Earth Group ---
-    const earthGroup = new THREE.Group();
-    earthGroup.rotation.z = -23.5 * Math.PI / 180; // Earth's axial tilt
-    scene.add(earthGroup);
-
-    // 1. Earth Sphere (Using a stylized wireframe + solid base for GIS look)
-    const earthRadius = 70;
-    const earthGeo = new THREE.SphereGeometry(earthRadius, 64, 64);
-    
-    // We create a dark blue base
-    const earthMat = new THREE.MeshPhongMaterial({
-      color: 0x0f172a,
-      emissive: 0x020617,
-      specular: 0x38bdf8,
-      shininess: 20,
-      transparent: true,
-      opacity: 0.95
+    // --- The Sun (Cosmic Origin) ---
+    const sunRadius = 25;
+    const sunGeo = new THREE.SphereGeometry(sunRadius, 32, 32);
+    const sunMat = new THREE.MeshBasicMaterial({
+      color: 0xffaa00,
     });
-    const earthMesh = new THREE.Mesh(earthGeo, earthMat);
-    earthGroup.add(earthMesh);
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    solarSystemGroup.add(sun);
 
-    // 2. Wireframe Overlay (to give it a technical, engineering feel)
-    const wireMat = new THREE.MeshBasicMaterial({
-      color: 0x38bdf8,
-      wireframe: true,
+    // Sun Glow Halo
+    const sunHaloGeo = new THREE.SphereGeometry(sunRadius * 1.5, 32, 32);
+    const sunHaloMat = new THREE.MeshBasicMaterial({
+      color: 0xff8800,
       transparent: true,
-      opacity: 0.15
+      opacity: 0.3,
+      blending: THREE.AdditiveBlending,
+      side: THREE.BackSide
     });
-    const wireMesh = new THREE.Mesh(earthGeo, wireMat);
-    wireMesh.scale.set(1.01, 1.01, 1.01);
-    earthGroup.add(wireMesh);
+    const sunHalo = new THREE.Mesh(sunHaloGeo, sunHaloMat);
+    solarSystemGroup.add(sunHalo);
 
-    // 3. Atmosphere Glow
-    const atmosGeo = new THREE.SphereGeometry(earthRadius * 1.15, 64, 64);
-    const atmosMat = new THREE.MeshBasicMaterial({
-      color: 0x0ea5e9,
-      transparent: true,
-      opacity: 0.1,
-      side: THREE.BackSide,
-      blending: THREE.AdditiveBlending
-    });
-    const atmosMesh = new THREE.Mesh(atmosGeo, atmosMat);
-    scene.add(atmosMesh);
-
-    // --- GIS Markers (Plotting real coordinates) ---
-    // Helper to convert Lat/Lon to 3D Cartesian coordinates
-    const getCoordinatesFromLatLng = (lat, lng, radius) => {
-      const phi = (90 - lat) * (Math.PI / 180);
-      const theta = (lng + 180) * (Math.PI / 180);
-
-      const x = -(radius * Math.sin(phi) * Math.cos(theta));
-      const z = (radius * Math.sin(phi) * Math.sin(theta));
-      const y = (radius * Math.cos(phi));
-
-      return new THREE.Vector3(x, y, z);
-    };
-
-    const locations = [
-      { name: 'Nepal (Kathmandu)', lat: 27.7172, lng: 85.3240, color: 0x10b981 }, // Green
-      { name: 'Surkhet (Research)', lat: 28.6015, lng: 81.6322, color: 0xf59e0b }, // Amber
-      { name: 'Nawalparasi', lat: 27.5319, lng: 83.6922, color: 0x8b5cf6 },       // Purple
-      { name: 'USA (Silicon Valley)', lat: 37.3875, lng: -122.0575, color: 0x38bdf8 } // Blue
+    // --- Planets ---
+    const planetData = [
+      { name: 'Mercury', radius: 1.5, distance: 40, speed: 0.04, color: 0xa8a8a8 },
+      { name: 'Venus',   radius: 3,   distance: 60, speed: 0.015, color: 0xe6e6fa },
+      { name: 'Earth',   radius: 3.5, distance: 85, speed: 0.01, color: 0x0ea5e9 },
+      { name: 'Mars',    radius: 2,   distance: 110, speed: 0.008, color: 0xef4444 },
+      { name: 'Jupiter', radius: 10,  distance: 160, speed: 0.002, color: 0xf59e0b },
+      { name: 'Saturn',  radius: 8,   distance: 220, speed: 0.0009, color: 0xfcd34d, hasRings: true },
+      { name: 'Uranus',  radius: 6,   distance: 270, speed: 0.0004, color: 0x2dd4bf },
+      { name: 'Neptune', radius: 6,   distance: 310, speed: 0.0001, color: 0x3b82f6 },
     ];
 
-    const markers = [];
+    const planetPivots = [];
 
-    locations.forEach(loc => {
-      // Create glowing point
-      const markerGeo = new THREE.SphereGeometry(1.5, 16, 16);
-      const markerMat = new THREE.MeshBasicMaterial({ 
-        color: loc.color,
-        transparent: true,
-        opacity: 0.8
+    // Helper material for orbit rings
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.05,
+      side: THREE.DoubleSide
+    });
+
+    planetData.forEach((data, index) => {
+      // Orbit Ring
+      const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
+      const orbitMesh = new THREE.Mesh(orbitGeo, ringMat);
+      orbitMesh.rotation.x = Math.PI / 2; // Lie flat
+      solarSystemGroup.add(orbitMesh);
+
+      // Pivot to control revolution
+      const pivot = new THREE.Object3D();
+      // Randomize starting position
+      pivot.rotation.y = Math.random() * Math.PI * 2;
+      solarSystemGroup.add(pivot);
+
+      // Planet Mesh
+      const planetGeo = new THREE.SphereGeometry(data.radius, 32, 32);
+      const planetMat = new THREE.MeshStandardMaterial({
+        color: data.color,
+        roughness: 0.6,
+        metalness: 0.1
       });
-      const marker = new THREE.Mesh(markerGeo, markerMat);
+      const planetMesh = new THREE.Mesh(planetGeo, planetMat);
+      planetMesh.position.set(data.distance, 0, 0);
 
-      // Add a larger glowing halo around the marker
-      const haloGeo = new THREE.SphereGeometry(3, 16, 16);
-      const haloMat = new THREE.MeshBasicMaterial({
-        color: loc.color,
-        transparent: true,
-        opacity: 0.3,
-        blending: THREE.AdditiveBlending
+      // Saturn Rings
+      if (data.hasRings) {
+        const saturnRingGeo = new THREE.RingGeometry(data.radius * 1.4, data.radius * 2.2, 32);
+        const saturnRingMat = new THREE.MeshStandardMaterial({
+          color: 0xc2b280,
+          transparent: true,
+          opacity: 0.8,
+          side: THREE.DoubleSide
+        });
+        const saturnRing = new THREE.Mesh(saturnRingGeo, saturnRingMat);
+        saturnRing.rotation.x = Math.PI / 2.2;
+        planetMesh.add(saturnRing);
+      }
+
+      pivot.add(planetMesh);
+      
+      // Store reference to animate
+      planetPivots.push({
+        pivot: pivot,
+        mesh: planetMesh,
+        speed: data.speed,
+        rotationSpeed: 0.02 + Math.random() * 0.02
       });
-      const halo = new THREE.Mesh(haloGeo, haloMat);
-      marker.add(halo);
-
-      // Position based on Lat/Lng
-      const pos = getCoordinatesFromLatLng(loc.lat, loc.lng, earthRadius + 0.5);
-      marker.position.copy(pos);
-      
-      earthGroup.add(marker);
-      
-      // Store for animation pulse
-      markers.push({ mesh: marker, halo: halo, originalScale: 1, pulseAngle: Math.random() * Math.PI * 2 });
     });
 
     // --- Starry Background ---
     const starsGeo = new THREE.BufferGeometry();
-    const starsCount = 1500;
+    const starsCount = 2500;
     const posArray = new Float32Array(starsCount * 3);
     for (let i = 0; i < starsCount * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 2000;
     }
     starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const starsMat = new THREE.PointsMaterial({ size: 1.5, color: 0xffffff, transparent: true, opacity: 0.7 });
+    const starsMat = new THREE.PointsMaterial({ size: 1.5, color: 0xffffff, transparent: true, opacity: 0.6 });
     const stars = new THREE.Points(starsGeo, starsMat);
     scene.add(stars);
 
@@ -158,24 +154,32 @@ export function initThreeBackground() {
       if (!document.body.classList.contains('a11y-reduce-motion')) {
         const t = clock.getElapsedTime();
 
-        // Rotate the Earth
-        earthGroup.rotation.y = t * 0.05; // 0.05 radians per second
-        stars.rotation.y = t * 0.01;
+        // Rotate Sun
+        sun.rotation.y = t * 0.05;
+        
+        // Pulse Sun Halo slightly
+        const haloScale = 1 + Math.sin(t * 2) * 0.05;
+        sunHalo.scale.set(haloScale, haloScale, haloScale);
 
-        // Pulse the GIS markers
-        markers.forEach(m => {
-          m.pulseAngle += 0.05;
-          const scale = 1 + Math.sin(m.pulseAngle) * 0.4;
-          m.halo.scale.set(scale, scale, scale);
-          m.halo.material.opacity = 0.3 * (1.5 - scale);
+        // Slow rotation of entire solar system and stars for dynamic feel
+        solarSystemGroup.rotation.y = t * 0.005;
+        stars.rotation.y = t * 0.002;
+
+        // Animate Planets
+        planetPivots.forEach(p => {
+          p.pivot.rotation.y += p.speed; // Revolution around sun
+          p.mesh.rotation.y += p.rotationSpeed; // Rotation on axis
         });
 
         // Parallax effect on camera
-        camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
-        camera.position.y += (-mouseY * 50 - camera.position.y) * 0.05;
-        // Shift camera down slightly as we scroll
-        camera.position.z = 300 + scrollY * 0.1;
-        camera.lookAt(scene.position);
+        camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
+        camera.position.y += (150 + -mouseY * 50 - camera.position.y) * 0.05;
+        
+        // Shift camera back slightly as we scroll to see more of the system
+        const targetZ = 450 + scrollY * 0.2;
+        camera.position.z += (targetZ - camera.position.z) * 0.05;
+        
+        camera.lookAt(solarSystemGroup.position);
       }
 
       renderer.render(scene, camera);
@@ -191,6 +195,6 @@ export function initThreeBackground() {
     });
 
   } catch (e) {
-    console.warn('[Three.js] Earth Render error:', e.message);
+    console.warn('[Three.js] Solar System Render error:', e.message);
   }
 }
