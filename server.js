@@ -227,8 +227,14 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.get('/learning-hub', (req, res) => {
-  res.render('learning-hub');
+app.get('/learning-hub', async (req, res) => {
+  try {
+    const materials = await prisma.learningMaterial.findMany({ orderBy: { createdAt: 'asc' } });
+    res.render('learning-hub', { materials });
+  } catch (error) {
+    console.error('[DATABASE] Error fetching learning materials:', error);
+    res.render('learning-hub', { materials: [] });
+  }
 });
 
 // ─── ADMIN ROUTES & AUTH ──────────────────────────────────────────────────
@@ -272,7 +278,8 @@ app.get('/admin', authenticateAdmin, async (req, res) => {
   const projects = await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
   const blogs = await prisma.blogPost.findMany({ orderBy: { createdAt: 'desc' } });
   const messages = await prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } });
-  res.render('admin', { projects, blogs, messages });
+  const learningMaterials = await prisma.learningMaterial.findMany({ orderBy: { createdAt: 'desc' } });
+  res.render('admin', { projects, blogs, messages, learningMaterials });
 });
 
 app.post('/admin/api/projects', authenticateAdmin, async (req, res) => {
@@ -310,6 +317,21 @@ app.post('/admin/api/messages/:id/delete', authenticateAdmin, async (req, res) =
     await prisma.contactMessage.delete({ where: { id: parseInt(req.params.id) } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error deleting message'); }
+});
+
+app.post('/admin/api/learning-materials', authenticateAdmin, async (req, res) => {
+  try {
+    const { grade, subject, description, pdfUrl } = req.body;
+    await prisma.learningMaterial.create({ data: { grade, subject, description, pdfUrl } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error creating learning material'); }
+});
+
+app.post('/admin/api/learning-materials/:id/delete', authenticateAdmin, async (req, res) => {
+  try {
+    await prisma.learningMaterial.delete({ where: { id: parseInt(req.params.id) } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error deleting learning material'); }
 });
 
 // ─── Blog Detail Page ─────────────────────────────────────────────────────────

@@ -128,6 +128,58 @@
       </div>
     </div>
 
+    <!-- Learning Hub Section (Full Width below Projects/Blogs) -->
+    <div class="lg:col-span-3 space-y-8">
+      <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl">
+        <h2 class="text-2xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
+          <span class="text-brand-400">#</span> Manage Learning Hub Notes
+        </h2>
+        
+        <form action="/admin/api/learning-materials" method="POST" class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
+          <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Add New Note</h3>
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Grade / Category</label>
+              <select name="grade" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+                <option value="Grade 10">Grade 10</option>
+                <option value="Grade 11">Grade 11</option>
+                <option value="Grade 12">Grade 12</option>
+                <option value="Teacher Training">Teacher Training</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Subject Title</label>
+              <input type="text" name="subject" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="e.g. Digital Design">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs text-slate-400 mb-1">Description</label>
+              <input type="text" name="description" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="Short description of the notes">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-xs text-slate-400 mb-1">PDF URL (Google Drive, Dropbox, or direct link)</label>
+              <input type="url" name="pdfUrl" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="https://drive.google.com/file/d/...">
+            </div>
+          </div>
+          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Add Note</button>
+        </form>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <% learningMaterials.forEach(m => { %>
+            <div class="flex justify-between items-start p-4 bg-slate-950 rounded-xl border border-slate-800">
+              <div>
+                <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full uppercase"><%= m.grade %></span>
+                <div class="font-bold mt-2"><%= m.subject %></div>
+                <div class="text-xs text-slate-400 mt-1 line-clamp-1"><%= m.description || 'No description' %></div>
+              </div>
+              <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this note?');">
+                <button type="submit" class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
+              </form>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
     <!-- Contact Messages Section -->
     <div class="space-y-8">
       <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl sticky top-24">

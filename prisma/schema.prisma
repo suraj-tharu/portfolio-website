@@ -41,3 +41,12 @@ model ContactMessage {
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
+
+model LearningMaterial {
+  id          Int      @id @default(autoincrement())
+  grade       String   // e.g., "Grade 10", "Grade 12"
+  subject     String   // e.g., "Digital Design", "OOP using C++"
+  description String?
+  pdfUrl      String   // URL to download the PDF
+  createdAt   DateTime @default(now())
+}

@@ -42,98 +42,35 @@
       </div>
 
       <div class="space-y-12">
-        <!-- Grade 10 Notes -->
-        <section class="glass-card p-8 rounded-2xl border border-glass-border">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span class="text-custom-accent font-mono">01 //</span> Grade 10 Notes
-          </h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">Computer Science Fundamentals</h3>
-                <p class="text-sm text-custom-secondary">Complete notes for Grade 10.</p>
+        <% const categories = ["Grade 10", "Grade 11", "Grade 12", "Teacher Training"]; %>
+        <% categories.forEach((category, index) => { %>
+          <% const categoryMaterials = materials.filter(m => m.grade === category); %>
+          <% if (categoryMaterials.length > 0) { %>
+            <section class="glass-card p-8 rounded-2xl border border-glass-border">
+              <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <span class="text-custom-accent font-mono"><%= String(index + 1).padStart(2, '0') %> //</span> <%= category %>
+              </h2>
+              <div class="grid md:grid-cols-2 gap-4">
+                <% categoryMaterials.forEach(m => { %>
+                  <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
+                    <div>
+                      <h3 class="font-bold text-custom-primary"><%= m.subject %></h3>
+                      <p class="text-sm text-custom-secondary"><%= m.description || 'No description provided' %></p>
+                    </div>
+                    <a href="<%= m.pdfUrl %>" target="_blank" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition shrink-0 ml-4">PDF ↓</a>
+                  </div>
+                <% }) %>
               </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-            <!-- Additional files can go here -->
-          </div>
-        </section>
+            </section>
+          <% } %>
+        <% }) %>
 
-        <!-- Grade 11 -->
-        <section class="glass-card p-8 rounded-2xl border border-glass-border">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span class="text-custom-accent font-mono">02 //</span> Grade 11
-          </h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">COA Notes</h3>
-                <p class="text-sm text-custom-secondary">Computer Organization and Architecture</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">Web Development</h3>
-                <p class="text-sm text-custom-secondary">HTML, CSS, and basic JavaScript.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">Mobile Development</h3>
-                <p class="text-sm text-custom-secondary">Introduction to Mobile App Dev.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
+        <% if (!materials || materials.length === 0) { %>
+          <div class="text-center py-20 text-custom-secondary glass-card rounded-2xl border border-glass-border">
+            <p class="text-xl mb-4">No learning materials have been added yet.</p>
+            <p>Check back soon, or login to the admin panel to add some!</p>
           </div>
-        </section>
-
-        <!-- Grade 12 -->
-        <section class="glass-card p-8 rounded-2xl border border-glass-border">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span class="text-custom-accent font-mono">03 //</span> Grade 12
-          </h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">Contemporary Technology</h3>
-                <p class="text-sm text-custom-secondary">AI, IoT, Cloud Computing notes.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">Practical Files</h3>
-                <p class="text-sm text-custom-secondary">Lab manuals and project guidelines.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- Teacher Training -->
-        <section class="glass-card p-8 rounded-2xl border border-glass-border">
-          <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-            <span class="text-custom-accent font-mono">04 //</span> Teacher Training
-          </h2>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">ICT Integration</h3>
-                <p class="text-sm text-custom-secondary">Strategies for modern classrooms.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-            <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
-              <div>
-                <h3 class="font-bold text-custom-primary">AI Tools for Educators</h3>
-                <p class="text-sm text-custom-secondary">Using AI to enhance teaching.</p>
-              </div>
-              <a href="#" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition">PDF ↓</a>
-            </div>
-          </div>
-        </section>
+        <% } %>
 
       </div>
     </div>
