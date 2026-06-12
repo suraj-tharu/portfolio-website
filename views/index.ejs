@@ -137,7 +137,7 @@
 </head>
 
 <body class="dark:text-slate-300 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white has-custom-cursor overflow-x-hidden">
-  
+
   <!-- SCROLL PROGRESS BAR -->
   <div id="scroll-progress"></div>
 
@@ -1314,6 +1314,8 @@
     </label>
   </div>
 
+  <!-- Socket.io for Real-Time Visitor Counter & Cursors -->
+  <script src="/socket.io/socket.io.js"></script>
 
   <!-- bundle.js is deferred so it runs AFTER all synchronous CDN scripts above have executed -->
   <script src="/dist/bundle.js" defer></script>

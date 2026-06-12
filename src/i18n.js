@@ -56,7 +56,7 @@ export function initI18n() {
 
   // Toggle handler
   if (langToggleBtn) {
-    langToggleBtn.addEventListener('click', (e) => {
+    langToggleBtn.addEventListener('click', () => {
       currentLang = currentLang === 'EN' ? 'NP' : 'EN';
       localStorage.setItem('site_lang', currentLang);
       applyTranslations(currentLang);

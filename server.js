@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const { OpenAI } = require('openai');
 const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -342,10 +341,6 @@ app.get('/blog/:slug', async (req, res) => {
       return res.status(404).render('404', { message: 'Blog post not found.' });
     }
 
-    // Parse Markdown to HTML
-    const rawHtml = marked.parse(post.content);
-    const cleanHtml = DOMPurify.sanitize(rawHtml);
-
     // Calculate Read Time
     const wordCount = post.content.split(/\s+/).length;
     const readTime = Math.ceil(wordCount / 200); // 200 WPM
@@ -371,10 +366,6 @@ app.get('/blog/:slug', async (req, res) => {
 });
 
 // ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────
-const openai = new OpenAI({
-  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash',
-  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
-});
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio website of Suraj Tharu Chaudhary, a Computer Engineer from Nepal.
 Your goal is to answer questions about Suraj's skills, experience, and projects.
@@ -384,11 +375,11 @@ Keep your answers professional, concise, and enthusiastic. Never break character
 
 const chatSchema = z.object({
   message: z.string().min(1).max(500),
-  context: z.string().max(100).optional(),
+  context: z.string().max(200).optional().nullable(),
   history: z.array(z.object({
     role: z.enum(['user', 'assistant']),
     content: z.string().max(500)
-  })).max(10).optional()
+  })).max(30).optional().nullable()
 });
 
 app.post('/api/chat', apiLimiter, async (req, res) => {
@@ -413,22 +404,37 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
       dynamicSystemPrompt += `\n\nCURRENT CONTEXT: The user is looking at: ${context}.`;
     }
 
-    const messages = [{ role: 'system', content: dynamicSystemPrompt }];
+    const geminiMessages = [];
+    geminiMessages.push({ role: 'user', parts: [{ text: dynamicSystemPrompt }] });
+    geminiMessages.push({ role: 'model', parts: [{ text: 'Understood.' }] });
+    
     if (history && history.length > 0) {
       history.forEach(turn => {
-        messages.push({ role: turn.role, content: xss(turn.content) });
+        geminiMessages.push({
+          role: turn.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: xss(turn.content) }]
+        });
       });
     }
-    messages.push({ role: 'user', content: message });
+    geminiMessages.push({ role: 'user', parts: [{ text: message }] });
 
-    const response = await openai.chat.completions.create({
-      model: 'gemini-1.5-flash',
-      messages,
-      max_tokens: 200,
-      temperature: 0.7,
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const fetchResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents: geminiMessages })
     });
 
-    res.json({ reply: response.choices[0].message.content });
+    if (!fetchResponse.ok) {
+      const errData = await fetchResponse.text();
+      console.error('Gemini API Error:', errData);
+      throw new Error(`Gemini API returned ${fetchResponse.status}`);
+    }
+
+    const data = await fetchResponse.json();
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't process that.";
+
+    res.json({ reply: replyText });
   } catch (error) {
     console.error('AI API Error:', error.message || error);
     res.json({
@@ -540,6 +546,7 @@ app.use((req, res) => {
 });
 
 // Global error handler
+// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error('[EXPRESS ERROR]', err.stack);
   if (req.accepts('html')) {

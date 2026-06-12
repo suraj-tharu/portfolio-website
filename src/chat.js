@@ -118,7 +118,7 @@ export function initChat() {
       try {
         recognition.start();
         voiceBtn.classList.add('text-brand-500', 'animate-pulse');
-      } catch (e) { }
+      } catch (e) { console.warn('SpeechRecognition error:', e); }
     });
 
     recognition.onresult = (event) => {

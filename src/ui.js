@@ -521,9 +521,18 @@ export function initUI() {
 
   // --- Visitor Counter ---
   const visitEl = document.getElementById('visit-count');
-  if (visitEl) {
-    visitEl.textContent = '42';
-    setInterval(() => { visitEl.textContent = parseInt(visitEl.textContent || '42') + Math.floor(Math.random() * 2); }, 5000);
+  if (visitEl && typeof io !== 'undefined') {
+    const socket = io();
+    visitEl.textContent = '...';
+    socket.on('user-joined', (data) => {
+      visitEl.textContent = data.count || '0';
+    });
+    socket.on('user-left', (data) => {
+      visitEl.textContent = data.count || '0';
+    });
+    socket.on('current-users', (users) => {
+      visitEl.textContent = users.length.toString();
+    });
   }
 
   // --- Logic Gate Simulator ---

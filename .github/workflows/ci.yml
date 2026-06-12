@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
     strategy:
       matrix:
@@ -41,6 +43,7 @@ jobs:
       
     - name: Run E2E Tests
       env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
+        # Fallback to a dummy URL so Prisma initializes without crashing if the secret is missing
+        DATABASE_URL: "${{ secrets.DATABASE_URL != '' && secrets.DATABASE_URL || 'postgresql://dummy:dummy@localhost:5432/dummy' }}"
+        GOOGLE_GENERATIVE_AI_API_KEY: "${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY != '' && secrets.GOOGLE_GENERATIVE_AI_API_KEY || 'dummy_key' }}"
       run: npm run test:e2e
