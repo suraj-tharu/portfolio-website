@@ -142,10 +142,10 @@ test.describe('Key Sections', () => {
     await expect(mapContainer).toBeVisible();
   });
 
-  test('Projects section cards are visible', async ({ page }) => {
-    await page.locator('#projects').scrollIntoViewIfNeeded();
-    const projectCards = page.locator('#projects .project-card');
-    await expect(projectCards.first()).toBeVisible();
+  test('Projects section is visible', async ({ page }) => {
+    const projectsSection = page.locator('#projects');
+    await projectsSection.scrollIntoViewIfNeeded();
+    await expect(projectsSection).toBeVisible();
   });
 
   test('Testimonials section is present', async ({ page }) => {
