@@ -10,8 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Plus Jakarta Sans', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'sans-serif'],
+        display: ['Inter', '-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', 'sans-serif'],
         mono: ['Space Mono', 'monospace'],
       },
       colors: {
@@ -20,16 +20,24 @@ module.exports = {
           100: '#e0f2fe',
           200: '#bae6fd',
           300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
+          400: '#38BDF8', // Primary
+          500: '#38BDF8',
           600: '#0284c7',
           700: '#0369a1',
           800: '#075985',
           900: '#0f172a',
         },
+        custom: {
+          background: '#0A0F1F',
+          surface: '#111827',
+          primary: '#38BDF8',
+          secondary: '#E5E7EB',
+          text: '#FFFFFF',
+          accent: '#D4AF37',
+        },
         glass: {
           light: 'rgba(255, 255, 255, 0.1)',
-          dark: 'rgba(15, 23, 42, 0.6)',
+          dark: 'rgba(17, 24, 39, 0.6)', // Surface with opacity
           border: 'rgba(255, 255, 255, 0.1)',
         }
       },

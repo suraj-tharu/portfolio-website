@@ -227,6 +227,10 @@ app.get('/', async (req, res) => {
   }
 });
 
+app.get('/learning-hub', (req, res) => {
+  res.render('learning-hub');
+});
+
 // ─── ADMIN ROUTES & AUTH ──────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
 
