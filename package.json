@@ -14,7 +14,7 @@
     "build": "npm run build:css && npm run build:js",
     "dev:all": "concurrently \"nodemon server.js\" \"npm run watch:css\" \"npm run watch:js\"",
     "postinstall": "npm run prisma:generate",
-    "test": "node test.js",
+    "test": "npm run test:e2e",
     "test:e2e": "npx playwright test",
     "lint": "eslint . --ext .js"
   },

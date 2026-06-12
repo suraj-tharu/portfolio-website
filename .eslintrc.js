@@ -9,9 +9,27 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
+  globals: {
+    THREE: 'readonly',
+    gsap: 'readonly',
+    AOS: 'readonly',
+    Lenis: 'readonly',
+    monaco: 'readonly',
+    Chart: 'readonly',
+    d3: 'readonly',
+    io: 'readonly',
+    ScrollTrigger: 'readonly',
+    L: 'readonly',
+    GitHubCalendar: 'readonly',
+    QRCode: 'readonly'
+  },
   rules: {
-    'no-unused-vars': 'off',
-    'no-undef': 'off',
-    'no-empty': 'off'
+    // Keep reasonable defaults
+    'no-unused-vars': 'warn',
+    'no-undef': 'error',
+    'no-empty': 'warn',
+    'no-inner-declarations': 'warn',
+    'no-redeclare': 'warn',
+    'no-useless-escape': 'warn'
   }
 };
