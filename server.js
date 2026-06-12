@@ -350,8 +350,8 @@ app.get('/blog/:slug', async (req, res) => {
 
 // ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────
 const openai = new OpenAI({
-  apiKey: process.env.CLOUDFLARE_API_KEY || process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash',
-  baseURL: "https://api.cloudflare.com/client/v4/accounts/05511958e1d4f6bea91d7577b9d72db5/ai/v1",
+  apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash',
+  baseURL: "https://generativelanguage.googleapis.com/v1beta/openai/"
 });
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio website of Suraj Tharu Chaudhary, a Computer Engineer from Nepal.
@@ -380,9 +380,9 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     message = xss(message);
     if (context) context = xss(context);
 
-    if (!process.env.CLOUDFLARE_API_KEY) {
+    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
       return res.json({
-        reply: "Error: The Cloudflare API key has not been configured on the server yet."
+        reply: "Error: The Google AI API key has not been configured on the server yet."
       });
     }
 
@@ -400,7 +400,7 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     messages.push({ role: 'user', content: message });
 
     const response = await openai.chat.completions.create({
-      model: '@cf/meta/llama-3.1-8b-instruct',
+      model: 'gemini-1.5-flash',
       messages,
       max_tokens: 200,
       temperature: 0.7,
