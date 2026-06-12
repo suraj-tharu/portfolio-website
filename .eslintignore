@@ -1,0 +1,21 @@
+# Build output — minified bundles must not be linted
+dist/
+
+# Dependencies
+node_modules/
+
+# Prisma generated client
+generated/
+
+# Playwright test artifacts
+test-results/
+playwright-report/
+
+# One-off debug/utility scripts
+debug.js
+debug2.js
+extract.js
+generate_debug.js
+generate_pdf.js
+sri.js
+test.js
