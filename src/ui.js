@@ -90,7 +90,7 @@ export function initUI() {
   let phraseIdx = 0, charIdx = 0, isDeleting = false;
   const typewriterElement = document.getElementById('typewriter');
   if (typewriterElement) {
-    function type() {
+    const type = () => {
       const currentPhrase = phrases[phraseIdx];
       if (isDeleting) { typewriterElement.textContent = currentPhrase.substring(0, charIdx - 1); charIdx--; }
       else { typewriterElement.textContent = currentPhrase.substring(0, charIdx + 1); charIdx++; }
@@ -98,7 +98,7 @@ export function initUI() {
       if (!isDeleting && charIdx === currentPhrase.length) { typeSpeed = 2000; isDeleting = true; }
       else if (isDeleting && charIdx === 0) { isDeleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; typeSpeed = 500; }
       setTimeout(type, typeSpeed);
-    }
+    };
     setTimeout(type, 1000);
   }
 
@@ -324,15 +324,15 @@ export function initUI() {
       { title: 'Open AI Assistant', icon: '🤖', action: () => window.toggleChat?.() },
       { title: 'Accessibility Settings', icon: '👁️', action: () => document.getElementById('a11y-toggle')?.click() }
     ];
-    function toggleCmdPalette() {
+    const toggleCmdPalette = () => {
       if (cmdPalette.classList.contains('hidden')) {
         cmdPalette.classList.remove('hidden'); cmdPalette.classList.add('flex');
         cmdInput.value = ''; cmdInput.focus(); renderCmdResults('');
       } else {
         cmdPalette.classList.add('hidden'); cmdPalette.classList.remove('flex');
       }
-    }
-    function renderCmdResults(query) {
+    };
+    const renderCmdResults = (query) => {
       const filtered = commands.filter(c => c.title.toLowerCase().includes(query.toLowerCase()));
       cmdResults.innerHTML = filtered.map((c, i) => `
         <div class="cmd-item flex items-center gap-3 px-4 py-3 hover:bg-brand-500/10 dark:hover:bg-brand-500/20 cursor-pointer rounded-lg text-sm dark:text-slate-300 transition-colors" data-idx="${i}">
@@ -342,7 +342,7 @@ export function initUI() {
         el.addEventListener('mouseenter', () => playSound('hover'));
         el.addEventListener('click', () => { playSound('click'); commands[el.dataset.idx].action(); toggleCmdPalette(); });
       });
-    }
+    };
     document.getElementById('open-cmd')?.addEventListener('click', toggleCmdPalette);
     cmdBackdrop?.addEventListener('click', toggleCmdPalette);
     document.getElementById('cmd-close')?.addEventListener('click', toggleCmdPalette);
@@ -370,14 +370,14 @@ export function initUI() {
   const contactBox = document.getElementById('contact-box');
   const contactForm = document.getElementById('contact-form');
   const contactStatus = document.getElementById('contact-status');
-  function openContactModal() {
+  const openContactModal = () => {
     contactModal?.classList.remove('hidden'); contactModal?.classList.add('flex');
     setTimeout(() => { contactBox?.classList.remove('scale-95', 'opacity-0'); contactBox?.classList.add('scale-100', 'opacity-100'); document.getElementById('c-name')?.focus(); }, 10);
-  }
-  function closeContactModal() {
+  };
+  const closeContactModal = () => {
     contactBox?.classList.remove('scale-100', 'opacity-100'); contactBox?.classList.add('scale-95', 'opacity-0');
     setTimeout(() => { contactModal?.classList.add('hidden'); contactModal?.classList.remove('flex'); contactStatus?.classList.add('hidden'); contactForm?.reset(); }, 300);
-  }
+  };
   initConnBtn?.addEventListener('click', () => { playSound('click'); openContactModal(); });
   closeContact?.addEventListener('click', closeContactModal);
   contactBackdrop?.addEventListener('click', closeContactModal);
@@ -426,8 +426,8 @@ export function initUI() {
     const keys = {};
     window.addEventListener('keydown', e => keys[e.key] = true);
     window.addEventListener('keyup', e => keys[e.key] = false);
-    function resetGame() { gameScore = 0; if (scoreEl) scoreEl.innerText = gameScore; player = { x: 275, y: 350, w: 50, h: 20, speed: 6 }; fallingItems = []; }
-    function gameLoop() {
+    const resetGame = () => { gameScore = 0; if (scoreEl) scoreEl.innerText = gameScore; player = { x: 275, y: 350, w: 50, h: 20, speed: 6 }; fallingItems = []; };
+    const gameLoop = () => {
       gameCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
       if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
       if (keys['ArrowRight'] && player.x < gameCanvas.width - player.w) player.x += player.speed;
@@ -440,7 +440,7 @@ export function initUI() {
         if (item.y > gameCanvas.height) fallingItems.splice(i, 1);
       }
       gameLoopId = requestAnimationFrame(gameLoop);
-    }
+    };
   }
 
   // --- Konami Code Easter Egg (Matrix Rain) ---

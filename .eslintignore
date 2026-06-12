@@ -19,3 +19,6 @@ generate_debug.js
 generate_pdf.js
 sri.js
 test.js
+
+# Legacy frontend monolithic bundle
+app.js

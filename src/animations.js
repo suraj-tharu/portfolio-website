@@ -14,10 +14,10 @@ export function initAnimations() {
       touchMultiplier: 2,
     });
 
-    function raf(time) {
+    const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
-    }
+    };
     requestAnimationFrame(raf);
 
     // Sync GSAP ScrollTrigger with Lenis
@@ -219,12 +219,12 @@ export function initAnimations() {
     const link = svg.append('g').attr('stroke', '#334155').attr('stroke-opacity', 0.6)
       .selectAll('line').data(links).join('line').attr('stroke-width', 2);
 
-    function dragBehavior(sim) {
-      function dragstarted(event) { if (!event.active) sim.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; }
-      function dragged(event) { event.subject.fx = event.x; event.subject.fy = event.y; }
-      function dragended(event) { if (!event.active) sim.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; }
+    const dragBehavior = (sim) => {
+      const dragstarted = (event) => { if (!event.active) sim.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; };
+      const dragged = (event) => { event.subject.fx = event.x; event.subject.fy = event.y; };
+      const dragended = (event) => { if (!event.active) sim.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; };
       return d3.drag().on('start', dragstarted).on('drag', dragged).on('end', dragended);
-    }
+    };
 
     const node = svg.append('g').selectAll('circle').data(nodes).join('circle')
       .attr('r', d => d.radius)

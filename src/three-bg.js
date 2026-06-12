@@ -74,7 +74,7 @@ export function initThreeBackground() {
 
     // --- GIS Markers (Plotting real coordinates) ---
     // Helper to convert Lat/Lon to 3D Cartesian coordinates
-    function getCoordinatesFromLatLng(lat, lng, radius) {
+    const getCoordinatesFromLatLng = (lat, lng, radius) => {
       const phi = (90 - lat) * (Math.PI / 180);
       const theta = (lng + 180) * (Math.PI / 180);
 
@@ -83,7 +83,7 @@ export function initThreeBackground() {
       const y = (radius * Math.cos(phi));
 
       return new THREE.Vector3(x, y, z);
-    }
+    };
 
     const locations = [
       { name: 'Nepal (Kathmandu)', lat: 27.7172, lng: 85.3240, color: 0x10b981 }, // Green
@@ -152,7 +152,7 @@ export function initThreeBackground() {
 
     const clock = new THREE.Clock();
 
-    function animate() {
+    const animate = () => {
       requestAnimationFrame(animate);
 
       if (!document.body.classList.contains('a11y-reduce-motion')) {
