@@ -23,6 +23,26 @@ const DOMPurify = require('dompurify')(new JSDOM('').window);
 
 const app = express();
 
+const multer = require('multer');
+const fs = require('fs');
+
+// Ensure uploads directory exists
+const uploadDir = path.join(__dirname, 'frontend', 'dist', 'assets', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage: storage });
+
 // --- Edge Caching & Optimization ---
 app.use(compression({
   level: 6, // optimal balance between speed and compression
@@ -231,6 +251,16 @@ app.get('/api/portfolio-data', async (req, res) => {
   }
 });
 
+app.get('/api/timeline', async (req, res) => {
+  try {
+    const timeline = await prisma.timelineEvent.findMany({ orderBy: { orderIndex: 'asc' } });
+    res.json({ timeline });
+  } catch (error) {
+    console.error('[DATABASE] Error fetching timeline data:', error);
+    res.status(500).json({ error: 'Failed to fetch timeline' });
+  }
+});
+
 // NOTE: The SPA wildcard MUST come before the specific EJS routes, otherwise
 // React Router pages like /about, /projects etc. return 404 on refresh.
 // We skip it only if the path is a known server-side route.
@@ -309,13 +339,18 @@ app.get('/admin', authenticateAdmin, async (req, res) => {
   const blogs = await prisma.blogPost.findMany({ orderBy: { createdAt: 'desc' } });
   const messages = await prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' } });
   const learningMaterials = await prisma.learningMaterial.findMany({ orderBy: { createdAt: 'desc' } });
-  res.render('admin', { projects, blogs, messages, learningMaterials });
+  const timelineEvents = await prisma.timelineEvent.findMany({ orderBy: { orderIndex: 'asc' } });
+  res.render('admin', { projects, blogs, messages, learningMaterials, timelineEvents });
 });
 
-app.post('/admin/api/projects', authenticateAdmin, async (req, res) => {
+app.post('/admin/api/projects', authenticateAdmin, upload.single('imageFile'), async (req, res) => {
   try {
     const { title, description, imageUrl, githubUrl, liveUrl, tags } = req.body;
-    await prisma.project.create({ data: { title, description, imageUrl, githubUrl, liveUrl, tags } });
+    let finalImageUrl = imageUrl;
+    if (req.file) {
+      finalImageUrl = '/assets/uploads/' + req.file.filename;
+    }
+    await prisma.project.create({ data: { title, description, imageUrl: finalImageUrl, githubUrl, liveUrl, tags } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error creating project'); }
 });
@@ -327,10 +362,14 @@ app.post('/admin/api/projects/:id/delete', authenticateAdmin, async (req, res) =
   } catch (e) { res.status(500).send('Error deleting project'); }
 });
 
-app.post('/admin/api/blogs', authenticateAdmin, async (req, res) => {
+app.post('/admin/api/blogs', authenticateAdmin, upload.single('imageFile'), async (req, res) => {
   try {
     const { title, slug, content, published } = req.body;
-    await prisma.blogPost.create({ data: { title, slug, content, published: published === 'on' } });
+    let finalImageUrl = null;
+    if (req.file) {
+      finalImageUrl = '/assets/uploads/' + req.file.filename;
+    }
+    await prisma.blogPost.create({ data: { title, slug, content, imageUrl: finalImageUrl, published: published === 'on' } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error creating blog'); }
 });
@@ -362,6 +401,21 @@ app.post('/admin/api/learning-materials/:id/delete', authenticateAdmin, async (r
     await prisma.learningMaterial.delete({ where: { id: parseInt(req.params.id) } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error deleting learning material'); }
+});
+
+app.post('/admin/api/timeline', authenticateAdmin, async (req, res) => {
+  try {
+    const { year, role, location, orderIndex } = req.body;
+    await prisma.timelineEvent.create({ data: { year, role, location, orderIndex: parseInt(orderIndex) || 0 } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error creating timeline event'); }
+});
+
+app.post('/admin/api/timeline/:id/delete', authenticateAdmin, async (req, res) => {
+  try {
+    await prisma.timelineEvent.delete({ where: { id: parseInt(req.params.id) } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error deleting timeline event'); }
 });
 
 // ─── Blog Detail Page ─────────────────────────────────────────────────────────

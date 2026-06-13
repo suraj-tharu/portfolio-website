@@ -1,7 +1,14 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
-const timeline = [
+type TimelineEvent = {
+  id?: number;
+  year: string;
+  role: string;
+  location: string;
+};
+
+const defaultTimeline: TimelineEvent[] = [
   { year: "2013 - 2017", role: "B.E. Computer Engineering", location: "Mid-West University (Himalaya College of Engineering)" },
   { year: "2017", role: "Nepal Telecom Internship", location: "Kathmandu" },
   { year: "2018 - 2020", role: "Instructor", location: "Buddhi Bikash Secondary School" },
@@ -11,6 +18,7 @@ const timeline = [
 ];
 
 export default function AcademicTimeline() {
+  const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -18,6 +26,22 @@ export default function AcademicTimeline() {
   });
 
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  useEffect(() => {
+    fetch('/api/timeline')
+      .then(res => res.json())
+      .then(data => {
+        if (data.timeline && data.timeline.length > 0) {
+          setTimeline(data.timeline);
+        } else {
+          setTimeline(defaultTimeline);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching timeline:', error);
+        setTimeline(defaultTimeline);
+      });
+  }, []);
 
   return (
     <section id="timeline" className="bg-bg py-20 relative z-20 font-helvetica">

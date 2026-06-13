@@ -27,6 +27,7 @@ model BlogPost {
   title       String
   slug        String   @unique
   content     String
+  imageUrl    String?
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -48,5 +49,14 @@ model LearningMaterial {
   subject     String   // e.g., "Digital Design", "OOP using C++"
   description String?
   pdfUrl      String   // URL to download the PDF
+  createdAt   DateTime @default(now())
+}
+
+model TimelineEvent {
+  id          Int      @id @default(autoincrement())
+  year        String   // e.g., "2013 - 2017"
+  role        String   // e.g., "B.E. Computer Engineering"
+  location    String   // e.g., "Mid-West University"
+  orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
 }
