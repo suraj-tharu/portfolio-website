@@ -73,7 +73,7 @@ export function initThreeBackground() {
       side: THREE.DoubleSide
     });
 
-    planetData.forEach((data, index) => {
+    planetData.forEach(data => {
       // Orbit Ring
       const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
       const orbitMesh = new THREE.Mesh(orbitGeo, ringMat);
