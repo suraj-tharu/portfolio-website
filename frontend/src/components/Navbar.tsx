@@ -90,7 +90,7 @@ export default function Navbar() {
                     <a
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className="text-6xl md:text-8xl lg:text-[7rem] font-display italic leading-[0.85] tracking-tight hover:text-brand-light hover:translate-x-8 transition-all duration-300 inline-block"
+                      className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-brand-light hover:translate-x-8 transition-all duration-300 inline-block"
                     >
                       {link.label}
                     </a>

@@ -4,10 +4,16 @@ import { motion } from 'framer-motion';
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
+      setIsVisible(true);
       setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseLeave = () => {
+      setIsVisible(false);
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -20,13 +26,17 @@ export default function CustomCursor() {
     };
 
     window.addEventListener('mousemove', updateMousePosition);
+    document.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('mouseover', handleMouseOver);
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       window.removeEventListener('mouseover', handleMouseOver);
     };
   }, []);
+
+  if (!isVisible) return null;
 
   return (
     <>

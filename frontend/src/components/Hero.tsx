@@ -84,7 +84,7 @@ export default function Hero() {
           Collection '26
         </div>
         
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight text-white mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-2xl px-2 w-full">
+        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight text-[#f3f0e8] mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)] px-2 w-full">
           {name.map((word, i) => (
             <motion.span
               key={i}
@@ -98,11 +98,11 @@ export default function Hero() {
           ))}
         </h1>
         
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-text-secondary mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center">
-          An <span key={roleIndex} className="animate-role-fade-in inline-block text-accent font-semibold">{roles[roleIndex]}</span> from Nawalparasi West, Nepal.
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[#c8d1d9] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-md">
+          An <span key={roleIndex} className="animate-role-fade-in inline-block text-[#d9b876] font-semibold">{roles[roleIndex]}</span> from Nawalparasi West, Nepal.
         </div>
         
-        <p className="blur-in text-fluid-xs md:text-fluid-base text-muted max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
+        <p className="blur-in text-fluid-xs md:text-fluid-base text-[#a1a1aa] max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
           Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions.
         </p>
 

@@ -89,10 +89,10 @@ export default function AcademicTimeline() {
 
                 {/* Content Box */}
                 <div className={`w-full md:w-[45%] flex ${i % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
-                  <div className="bg-surface/50 border border-stroke p-6 rounded-2xl w-full hover:bg-surface transition-colors">
-                    <span className="text-blue-400 text-sm font-medium tracking-wider">{item.year}</span>
-                    <h3 className="text-xl font-bold text-text-primary mt-2 mb-1">{item.role}</h3>
-                    <p className="text-muted text-sm">{item.location}</p>
+                  <div className="bg-[#0f0f15]/80 backdrop-blur-md border border-[#3b3b4f] p-8 rounded-2xl w-full hover:bg-[#1a1a24]/90 transition-all duration-300 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+                    <span className="text-[#d9b876] text-base md:text-lg font-medium tracking-widest uppercase">{item.year}</span>
+                    <h3 className="text-2xl md:text-3xl font-display italic text-[#f3f0e8] mt-3 mb-2">{item.role}</h3>
+                    <p className="text-[#a1a1aa] text-base md:text-lg">{item.location}</p>
                   </div>
                 </div>
 
