@@ -6,13 +6,32 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
+  /* Dark Mode (default) */
+  :root, .dark {
     --bg: 0 0% 4%;
     --surface: 0 0% 8%;
     --text: 0 0% 96%;
+    --text-secondary: 0 0% 70%;
     --muted: 0 0% 53%;
     --stroke: 0 0% 12%;
     --accent: 0 0% 96%;
+    --brand: 210 40% 60%;
+    --brand-light: 210 50% 70%;
+    --brand-dark: 210 40% 45%;
+  }
+
+  /* Light Mode */
+  .light {
+    --bg: 0 0% 97%;
+    --surface: 0 0% 92%;
+    --text: 0 0% 6%;
+    --text-secondary: 0 0% 30%;
+    --muted: 0 0% 47%;
+    --stroke: 0 0% 85%;
+    --accent: 0 0% 6%;
+    --brand: 210 60% 45%;
+    --brand-light: 210 60% 55%;
+    --brand-dark: 210 60% 35%;
   }
 
   body {
@@ -40,4 +59,9 @@
 /* Base Helvetica font specifically for the Automation section as requested */
 .font-helvetica {
   font-family: 'Helvetica Now Var', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Smooth theme transitions */
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

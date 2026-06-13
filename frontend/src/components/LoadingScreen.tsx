@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const words = ["Design", "Create", "Inspire"];
+const words = ["Research", "Innovate", "Teach"];
 
 type LoadingScreenProps = {
   onComplete: () => void;

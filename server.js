@@ -204,8 +204,8 @@ app.use(express.static(path.join(__dirname, '.'), {
   }
 }));
 // Explicit safe top-level file routes
-const safeTopLevelFiles = ['style.css', 'manifest.json', 'robots.txt', 'sitemap.xml', 'sw.js'];
-const safeImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.pdf'];
+const safeTopLevelFiles = ['style.css', 'manifest.json', 'robots.txt', 'sitemap.xml', 'sw.js', 'Suraj_Tharu_CV.pdf'];
+const safeImageExts = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.pdf', '.mp4'];
 app.use((req, res, next) => {
   const urlPath = req.path;
   const ext = path.extname(urlPath).toLowerCase();
@@ -231,8 +231,30 @@ app.get('/api/portfolio-data', async (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+// NOTE: The SPA wildcard MUST come before the specific EJS routes, otherwise
+// React Router pages like /about, /projects etc. return 404 on refresh.
+// We skip it only if the path is a known server-side route.
+app.get('*', (req, res, next) => {
+  const urlPath = req.path;
+  // Skip for server-rendered EJS pages and API endpoints
+  if (
+    urlPath.startsWith('/api') || 
+    urlPath.startsWith('/admin') || 
+    urlPath.startsWith('/learning-hub') || 
+    urlPath.startsWith('/blog/') ||
+    urlPath.startsWith('/dist/') ||
+    urlPath.startsWith('/assets/') ||
+    urlPath.startsWith('/icons/')
+  ) {
+    return next();
+  }
+  const indexPath = path.join(__dirname, 'frontend', 'dist', 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error('[SPA] Failed to serve index.html:', err.message);
+      res.status(500).render('404', { message: 'Application failed to load. Please try again.' });
+    }
+  });
 });
 
 app.get('/learning-hub', async (req, res) => {

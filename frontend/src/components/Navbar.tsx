@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { Sun, Moon, ArrowUpRight } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { useTheme } from '../hooks/useTheme';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -11,6 +12,7 @@ function cn(...inputs: ClassValue[]) {
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('Home');
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,17 +27,17 @@ export default function Navbar() {
       <motion.div 
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 3, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          "inline-flex items-center rounded-full backdrop-blur-md border border-white/10 bg-surface/80 px-2 py-2 transition-shadow duration-300",
+          "inline-flex items-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 px-2 py-2 transition-shadow duration-300",
           scrolled && "shadow-md shadow-black/20"
         )}
       >
         {/* Logo */}
         <a href="#" className="group relative w-9 h-9 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110">
-          <div className="absolute inset-0 accent-gradient group-hover:rotate-180 transition-transform duration-700" />
+          <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
           <div className="absolute inset-[2px] bg-bg rounded-full flex items-center justify-center">
-            <span className="font-display italic text-[13px] text-text-primary">JA</span>
+            <span className="font-display italic text-[13px] text-text-primary">SC</span>
           </div>
         </a>
 
@@ -45,18 +47,18 @@ export default function Navbar() {
         {/* Links */}
         <div className="flex items-center gap-1 mx-1">
           {[
-            { label: 'Journey', href: '#timeline' },
             { label: 'Expertise', href: '#skills' },
             { label: 'Work', href: '#work' },
             { label: 'Academia', href: '#research' },
+            { label: 'Hub', href: '/learning-hub', external: true },
           ].map((link) => (
             <a
               key={link.label}
               href={link.href}
-              onClick={() => setActive(link.label)}
+              onClick={() => !link.external && setActive(link.label)}
               className={cn(
                 "text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-colors",
-                active === link.label 
+                active === link.label && !link.external
                   ? "text-text-primary bg-stroke/50" 
                   : "text-muted hover:text-text-primary hover:bg-stroke/30"
               )}
@@ -68,6 +70,15 @@ export default function Navbar() {
 
         {/* Divider */}
         <div className="hidden sm:block w-px h-5 bg-stroke mx-2" />
+
+        {/* Theme Toggle */}
+        <button 
+          onClick={toggleTheme}
+          className="p-2 text-muted hover:text-brand-400 transition-colors rounded-full hover:bg-stroke/30 mr-1"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+        </button>
 
         {/* Contact Button */}
         <a href="#contact" className="group relative inline-flex items-center justify-center rounded-full p-[2px] ml-1 shrink-0 overflow-hidden text-xs sm:text-sm font-medium">

@@ -4,14 +4,21 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
         bg: "hsl(var(--bg))",
         surface: "hsl(var(--surface))",
         "text-primary": "hsl(var(--text))",
+        "text-secondary": "hsl(var(--text-secondary))",
         muted: "hsl(var(--muted))",
         stroke: "hsl(var(--stroke))",
+        brand: {
+          400: "hsl(var(--brand-light))",
+          500: "hsl(var(--brand))",
+          600: "hsl(var(--brand-dark))",
+        }
       },
       fontFamily: {
         body: ['Inter', 'sans-serif'],

@@ -31,13 +31,10 @@ export default function StudentResources() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {resources.map((res, i) => (
-            <motion.div
+            <a
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group relative overflow-hidden bg-surface border border-stroke rounded-3xl p-8 hover:border-blue-500/50 transition-colors cursor-pointer"
+              href="/learning-hub"
+              className="group relative overflow-hidden bg-surface border border-stroke rounded-3xl p-8 hover:border-blue-500/50 transition-colors cursor-pointer block"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               
@@ -53,7 +50,7 @@ export default function StudentResources() {
                   <Download size={16} /> Download
                 </div>
               </div>
-            </motion.div>
+            </a>
           ))}
         </div>
 

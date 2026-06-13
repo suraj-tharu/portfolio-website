@@ -21,8 +21,15 @@ import Certifications from './components/Certifications';
 import AwardsAchievements from './components/AwardsAchievements';
 import InteractiveResume from './components/InteractiveResume';
 
+// Master Features
+import Contact from './components/Contact';
+import LiveCursors from './components/LiveCursors';
+import ChatWidget from './components/ChatWidget';
+import { useTheme } from './hooks/useTheme';
+
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  useTheme(); // Initialize theme
 
   useEffect(() => {
     const handleHashClick = (e: MouseEvent) => {
@@ -45,9 +52,12 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-bg min-h-screen text-text-primary">
+    <div className="bg-bg min-h-screen text-text-primary transition-colors duration-300">
       {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
       
+      <LiveCursors />
+      <ChatWidget />
+
       <div 
         className="transition-opacity duration-1000 ease-in-out" 
         style={{ 
@@ -82,6 +92,7 @@ export default function App() {
           <Stats />
           
           <InteractiveResume />
+          <Contact />
         </main>
         <Footer />
       </div>

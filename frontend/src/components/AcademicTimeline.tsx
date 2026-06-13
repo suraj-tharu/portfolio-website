@@ -2,7 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 
 const timeline = [
-  { year: "2013 - 2017", role: "B.E. Computer Engineering", location: "Himalaya College of Engineering" },
+  { year: "2013 - 2017", role: "B.E. Computer Engineering", location: "Mid-West University (Himalaya College of Engineering)" },
   { year: "2017", role: "Nepal Telecom Internship", location: "Kathmandu" },
   { year: "2018 - 2020", role: "Instructor", location: "Buddhi Bikash Secondary School" },
   { year: "2020 - 2021", role: "Instructor", location: "Additional Technical School" },

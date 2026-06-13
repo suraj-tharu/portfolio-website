@@ -2,9 +2,9 @@ import { motion } from 'framer-motion';
 
 export default function Stats() {
   const stats = [
-    { label: "Years Experience", value: "05+" },
-    { label: "Projects Done", value: "95+" },
-    { label: "Satisfied Clients", value: "200%" },
+    { label: "Years Teaching", value: "08+" },
+    { label: "Students Taught", value: "500+" },
+    { label: "Research Papers", value: "02" },
   ];
 
   return (
