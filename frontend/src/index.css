@@ -6,32 +6,32 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark Mode (default) */
+  /* Dark Mode (default) - Midnight & Neon */
   :root, .dark {
-    --bg: 0 0% 4%;
-    --surface: 0 0% 8%;
-    --text: 0 0% 96%;
-    --text-secondary: 0 0% 70%;
-    --muted: 0 0% 53%;
-    --stroke: 0 0% 12%;
-    --accent: 0 0% 96%;
-    --brand: 210 40% 60%;
-    --brand-light: 210 50% 70%;
-    --brand-dark: 210 40% 45%;
+    --bg: 224 71% 4%;
+    --surface: 224 71% 10%;
+    --text: 210 40% 98%;
+    --text-secondary: 215 20% 65%;
+    --muted: 215 20% 40%;
+    --stroke: 215 20% 15%;
+    --accent: 199 89% 48%;
+    --brand: 238 80% 65%;
+    --brand-light: 238 80% 75%;
+    --brand-dark: 238 80% 55%;
   }
 
-  /* Light Mode */
+  /* Light Mode - Pristine Snow & Royal */
   .light {
-    --bg: 0 0% 97%;
-    --surface: 0 0% 92%;
-    --text: 0 0% 6%;
-    --text-secondary: 0 0% 30%;
-    --muted: 0 0% 47%;
-    --stroke: 0 0% 85%;
-    --accent: 0 0% 6%;
-    --brand: 210 60% 45%;
-    --brand-light: 210 60% 55%;
-    --brand-dark: 210 60% 35%;
+    --bg: 0 0% 100%;
+    --surface: 210 40% 96%;
+    --text: 222 47% 11%;
+    --text-secondary: 215 16% 47%;
+    --muted: 215 16% 65%;
+    --stroke: 214 32% 91%;
+    --accent: 222 47% 11%;
+    --brand: 221 83% 53%;
+    --brand-light: 221 83% 63%;
+    --brand-dark: 221 83% 43%;
   }
 
   body {
@@ -41,11 +41,18 @@
 
 @layer utilities {
   .accent-gradient {
-    background-image: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+    background-image: linear-gradient(90deg, #06B6D4 0%, #6366F1 100%);
   }
 
   .hero-heading {
-    background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+    background: linear-gradient(180deg, #FFFFFF 0%, #94A3B8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .light .hero-heading {
+    background: linear-gradient(180deg, #0F172A 0%, #475569 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
