@@ -1,0 +1,81 @@
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+
+const timeline = [
+  { year: "2013 - 2017", role: "B.E. Computer Engineering", location: "Himalaya College of Engineering" },
+  { year: "2017", role: "Nepal Telecom Internship", location: "Kathmandu" },
+  { year: "2018 - 2020", role: "Instructor", location: "Buddhi Bikash Secondary School" },
+  { year: "2020 - 2021", role: "Instructor", location: "Additional Technical School" },
+  { year: "2021 - 2024", role: "Senior Instructor", location: "Trishahid Namuna Ma. Vi." },
+  { year: "2024 - Present", role: "MSc Information System Engineering", location: "Purbanchal University" },
+];
+
+export default function AcademicTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start center", "end center"]
+  });
+
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  return (
+    <section id="timeline" className="bg-bg py-20 relative z-20 font-helvetica">
+      <div className="max-w-[800px] mx-auto px-6 md:px-10">
+        
+        <div className="flex flex-col items-center text-center mb-16">
+          <span className="text-xs text-muted uppercase tracking-[0.3em] mb-4">Journey</span>
+          <h2 className="text-4xl md:text-6xl text-text-primary tracking-tight font-display italic">
+            Academic Timeline
+          </h2>
+        </div>
+
+        <div ref={containerRef} className="relative">
+          {/* Glowing Line Background */}
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-stroke -translate-x-1/2" />
+          
+          {/* Animated Glowing Line */}
+          <motion.div 
+            className="absolute left-8 md:left-1/2 top-0 w-[2px] accent-gradient -translate-x-1/2 origin-top shadow-[0_0_15px_rgba(137,170,204,0.8)]"
+            style={{ height: lineHeight }}
+          />
+
+          <div className="flex flex-col gap-12 py-10">
+            {timeline.map((item, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className={`relative flex items-center justify-start md:justify-between w-full pl-20 md:pl-0 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
+              >
+                {/* Node Dot */}
+                <div className="absolute left-8 md:left-1/2 w-4 h-4 rounded-full bg-surface border-2 border-stroke -translate-x-1/2 z-10" />
+                <motion.div 
+                  className="absolute left-8 md:left-1/2 w-4 h-4 rounded-full bg-blue-400 -translate-x-1/2 z-10"
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: "-150px" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  style={{ boxShadow: '0 0 10px rgba(96,165,250,0.5)' }}
+                />
+
+                {/* Content Box */}
+                <div className={`w-full md:w-[45%] flex ${i % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}>
+                  <div className="bg-surface/50 border border-stroke p-6 rounded-2xl w-full hover:bg-surface transition-colors">
+                    <span className="text-blue-400 text-sm font-medium tracking-wider">{item.year}</span>
+                    <h3 className="text-xl font-bold text-text-primary mt-2 mb-1">{item.role}</h3>
+                    <p className="text-muted text-sm">{item.location}</p>
+                  </div>
+                </div>
+
+              </motion.div>
+            ))}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}

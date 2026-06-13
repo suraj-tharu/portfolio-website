@@ -117,9 +117,10 @@ app.use(helmet({
         "https://fonts.gstatic.com",       // Google Fonts actual font files
         "https://images.unsplash.com",     // Unsplash project/blog images
         "https://api.dicebear.com",        // DiceBear avatar API
+        "https://stream.mux.com",          // HLS Video Stream
         ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
-      mediaSrc: ["'self'", "blob:"],
+      mediaSrc: ["'self'", "blob:", "https://stream.mux.com", "https://d8j0ntlcm91z4.cloudfront.net"],
       workerSrc: ["'self'", "blob:"],
     },
   },
@@ -185,6 +186,10 @@ app.use('/dist', express.static(path.join(__dirname, 'dist'), {
   maxAge: '1y',
   immutable: true,
 }));
+app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'assets'), {
+  maxAge: '1y',
+  immutable: true,
+}));
 app.use('/icons', express.static(path.join(__dirname, 'icons'), { maxAge: '1d' }));
 app.use(express.static(path.join(__dirname, '.'), {
   maxAge: '1d',
@@ -193,7 +198,7 @@ app.use(express.static(path.join(__dirname, '.'), {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith('.html') || filePath.endsWith('.ejs')) {
       res.setHeader('Cache-Control', 'public, max-age=0');
-    } else if (filePath.includes('/dist/')) {
+    } else if (filePath.includes('/dist/') || filePath.includes('/assets/')) {
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
     }
   }
@@ -206,7 +211,7 @@ app.use((req, res, next) => {
   const ext = path.extname(urlPath).toLowerCase();
   const base = path.basename(urlPath);
   // Block any request that tries to reach a sensitive file at the root level
-  if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/icons/') &&
+  if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/icons/') && !urlPath.startsWith('/assets/') &&
       !safeTopLevelFiles.includes(base) && !safeImageExts.includes(ext) &&
       urlPath !== '/') {
     // Allow only known safe patterns — everything else goes to route handlers
@@ -215,15 +220,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', async (req, res) => {
+app.get('/api/portfolio-data', async (req, res) => {
   try {
     const projects = await prisma.project.findMany({ orderBy: { createdAt: 'desc' } });
     const blogs = await prisma.blogPost.findMany({ where: { published: true }, orderBy: { createdAt: 'desc' } });
-    res.render('index', { projects, blogs });
+    res.json({ projects, blogs });
   } catch (error) {
-    console.error('[DATABASE] Error fetching data:', error);
-    res.render('index', { projects: [], blogs: [] });
+    console.error('[DATABASE] Error fetching API data:', error);
+    res.status(500).json({ error: 'Failed to fetch data' });
   }
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 });
 
 app.get('/learning-hub', async (req, res) => {

@@ -778,107 +778,101 @@
   function initThreeBackground() {
     const canvas = document.getElementById("hero-canvas");
     if (typeof THREE === "undefined" || !canvas) {
-      console.warn("[Three.js] Library not loaded or canvas missing \u2014 skipping 3D Earth.");
+      console.warn("[Three.js] Library not loaded or canvas missing \u2014 skipping 3D Solar System.");
       return;
     }
     try {
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2e3);
-      camera.position.set(0, 0, 300);
+      camera.position.set(0, 150, 450);
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      const ambientLight = new THREE.AmbientLight(16777215, 0.4);
+      const ambientLight = new THREE.AmbientLight(16777215, 0.2);
       scene.add(ambientLight);
-      const sunLight = new THREE.DirectionalLight(16777215, 1.5);
-      sunLight.position.set(500, 300, 500);
-      scene.add(sunLight);
-      const backLight = new THREE.DirectionalLight(959977, 1.2);
-      backLight.position.set(-500, -300, -500);
-      scene.add(backLight);
-      const earthGroup = new THREE.Group();
-      earthGroup.rotation.z = -23.5 * Math.PI / 180;
-      scene.add(earthGroup);
-      const earthRadius = 70;
-      const earthGeo = new THREE.SphereGeometry(earthRadius, 64, 64);
-      const earthMat = new THREE.MeshPhongMaterial({
-        color: 988970,
-        emissive: 132631,
-        specular: 3718648,
-        shininess: 20,
-        transparent: true,
-        opacity: 0.95
+      const pointLight = new THREE.PointLight(16777215, 2, 800);
+      scene.add(pointLight);
+      const solarSystemGroup = new THREE.Group();
+      solarSystemGroup.rotation.x = Math.PI / 8;
+      scene.add(solarSystemGroup);
+      const sunRadius = 25;
+      const sunGeo = new THREE.SphereGeometry(sunRadius, 32, 32);
+      const sunMat = new THREE.MeshBasicMaterial({
+        color: 16755200
       });
-      const earthMesh = new THREE.Mesh(earthGeo, earthMat);
-      earthGroup.add(earthMesh);
-      const wireMat = new THREE.MeshBasicMaterial({
-        color: 3718648,
-        wireframe: true,
+      const sun = new THREE.Mesh(sunGeo, sunMat);
+      solarSystemGroup.add(sun);
+      const sunHaloGeo = new THREE.SphereGeometry(sunRadius * 1.5, 32, 32);
+      const sunHaloMat = new THREE.MeshBasicMaterial({
+        color: 16746496,
         transparent: true,
-        opacity: 0.15
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide
       });
-      const wireMesh = new THREE.Mesh(earthGeo, wireMat);
-      wireMesh.scale.set(1.01, 1.01, 1.01);
-      earthGroup.add(wireMesh);
-      const atmosGeo = new THREE.SphereGeometry(earthRadius * 1.15, 64, 64);
-      const atmosMat = new THREE.MeshBasicMaterial({
-        color: 959977,
-        transparent: true,
-        opacity: 0.1,
-        side: THREE.BackSide,
-        blending: THREE.AdditiveBlending
-      });
-      const atmosMesh = new THREE.Mesh(atmosGeo, atmosMat);
-      scene.add(atmosMesh);
-      const getCoordinatesFromLatLng = (lat, lng, radius) => {
-        const phi = (90 - lat) * (Math.PI / 180);
-        const theta = (lng + 180) * (Math.PI / 180);
-        const x = -(radius * Math.sin(phi) * Math.cos(theta));
-        const z = radius * Math.sin(phi) * Math.sin(theta);
-        const y = radius * Math.cos(phi);
-        return new THREE.Vector3(x, y, z);
-      };
-      const locations = [
-        { name: "Nepal (Kathmandu)", lat: 27.7172, lng: 85.324, color: 1096065 },
-        // Green
-        { name: "Surkhet (Research)", lat: 28.6015, lng: 81.6322, color: 16096779 },
-        // Amber
-        { name: "Nawalparasi", lat: 27.5319, lng: 83.6922, color: 9133302 },
-        // Purple
-        { name: "USA (Silicon Valley)", lat: 37.3875, lng: -122.0575, color: 3718648 }
-        // Blue
+      const sunHalo = new THREE.Mesh(sunHaloGeo, sunHaloMat);
+      solarSystemGroup.add(sunHalo);
+      const planetData = [
+        { name: "Mercury", radius: 1.5, distance: 40, speed: 0.04, color: 11053224 },
+        { name: "Venus", radius: 3, distance: 60, speed: 0.015, color: 15132410 },
+        { name: "Earth", radius: 3.5, distance: 85, speed: 0.01, color: 959977 },
+        { name: "Mars", radius: 2, distance: 110, speed: 8e-3, color: 15680580 },
+        { name: "Jupiter", radius: 10, distance: 160, speed: 2e-3, color: 16096779 },
+        { name: "Saturn", radius: 8, distance: 220, speed: 9e-4, color: 16569165, hasRings: true },
+        { name: "Uranus", radius: 6, distance: 270, speed: 4e-4, color: 3003583 },
+        { name: "Neptune", radius: 6, distance: 310, speed: 1e-4, color: 3900150 }
       ];
-      const markers = [];
-      locations.forEach((loc) => {
-        const markerGeo = new THREE.SphereGeometry(1.5, 16, 16);
-        const markerMat = new THREE.MeshBasicMaterial({
-          color: loc.color,
-          transparent: true,
-          opacity: 0.8
+      const planetPivots = [];
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 16777215,
+        transparent: true,
+        opacity: 0.05,
+        side: THREE.DoubleSide
+      });
+      planetData.forEach((data, index) => {
+        const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
+        const orbitMesh = new THREE.Mesh(orbitGeo, ringMat);
+        orbitMesh.rotation.x = Math.PI / 2;
+        solarSystemGroup.add(orbitMesh);
+        const pivot = new THREE.Object3D();
+        pivot.rotation.y = Math.random() * Math.PI * 2;
+        solarSystemGroup.add(pivot);
+        const planetGeo = new THREE.SphereGeometry(data.radius, 32, 32);
+        const planetMat = new THREE.MeshStandardMaterial({
+          color: data.color,
+          roughness: 0.6,
+          metalness: 0.1
         });
-        const marker = new THREE.Mesh(markerGeo, markerMat);
-        const haloGeo = new THREE.SphereGeometry(3, 16, 16);
-        const haloMat = new THREE.MeshBasicMaterial({
-          color: loc.color,
-          transparent: true,
-          opacity: 0.3,
-          blending: THREE.AdditiveBlending
+        const planetMesh = new THREE.Mesh(planetGeo, planetMat);
+        planetMesh.position.set(data.distance, 0, 0);
+        if (data.hasRings) {
+          const saturnRingGeo = new THREE.RingGeometry(data.radius * 1.4, data.radius * 2.2, 32);
+          const saturnRingMat = new THREE.MeshStandardMaterial({
+            color: 12759680,
+            transparent: true,
+            opacity: 0.8,
+            side: THREE.DoubleSide
+          });
+          const saturnRing = new THREE.Mesh(saturnRingGeo, saturnRingMat);
+          saturnRing.rotation.x = Math.PI / 2.2;
+          planetMesh.add(saturnRing);
+        }
+        pivot.add(planetMesh);
+        planetPivots.push({
+          pivot,
+          mesh: planetMesh,
+          speed: data.speed,
+          rotationSpeed: 0.02 + Math.random() * 0.02
         });
-        const halo = new THREE.Mesh(haloGeo, haloMat);
-        marker.add(halo);
-        const pos = getCoordinatesFromLatLng(loc.lat, loc.lng, earthRadius + 0.5);
-        marker.position.copy(pos);
-        earthGroup.add(marker);
-        markers.push({ mesh: marker, halo, originalScale: 1, pulseAngle: Math.random() * Math.PI * 2 });
       });
       const starsGeo = new THREE.BufferGeometry();
-      const starsCount = 1500;
+      const starsCount = 2500;
       const posArray = new Float32Array(starsCount * 3);
       for (let i = 0; i < starsCount * 3; i++) {
         posArray[i] = (Math.random() - 0.5) * 2e3;
       }
       starsGeo.setAttribute("position", new THREE.BufferAttribute(posArray, 3));
-      const starsMat = new THREE.PointsMaterial({ size: 1.5, color: 16777215, transparent: true, opacity: 0.7 });
+      const starsMat = new THREE.PointsMaterial({ size: 1.5, color: 16777215, transparent: true, opacity: 0.6 });
       const stars = new THREE.Points(starsGeo, starsMat);
       scene.add(stars);
       let mouseX = 0, mouseY = 0;
@@ -895,18 +889,20 @@
         requestAnimationFrame(animate);
         if (!document.body.classList.contains("a11y-reduce-motion")) {
           const t = clock.getElapsedTime();
-          earthGroup.rotation.y = t * 0.05;
-          stars.rotation.y = t * 0.01;
-          markers.forEach((m) => {
-            m.pulseAngle += 0.05;
-            const scale = 1 + Math.sin(m.pulseAngle) * 0.4;
-            m.halo.scale.set(scale, scale, scale);
-            m.halo.material.opacity = 0.3 * (1.5 - scale);
+          sun.rotation.y = t * 0.05;
+          const haloScale = 1 + Math.sin(t * 2) * 0.05;
+          sunHalo.scale.set(haloScale, haloScale, haloScale);
+          solarSystemGroup.rotation.y = t * 5e-3;
+          stars.rotation.y = t * 2e-3;
+          planetPivots.forEach((p) => {
+            p.pivot.rotation.y += p.speed;
+            p.mesh.rotation.y += p.rotationSpeed;
           });
-          camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
-          camera.position.y += (-mouseY * 50 - camera.position.y) * 0.05;
-          camera.position.z = 300 + scrollY * 0.1;
-          camera.lookAt(scene.position);
+          camera.position.x += (mouseX * 100 - camera.position.x) * 0.05;
+          camera.position.y += (150 + -mouseY * 50 - camera.position.y) * 0.05;
+          const targetZ = 450 + scrollY * 0.2;
+          camera.position.z += (targetZ - camera.position.z) * 0.05;
+          camera.lookAt(solarSystemGroup.position);
         }
         renderer.render(scene, camera);
       };
@@ -917,7 +913,7 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
       });
     } catch (e) {
-      console.warn("[Three.js] Earth Render error:", e.message);
+      console.warn("[Three.js] Solar System Render error:", e.message);
     }
   }
 
