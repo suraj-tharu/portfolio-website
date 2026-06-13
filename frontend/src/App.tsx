@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import SmoothScroll from './components/SmoothScroll';
+import CustomCursor from './components/CustomCursor';
+import TerminalResume from './components/TerminalResume';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -23,7 +26,6 @@ import InteractiveResume from './components/InteractiveResume';
 
 // Master Features
 import Contact from './components/Contact';
-import LiveCursors from './components/LiveCursors';
 import ChatWidget from './components/ChatWidget';
 import { useTheme } from './hooks/useTheme';
 
@@ -52,50 +54,53 @@ export default function App() {
   }, []);
 
   return (
-    <div className="bg-bg min-h-screen text-text-primary transition-colors duration-300">
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
-      
-      <LiveCursors />
-      <ChatWidget />
+    <SmoothScroll>
+      <div className="bg-bg min-h-screen text-text-primary transition-colors duration-300">
+        {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+        
+        <CustomCursor />
+        <TerminalResume />
+        <ChatWidget />
 
-      <div 
-        className="transition-opacity duration-1000 ease-in-out" 
-        style={{ 
-          opacity: isLoading ? 0 : 1, 
-          height: isLoading ? '100vh' : 'auto', 
-          overflow: isLoading ? 'hidden' : 'visible' 
-        }}
-      >
-        <Navbar />
-        <main>
-          <Hero />
-          
-          <AcademicTimeline />
-          <SkillsVisualization />
-          <AboutMe />
-          
-          <TeachingExperience />
-          
-          <AutomationHero />
-          <SelectedWorks />
-          
-          <ResearchPublications />
-          <ResearchGallery />
-          
-          <Explorations />
-          
-          <StudentResources />
-          <Certifications />
-          <AwardsAchievements />
-          
-          <Journal />
-          <Stats />
-          
-          <InteractiveResume />
-          <Contact />
-        </main>
-        <Footer />
+        <div 
+          className="transition-opacity duration-1000 ease-in-out" 
+          style={{ 
+            opacity: isLoading ? 0 : 1, 
+            height: isLoading ? '100vh' : 'auto', 
+            overflow: isLoading ? 'hidden' : 'visible' 
+          }}
+        >
+          <Navbar />
+          <main>
+            <Hero />
+            
+            <AcademicTimeline />
+            <SkillsVisualization />
+            <AboutMe />
+            
+            <TeachingExperience />
+            
+            <AutomationHero />
+            <SelectedWorks />
+            
+            <ResearchPublications />
+            <ResearchGallery />
+            
+            <Explorations />
+            
+            <StudentResources />
+            <Certifications />
+            <AwardsAchievements />
+            
+            <Journal />
+            <Stats />
+            
+            <InteractiveResume />
+            <Contact />
+          </main>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </SmoothScroll>
   );
 }

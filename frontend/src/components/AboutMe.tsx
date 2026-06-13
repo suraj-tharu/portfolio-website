@@ -37,7 +37,7 @@ export default function AboutMe() {
 
   return (
     <section ref={containerRef} id="about" className="relative w-full min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-24 bg-[#0C0C0C] overflow-hidden font-kanit">
-      
+
       {/* Decorative Images */}
       <FadeIn delay={0.1} duration={0.9} x={-80} y={0} className="absolute z-0 top-[4%] left-[1%] sm:left-[2%] md:left-[4%] w-[120px] sm:w-[160px] md:w-[210px] h-auto hidden md:block">
         <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" alt="Moon icon" className="w-full h-auto" onError={e => (e.currentTarget.style.display = 'none')} />
@@ -57,7 +57,7 @@ export default function AboutMe() {
 
       {/* Center Content */}
       <div className="relative z-10 max-w-4xl flex flex-col items-center justify-center gap-16 w-full">
-        
+
         {/* Group 1: Heading + Text */}
         <div className="flex flex-col items-center justify-center gap-10">
           <FadeIn delay={0} y={40} className="w-full">
@@ -82,16 +82,16 @@ export default function AboutMe() {
           {/* Remaining Biography Paragraphs */}
           <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-muted text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 bg-surface/50 p-8 rounded-3xl border border-stroke shadow-xl backdrop-blur-sm">
             <p>
-              He completed his <strong className="text-[#D7E2EA]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University (Himalaya College of Engineering) and earned a <strong className="text-[#D7E2EA]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
+              He completed his <strong className="text-[#D7E2EA]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[#D7E2EA]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
             </p>
             <p>
               He successfully completed a six-month internship at <strong className="text-[#D7E2EA]">Nepal Telecom</strong>, where he gained practical experience in telecommunications systems and information technology infrastructure.
             </p>
             <p>
-              Mr. Tharu has extensive experience in technical education and vocational training. He served as an Instructor at <strong className="text-[#D7E2EA]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[#D7E2EA]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.
+              Mr. Tharu has extensive experience in technical education and vocational training. He served as an Senior Instructor at <strong className="text-[#D7E2EA]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[#D7E2EA]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.
             </p>
             <p>
-              Currently, he is working as a <strong className="text-[#D7E2EA]">Senior Instructor</strong> at Shree Tri Shaheed Model Secondary School, Andhikhola-1, Syangja. He has been actively involved in teaching, curriculum implementation, ICT integration in education, and technical coordination.
+              Currently, he is working as a <strong className="text-[#D7E2EA]">Co-Ordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. He has been actively involved in teaching, curriculum implementation, ICT integration in education, and technical coordination.
             </p>
           </FadeIn>
         </div>

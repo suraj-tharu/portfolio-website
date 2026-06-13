@@ -29,7 +29,7 @@ export default function TeachingExperience() {
   }, []);
 
   return (
-    <section ref={containerRef} className="bg-surface relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke">
+    <section ref={containerRef} className="bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke/30">
       
       <div className="absolute top-12 left-6 md:left-16 z-30">
         <span className="text-xs text-muted uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>

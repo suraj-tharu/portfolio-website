@@ -1,93 +1,124 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Sun, Moon, ArrowUpRight } from 'lucide-react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('Home');
+  const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isOpen]);
+
+  const navLinks = [
+    { label: 'Home', href: '#' },
+    { label: 'Expertise', href: '#skills' },
+    { label: 'Work', href: '#work' },
+    { label: 'Academia', href: '#research' },
+    { label: 'Learning Hub', href: '/learning-hub', external: true },
+    { label: 'Contact', href: '#contact' }
+  ];
+
+  const menuVars: any = {
+    initial: { scaleY: 0 },
+    animate: { scaleY: 1, transition: { duration: 0.7, ease: [0.12, 0, 0.39, 0] } },
+    exit: { scaleY: 0, transition: { duration: 0.7, ease: [0.12, 0, 0.39, 1] } }
+  };
+
+  const linkVars: any = {
+    initial: { y: "30vh", transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] } },
+    open: { y: 0, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] } }
+  };
+
+  const containerVars: any = {
+    initial: { transition: { staggerChildren: 0.09, staggerDirection: -1 } },
+    open: { transition: { delayChildren: 0.3, staggerChildren: 0.09, staggerDirection: 1 } }
+  };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6 px-4">
-      <motion.div 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className={cn(
-          "inline-flex items-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 px-2 py-2 transition-shadow duration-300",
-          scrolled && "shadow-md shadow-black/20"
-        )}
-      >
+    <>
+      {/* Floating Toggle Button */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12 pointer-events-none">
+        
         {/* Logo */}
-        <a href="#" className="group relative w-9 h-9 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110">
+        <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke">
           <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
           <div className="absolute inset-[2px] bg-bg rounded-full flex items-center justify-center">
-            <span className="font-display italic text-[13px] text-text-primary">SC</span>
+            <span className="font-display italic text-lg text-text-primary">SC</span>
           </div>
         </a>
 
-        {/* Divider */}
-        <div className="hidden sm:block w-px h-5 bg-stroke mx-2" />
+        {/* Controls */}
+        <div className="pointer-events-auto flex items-center gap-4">
+          <button 
+            onClick={toggleTheme}
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
 
-        {/* Links */}
-        <div className="flex items-center gap-1 mx-1">
-          {[
-            { label: 'Expertise', href: '#skills' },
-            { label: 'Work', href: '#work' },
-            { label: 'Academia', href: '#research' },
-            { label: 'Hub', href: '/learning-hub', external: true },
-          ].map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => !link.external && setActive(link.label)}
-              className={cn(
-                "text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-colors",
-                active === link.label && !link.external
-                  ? "text-text-primary bg-stroke/50" 
-                  : "text-muted hover:text-text-primary hover:bg-stroke/30"
-              )}
-            >
-              {link.label}
-            </a>
-          ))}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors group"
+          >
+            {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" />}
+          </button>
         </div>
+      </nav>
 
-        {/* Divider */}
-        <div className="hidden sm:block w-px h-5 bg-stroke mx-2" />
+      {/* Full Screen Overlay Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={menuVars}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            className="fixed inset-0 bg-[#050505] z-[90] origin-top text-white flex flex-col justify-center px-8 md:px-24"
+          >
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] opacity-[0.03] pointer-events-none mix-blend-screen" />
+            
+            <motion.div variants={containerVars} initial="initial" animate="open" exit="initial" className="flex flex-col gap-4">
+              {navLinks.map((link, i) => (
+                <div key={i} className="overflow-hidden">
+                  <motion.div variants={linkVars}>
+                    <a
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="text-6xl md:text-8xl lg:text-[7rem] font-display italic leading-[0.85] tracking-tight hover:text-brand-light hover:translate-x-8 transition-all duration-300 inline-block"
+                    >
+                      {link.label}
+                    </a>
+                  </motion.div>
+                </div>
+              ))}
+            </motion.div>
+            
+            {/* Footer info in nav */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 1 }}
+              className="absolute bottom-12 left-8 md:left-24 right-8 flex justify-between items-end text-muted text-sm border-t border-stroke/50 pt-6"
+            >
+              <div>
+                <p>Nawalparasi West, Nepal</p>
+                <p>suraj.tharu@example.com</p>
+              </div>
+              <div className="flex gap-4">
+                <a href="#" className="hover:text-brand-light transition-colors">LinkedIn</a>
+                <a href="#" className="hover:text-brand-light transition-colors">GitHub</a>
+              </div>
+            </motion.div>
 
-        {/* Theme Toggle */}
-        <button 
-          onClick={toggleTheme}
-          className="p-2 text-muted hover:text-brand-400 transition-colors rounded-full hover:bg-stroke/30 mr-1"
-          aria-label="Toggle theme"
-        >
-          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-        </button>
-
-        {/* Contact Button */}
-        <a href="#contact" className="group relative inline-flex items-center justify-center rounded-full p-[2px] ml-1 shrink-0 overflow-hidden text-xs sm:text-sm font-medium">
-          <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-          <div className="relative inline-flex items-center gap-2 bg-surface/90 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-text-primary hover:bg-surface transition-colors border border-white/5 group-hover:border-transparent">
-            Say hi <ArrowUpRight size={14} className="text-muted group-hover:text-text-primary transition-colors" />
-          </div>
-        </a>
-      </motion.div>
-    </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

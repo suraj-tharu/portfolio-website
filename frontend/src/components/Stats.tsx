@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 export default function Stats() {
   const stats = [
-    { label: "Years Teaching", value: "08+" },
+    { label: "Years Teaching", value: "05+" },
     { label: "Students Taught", value: "500+" },
     { label: "Research Papers", value: "02" },
   ];
@@ -12,7 +12,7 @@ export default function Stats() {
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 divide-y md:divide-y-0 md:divide-x divide-stroke">
           {stats.map((stat, i) => (
-            <motion.div 
+            <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -2,17 +2,17 @@ import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 
 const certifications = [
-  { title: "Advanced GIS Analysis", issuer: "Esri Training", date: "2025" },
+  { title: "Advanced GIS Analysis", issuer: "Esri Training", date: "2023" },
   { title: "Machine Learning with Python", issuer: "Coursera", date: "2024" },
-  { title: "Professional ICT Certification", issuer: "Nepal Telecom", date: "2023" },
-  { title: "Remote Sensing Workshop", issuer: "ICIMOD", date: "2023" },
+  { title: "Professional ICT Certification", issuer: "Nepal Telecom", date: "2025" },
+  { title: "Remote Sensing Workshop", issuer: "ICIMOD", date: "2026" },
 ];
 
 export default function Certifications() {
   return (
     <section className="bg-bg py-20 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10">
-        
+
         <div className="flex flex-col items-center text-center mb-16">
           <h2 className="text-3xl md:text-5xl text-text-primary tracking-tight font-display italic mb-4">
             Certifications & Training
