@@ -89,7 +89,7 @@ export default function Hero() {
         </div>
         
         <h1 className="name-reveal text-6xl md:text-8xl lg:text-[10rem] font-display italic leading-[0.85] tracking-tight text-text-primary mb-6">
-          Suraj Tharu
+          Suraj Tharu Chaudhary
         </h1>
         
         <div className="blur-in text-xl md:text-3xl font-display italic text-text-primary mb-8 flex items-center gap-2">

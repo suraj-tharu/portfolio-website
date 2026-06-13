@@ -79,10 +79,10 @@ export default function Footer() {
           <span className="italic">something special?</span>
         </h2>
         
-        <a href="mailto:surjtharu18@gmail.com" className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
+        <a href="mailto:suraj.xaudhary@gmail.com" className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
            <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
            <div className="absolute inset-[2px] bg-bg rounded-full" />
-           <span className="relative z-10 text-text-primary font-medium">surjtharu18@gmail.com</span>
+           <span className="relative z-10 text-text-primary font-medium">suraj.xaudhary@gmail.com</span>
         </a>
       </div>
 

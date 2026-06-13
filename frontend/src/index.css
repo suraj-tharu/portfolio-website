@@ -20,18 +20,18 @@
     --brand-dark: 238 80% 55%;
   }
 
-  /* Light Mode - Pristine Snow & Royal */
+  /* Light Mode - Ultra Readable & Vibrant */
   .light {
     --bg: 0 0% 100%;
-    --surface: 210 40% 96%;
-    --text: 222 47% 11%;
-    --text-secondary: 215 16% 47%;
-    --muted: 215 16% 65%;
-    --stroke: 214 32% 91%;
-    --accent: 222 47% 11%;
-    --brand: 221 83% 53%;
-    --brand-light: 221 83% 63%;
-    --brand-dark: 221 83% 43%;
+    --surface: 0 0% 95%;
+    --text: 0 0% 0%;
+    --text-secondary: 0 0% 25%;
+    --muted: 0 0% 40%;
+    --stroke: 0 0% 85%;
+    --accent: 0 0% 0%;
+    --brand: 221 83% 40%;
+    --brand-light: 221 83% 50%;
+    --brand-dark: 221 83% 30%;
   }
 
   body {

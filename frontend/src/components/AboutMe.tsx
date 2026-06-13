@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { FadeIn } from './FadeIn';
 
-const paragraphText = "Suraj Tharu is a Computer Engineering professional, educator, and researcher from Ramgram-18, Nawalparasi West, Nepal.";
+const paragraphText = "Suraj Tharu Chaudhary is a Computer Engineering professional, educator, and researcher from Ramgram-18, Nawalparasi West, Nepal.";
 
 // Extracted into its own component so hooks are called at top-level, not inside a .map()
 function AnimatedChar({ char, index, total, scrollYProgress }: {
