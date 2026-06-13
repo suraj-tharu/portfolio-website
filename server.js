@@ -281,8 +281,8 @@ app.get('*', (req, res, next) => {
   const indexPath = path.join(__dirname, 'frontend', 'dist', 'index.html');
   res.sendFile(indexPath, (err) => {
     if (err) {
-      console.error('[SPA] Failed to serve index.html:', err.message);
-      res.status(500).render('404', { message: 'Application failed to load. Please try again.' });
+      console.error('[SPA] Failed to serve index.html:', err.message, indexPath);
+      res.status(500).render('404', { message: 'Application failed to load. Please try again. Error: ' + err.message });
     }
   });
 });
