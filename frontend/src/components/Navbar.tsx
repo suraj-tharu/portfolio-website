@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
@@ -20,8 +21,9 @@ export default function Navbar() {
   const navLinks = [
     { label: t('nav.home'), href: '#' },
     { label: t('nav.expertise'), href: '#skills' },
-    { label: t('nav.work'), href: '#work' },
-    { label: t('nav.academia'), href: '#research' },
+    { label: t('nav.work'), href: '/#work' },
+    { label: t('nav.academia'), href: '/#research' },
+    { label: 'Dashboard', href: '/research' },
     { label: t('nav.learninghub'), href: '/learning-hub', external: true },
     { label: t('nav.contact'), href: '#contact' }
   ];
@@ -98,13 +100,23 @@ export default function Navbar() {
               {navLinks.map((link, i) => (
                 <div key={i} className="overflow-hidden">
                   <motion.div variants={linkVars}>
-                    <a
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-brand-light hover:translate-x-8 transition-all duration-300 inline-block"
-                    >
-                      {link.label}
-                    </a>
+                    {link.external || link.href.startsWith('/#') || link.href.startsWith('#') ? (
+                      <a
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </motion.div>
                 </div>
               ))}
