@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const { language, toggleLanguage, t } = useLanguage();
 
   useEffect(() => {
     if (isOpen) {
@@ -16,12 +18,12 @@ export default function Navbar() {
   }, [isOpen]);
 
   const navLinks = [
-    { label: 'Home', href: '#' },
-    { label: 'Expertise', href: '#skills' },
-    { label: 'Work', href: '#work' },
-    { label: 'Academia', href: '#research' },
-    { label: 'Learning Hub', href: '/learning-hub', external: true },
-    { label: 'Contact', href: '#contact' }
+    { label: t('nav.home'), href: '#' },
+    { label: t('nav.expertise'), href: '#skills' },
+    { label: t('nav.work'), href: '#work' },
+    { label: t('nav.academia'), href: '#research' },
+    { label: t('nav.learninghub'), href: '/learning-hub', external: true },
+    { label: t('nav.contact'), href: '#contact' }
   ];
 
   const menuVars: any = {
@@ -58,8 +60,17 @@ export default function Navbar() {
           <button 
             onClick={toggleTheme}
             className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors"
+            title="Toggle Theme"
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
+          <button 
+            onClick={toggleLanguage}
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors font-medium text-sm"
+            title="Toggle Language"
+          >
+            {language === 'en' ? 'NE' : 'EN'}
           </button>
 
           <button

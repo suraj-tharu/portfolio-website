@@ -3,13 +3,14 @@ import Hls from 'hls.js';
 import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import MagneticButton from './MagneticButton';
-
-const roles = ["Engineer", "Educator", "Researcher", "GIS Analyst"];
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
+  const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
+  const roles = [t('hero.role.engineer'), t('hero.role.educator'), t('hero.role.researcher'), t('hero.role.gis')];
 
   useEffect(() => {
     // Setup HLS Video
@@ -95,11 +96,11 @@ export default function Hero() {
         </h1>
 
         <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-md">
-          An <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> from Nawalparasi West, Nepal.
+          <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
         </div>
 
         <p className="blur-in text-fluid-xs md:text-fluid-base text-[var(--muted)] max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
-          Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions.
+          {t('hero.description')}
         </p>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
