@@ -26,7 +26,7 @@ export default function Hero() {
       hls.loadSource(videoSrc);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       });
 
       return () => {
@@ -35,7 +35,7 @@ export default function Hero() {
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = videoSrc;
       video.addEventListener('loadedmetadata', () => {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       });
     }
   }, []);
@@ -75,16 +75,12 @@ export default function Hero() {
           className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-30 mix-blend-screen"
         />
         {/* Obsidian Space Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-transparent to-[#0a0a0a]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/80 via-transparent to-[var(--bg)]" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 mt-12 w-full max-w-[100vw] overflow-x-hidden">
-        <div className="blur-in text-[clamp(0.6rem,1vw,0.75rem)] text-brand-light uppercase tracking-[0.3em] mb-4 md:mb-8 font-semibold">
-          Collection '26
-        </div>
-        
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight text-[#f3f0e8] mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)] px-2 w-full">
+        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)] px-2 w-full">
           {name.map((word, i) => (
             <motion.span
               key={i}
@@ -97,12 +93,12 @@ export default function Hero() {
             </motion.span>
           ))}
         </h1>
-        
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[#c8d1d9] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-md">
-          An <span key={roleIndex} className="animate-role-fade-in inline-block text-[#d9b876] font-semibold">{roles[roleIndex]}</span> from Nawalparasi West, Nepal.
+
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-md">
+          An <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> from Nawalparasi West, Nepal.
         </div>
-        
-        <p className="blur-in text-fluid-xs md:text-fluid-base text-[#a1a1aa] max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
+
+        <p className="blur-in text-fluid-xs md:text-fluid-base text-[var(--muted)] max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
           Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions.
         </p>
 
@@ -112,7 +108,7 @@ export default function Hero() {
               See Works
             </a>
           </MagneticButton>
-          
+
           <MagneticButton>
             <a href="#contact" className="inline-flex items-center justify-center rounded-full text-sm px-8 py-4 border-2 border-stroke bg-bg/50 backdrop-blur-md text-white hover:border-brand-light transition-all hover:scale-105">
               Reach out &rarr;

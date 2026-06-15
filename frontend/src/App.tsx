@@ -18,7 +18,7 @@ import AcademicTimeline from './components/AcademicTimeline';
 import SkillsVisualization from './components/SkillsVisualization';
 import TeachingExperience from './components/TeachingExperience';
 import ResearchPublications from './components/ResearchPublications';
-import ResearchGallery from './components/ResearchGallery';
+import GISShowcase from './components/GISShowcase';
 import StudentResources from './components/StudentResources';
 import Certifications from './components/Certifications';
 import AwardsAchievements from './components/AwardsAchievements';
@@ -84,7 +84,7 @@ export default function App() {
             <SelectedWorks />
             
             <ResearchPublications />
-            <ResearchGallery />
+            <GISShowcase />
             
             <Explorations />
             

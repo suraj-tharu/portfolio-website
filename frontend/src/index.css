@@ -6,53 +6,108 @@
 @tailwind utilities;
 
 @layer base {
-  /* Obsidian Dark Mode (default) - Deep space & Neon */
+  /* ═══════════════════════════════════════════════════════════
+     WORLD-CLASS PREMIUM COLOR SYSTEM — DARK MODE (Default)
+     Inspired by: Linear, Arc, Vercel, Stripe
+     Deep Obsidian + Violet Aura + Warm Gold
+  ═══════════════════════════════════════════════════════════ */
   :root, .dark {
-    --bg: #050505;
-    --surface: #0a0a0a;
-    --text: #f0f0f0;
-    --text-secondary: #a1a1aa;
-    --muted: #52525b;
-    --stroke: #27272a;
-    --accent: #d946ef;
-    --brand: #8b5cf6;
-    --brand-light: #a78bfa;
-    --brand-dark: #7c3aed;
+    /* Backgrounds — rich layered depth */
+    --bg: #080B14;               /* Deep midnight navy — warmer than pure black */
+    --surface: #0F1422;          /* Elevated surface — subtle navy */
+    --surface-2: #161C2E;        /* Cards, modals */
+    --surface-3: #1D2540;        /* Hover states */
+
+    /* Text — high contrast, readable */
+    --text: #EEF0F8;             /* Near white with cool tint — easy on eyes */
+    --text-secondary: #B8BFDB;   /* Secondary text — readable, not harsh */
+    --muted: #6B7494;            /* Muted — placeholder, metadata */
+
+    /* Borders */
+    --stroke: #232A42;           /* Subtle border */
+    --stroke-strong: #2E3856;    /* Stronger border on hover */
+
+    /* Brand / Accent — Violet Aurora */
+    --brand: #7B6EF6;            /* Rich violet — primary brand */
+    --brand-light: #A99EFF;      /* Light violet — hover, highlights */
+    --brand-dark: #5A4FD6;       /* Deep violet — active/pressed */
+
+    /* Accent — Warm Gold */
+    --accent: #F59E0B;           /* Warm amber-gold — contrast pop */
+    --accent-2: #EC4899;         /* Fuchsia — secondary accent */
+
+    /* Status */
+    --success: #10B981;          /* Emerald green */
+    --warning: #F59E0B;          /* Amber */
+    --error: #EF4444;            /* Red */
   }
 
-  /* Light Mode - Clean & Crisp */
+  /* ═══════════════════════════════════════════════════════════
+     WORLD-CLASS PREMIUM COLOR SYSTEM — LIGHT MODE
+     Warm cream-white + deep charcoal + rich indigo
+     Inspired by: Apple, Notion, Linear Light
+  ═══════════════════════════════════════════════════════════ */
   .light {
-    --bg: #ffffff;
-    --surface: #f4f4f5;
-    --text: #09090b;
-    --text-secondary: #3f3f46;
-    --muted: #71717a;
-    --stroke: #e4e4e7;
-    --accent: #c026d3;
-    --brand: #6d28d9;
-    --brand-light: #8b5cf6;
-    --brand-dark: #5b21b6;
+    /* Backgrounds — warm & airy */
+    --bg: #FAFAF8;               /* Warm cream-white — premium feel */
+    --surface: #F2F1EE;          /* Warm light gray — card bg */
+    --surface-2: #E8E7E3;        /* Slightly darker surface */
+    --surface-3: #DDDBD6;        /* Hover states */
+
+    /* Text — deep, rich, readable */
+    --text: #111118;             /* Near-black with warmth — maximum contrast */
+    --text-secondary: #3D3D4E;   /* Deep gray-blue — secondary text */
+    --muted: #7A7A8C;            /* Muted — metadata, placeholders */
+
+    /* Borders */
+    --stroke: #D8D7D3;           /* Warm light border */
+    --stroke-strong: #C4C3BE;    /* Stronger border on hover */
+
+    /* Brand / Accent — Deep Indigo */
+    --brand: #4F46E5;            /* Indigo 600 — strong, trustworthy */
+    --brand-light: #6D64F5;      /* Lighter indigo — hover */
+    --brand-dark: #3730A3;       /* Deep indigo — active */
+
+    /* Accent — Warm Amber */
+    --accent: #D97706;           /* Deep amber — contrast pop */
+    --accent-2: #DB2777;         /* Deep pink — secondary accent */
+
+    /* Status */
+    --success: #059669;          /* Deep emerald */
+    --warning: #D97706;          /* Deep amber */
+    --error: #DC2626;            /* Deep red */
   }
 
   body {
-    @apply bg-bg text-text-primary font-body antialiased selection:bg-purple-500/30 selection:text-white;
+    @apply bg-bg text-text-primary font-body antialiased;
+    selection-color: var(--brand-light);
     overflow-x: hidden;
+  }
+
+  /* Premium Selection */
+  ::selection {
+    background: rgba(123, 110, 246, 0.3);
+    color: var(--text);
+  }
+  .light ::selection {
+    background: rgba(79, 70, 229, 0.2);
+    color: var(--text);
   }
 
   /* Custom Premium Scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
     background: var(--bg);
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--stroke);
+    background: var(--stroke-strong);
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--muted);
+    background: var(--brand);
   }
 
-  /* Grain/Noise Overlay */
+  /* Grain/Noise Overlay — subtle premium texture */
   body::before {
     content: "";
     pointer-events: none;
@@ -64,29 +119,47 @@
     width: 200%;
     height: 200%;
     background: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');
-    opacity: 0.05;
+    opacity: 0.035;
     z-index: 9999;
     animation: noise 1s steps(2) infinite;
+    pointer-events: none;
+  }
+  /* Less grain in light mode */
+  .light body::before {
+    opacity: 0.015;
   }
 }
 
 @layer utilities {
+  /* Premium gradient — violet aurora to gold */
   .accent-gradient {
-    background-image: linear-gradient(90deg, #d946ef 0%, #8b5cf6 100%);
+    background-image: linear-gradient(135deg, #7B6EF6 0%, #EC4899 50%, #F59E0B 100%);
+  }
+  .light .accent-gradient {
+    background-image: linear-gradient(135deg, #4F46E5 0%, #DB2777 50%, #D97706 100%);
   }
 
+  /* Hero heading — dramatic gradient text */
   .hero-heading {
-    background: linear-gradient(180deg, #FFFFFF 0%, #a1a1aa 100%);
+    background: linear-gradient(160deg, #FFFFFF 0%, #EEF0F8 40%, #B8BFDB 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
   .light .hero-heading {
-    background: linear-gradient(180deg, #09090b 0%, #52525b 100%);
+    background: linear-gradient(160deg, #111118 0%, #3D3D4E 60%, #6B7494 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  /* Subtle glow on brand elements */
+  .brand-glow {
+    box-shadow: 0 0 20px rgba(123, 110, 246, 0.3), 0 0 40px rgba(123, 110, 246, 0.1);
+  }
+  .light .brand-glow {
+    box-shadow: 0 0 20px rgba(79, 70, 229, 0.2), 0 0 40px rgba(79, 70, 229, 0.08);
   }
 }
 
@@ -99,5 +172,5 @@
 }
 
 html {
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }

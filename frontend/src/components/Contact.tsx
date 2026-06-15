@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import MeetingWidget from './MeetingWidget';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -71,14 +72,26 @@ export default function Contact() {
           </p>
         </motion.div>
 
-        <div className="max-w-3xl mx-auto">
-          <motion.form 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+          {/* Meeting Widget Column */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex justify-center lg:justify-end"
+          >
+            <MeetingWidget />
+          </motion.div>
+
+          {/* Form Column */}
+          <motion.form 
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.3 }}
             onSubmit={handleSubmit}
-            className="bg-surface border border-stroke p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden"
+            className="bg-[var(--surface)] border border-[var(--stroke)] p-8 md:p-10 rounded-3xl shadow-xl relative overflow-hidden w-full max-w-md mx-auto lg:mx-0"
           >
             {/* Honeypot field (hidden) */}
             <input 
@@ -93,7 +106,7 @@ export default function Contact() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">Name</label>
+                <label htmlFor="name" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Name</label>
                 <input
                   type="text"
                   id="name"
@@ -101,12 +114,12 @@ export default function Contact() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full bg-bg border border-stroke rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-muted/50"
+                  className="w-full bg-[var(--bg)] border border-[var(--stroke)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)] transition-all placeholder:text-[var(--muted)]/50"
                   placeholder="John Doe"
                 />
               </div>
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-text-secondary mb-2">Email</label>
+                <label htmlFor="email" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -114,35 +127,35 @@ export default function Contact() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full bg-bg border border-stroke rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-muted/50"
+                  className="w-full bg-[var(--bg)] border border-[var(--stroke)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)] transition-all placeholder:text-[var(--muted)]/50"
                   placeholder="john@example.com"
                 />
               </div>
             </div>
 
             <div className="mb-6">
-              <label htmlFor="subject" className="block text-sm font-medium text-text-secondary mb-2">Subject (Optional)</label>
+              <label htmlFor="subject" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Subject (Optional)</label>
               <input
                 type="text"
                 id="subject"
                 name="subject"
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full bg-bg border border-stroke rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-muted/50"
+                className="w-full bg-[var(--bg)] border border-[var(--stroke)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)] transition-all placeholder:text-[var(--muted)]/50"
                 placeholder="Project Inquiry"
               />
             </div>
 
             <div className="mb-8">
-              <label htmlFor="message" className="block text-sm font-medium text-text-secondary mb-2">Message</label>
+              <label htmlFor="message" className="block text-sm font-medium text-[var(--text-secondary)] mb-2">Message</label>
               <textarea
                 id="message"
                 name="message"
                 required
-                rows={5}
+                rows={4}
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full bg-bg border border-stroke rounded-xl px-4 py-3 text-text-primary focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all placeholder:text-muted/50 resize-none"
+                className="w-full bg-[var(--bg)] border border-[var(--stroke)] rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)] transition-all placeholder:text-[var(--muted)]/50 resize-none"
                 placeholder="Tell me about your project..."
               ></textarea>
             </div>
@@ -150,7 +163,7 @@ export default function Contact() {
             <button
               type="submit"
               disabled={status === 'loading' || status === 'success'}
-              className="w-full bg-brand-500 hover:bg-brand-400 text-white font-medium py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:bg-brand-500 relative overflow-hidden group"
+              className="w-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white font-medium py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:bg-[var(--brand)] relative overflow-hidden group"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
               <span className="relative z-10 flex items-center gap-2">
