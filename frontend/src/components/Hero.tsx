@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
-import MagneticButton from './MagneticButton';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -30,7 +29,7 @@ export default function Hero() {
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play().catch(() => { });
       });
-      hls.on(Hls.Events.ERROR, (event, data) => {
+      hls.on(Hls.Events.ERROR, (_event, data) => {
         console.warn('HLS Error:', data);
         // Fallback: hide video if it fails
         if (video.parentElement) {

@@ -13,7 +13,7 @@ import { useTheme } from './hooks/useTheme';
 import { useGoogleAnalytics, useWebVitals, trackPageView } from './hooks/useAnalytics';
 import { useSkipToContent, usePrefersColorScheme } from './hooks/useAccessibility';
 import { initErrorTracking, enableConsoleSpy } from './utils/errorTracking';
-import { MagneticCursor, ParticleBackground, ChatWidget as PremiumChatWidget } from './components/premium';
+import { MagneticCursor, ParticleBackground, ChatWidget as PremiumChatWidget, EnhancedThemeToggle, FloatingNav } from './components/premium';
 
 import Home from './pages/Home';
 import ResearchDashboard from './pages/ResearchDashboard';
@@ -74,6 +74,20 @@ function AppContent() {
           <ChatWidget />
           <PremiumChatWidget />
           <CommandPalette />
+
+          {/* Premium Floating Navigation & Theme Toggle */}
+          <FloatingNav
+            links={[
+              { label: 'Home', href: '/' },
+              { label: 'Projects', href: '#work' },
+              { label: 'About', href: '#about' },
+              { label: 'Contact', href: '#contact' }
+            ]}
+            position="top"
+          />
+          <div className="fixed top-6 right-6 z-40">
+            <EnhancedThemeToggle />
+          </div>
 
           <div
             className="transition-opacity duration-1000 ease-in-out"
