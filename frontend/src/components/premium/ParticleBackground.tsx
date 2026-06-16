@@ -107,7 +107,7 @@ export const ParticleBackground = ({ count = 50, speed = 1 }) => {
     return (
         <canvas
             ref={canvasRef}
-            className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-20"
+            className="fixed inset-0 pointer-events-none opacity-15 dark:opacity-10"
             style={{ zIndex: 1 }}
         />
     );
