@@ -143,12 +143,16 @@ export function enableConsoleSpy() {
     const originalWarn = console.warn;
 
     console.error = function (...args: any[]) {
-        captureError(args.join(' '), 'error');
+        if (args.length > 0) {
+            captureError(args.join(' '), 'error');
+        }
         originalError.apply(console, args);
     };
 
     console.warn = function (...args: any[]) {
-        captureError(args.join(' '), 'warning');
+        if (args.length > 0) {
+            captureError(args.join(' '), 'warning');
+        }
         originalWarn.apply(console, args);
     };
 }

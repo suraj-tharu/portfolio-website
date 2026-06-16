@@ -34,7 +34,7 @@ function ScrollToTop() {
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
-  const { theme, setTheme } = useTheme();
+  const { theme, toggleTheme, setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
 
   // Initialize analytics

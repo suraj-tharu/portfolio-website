@@ -1,4 +1,4 @@
-import { ImgHTMLAttributes, useState, useEffect, useRef } from 'react';
+import { type ImgHTMLAttributes, useState, useEffect, useRef } from 'react';
 import { useLazyImage } from '../hooks/useIntersectionObserver';
 
 interface OptimizedImageProps extends ImgHTMLAttributes<HTMLImageElement> {

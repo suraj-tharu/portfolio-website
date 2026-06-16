@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useToast } from './Toast';
 import { useFormValidation, FormValidator } from '../utils/formValidation';
 import MeetingWidget from './MeetingWidget';

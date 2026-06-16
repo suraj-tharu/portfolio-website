@@ -23,13 +23,6 @@ export const PerformanceMonitor: React.FC = () => {
     useEffect(() => {
         // Collect Core Web Vitals
         if ('web-vital' in window) {
-            const collectMetric = (metric: any) => {
-                setMetrics(prev => ({
-                    ...prev,
-                    [metric.name.toLowerCase()]: Math.round(metric.value),
-                }));
-            };
-
             // Use PerformanceObserver for real-time metrics
             if ('PerformanceObserver' in window) {
                 try {

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CheckCircle, AlertCircle, Info, AlertTriangle, X } from 'lucide-react';
+import { Info, AlertTriangle, X } from 'lucide-react';
 
 interface ToastProps {
     id: string;
