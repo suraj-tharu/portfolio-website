@@ -94,6 +94,13 @@ export default function AboutMe() {
               Currently, he is working as a <strong className="text-[var(--text)]">Co-Ordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. He has been actively involved in teaching, curriculum implementation, ICT integration in education, and technical coordination.
             </p>
           </FadeIn>
+
+          {/* Mission Statement */}
+          <FadeIn delay={0.35} y={30} className="mt-12 text-center">
+            <p className="text-white font-medium text-[clamp(1.5rem,3vw,2rem)] leading-relaxed max-w-[700px]">
+              from Nawalparasi West, Nepal. Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions
+            </p>
+          </FadeIn>
         </div>
 
       </div>

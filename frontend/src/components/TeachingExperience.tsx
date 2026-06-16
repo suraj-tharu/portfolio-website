@@ -18,7 +18,7 @@ export default function TeachingExperience() {
         scrollTrigger: {
           trigger: containerRef.current,
           pin: true,
-          scrub: 1,
+          scrub: 1.5,
           snap: 1 / (panels.length - 1),
           end: () => "+=" + (scrollWrapperRef.current?.offsetWidth || 2000)
         }

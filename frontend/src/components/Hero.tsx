@@ -85,7 +85,7 @@ export default function Hero() {
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block"
+              className="inline-block text-[#D4AF37]"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
               transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
