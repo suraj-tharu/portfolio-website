@@ -424,7 +424,7 @@ img {
   aspect-ratio: 16 / 9;
 }
 
-.aspect-[4/3] {
+.aspect-4-3 {
   aspect-ratio: 4 / 3;
 }
 
@@ -621,7 +621,8 @@ select:focus {
 }
 
 .premium-card:hover {
-  @apply border-stroke-strong shadow-lg-premium;
+  border-color: var(--stroke-strong);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .premium-button {
@@ -646,7 +647,8 @@ select:focus {
 }
 
 .premium-button:hover {
-  @apply border-brand-light shadow-lg-premium;
+  border-color: var(--brand-light);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .premium-input {
@@ -654,5 +656,8 @@ select:focus {
 }
 
 .premium-input:focus {
-  @apply border-brand bg-surface-2 outline-none ring-2 ring-brand ring-opacity-20;
+  outline: none;
+  border-color: var(--brand);
+  background-color: var(--surface-2);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 20%, transparent);
 }

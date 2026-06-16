@@ -20,22 +20,7 @@ const errorLogs: ErrorLog[] = [];
  */
 export function initErrorTracking(sentryDsn?: string) {
     if (sentryDsn) {
-        // Initialize Sentry if DSN is provided
-        import('@sentry/react').then((Sentry) => {
-            Sentry.init({
-                dsn: sentryDsn,
-                environment: process.env.NODE_ENV || 'development',
-                tracesSampleRate: 1.0,
-                integrations: [
-                    new Sentry.Replay({
-                        maskAllText: true,
-                        blockAllMedia: true,
-                    }),
-                ],
-                replaySessionSampleRate: 0.1,
-                replayOnErrorSampleRate: 1.0,
-            });
-        });
+        console.info('[ErrorTracking] Sentry DSN provided; install @sentry/react to enable remote reporting.');
     }
 
     // Global error handler

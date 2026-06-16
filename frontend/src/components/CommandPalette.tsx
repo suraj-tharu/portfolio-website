@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Home, FileText, Mail, Settings, Github, Linkedin } from 'lucide-react';
+import { Search, Home, FileText, Mail, Settings, Code2, Linkedin } from 'lucide-react';
 import { useKeyboardShortcut } from '../hooks/useAccessibility';
 
 interface CommandItem {
@@ -37,7 +37,7 @@ const commands: CommandItem[] = [
     {
         id: 'github',
         label: 'GitHub',
-        icon: <Github size={18} />,
+        icon: <Code2 size={18} />,
         action: () => window.open('https://github.com/surajchaudhary', '_blank'),
         category: 'Social',
     },
