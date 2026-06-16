@@ -26,8 +26,8 @@ const app = express();
 const multer = require('multer');
 const fs = require('fs');
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, 'frontend', 'dist', 'assets', 'uploads');
+// Ensure uploads directory exists at root level (persistent across deployments)
+const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
@@ -209,6 +209,9 @@ app.use('/dist', express.static(path.join(__dirname, 'dist'), {
 app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'assets'), {
   maxAge: '1y',
   immutable: true,
+}));
+app.use('/assets/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '1d',
 }));
 app.use('/icons', express.static(path.join(__dirname, 'icons'), { maxAge: '1d' }));
 app.use(express.static(path.join(__dirname, '.'), {

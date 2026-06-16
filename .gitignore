@@ -6,6 +6,9 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# Upload directory - files are temporary and not version controlled
+uploads/
+
 # NOTE: dist/ is intentionally NOT ignored.
 # dist/tailwind.css must be committed so Render can serve it
 # without running a build step.
