@@ -100,8 +100,8 @@ export default function Hero() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center text-center px-4 mt-12 w-full max-w-[100vw] overflow-x-hidden">
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_4px_24px_rgba(255,255,255,0.15)] px-2 w-full">
+      <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
+        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(212,175,55,0.3)] px-2 w-full">
           {name.map((word, i) => (
             <motion.span
               key={i}
@@ -115,11 +115,11 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-md">
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
           <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
         </div>
 
-        <p className="blur-in text-fluid-xs md:text-fluid-base text-white max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
+        <p className="blur-in text-fluid-xs md:text-fluid-base text-white max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
           {t('hero.description')}
         </p>
 
