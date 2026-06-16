@@ -107,15 +107,15 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-center mt-4 md:mt-0">
-          <a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">LinkedIn</a>
-          <a href="https://github.com/suraj-tharu" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">GitHub</a>
-          <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">Google Scholar</a>
-          <a href="https://www.researchgate.net" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">ResearchGate</a>
-          <span className="text-sm dark:text-muted text-gray-600">Nawalparasi West, NP</span>
+          <a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">LinkedIn</a>
+          <a href="https://github.com/suraj-tharu" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">GitHub</a>
+          <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">Google Scholar</a>
+          <a href="https://www.researchgate.net" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">ResearchGate</a>
+          <span className="text-sm dark:text-muted text-amber-600">Nawalparasi West, NP</span>
         </div>
 
         {/* Copyright */}
-        <div className="text-sm dark:text-muted text-gray-600">
+        <div className="text-sm dark:text-muted text-amber-600">
           © 2026 Er. Suraj Tharu Chaudhary
         </div>
       </div>
