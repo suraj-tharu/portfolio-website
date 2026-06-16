@@ -99,7 +99,7 @@ export default function Hero() {
           <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
         </div>
 
-        <p className="blur-in text-fluid-xs md:text-fluid-base text-[var(--muted)] max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
+        <p className="blur-in text-fluid-xs md:text-fluid-base text-white max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4">
           {t('hero.description')}
         </p>
 
