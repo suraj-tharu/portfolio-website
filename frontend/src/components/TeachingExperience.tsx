@@ -31,14 +31,14 @@ export default function TeachingExperience() {
   return (
     <section ref={containerRef} className="bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke/30">
 
-      <div className="absolute top-12 left-6 md:left-16 z-30">
+      <div className="absolute top-12 left-6 md:left-16 z-40 pointer-events-none">
         <span className="text-xs dark:text-muted text-amber-600 uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
         <h2 className="text-3xl md:text-5xl dark:text-text-primary text-amber-600 font-display italic">
           5+ Years of Teaching
         </h2>
       </div>
 
-      <div ref={scrollWrapperRef} className="flex h-[60vh] md:h-[50vh] mt-24">
+      <div ref={scrollWrapperRef} className="flex h-[60vh] md:h-[50vh] mt-24 relative z-10">
 
         {/* Panel 1 */}
         <div className="teach-panel w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
