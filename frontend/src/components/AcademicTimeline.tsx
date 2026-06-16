@@ -44,7 +44,11 @@ export default function AcademicTimeline() {
   }, []);
 
   return (
-    <section id="timeline" className="py-20 relative z-20 font-helvetica bg-cover bg-center bg-no-repeat bg-fixed" style={{ backgroundImage: "url(/cosmic_origin.png)" }}>
+    <section id="timeline" className="py-20 relative z-20 font-helvetica bg-cover bg-center bg-no-repeat bg-fixed" style={{ 
+      backgroundImage: "url('./cosmic_origin.png'), linear-gradient(135deg, rgba(10,10,26,0.95) 0%, rgba(28,10,46,0.9) 50%, rgba(0,0,0,0.98) 100%)",
+      backgroundSize: "cover, cover",
+      backgroundColor: "#0a0a1a"
+    }}>
       {/* Dark overlay for text readability */}
       <div className="absolute inset-0 bg-[#0a0a0a]/70 dark:bg-[#0a0a0a]/70 z-0 pointer-events-none"></div>
       <div className="max-w-[800px] mx-auto px-6 md:px-10 relative z-10">

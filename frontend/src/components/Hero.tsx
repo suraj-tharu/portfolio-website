@@ -13,7 +13,7 @@ export default function Hero() {
   const roles = [t('hero.role.engineer'), t('hero.role.educator'), t('hero.role.researcher'), t('hero.role.gis')];
 
   useEffect(() => {
-    // Setup HLS Video
+    // Setup HLS Video with fallback
     const video = videoRef.current;
     if (!video) return;
 
@@ -29,6 +29,13 @@ export default function Hero() {
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
         video.play().catch(() => { });
       });
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        console.warn('HLS Error:', data);
+        // Fallback: hide video if it fails
+        if (video.parentElement) {
+          video.parentElement.style.opacity = '0';
+        }
+      });
 
       return () => {
         hls.destroy();
@@ -38,6 +45,17 @@ export default function Hero() {
       video.addEventListener('loadedmetadata', () => {
         video.play().catch(() => { });
       });
+      video.addEventListener('error', () => {
+        console.warn('Video playback error');
+        if (video.parentElement) {
+          video.parentElement.style.opacity = '0';
+        }
+      });
+    } else {
+      // Fallback for browsers that don't support HLS
+      if (video.parentElement) {
+        video.parentElement.style.opacity = '0';
+      }
     }
   }, []);
 
@@ -66,17 +84,19 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background Video */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-bg">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#0a0f1d] via-[#1c0a2e] to-[#000000]">
         <video
           ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-30 mix-blend-screen"
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen"
         />
-        {/* Obsidian Space Gradient overlay */}
+        {/* Premium Gradient Overlay (always visible fallback) */}
         <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/80 via-transparent to-[var(--bg)]" />
+        {/* Additional glow overlay */}
+        <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-30" />
       </div>
 
       {/* Content */}
