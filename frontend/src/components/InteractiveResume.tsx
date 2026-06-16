@@ -5,17 +5,19 @@ export default function InteractiveResume() {
   return (
     <section id="resume" className="bg-bg py-24 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 flex flex-col items-center">
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           className="w-20 h-20 bg-surface border border-stroke rounded-2xl flex items-center justify-center text-blue-400 mb-8 shadow-[0_0_30px_rgba(96,165,250,0.15)]"
         >
-          <FileText size={40} />
+          <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
+            <FileText size={40} />
+          </span>
         </motion.div>
 
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -24,7 +26,7 @@ export default function InteractiveResume() {
           Comprehensive Profile
         </motion.h2>
 
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -34,7 +36,7 @@ export default function InteractiveResume() {
           Get a detailed overview of my academic background, technical skills, teaching experience, and professional references in a neatly formatted document.
         </motion.p>
 
-        <motion.a 
+        <motion.a
           href="/Suraj_Tharu_CV.pdf"
           target="_blank"
           rel="noopener noreferrer"
@@ -47,7 +49,10 @@ export default function InteractiveResume() {
           <span className="absolute inset-0 opacity-0 group-hover:opacity-100 accent-gradient z-0 transition-opacity" />
           <span className="absolute inset-[2px] bg-bg rounded-full opacity-0 group-hover:opacity-100 z-0 transition-opacity" />
           <span className="relative z-10 flex items-center gap-3">
-            <Download size={20} /> Download Full Resume
+            <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
+              <Download size={20} />
+            </span>
+            Download Full Resume
           </span>
         </motion.a>
 

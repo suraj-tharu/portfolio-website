@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
 
 function updateTimeAndGreeting() {
   const now = new Date();
-  
+
   // Update Greeting
   const greetingEl = document.getElementById('greeting');
   if (greetingEl) {
@@ -203,187 +203,187 @@ const canvas = document.getElementById('hero-canvas');
 if (typeof THREE === 'undefined') {
   console.warn('[Three.js] Library not loaded — skipping 3D background.');
 } else try {
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
-camera.position.set(0, 100, 300);
-const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-scene.add(ambientLight);
-
-const sunLight = new THREE.PointLight(0xffddaa, 3, 1000);
-scene.add(sunLight);
-
-const solarSystem = new THREE.Group();
-scene.add(solarSystem);
-
-// Sun
-const sunGeo = new THREE.SphereGeometry(15, 32, 32);
-const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-const sun = new THREE.Mesh(sunGeo, sunMat);
-solarSystem.add(sun);
-
-// Planets
-const planets = [];
-const planetData = [
-  { radius: 2, distance: 30, speed: 0.04, color: 0x888888 }, // Mercury
-  { radius: 4, distance: 50, speed: 0.015, color: 0xeebb88 }, // Venus
-  { radius: 4.5, distance: 75, speed: 0.01, color: 0x2266ff }, // Earth
-  { radius: 3, distance: 100, speed: 0.008, color: 0xff4422 }, // Mars
-  { radius: 10, distance: 150, speed: 0.002, color: 0xffaa55 }, // Jupiter
-  { radius: 8, distance: 200, speed: 0.001, color: 0xddbb99 } // Saturn
-];
-
-planetData.forEach(data => {
-  // Orbit path
-  const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
-  const orbitMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, side: THREE.DoubleSide });
-  const orbit = new THREE.Mesh(orbitGeo, orbitMat);
-  orbit.rotation.x = Math.PI / 2;
-  solarSystem.add(orbit);
-
-  // Planet
-  const planetGeo = new THREE.SphereGeometry(data.radius, 16, 16);
-  const planetMat = new THREE.MeshStandardMaterial({ color: data.color, roughness: 0.8, metalness: 0.2 });
-  const planet = new THREE.Mesh(planetGeo, planetMat);
-
-  const pivot = new THREE.Group();
-  pivot.add(planet);
-  planet.position.x = data.distance;
-  solarSystem.add(pivot);
-
-  planets.push({ pivot, speed: data.speed });
-});
-
-// Milky Way Galaxy
-const milkyWayGeo = new THREE.BufferGeometry();
-const mwStarsCount = 30000; // Increased density for premium feel
-const mwPosArray = new Float32Array(mwStarsCount * 3);
-const mwColorArray = new Float32Array(mwStarsCount * 3);
-const color1 = new THREE.Color(0x7c3aed); // Vibrant violet
-const color2 = new THREE.Color(0x06b6d4); // Bright cyan
-const color3 = new THREE.Color(0xf472b6); // Neon pink
-const color4 = new THREE.Color(0xfacc15); // Stardust yellow
-
-for (let i = 0; i < mwStarsCount; i++) {
-  const r = 350 + Math.random() * 1100; // Wider spread
-  const theta = Math.random() * Math.PI * 2;
-  const spread = (Math.random() - 0.5) * (Math.random() * 500); // Thicker band
-
-  const x = r * Math.cos(theta);
-  const y = spread;
-  const z = r * Math.sin(theta);
-
-  // Tilt the Milky Way
-  const tilt = Math.PI / 3;
-  mwPosArray[i * 3] = x;
-  mwPosArray[i * 3 + 1] = y * Math.cos(tilt) - z * Math.sin(tilt);
-  mwPosArray[i * 3 + 2] = y * Math.sin(tilt) + z * Math.cos(tilt);
-
-  // Mix colors based on radius and random
-  const rand = Math.random();
-  let mixedColor;
-  if (rand < 0.4) mixedColor = color1.clone().lerp(color2, Math.random());
-  else if (rand < 0.7) mixedColor = color2.clone().lerp(color3, Math.random());
-  else if (rand < 0.9) mixedColor = color3.clone().lerp(color1, Math.random());
-  else mixedColor = color4.clone().lerp(color3, Math.random()); // Splashes of yellow/pink
-
-  mwColorArray[i * 3] = mixedColor.r;
-  mwColorArray[i * 3 + 1] = mixedColor.g;
-  mwColorArray[i * 3 + 2] = mixedColor.b;
-}
-milkyWayGeo.setAttribute('position', new THREE.BufferAttribute(mwPosArray, 3));
-milkyWayGeo.setAttribute('color', new THREE.BufferAttribute(mwColorArray, 3));
-const mwMat = new THREE.PointsMaterial({ size: 2.5, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
-const milkyWay = new THREE.Points(milkyWayGeo, mwMat);
-scene.add(milkyWay);
-
-// Scattered Stars
-const starsGeo = new THREE.BufferGeometry();
-const starsCount = 2500;
-const posArray = new Float32Array(starsCount * 3);
-for (let i = 0; i < starsCount * 3; i++) {
-  posArray[i] = (Math.random() - 0.5) * 2500;
-}
-starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-const starsMat = new THREE.PointsMaterial({ size: 1.8, color: 0xffffff, transparent: true, opacity: 0.9 });
-const stars = new THREE.Points(starsGeo, starsMat);
-scene.add(stars);
-
-let mouseX = 0, mouseY = 0;
-document.addEventListener('mousemove', (event) => {
-  mouseX = (event.clientX / window.innerWidth) - 0.5;
-  mouseY = (event.clientY / window.innerHeight) - 0.5;
-});
-
-let scrollY = 0;
-window.addEventListener('scroll', () => {
-  scrollY = window.scrollY;
-});
-
-const clock = new THREE.Clock();
-let targetOpacity = document.documentElement.classList.contains('dark') ? 1 : 0;
-let currentOpacity = targetOpacity;
-
-// Day and Night visual configurations
-const dayColor = new THREE.Color(0xf4f7f6); // Clean soft light gray/blue
-const nightColor = new THREE.Color(0x050510); // Deep space
-scene.background = new THREE.Color();
-scene.fog = new THREE.FogExp2(0xf4f7f6, 0); // Dynamic fog to hide stars in day
-
-function animate() {
-  requestAnimationFrame(animate);
-  if (!document.body.classList.contains('a11y-reduce-motion')) {
-    const t = clock.getElapsedTime();
-
-    // Rotate planets
-    planets.forEach(p => {
-      p.pivot.rotation.y += p.speed;
-    });
-
-    // Slightly faster dynamic rotation for Milky Way
-    milkyWay.rotation.y = t * 0.0035;
-    milkyWay.rotation.z = Math.sin(t * 0.05) * 0.02; // Subtle breathing tilt
-    stars.rotation.y = t * 0.0015;
-
-    // Parallax effect on camera
-    camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
-    camera.position.y = 100 - scrollY * 0.05; // Move down as we scroll
-    camera.position.z += (300 - mouseY * 50 - camera.position.z) * 0.05;
-    camera.lookAt(scene.position);
-
-    solarSystem.rotation.x = Math.PI / 8; // slight tilt
-
-    // Day/Night transition
-    const isDark = document.documentElement.classList.contains('dark');
-    targetOpacity = isDark ? 1 : 0.0;
-    currentOpacity += (targetOpacity - currentOpacity) * 0.05;
-
-    // Transition background and fog
-    scene.background.lerpColors(dayColor, nightColor, currentOpacity);
-    scene.fog.color.lerpColors(dayColor, nightColor, currentOpacity);
-    scene.fog.density = (1 - currentOpacity) * 0.003; // Fog thickens in day mode to hide deep space
-
-    // Transition Milky Way and stars
-    mwMat.opacity = currentOpacity * 0.85;
-    starsMat.opacity = currentOpacity;
-
-    // Lighting transitions
-    ambientLight.intensity = isDark ? 0.2 : 0.9;
-    sunLight.intensity = isDark ? 4.0 : 1.5;
-  }
-  renderer.render(scene, camera);
-}
-animate();
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+  camera.position.set(0, 100, 300);
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-});
-} catch(e) { console.warn('[Three.js] Render error:', e.message); }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+  scene.add(ambientLight);
+
+  const sunLight = new THREE.PointLight(0xffddaa, 3, 1000);
+  scene.add(sunLight);
+
+  const solarSystem = new THREE.Group();
+  scene.add(solarSystem);
+
+  // Sun
+  const sunGeo = new THREE.SphereGeometry(15, 32, 32);
+  const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
+  const sun = new THREE.Mesh(sunGeo, sunMat);
+  solarSystem.add(sun);
+
+  // Planets
+  const planets = [];
+  const planetData = [
+    { radius: 2, distance: 30, speed: 0.04, color: 0x888888 }, // Mercury
+    { radius: 4, distance: 50, speed: 0.015, color: 0xeebb88 }, // Venus
+    { radius: 4.5, distance: 75, speed: 0.01, color: 0x2266ff }, // Earth
+    { radius: 3, distance: 100, speed: 0.008, color: 0xff4422 }, // Mars
+    { radius: 10, distance: 150, speed: 0.002, color: 0xffaa55 }, // Jupiter
+    { radius: 8, distance: 200, speed: 0.001, color: 0xddbb99 } // Saturn
+  ];
+
+  planetData.forEach(data => {
+    // Orbit path
+    const orbitGeo = new THREE.RingGeometry(data.distance - 0.2, data.distance + 0.2, 64);
+    const orbitMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, side: THREE.DoubleSide });
+    const orbit = new THREE.Mesh(orbitGeo, orbitMat);
+    orbit.rotation.x = Math.PI / 2;
+    solarSystem.add(orbit);
+
+    // Planet
+    const planetGeo = new THREE.SphereGeometry(data.radius, 16, 16);
+    const planetMat = new THREE.MeshStandardMaterial({ color: data.color, roughness: 0.8, metalness: 0.2 });
+    const planet = new THREE.Mesh(planetGeo, planetMat);
+
+    const pivot = new THREE.Group();
+    pivot.add(planet);
+    planet.position.x = data.distance;
+    solarSystem.add(pivot);
+
+    planets.push({ pivot, speed: data.speed });
+  });
+
+  // Milky Way Galaxy
+  const milkyWayGeo = new THREE.BufferGeometry();
+  const mwStarsCount = 30000; // Increased density for premium feel
+  const mwPosArray = new Float32Array(mwStarsCount * 3);
+  const mwColorArray = new Float32Array(mwStarsCount * 3);
+  const color1 = new THREE.Color(0x7c3aed); // Vibrant violet
+  const color2 = new THREE.Color(0x06b6d4); // Bright cyan
+  const color3 = new THREE.Color(0xf472b6); // Neon pink
+  const color4 = new THREE.Color(0xfacc15); // Stardust yellow
+
+  for (let i = 0; i < mwStarsCount; i++) {
+    const r = 350 + Math.random() * 1100; // Wider spread
+    const theta = Math.random() * Math.PI * 2;
+    const spread = (Math.random() - 0.5) * (Math.random() * 500); // Thicker band
+
+    const x = r * Math.cos(theta);
+    const y = spread;
+    const z = r * Math.sin(theta);
+
+    // Tilt the Milky Way
+    const tilt = Math.PI / 3;
+    mwPosArray[i * 3] = x;
+    mwPosArray[i * 3 + 1] = y * Math.cos(tilt) - z * Math.sin(tilt);
+    mwPosArray[i * 3 + 2] = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+    // Mix colors based on radius and random
+    const rand = Math.random();
+    let mixedColor;
+    if (rand < 0.4) mixedColor = color1.clone().lerp(color2, Math.random());
+    else if (rand < 0.7) mixedColor = color2.clone().lerp(color3, Math.random());
+    else if (rand < 0.9) mixedColor = color3.clone().lerp(color1, Math.random());
+    else mixedColor = color4.clone().lerp(color3, Math.random()); // Splashes of yellow/pink
+
+    mwColorArray[i * 3] = mixedColor.r;
+    mwColorArray[i * 3 + 1] = mixedColor.g;
+    mwColorArray[i * 3 + 2] = mixedColor.b;
+  }
+  milkyWayGeo.setAttribute('position', new THREE.BufferAttribute(mwPosArray, 3));
+  milkyWayGeo.setAttribute('color', new THREE.BufferAttribute(mwColorArray, 3));
+  const mwMat = new THREE.PointsMaterial({ size: 2.5, vertexColors: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending });
+  const milkyWay = new THREE.Points(milkyWayGeo, mwMat);
+  scene.add(milkyWay);
+
+  // Scattered Stars
+  const starsGeo = new THREE.BufferGeometry();
+  const starsCount = 2500;
+  const posArray = new Float32Array(starsCount * 3);
+  for (let i = 0; i < starsCount * 3; i++) {
+    posArray[i] = (Math.random() - 0.5) * 2500;
+  }
+  starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+  const starsMat = new THREE.PointsMaterial({ size: 1.8, color: 0xffffff, transparent: true, opacity: 0.9 });
+  const stars = new THREE.Points(starsGeo, starsMat);
+  scene.add(stars);
+
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', (event) => {
+    mouseX = (event.clientX / window.innerWidth) - 0.5;
+    mouseY = (event.clientY / window.innerHeight) - 0.5;
+  });
+
+  let scrollY = 0;
+  window.addEventListener('scroll', () => {
+    scrollY = window.scrollY;
+  });
+
+  const clock = new THREE.Clock();
+  let targetOpacity = document.documentElement.classList.contains('dark') ? 1 : 0;
+  let currentOpacity = targetOpacity;
+
+  // Day and Night visual configurations
+  const dayColor = new THREE.Color(0xf4f7f6); // Clean soft light gray/blue
+  const nightColor = new THREE.Color(0x050510); // Deep space
+  scene.background = new THREE.Color();
+  scene.fog = new THREE.FogExp2(0xf4f7f6, 0); // Dynamic fog to hide stars in day
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!document.body.classList.contains('a11y-reduce-motion')) {
+      const t = clock.getElapsedTime();
+
+      // Rotate planets
+      planets.forEach(p => {
+        p.pivot.rotation.y += p.speed;
+      });
+
+      // Slightly faster dynamic rotation for Milky Way
+      milkyWay.rotation.y = t * 0.0035;
+      milkyWay.rotation.z = Math.sin(t * 0.05) * 0.02; // Subtle breathing tilt
+      stars.rotation.y = t * 0.0015;
+
+      // Parallax effect on camera
+      camera.position.x += (mouseX * 50 - camera.position.x) * 0.05;
+      camera.position.y = 100 - scrollY * 0.05; // Move down as we scroll
+      camera.position.z += (300 - mouseY * 50 - camera.position.z) * 0.05;
+      camera.lookAt(scene.position);
+
+      solarSystem.rotation.x = Math.PI / 8; // slight tilt
+
+      // Day/Night transition
+      const isDark = document.documentElement.classList.contains('dark');
+      targetOpacity = isDark ? 1 : 0.0;
+      currentOpacity += (targetOpacity - currentOpacity) * 0.05;
+
+      // Transition background and fog
+      scene.background.lerpColors(dayColor, nightColor, currentOpacity);
+      scene.fog.color.lerpColors(dayColor, nightColor, currentOpacity);
+      scene.fog.density = (1 - currentOpacity) * 0.003; // Fog thickens in day mode to hide deep space
+
+      // Transition Milky Way and stars
+      mwMat.opacity = currentOpacity * 0.85;
+      starsMat.opacity = currentOpacity;
+
+      // Lighting transitions
+      ambientLight.intensity = isDark ? 0.2 : 0.9;
+      sunLight.intensity = isDark ? 4.0 : 1.5;
+    }
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+} catch (e) { console.warn('[Three.js] Render error:', e.message); }
 
 // --- 1. Service Worker for PWA ---
 if ('serviceWorker' in navigator) {
@@ -407,7 +407,7 @@ if (typeof Lenis !== 'undefined') try {
   });
   function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
   requestAnimationFrame(raf);
-} catch(e) { console.warn('[Lenis] Smooth scroll error:', e.message); }
+} catch (e) { console.warn('[Lenis] Smooth scroll error:', e.message); }
 
 // --- 3. Easter Egg Console Art (Removed) ---
 
@@ -461,40 +461,40 @@ window.runCode = function () {
 
 // --- 5. Chart.js Radar Chart ---
 if (typeof Chart !== 'undefined') try {
-const ctx = document.getElementById('radarChart').getContext('2d');
-new Chart(ctx, {
-  type: 'radar',
-  data: {
-    labels: ['Hardware Complexity', 'Software Depth', 'Innovation', 'Research', 'Performance'],
-    datasets: [{
-      label: 'RISC-V Softcore',
-      data: [95, 80, 85, 90, 75],
-      backgroundColor: 'rgba(14, 165, 233, 0.2)',
-      borderColor: 'rgba(14, 165, 233, 1)',
-      pointBackgroundColor: 'rgba(14, 165, 233, 1)',
-      borderWidth: 2,
-    }, {
-      label: 'IoT Weather Station',
-      data: [70, 95, 60, 50, 85],
-      backgroundColor: 'rgba(234, 179, 8, 0.2)',
-      borderColor: 'rgba(234, 179, 8, 1)',
-      borderWidth: 2,
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    scales: {
-      r: {
-        angleLines: { color: 'rgba(148, 163, 184, 0.2)' },
-        grid: { color: 'rgba(148, 163, 184, 0.2)' },
-        pointLabels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } },
-        ticks: { display: false }
-      }
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Hardware Complexity', 'Software Depth', 'Innovation', 'Research', 'Performance'],
+      datasets: [{
+        label: 'RISC-V Softcore',
+        data: [95, 80, 85, 90, 75],
+        backgroundColor: 'rgba(14, 165, 233, 0.2)',
+        borderColor: 'rgba(14, 165, 233, 1)',
+        pointBackgroundColor: 'rgba(14, 165, 233, 1)',
+        borderWidth: 2,
+      }, {
+        label: 'IoT Weather Station',
+        data: [70, 95, 60, 50, 85],
+        backgroundColor: 'rgba(234, 179, 8, 0.2)',
+        borderColor: 'rgba(234, 179, 8, 1)',
+        borderWidth: 2,
+      }]
     },
-    plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } } } }
-  }
-});
-} catch(e) { console.warn('[Chart.js] Radar chart error:', e.message); }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(148, 163, 184, 0.2)' },
+          grid: { color: 'rgba(148, 163, 184, 0.2)' },
+          pointLabels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } },
+          ticks: { display: false }
+        }
+      },
+      plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Space Mono', size: 10 } } } }
+    }
+  });
+} catch (e) { console.warn('[Chart.js] Radar chart error:', e.message); }
 
 // --- Utility: Escape HTML to prevent XSS ---
 function escapeHTML(str) {
@@ -558,8 +558,8 @@ const closeChat = document.getElementById('close-chat');
 const chatInput = document.getElementById('chat-input');
 const chatMessages = document.getElementById('chat-messages');
 
-const chatIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>';
-const closeIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+const chatIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>';
+const closeIcon = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
 
 function toggleChat() {
   chatWidget.classList.toggle('open');
@@ -719,82 +719,82 @@ if (contactBtn) {
 if (typeof d3 === 'undefined') {
   console.warn('[D3] Library not loaded — skipping skills graph.');
 } else try {
-const width = document.getElementById('d3-skills-graph').clientWidth;
-const height = 400;
-const nodes = [
-  { id: "Embedded", group: 1, radius: 25 },
-  { id: "C/C++", group: 1, radius: 20 },
-  { id: "FreeRTOS", group: 1, radius: 18 },
-  { id: "FPGA", group: 2, radius: 25 },
-  { id: "Verilog", group: 2, radius: 20 },
-  { id: "RISC-V", group: 2, radius: 22 },
-  { id: "Vivado", group: 2, radius: 15 },
-  { id: "Python", group: 3, radius: 18 },
-  { id: "Linux", group: 3, radius: 20 }
-];
-const links = [
-  { source: "Embedded", target: "C/C++" },
-  { source: "Embedded", target: "FreeRTOS" },
-  { source: "Embedded", target: "Linux" },
-  { source: "FPGA", target: "Verilog" },
-  { source: "FPGA", target: "RISC-V" },
-  { source: "FPGA", target: "Vivado" },
-  { source: "RISC-V", target: "Verilog" },
-  { source: "RISC-V", target: "C/C++" },
-  { source: "Linux", target: "Python" }
-];
+  const width = document.getElementById('d3-skills-graph').clientWidth;
+  const height = 400;
+  const nodes = [
+    { id: "Embedded", group: 1, radius: 25 },
+    { id: "C/C++", group: 1, radius: 20 },
+    { id: "FreeRTOS", group: 1, radius: 18 },
+    { id: "FPGA", group: 2, radius: 25 },
+    { id: "Verilog", group: 2, radius: 20 },
+    { id: "RISC-V", group: 2, radius: 22 },
+    { id: "Vivado", group: 2, radius: 15 },
+    { id: "Python", group: 3, radius: 18 },
+    { id: "Linux", group: 3, radius: 20 }
+  ];
+  const links = [
+    { source: "Embedded", target: "C/C++" },
+    { source: "Embedded", target: "FreeRTOS" },
+    { source: "Embedded", target: "Linux" },
+    { source: "FPGA", target: "Verilog" },
+    { source: "FPGA", target: "RISC-V" },
+    { source: "FPGA", target: "Vivado" },
+    { source: "RISC-V", target: "Verilog" },
+    { source: "RISC-V", target: "C/C++" },
+    { source: "Linux", target: "Python" }
+  ];
 
-const svg = d3.select("#d3-skills-graph").append("svg")
-  .attr("width", "100%")
-  .attr("height", "100%")
-  .attr("viewBox", [0, 0, width, height]);
+  const svg = d3.select("#d3-skills-graph").append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("viewBox", [0, 0, width, height]);
 
-const simulation = d3.forceSimulation(nodes)
-  .force("link", d3.forceLink(links).id(d => d.id).distance(80))
-  .force("charge", d3.forceManyBody().strength(-300))
-  .force("center", d3.forceCenter(width / 2, height / 2));
+  const simulation = d3.forceSimulation(nodes)
+    .force("link", d3.forceLink(links).id(d => d.id).distance(80))
+    .force("charge", d3.forceManyBody().strength(-300))
+    .force("center", d3.forceCenter(width / 2, height / 2));
 
-const link = svg.append("g")
-  .attr("stroke", "#334155")
-  .attr("stroke-opacity", 0.6)
-  .selectAll("line")
-  .data(links).join("line")
-  .attr("stroke-width", 2);
+  const link = svg.append("g")
+    .attr("stroke", "#334155")
+    .attr("stroke-opacity", 0.6)
+    .selectAll("line")
+    .data(links).join("line")
+    .attr("stroke-width", 2);
 
-const node = svg.append("g")
-  .selectAll("circle")
-  .data(nodes).join("circle")
-  .attr("r", d => d.radius)
-  .attr("fill", d => d.group === 1 ? "#0ea5e9" : d.group === 2 ? "#eab308" : "#10b981")
-  .attr("stroke", "#fff")
-  .attr("stroke-width", 1.5)
-  .call(drag(simulation));
+  const node = svg.append("g")
+    .selectAll("circle")
+    .data(nodes).join("circle")
+    .attr("r", d => d.radius)
+    .attr("fill", d => d.group === 1 ? "#0ea5e9" : d.group === 2 ? "#eab308" : "#10b981")
+    .attr("stroke", "#fff")
+    .attr("stroke-width", 1.5)
+    .call(drag(simulation));
 
-const labels = svg.append("g")
-  .selectAll("text")
-  .data(nodes).join("text")
-  .text(d => d.id)
-  .attr("font-size", "10px")
-  .attr("font-family", "Space Mono")
-  .attr("fill", document.documentElement.classList.contains('dark') ? "#f8fafc" : "#0f172a")
-  .attr("dx", 12).attr("dy", 4);
+  const labels = svg.append("g")
+    .selectAll("text")
+    .data(nodes).join("text")
+    .text(d => d.id)
+    .attr("font-size", "10px")
+    .attr("font-family", "Space Mono")
+    .attr("fill", document.documentElement.classList.contains('dark') ? "#f8fafc" : "#0f172a")
+    .attr("dx", 12).attr("dy", 4);
 
-simulation.on("tick", () => {
-  link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
-    .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-  node.attr("cx", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
-    .attr("cy", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
-  labels.attr("x", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
-    .attr("y", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
-});
+  simulation.on("tick", () => {
+    link.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    node.attr("cx", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
+      .attr("cy", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
+    labels.attr("x", d => Math.max(d.radius, Math.min(width - d.radius, d.x)))
+      .attr("y", d => Math.max(d.radius, Math.min(height - d.radius, d.y)));
+  });
 
-function drag(simulation) {
-  function dragstarted(event) { if (!event.active) simulation.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; }
-  function dragged(event) { event.subject.fx = event.x; event.subject.fy = event.y; }
-  function dragended(event) { if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; }
-  return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
-}
-} catch(e) { console.warn('[D3] Skills graph error:', e.message); }
+  function drag(simulation) {
+    function dragstarted(event) { if (!event.active) simulation.alphaTarget(0.3).restart(); event.subject.fx = event.subject.x; event.subject.fy = event.subject.y; }
+    function dragged(event) { event.subject.fx = event.x; event.subject.fy = event.y; }
+    function dragended(event) { if (!event.active) simulation.alphaTarget(0); event.subject.fx = null; event.subject.fy = null; }
+    return d3.drag().on("start", dragstarted).on("drag", dragged).on("end", dragended);
+  }
+} catch (e) { console.warn('[D3] Skills graph error:', e.message); }
 
 // --- 12. QR Code Generation ---
 setTimeout(() => {
@@ -1255,10 +1255,10 @@ if (mapContainer) {
   const mapObserver = new IntersectionObserver((entries) => {
     if (entries[0].isIntersecting && typeof L !== 'undefined') {
       mapObserver.disconnect();
-      
+
       // Initialize map centered on Nepal (dark theme to match website)
       const map = L.map('gis-map').setView([28.3949, 84.1240], 7);
-      
+
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         subdomains: 'abcd',

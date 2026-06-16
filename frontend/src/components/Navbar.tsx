@@ -64,7 +64,9 @@ export default function Navbar() {
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
           >
-            {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
+            <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
+              {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
+            </span>
           </button>
 
           <button
@@ -83,7 +85,9 @@ export default function Navbar() {
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
           >
-            {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" aria-hidden="true" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />}
+            <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)", display: "inline-flex" }}>
+              {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" aria-hidden="true" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />}
+            </span>
           </button>
         </div>
       </nav>
