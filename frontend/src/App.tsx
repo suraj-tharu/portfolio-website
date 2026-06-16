@@ -13,6 +13,7 @@ import { useTheme } from './hooks/useTheme';
 import { useGoogleAnalytics, useWebVitals, trackPageView } from './hooks/useAnalytics';
 import { useSkipToContent, usePrefersColorScheme } from './hooks/useAccessibility';
 import { initErrorTracking, enableConsoleSpy } from './utils/errorTracking';
+import { MagneticCursor, ParticleBackground, ChatWidget as PremiumChatWidget } from './components/premium';
 
 import Home from './pages/Home';
 import ResearchDashboard from './pages/ResearchDashboard';
@@ -67,8 +68,11 @@ function AppContent() {
           {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
           <CustomCursor />
+          <MagneticCursor />
+          <ParticleBackground count={40} speed={0.5} />
           <TerminalResume />
           <ChatWidget />
+          <PremiumChatWidget />
           <CommandPalette />
 
           <div

@@ -3,6 +3,7 @@ import Hls from 'hls.js';
 import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import MagneticButton from './MagneticButton';
+import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
 
 export default function Hero() {
@@ -124,17 +125,17 @@ export default function Hero() {
         </p>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
-          <MagneticButton>
-            <a href="#work" className="inline-flex items-center justify-center rounded-full text-sm px-8 py-4 bg-white text-black font-semibold hover:scale-105 transition-transform duration-300">
-              See Works
-            </a>
-          </MagneticButton>
+          <a href="#work">
+            <MicroInteractionButton variant="primary" glowColor="#3B82F6">
+              ✨ See Works
+            </MicroInteractionButton>
+          </a>
 
-          <MagneticButton>
-            <a href="#contact" className="inline-flex items-center justify-center rounded-full text-sm px-8 py-4 border-2 border-stroke bg-bg/50 backdrop-blur-md text-white hover:border-brand-light transition-all hover:scale-105">
-              Reach out &rarr;
-            </a>
-          </MagneticButton>
+          <a href="#contact">
+            <MicroInteractionButton variant="secondary" glowColor="#D4AF37">
+              Reach out →
+            </MicroInteractionButton>
+          </a>
         </div>
       </div>
 
