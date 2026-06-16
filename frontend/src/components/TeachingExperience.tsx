@@ -11,7 +11,7 @@ export default function TeachingExperience() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const panels = gsap.utils.toArray('.teach-panel');
-      
+
       gsap.to(panels, {
         xPercent: -100 * (panels.length - 1),
         ease: "none",
@@ -30,16 +30,16 @@ export default function TeachingExperience() {
 
   return (
     <section ref={containerRef} className="bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke/30">
-      
+
       <div className="absolute top-12 left-6 md:left-16 z-30">
         <span className="text-xs text-muted uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
         <h2 className="text-3xl md:text-5xl text-text-primary font-display italic">
-          10+ Years of Teaching
+          5+ Years of Teaching
         </h2>
       </div>
 
       <div ref={scrollWrapperRef} className="flex h-[60vh] md:h-[50vh] mt-24">
-        
+
         {/* Panel 1 */}
         <div className="teach-panel w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
           <div className="max-w-2xl">

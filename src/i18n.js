@@ -30,10 +30,10 @@ const dict = {
 };
 
 export function initI18n() {
-  let currentLang = localStorage.getItem('site_lang') || 'EN';
-  
+  let currentLang = localStorage.getItem('site_lang') || 'NP';
+
   const langToggleBtn = document.getElementById('lang-toggle');
-  
+
   function applyTranslations(lang) {
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -60,7 +60,7 @@ export function initI18n() {
       currentLang = currentLang === 'EN' ? 'NP' : 'EN';
       localStorage.setItem('site_lang', currentLang);
       applyTranslations(currentLang);
-      
+
       // Play sound via ui.js if available
       if (window.playSound) window.playSound('click');
     });

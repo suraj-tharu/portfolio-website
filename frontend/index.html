@@ -1,36 +1,127 @@
 <!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Suraj Tharu Chaudhary — Computer Engineer, Educator & GIS Researcher</title>
-    <meta name="theme-color" content="#080B14" />
-    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
-    <meta name="description" content="Portfolio of Suraj Tharu Chaudhary — Computer Engineer, Senior Instructor, and GIS Researcher from Nepal. Specializing in Machine Learning, Remote Sensing, and Land Use Analysis." />
-    <meta name="keywords" content="Suraj Tharu Chaudhary, Computer Engineer, GIS, Remote Sensing, LULC, Machine Learning, Nepal, Educator, Portfolio" />
-    <meta name="author" content="Suraj Tharu Chaudhary" />
-    <meta name="robots" content="index, follow" />
+<html lang="en" class="dark scroll-smooth">
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Suraj Tharu Chaudhary — Computer Engineer & GIS Researcher" />
-    <meta property="og:description" content="Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions in Nepal." />
-    <meta property="og:image" content="/IMG_20250922_201902.jpg" />
-    <meta property="og:url" content="https://portfolio-website-vto2.onrender.com" />
+<head>
+  <!-- Charset & Viewport -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Suraj Tharu Chaudhary — Computer Engineer & GIS Researcher" />
-    <meta name="twitter:description" content="Applying machine learning and geospatial analysis to drive sustainable development in Nepal." />
-    <meta name="twitter:image" content="/IMG_20250922_201902.jpg" />
+  <!-- Title & Basic Meta -->
+  <title>Suraj Tharu Chaudhary — Computer Engineer, Educator & GIS Researcher</title>
+  <meta name="description"
+    content="Portfolio of Suraj Tharu Chaudhary — Computer Engineer, Senior Instructor, and GIS Researcher from Nepal. Specializing in Machine Learning, Remote Sensing, and Land Use Analysis." />
+  <meta name="keywords"
+    content="Suraj Tharu Chaudhary, Computer Engineer, GIS, Remote Sensing, LULC, Machine Learning, Nepal, Educator, Portfolio, Web Developer, Data Science" />
+  <meta name="author" content="Suraj Tharu Chaudhary" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#080B14" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Suraj Chaudhary" />
 
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+  <!-- Icons & Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://portfolio-website-vto2.onrender.com" />
+
+  <!-- Open Graph (Social Media) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Suraj Tharu Chaudhary — Computer Engineer & GIS Researcher" />
+  <meta property="og:description"
+    content="Applying machine learning and geospatial analysis to drive sustainable development and engineering solutions in Nepal." />
+  <meta property="og:image" content="/IMG_20250922_201902.jpg" />
+  <meta property="og:image:alt" content="Suraj Tharu Chaudhary Profile" />
+  <meta property="og:url" content="https://portfolio-website-vto2.onrender.com" />
+  <meta property="og:site_name" content="Suraj Chaudhary Portfolio" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Suraj Tharu Chaudhary — Computer Engineer & GIS Researcher" />
+  <meta name="twitter:description"
+    content="Applying machine learning and geospatial analysis to drive sustainable development in Nepal." />
+  <meta name="twitter:image" content="/IMG_20250922_201902.jpg" />
+  <meta name="twitter:creator" content="@surajchaudhary" />
+
+  <!-- Preconnect & DNS Prefetch for Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://stream.mux.com" />
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+  <!-- Font Loading Strategy -->
+  <link rel="preload"
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap"
+    as="style" />
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Suraj Tharu Chaudhary",
+      "jobTitle": "Computer Engineer, Educator & GIS Researcher",
+      "url": "https://portfolio-website-vto2.onrender.com",
+      "image": "/IMG_20250922_201902.jpg",
+      "description": "Computer Engineer specializing in Machine Learning, Remote Sensing, and Geospatial Analysis",
+      "email": "suraj.xaudhary@gmail.com",
+      "sameAs": [
+        "https://linkedin.com/in/surajchaudhary",
+        "https://github.com/surajchaudhary"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Nepal"
+      },
+      "knowsAbout": [
+        "Machine Learning",
+        "Geographic Information Systems",
+        "Remote Sensing",
+        "Web Development",
+        "Data Science",
+        "Land Use/Land Cover Analysis"
+      ]
+    }
+    </script>
+
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://portfolio-website-vto2.onrender.com",
+      "name": "Suraj Chaudhary Portfolio",
+      "description": "Professional portfolio showcasing computer engineering, education, and GIS research work"
+    }
+    </script>
+
+  <!-- Security & Performance Headers -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+</head>
+
+<body>
+  <!-- Skip to main content link (Accessibility) -->
+  <a href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-0 focus:left-0 focus:z-[9999] focus:p-4 focus:bg-brand-500 focus:text-white">
+    Skip to main content
+  </a>
+
+  <!-- Root element for React -->
+  <div id="root" role="application" aria-label="Suraj Chaudhary Portfolio Application"></div>
+
+  <!-- Main content marker -->
+  <main id="main-content"></main>
+
+  <!-- Module script with defer for better performance -->
+  <script type="module" src="/src/main.tsx" defer></script>
+
+  <!-- Preload critical CSS -->
+  <link rel="preload" as="style" href="/src/index.css" />
+</body>
+
 </html>

@@ -48,7 +48,7 @@ export default function Navbar() {
     <>
       {/* Floating Toggle Button */}
       <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12 pointer-events-none">
-        
+
         {/* Logo */}
         <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke">
           <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
@@ -59,27 +59,32 @@ export default function Navbar() {
 
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
-          <button 
+          <button
             onClick={toggleTheme}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
           >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
           </button>
 
-          <button 
+          <button
             onClick={toggleLanguage}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors font-medium text-sm"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors font-medium text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
           >
-            {language === 'en' ? 'NE' : 'EN'}
+            {language === 'en' ? 'नेपाली' : 'EN'}
           </button>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors group"
+            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav"
           >
-            {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" />}
+            {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" aria-hidden="true" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />}
           </button>
         </div>
       </nav>
@@ -92,10 +97,13 @@ export default function Navbar() {
             initial="initial"
             animate="animate"
             exit="exit"
+            id="mobile-nav"
+            role="navigation"
+            aria-label="Mobile navigation menu"
             className="fixed inset-0 bg-[#050505] z-[90] origin-top text-white flex flex-col justify-center px-8 md:px-24"
           >
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] opacity-[0.03] pointer-events-none mix-blend-screen" />
-            
+
             <motion.div variants={containerVars} initial="initial" animate="open" exit="initial" className="flex flex-col gap-4">
               {navLinks.map((link, i) => (
                 <div key={i} className="overflow-hidden">
@@ -104,7 +112,7 @@ export default function Navbar() {
                       <a
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block"
+                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1"
                       >
                         {link.label}
                       </a>
@@ -112,7 +120,7 @@ export default function Navbar() {
                       <Link
                         to={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block"
+                        className="text-4xl md:text-6xl lg:text-7xl font-display italic leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-8 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1"
                       >
                         {link.label}
                       </Link>
@@ -121,9 +129,9 @@ export default function Navbar() {
                 </div>
               ))}
             </motion.div>
-            
+
             {/* Footer info in nav */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 1 }}
@@ -134,8 +142,8 @@ export default function Navbar() {
                 <p>suraj.tharu@example.com</p>
               </div>
               <div className="flex gap-4">
-                <a href="#" className="hover:text-brand-light transition-colors">LinkedIn</a>
-                <a href="#" className="hover:text-brand-light transition-colors">GitHub</a>
+                <a href="#" className="hover:text-brand-light transition-colors focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1">LinkedIn</a>
+                <a href="#" className="hover:text-brand-light transition-colors focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1">GitHub</a>
               </div>
             </motion.div>
 

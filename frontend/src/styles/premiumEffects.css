@@ -1,0 +1,357 @@
+/* Premium Visual Effects CSS */
+
+/* Glass-morphism Theme (Suggestion #11) */
+.glass-morphism {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+}
+
+.glass-morphism-dark {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Gradient Mesh Backgrounds (Suggestion #15) */
+.gradient-mesh {
+    position: relative;
+    overflow: hidden;
+}
+
+.gradient-mesh::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 20% 50%,
+            rgba(123, 110, 246, 0.8) 0%,
+            transparent 50%),
+        radial-gradient(circle at 80% 80%,
+            rgba(236, 72, 153, 0.6) 0%,
+            transparent 50%),
+        radial-gradient(circle at 40% 0%,
+            rgba(245, 158, 11, 0.4) 0%,
+            transparent 50%);
+    animation: mesh-shift 8s ease-in-out infinite;
+}
+
+@keyframes mesh-shift {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    33% {
+        transform: translate(30px, -50px);
+    }
+
+    66% {
+        transform: translate(-20px, 30px);
+    }
+}
+
+/* Advanced Border Animations (Suggestion #18) */
+.border-animate {
+    position: relative;
+    border: 2px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+        linear-gradient(90deg, #7B6EF6, #EC4899, #F59E0B) border-box;
+    animation: border-shift 3s ease-in-out infinite;
+}
+
+.border-animate-gradient {
+    position: relative;
+    background: white;
+    border: 2px solid;
+    border-image: linear-gradient(90deg, #7B6EF6, #EC4899, #F59E0B, #7B6EF6) 1;
+    background-clip: padding-box;
+    animation: border-rotate 4s linear infinite;
+}
+
+@keyframes border-shift {
+
+    0%,
+    100% {
+        border-image-source: linear-gradient(90deg, #7B6EF6, #EC4899, #F59E0B);
+    }
+
+    50% {
+        border-image-source: linear-gradient(90deg, #EC4899, #F59E0B, #7B6EF6);
+    }
+}
+
+@keyframes border-rotate {
+    0% {
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        filter: hue-rotate(360deg);
+    }
+}
+
+/* Advanced Micro-interactions */
+.micro-hover-scale {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.micro-hover-scale:hover {
+    transform: scale(1.05);
+}
+
+.micro-hover-lift {
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.micro-hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.micro-hover-glow:hover {
+    box-shadow: 0 0 20px rgba(123, 110, 246, 0.5);
+    transition: box-shadow 0.3s ease;
+}
+
+/* Pulse Animation */
+@keyframes pulse-advanced {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.pulse-advanced {
+    animation: pulse-advanced 2s ease-in-out infinite;
+}
+
+/* Shimmer Loading (Suggestion #17) */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.shimmer-load {
+    background: linear-gradient(90deg,
+            #f0f0f0 25%,
+            #e0e0e0 50%,
+            #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
+
+/* Gradient Shift Animation (Suggestion #4) */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-shift {
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease infinite;
+}
+
+/* Wave Animation for Loading */
+@keyframes wave {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.wave {
+    animation: wave 1.5s ease-in-out infinite;
+}
+
+/* Floating Animation */
+@keyframes floating {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.floating {
+    animation: floating 4s ease-in-out infinite;
+}
+
+/* Glow Pulse Animation */
+@keyframes glow-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px rgba(123, 110, 246, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(123, 110, 246, 0.8);
+    }
+}
+
+.glow-pulse {
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Blur-up Effect Container */
+.blur-up-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.blur-up-image img {
+    transition: filter 0.3s ease;
+}
+
+.blur-up-image.loaded img {
+    filter: blur(0);
+}
+
+/* 3D Perspective Effects */
+.perspective-3d {
+    perspective: 1200px;
+    transform-style: preserve-3d;
+}
+
+.card-3d {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+    transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+    transform: rotateY(5deg) rotateX(-5deg) translateZ(10px);
+}
+
+/* Cursor Trail Effect Container */
+.cursor-trail-container {
+    position: relative;
+    pointer-events: none;
+}
+
+.cursor-trail-dot {
+    position: fixed;
+    pointer-events: none;
+    width: 8px;
+    height: 8px;
+    background: radial-gradient(circle, #7B6EF6, transparent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(123, 110, 246, 0.6);
+}
+
+/* Advanced Typography Effects */
+.text-gradient {
+    background: linear-gradient(90deg, #7B6EF6, #EC4899, #F59E0B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.text-gradient-animated {
+    background: linear-gradient(-90deg,
+            #7B6EF6,
+            #EC4899,
+            #F59E0B,
+            #7B6EF6);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 3s linear infinite;
+}
+
+/* Stagger Animation for Lists */
+@keyframes stagger-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stagger-in {
+    animation: stagger-in 0.5s ease-out forwards;
+}
+
+/* Smooth Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus Ring Enhancement */
+:focus-visible {
+    outline: 2px solid #7B6EF6;
+    outline-offset: 2px;
+}
+
+/* Dark Mode Enhancements */
+@media (prefers-color-scheme: dark) {
+    .glass-morphism {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .shimmer-load {
+        background: linear-gradient(90deg,
+                #2a2a2a 25%,
+                #3a3a3a 50%,
+                #2a2a2a 75%);
+    }
+
+    .text-gradient {
+        background: linear-gradient(90deg, #a78bfa, #f472b6, #fbbf24);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

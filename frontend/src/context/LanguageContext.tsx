@@ -22,7 +22,12 @@ const dictionary = {
     'nav.work': 'Work',
     'nav.academia': 'Academia',
     'nav.learninghub': 'Learning Hub',
-    'nav.contact': 'Contact'
+    'nav.contact': 'Contact',
+    'teaching.pedagogy': 'Pedagogy',
+    'teaching.title': '5+ Years of Teaching',
+    'teaching.institutions': 'Institutions',
+    'teaching.courses': 'Courses Taught',
+    'teaching.philosophy': 'Philosophy',
   },
   ne: {
     'hero.role.educator': 'एक शिक्षक',
@@ -36,7 +41,12 @@ const dictionary = {
     'nav.work': 'काम',
     'nav.academia': 'शैक्षिक',
     'nav.learninghub': 'सिकाइ केन्द्र',
-    'nav.contact': 'सम्पर्क'
+    'nav.contact': 'सम्पर्क',
+    'teaching.pedagogy': 'शिक्षण विधि',
+    'teaching.title': '५+ वर्षको शिक्षण अनुभव',
+    'teaching.institutions': 'संस्थाहरु',
+    'teaching.courses': 'पढाइएको पाठ्यक्रम',
+    'teaching.philosophy': 'दर्शन',
   }
 };
 
@@ -45,7 +55,7 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
     const saved = localStorage.getItem('language');
-    return (saved as Language) || 'en';
+    return (saved as Language) || 'ne';
   });
 
   useEffect(() => {
