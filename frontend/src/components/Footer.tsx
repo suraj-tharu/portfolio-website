@@ -5,6 +5,13 @@ import { gsap } from 'gsap';
 export default function Footer() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeItems = [
+    "BUILDING THE FUTURE",
+    "INNOVATING TOMORROW",
+    "SHAPING POSSIBILITIES",
+    "CREATING EXCELLENCE",
+    "ENGINEERING DREAMS",
+  ];
 
   useEffect(() => {
     // Setup HLS Video
@@ -18,13 +25,13 @@ export default function Footer() {
       hls.loadSource(videoSrc);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       });
       return () => hls.destroy();
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
       video.src = videoSrc;
       video.addEventListener('loadedmetadata', () => {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       });
     }
   }, []);
@@ -43,7 +50,7 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden flex flex-col z-20">
-      
+
       {/* Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-bg">
         <video
@@ -62,11 +69,11 @@ export default function Footer() {
       <div className="relative z-10 w-full overflow-hidden py-10 md:py-20 flex whitespace-nowrap">
         <div ref={marqueeRef} className="flex text-7xl md:text-9xl font-display italic text-text-primary/10 tracking-tight">
           {Array.from({ length: 10 }).map((_, i) => (
-            <span key={i} className="px-4">BUILDING THE FUTURE •</span>
+            <span key={i} className="px-4">{marqueeItems[i % marqueeItems.length]} •</span>
           ))}
           {/* Duplicate for seamless looping */}
           {Array.from({ length: 10 }).map((_, i) => (
-            <span key={`dup-${i}`} className="px-4">BUILDING THE FUTURE •</span>
+            <span key={`dup-${i}`} className="px-4">{marqueeItems[i % marqueeItems.length]} •</span>
           ))}
         </div>
       </div>
@@ -78,17 +85,17 @@ export default function Footer() {
           Ready to create <br className="hidden md:block" />
           <span className="italic">something special?</span>
         </h2>
-        
+
         <a href="mailto:suraj.xaudhary@gmail.com" className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
-           <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-           <div className="absolute inset-[2px] bg-bg rounded-full" />
-           <span className="relative z-10 text-text-primary font-medium">suraj.xaudhary@gmail.com</span>
+          <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
+          <div className="absolute inset-[2px] bg-bg rounded-full" />
+          <span className="relative z-10 text-text-primary font-medium">suraj.xaudhary@gmail.com</span>
         </a>
       </div>
 
       {/* Footer Bar */}
       <div className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 pt-12 border-t border-white/5">
-        
+
         {/* Availability */}
         <div className="flex items-center gap-3 bg-surface/50 backdrop-blur-sm border border-stroke rounded-full px-4 py-2">
           <div className="relative flex h-2 w-2">
@@ -100,16 +107,16 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-center mt-4 md:mt-0">
-          <a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-text-primary transition-colors">LinkedIn</a>
-          <a href="https://github.com/suraj-tharu" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-text-primary transition-colors">GitHub</a>
-          <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-text-primary transition-colors">Google Scholar</a>
-          <a href="https://www.researchgate.net" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-text-primary transition-colors">ResearchGate</a>
-          <span className="text-sm text-muted">Nawalparasi West, NP</span>
+          <a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">LinkedIn</a>
+          <a href="https://github.com/suraj-tharu" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">GitHub</a>
+          <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">Google Scholar</a>
+          <a href="https://www.researchgate.net" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-gray-600 hover:text-text-primary dark:hover:text-text-primary transition-colors">ResearchGate</a>
+          <span className="text-sm dark:text-muted text-gray-600">Nawalparasi West, NP</span>
         </div>
-        
+
         {/* Copyright */}
-        <div className="text-sm text-muted">
-          © 2026 Suraj Tharu Chaudhary
+        <div className="text-sm dark:text-muted text-gray-600">
+          © 2026 Er. Suraj Tharu Chaudhary
         </div>
       </div>
 

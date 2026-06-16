@@ -20,7 +20,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
       if (!startTime) startTime = timestamp;
       const progress = timestamp - startTime;
       const percentage = Math.min(Math.floor((progress / duration) * 100), 100);
-      
+
       setCount(percentage);
 
       if (progress < duration) {
@@ -43,18 +43,18 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
   }, []);
 
   return (
-    <motion.div 
+    <motion.div
       className="fixed inset-0 z-[9999] bg-bg flex flex-col justify-between p-6 md:p-12 overflow-hidden"
       exit={{ opacity: 0, y: -20, transition: { duration: 0.8, ease: "easeInOut" } }}
     >
       {/* Top Left */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="text-xs text-muted uppercase tracking-[0.3em]"
       >
-        Portfolio
+        Er. Suraj
       </motion.div>
 
       {/* Center Rotating Words */}
@@ -80,12 +80,12 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
             {String(count).padStart(3, "0")}
           </div>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="h-[3px] w-full bg-stroke/50 overflow-hidden rounded-full">
-          <div 
+          <div
             className="h-full accent-gradient origin-left"
-            style={{ 
+            style={{
               transform: `scaleX(${count / 100})`,
               boxShadow: '0 0 8px rgba(137, 170, 204, 0.35)',
               transition: 'transform 0.1s linear'

@@ -76,7 +76,7 @@ const corsOptions = {
     } else {
       console.warn(`[CORS] Blocked request from origin: ${origin}`);
       // For development, just allow it anyway to prevent 500 crashes
-      callback(null, true); 
+      callback(null, true);
     }
   }
 };
@@ -147,19 +147,19 @@ app.use(helmet({
 }));
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10kb' })); 
+app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true })); // Added to parse form submissions
 app.use(cookieParser());
 
 app.use('/api', (req, res, next) => {
   const referer = req.get('Referer');
   const origin = req.get('Origin');
-  
+
   if (process.env.NODE_ENV === 'production') {
     if (!referer && !origin) {
       return res.status(403).json({ error: 'Direct API access forbidden.' });
     }
-    
+
     let isAllowed = false;
     for (const allowed of allowedOrigins) {
       if ((referer && referer.startsWith(allowed)) || (origin && origin === allowed)) {
@@ -167,7 +167,7 @@ app.use('/api', (req, res, next) => {
         break;
       }
     }
-    
+
     if (!isAllowed) {
       return res.status(403).json({ error: 'Origin not allowed' });
     }
@@ -235,8 +235,8 @@ app.use((req, res, next) => {
   const base = path.basename(urlPath);
   // Block any request that tries to reach a sensitive file at the root level
   if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/icons/') && !urlPath.startsWith('/assets/') &&
-      !safeTopLevelFiles.includes(base) && !safeImageExts.includes(ext) &&
-      urlPath !== '/') {
+    !safeTopLevelFiles.includes(base) && !safeImageExts.includes(ext) &&
+    urlPath !== '/') {
     // Allow only known safe patterns — everything else goes to route handlers
     return next();
   }
@@ -271,9 +271,9 @@ app.get('*', (req, res, next) => {
   const urlPath = req.path;
   // Skip for server-rendered EJS pages and API endpoints
   if (
-    urlPath.startsWith('/api') || 
-    urlPath.startsWith('/admin') || 
-    urlPath.startsWith('/learning-hub') || 
+    urlPath.startsWith('/api') ||
+    urlPath.startsWith('/admin') ||
+    urlPath.startsWith('/learning-hub') ||
     urlPath.startsWith('/blog/') ||
     urlPath.startsWith('/dist/') ||
     urlPath.startsWith('/assets/') ||
@@ -322,7 +322,7 @@ app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
   const validUser = process.env.ADMIN_USERNAME || 'admin';
   const validPass = process.env.ADMIN_PASSWORD || 'password123';
-  
+
   if (username === validUser && password === validPass) {
     const token = jwt.sign({ user: username }, JWT_SECRET, { expiresIn: '2h' });
     res.cookie('admin_token', token, { httpOnly: true, maxAge: 2 * 60 * 60 * 1000 });
@@ -499,7 +499,7 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     const geminiMessages = [];
     geminiMessages.push({ role: 'user', parts: [{ text: dynamicSystemPrompt }] });
     geminiMessages.push({ role: 'model', parts: [{ text: 'Understood.' }] });
-    
+
     if (history && history.length > 0) {
       history.forEach(turn => {
         geminiMessages.push({
@@ -588,7 +588,7 @@ app.post('/api/contact', contactLimiter, async (req, res) => {
       };
       await emailTransporter.sendMail(mailOptions);
     }
-    
+
     res.json({ success: true, id: savedId });
   } catch (error) {
     console.error('[CONTACT DB] Error saving message:', error);
@@ -601,7 +601,7 @@ const activeUsers = new Map();
 
 io.on('connection', (socket) => {
   const ip = socket.handshake.headers['x-forwarded-for'] || socket.request.connection.remoteAddress;
-  
+
   activeUsers.set(socket.id, {
     id: socket.id,
     color: `hsl(${Math.random() * 360}, 80%, 60%)`,

@@ -32,8 +32,8 @@ export default function TeachingExperience() {
     <section ref={containerRef} className="bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke/30">
 
       <div className="absolute top-12 left-6 md:left-16 z-30">
-        <span className="text-xs text-muted uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
-        <h2 className="text-3xl md:text-5xl text-text-primary font-display italic">
+        <span className="text-xs dark:text-muted text-gray-600 uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
+        <h2 className="text-3xl md:text-5xl dark:text-text-primary text-gray-900 font-display italic">
           5+ Years of Teaching
         </h2>
       </div>
