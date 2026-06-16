@@ -55,7 +55,6 @@ export function useLazyImage(src: string, fallbackSrc?: string) {
     const [imageSrc, setImageSrc] = useState(fallbackSrc || src);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(false);
-    const ref = useRef<HTMLImageElement>(null);
     const { ref: observerRef, isVisible } = useIntersectionObserver({ margin: '50px' });
 
     useEffect(() => {

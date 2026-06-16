@@ -22,7 +22,7 @@ export function useGoogleAnalytics(config?: AnalyticsConfig) {
 
         window.dataLayer = window.dataLayer || [];
         function gtag(...args: any[]) {
-            window.dataLayer.push(arguments);
+            window.dataLayer.push(args);
         }
         (window as any).gtag = gtag;
         gtag('js', new Date());
@@ -40,7 +40,7 @@ export function trackEvent(
     eventName: string,
     eventData?: Record<string, any>
 ) {
-    if (window.gtag) {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
         (window as any).gtag('event', eventName, eventData);
     }
 }
@@ -49,7 +49,7 @@ export function trackEvent(
  * Track page views
  */
 export function trackPageView(pagePath: string, pageTitle?: string) {
-    if (window.gtag) {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
         (window as any).gtag('event', 'page_view', {
             page_path: pagePath,
             page_title: pageTitle || document.title,
@@ -61,7 +61,7 @@ export function trackPageView(pagePath: string, pageTitle?: string) {
  * Track conversions
  */
 export function trackConversion(conversionName: string, value?: number) {
-    if (window.gtag) {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
         (window as any).gtag('event', conversionName, {
             value: value || 1,
             currency: 'USD',

@@ -13,14 +13,14 @@ const toastConfig = {
         bgColor: 'bg-emerald-500/20',
         borderColor: 'border-emerald-500/30',
         textColor: 'text-emerald-100',
-        icon: CheckCircle,
+        icon: Info,
         accentColor: 'bg-emerald-500',
     },
     error: {
         bgColor: 'bg-red-500/20',
         borderColor: 'border-red-500/30',
         textColor: 'text-red-100',
-        icon: AlertCircle,
+        icon: AlertTriangle,
         accentColor: 'bg-red-500',
     },
     info: {

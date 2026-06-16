@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Home, FileText, Mail, Settings, Code2, Linkedin as LinkedinIcon } from 'lucide-react';
+import { Search, Home, FileText, Mail, Settings, Code2 } from 'lucide-react';
 import { useKeyboardShortcut } from '../hooks/useAccessibility';
 
 interface CommandItem {
@@ -44,7 +44,7 @@ const commands: CommandItem[] = [
     {
         id: 'linkedin',
         label: 'LinkedIn',
-        icon: <LinkedinIcon size={18} />,
+        icon: <Settings size={18} />,
         action: () => window.open('https://linkedin.com/in/surajchaudhary', '_blank'),
         category: 'Social',
     },
@@ -174,8 +174,8 @@ export default function CommandPalette() {
                                                     setQuery('');
                                                 }}
                                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${index === selectedIndex
-                                                        ? 'bg-brand-500/20 text-text-primary'
-                                                        : 'text-text-secondary hover:bg-surface-2'
+                                                    ? 'bg-brand-500/20 text-text-primary'
+                                                    : 'text-text-secondary hover:bg-surface-2'
                                                     }`}
                                                 onHoverStart={() => setSelectedIndex(index)}
                                             >

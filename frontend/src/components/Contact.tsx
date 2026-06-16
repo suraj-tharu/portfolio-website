@@ -165,8 +165,8 @@ export default function Contact() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`w-full bg-[var(--bg)] border rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none transition-all placeholder:text-[var(--muted)]/50 ${touched.name && errors.name
-                    ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                    : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
+                  ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
                   }`}
                 placeholder="John Doe"
                 aria-invalid={touched.name && errors.name ? 'true' : 'false'}
@@ -190,8 +190,8 @@ export default function Contact() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`w-full bg-[var(--bg)] border rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none transition-all placeholder:text-[var(--muted)]/50 ${touched.email && errors.email
-                    ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                    : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
+                  ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
                   }`}
                 placeholder="john@example.com"
                 aria-invalid={touched.email && errors.email ? 'true' : 'false'}
@@ -214,8 +214,8 @@ export default function Contact() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`w-full bg-[var(--bg)] border rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none transition-all placeholder:text-[var(--muted)]/50 ${touched.subject && errors.subject
-                    ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                    : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
+                  ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
                   }`}
                 placeholder="Project Inquiry"
               />
@@ -238,8 +238,8 @@ export default function Contact() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`w-full bg-[var(--bg)] border rounded-xl px-4 py-3 text-[var(--text)] focus:outline-none transition-all placeholder:text-[var(--muted)]/50 resize-none ${touched.message && errors.message
-                    ? 'border-red-500 focus:ring-1 focus:ring-red-500'
-                    : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
+                  ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-[var(--stroke)] focus:border-[var(--brand)] focus:ring-1 focus:ring-[var(--brand)]'
                   }`}
                 placeholder="Tell me about your project..."
                 aria-invalid={touched.message && errors.message ? 'true' : 'false'}

@@ -6,7 +6,7 @@ export function debounce<T extends (...args: any[]) => any>(
     func: T,
     wait: number
 ): (...args: Parameters<T>) => void {
-    let timeout: NodeJS.Timeout | null = null;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
 
     return function executedFunction(...args: Parameters<T>) {
         const later = () => {
@@ -94,7 +94,7 @@ export function deepMerge<T extends Record<string, any>>(
         for (const key in source) {
             if (isObject(source[key])) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
-                deepMerge(target[key], source[key]);
+                deepMerge(target[key] as any, source[key] as any);
             } else {
                 Object.assign(target, { [key]: source[key] });
             }
@@ -141,7 +141,7 @@ export function isTouchDevice(): boolean {
         typeof window !== 'undefined' &&
         (('ontouchstart' in window) ||
             (navigator.maxTouchPoints > 0) ||
-            (navigator.msMaxTouchPoints > 0))
+            (navigator.maxTouchPoints > 0))
     );
 }
 

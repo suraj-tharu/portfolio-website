@@ -253,7 +253,7 @@ export const shouldAnimateBasedOnDevice = (): boolean => {
     // Disable animations on low-end devices
     const isLowEndDevice =
         window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-        navigator.deviceMemory < 4; // Less than 4GB RAM
+        (navigator as any).deviceMemory < 4; // Less than 4GB RAM
 
     return !isLowEndDevice;
 };
@@ -261,7 +261,7 @@ export const shouldAnimateBasedOnDevice = (): boolean => {
 /**
  * Performance-safe animation initialization
  */
-export const safeAnimateOnScroll = (element: HTMLElement, animation: any) => {
+export const safeAnimateOnScroll = (element: HTMLElement, _animation: any) => {
     if (!('IntersectionObserver' in window)) {
         return; // Fallback for older browsers
     }
