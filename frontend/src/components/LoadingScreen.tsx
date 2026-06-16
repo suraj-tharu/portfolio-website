@@ -52,7 +52,7 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="text-xs text-muted uppercase tracking-[0.3em]"
+        className="text-4xl md:text-5xl lg:text-6xl font-display italic text-amber-500 tracking-wide"
       >
         Er. Suraj
       </motion.div>

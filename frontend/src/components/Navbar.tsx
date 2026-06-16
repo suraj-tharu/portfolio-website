@@ -23,7 +23,6 @@ export default function Navbar() {
     { label: t('nav.expertise'), href: '#skills' },
     { label: t('nav.work'), href: '/#work' },
     { label: t('nav.academia'), href: '/#research' },
-    { label: 'Dashboard', href: '/research' },
     { label: t('nav.learninghub'), href: '/learning-hub', external: true },
     { label: t('nav.contact'), href: '#contact' }
   ];
