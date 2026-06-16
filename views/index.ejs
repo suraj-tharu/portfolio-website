@@ -42,7 +42,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://portfolio-website-vto2.onrender.com/">
   <meta name="twitter:title" content="Suraj Tharu Chaudhary | Computer Engineer & GIS Researcher">
-  <meta name="twitter:description" content="Portfolio showcasing GIS, Remote Sensing, Machine Learning, and full-stack development work.">
+  <meta name="twitter:description"
+    content="Portfolio showcasing GIS, Remote Sensing, Machine Learning, and full-stack development work.">
   <meta name="twitter:image" content="https://api.dicebear.com/7.x/initials/svg?seed=STC&backgroundColor=0ea5e9">
 
   <meta name="theme-color" content="#0f172a">
@@ -58,7 +59,8 @@
     rel="stylesheet">
 
   <!-- Styles -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
     integrity="sha384-oaMLBGEzBOJx3UHwac0cVndtX5fxGQIfnAeFZ35RTgqPcYlbprH9o9PUV/F8Le07" crossorigin="anonymous">
 
@@ -103,7 +105,8 @@
     integrity="sha384-OqQP3UcU7efkEYDRjGmQou2uEvzGFGRtwdYXTjnupeB9cWogSgQ4BOhyklFBYbBR"
     crossorigin="anonymous"></script>
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
   <!-- Inline QRCode library to ensure it always loads even if CDN is blocked -->
 
@@ -133,19 +136,22 @@
 
   <!-- GitHub Calendar -->
   <script src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css" />
 </head>
 
-<body class="dark:text-slate-300 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white has-custom-cursor overflow-x-hidden">
+<body
+  class="dark:text-slate-300 text-slate-800 font-sans antialiased selection:bg-brand-500 selection:text-white has-custom-cursor overflow-x-hidden">
 
   <!-- SCROLL PROGRESS BAR -->
   <div id="scroll-progress"></div>
 
   <!-- PRELOADER -->
-  <div id="preloader" class="fixed inset-0 z-[9999] bg-white dark:bg-slate-900 flex flex-col items-center justify-center transition-opacity duration-700">
+  <div id="preloader"
+    class="fixed inset-0 z-[9999] bg-white dark:bg-slate-900 flex flex-col items-center justify-center transition-opacity duration-700">
     <div class="relative flex items-center justify-center w-24 h-24">
       <div class="absolute inset-0 border-t-2 border-brand-500 rounded-full animate-spin"></div>
-      <div class="absolute inset-2 border-r-2 border-blue-400 rounded-full animate-[spin_1.5s_linear_infinite_reverse]"></div>
+      <div class="absolute inset-2 border-r-2 border-blue-400 rounded-full animate-[spin_1.5s_linear_infinite_reverse]">
+      </div>
       <span class="font-mono font-bold text-xl dark:text-white text-slate-900">&lt;S/&gt;</span>
     </div>
     <div class="mt-8 font-mono text-sm text-brand-400 animate-pulse tracking-widest">INITIALIZING...</div>
@@ -194,7 +200,8 @@
           </svg>
         </button>
 
-        <button id="a11y-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic" aria-label="Accessibility Settings">
+        <button id="a11y-toggle" class="p-2 rounded-lg dark:hover:bg-slate-800 hover:bg-slate-200 transition magnetic"
+          aria-label="Accessibility Settings">
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z" />
           </svg>
@@ -237,7 +244,8 @@
         <div>
           <p class="font-mono text-xs dark:text-slate-400 text-slate-600 mb-4" data-aos="fade-up">~$ initialize_profile
             --user=suraj --mode=available</p>
-          <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold dark:text-white text-slate-900 leading-tight"
+          <h1
+            class="font-display text-4xl md:text-5xl lg:text-6xl font-extrabold dark:text-white text-slate-900 leading-tight"
             id="hero-title" style="letter-spacing:-0.03em">
             <span class="hero-word inline-block" data-i18n="hi">Hi,</span>
             <span class="hero-word inline-block" data-i18n="im">I'm</span><br />
@@ -504,10 +512,16 @@
           <!-- Search & Filter UI -->
           <div class="flex items-center gap-4 w-full md:w-auto">
             <div class="relative w-full md:w-64">
-              <input type="text" id="project-search" placeholder="Search projects..." class="w-full pl-10 pr-4 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800/50 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-shadow">
-              <svg class="w-5 h-5 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <input type="text" id="project-search" placeholder="Search projects..."
+                class="w-full pl-10 pr-4 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800/50 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 transition-shadow">
+              <svg class="w-5 h-5 absolute left-3 top-2.5 text-slate-400" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
             </div>
-            <select id="project-filter" class="px-4 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800/50 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer hidden md:block">
+            <select id="project-filter"
+              class="px-4 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-800/50 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 cursor-pointer hidden md:block">
               <option value="all">All Categories</option>
               <option value="gis">GIS</option>
               <option value="ml">Machine Learning</option>
@@ -517,56 +531,68 @@
         </div>
 
         <div class="grid md:grid-cols-2 gap-8" id="projects-grid">
-          <% if (typeof projects !== 'undefined' && projects.length > 0) { %>
-            <% projects.forEach((project, index) => { %>
-              <div
-                class="glass-card project-card p-8 rounded-2xl hover:border-brand-500/50 transition duration-300"
-                data-aos="fade-up" data-aos-delay="<%= index * 100 %>" data-title="<%= project.title.toLowerCase() %>" data-tags="<%= project.tags ? project.tags.toLowerCase() : '' %>">
+          <% if (typeof projects !=='undefined' && projects.length> 0) { %>
+            <% projects.forEach((project, index)=> { %>
+              <div class="glass-card project-card p-8 rounded-2xl hover:border-brand-500/50 transition duration-300"
+                data-aos="fade-up" data-aos-delay="<%= index * 100 %>" data-title="<%= project.title.toLowerCase() %>"
+                data-tags="<%= project.tags ? project.tags.toLowerCase() : '' %>">
                 <div class="w-12 h-12 rounded-xl bg-brand-500/10 flex items-center justify-center mb-6 overflow-hidden">
                   <% if (project.imageUrl) { %>
-                     <img src="<%= project.imageUrl %>" alt="<%= project.title %>" class="w-full h-full object-cover opacity-80" loading="lazy" />
-                  <% } else { %>
-                    <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                  <% } %>
+                    <img src="<%= project.imageUrl %>" alt="<%= project.title %>"
+                      class="w-full h-full object-cover opacity-80" loading="lazy" />
+                    <% } else { %>
+                      <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                        </path>
+                      </svg>
+                      <% } %>
                 </div>
-                <h3 class="text-xl font-bold dark:text-white text-slate-900 mb-3"><%= project.title %></h3>
+                <h3 class="text-xl font-bold dark:text-white text-slate-900 mb-3">
+                  <%= project.title %>
+                </h3>
                 <p class="text-sm dark:text-slate-400 text-slate-600 leading-relaxed mb-4">
                   <%= project.description %>
                 </p>
                 <div class="flex flex-wrap gap-2">
                   <% if (project.tags) { %>
-                    <% project.tags.split(',').forEach(tag => { %>
-                      <span class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded"><%= tag.trim() %></span>
-                    <% }) %>
-                  <% } %>
+                    <% project.tags.split(',').forEach(tag=> { %>
+                      <span
+                        class="text-xs font-mono dark:bg-slate-800 bg-slate-200 dark:text-brand-300 text-brand-600 px-2 py-1 rounded">
+                        <%= tag.trim() %>
+                      </span>
+                      <% }) %>
+                        <% } %>
                 </div>
-                <% if (project.liveUrl && project.liveUrl !== '#') { %>
+                <% if (project.liveUrl && project.liveUrl !=='#' ) { %>
                   <div class="mt-6">
-                    <a href="<%= project.liveUrl %>" target="_blank" class="inline-flex items-center gap-2 text-sm text-brand-500 hover:text-brand-400 font-semibold transition group">
+                    <a href="<%= project.liveUrl %>" target="_blank"
+                      class="inline-flex items-center gap-2 text-sm text-brand-500 hover:text-brand-400 font-semibold transition group">
                       View Project <span class="transform group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                   </div>
-                <% } %>
+                  <% } %>
               </div>
-            <% }) %>
-          <% } else { %>
-            <div class="col-span-2 text-center text-slate-500 dark:text-slate-400 py-12">
-              No projects available yet.
-            </div>
-          <% } %>
+              <% }) %>
+                <% } else { %>
+                  <div class="col-span-2 text-center text-slate-500 dark:text-slate-400 py-12">
+                    No projects available yet.
+                  </div>
+                  <% } %>
         </div>
 
         <!-- Interactive GIS Map -->
         <div class="mt-12 w-full" data-aos="fade-up">
           <h3 class="text-xl font-bold dark:text-white text-slate-900 mb-6 flex items-center gap-2">
             <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7">
+              </path>
             </svg>
             Interactive LULC Data Explorer
           </h3>
-          <div class="p-2 dark:bg-slate-900/50 bg-white rounded-xl border dark:border-slate-700 border-slate-200 shadow-xl w-full max-w-full">
+          <div
+            class="p-2 dark:bg-slate-900/50 bg-white rounded-xl border dark:border-slate-700 border-slate-200 shadow-xl w-full max-w-full">
             <div id="gis-map" class="h-[500px] w-full rounded-lg overflow-hidden z-10"></div>
           </div>
         </div>
@@ -581,14 +607,16 @@
       <div class="orb orb-3" aria-hidden="true"></div>
       <div class="max-w-6xl mx-auto px-4 relative z-10">
         <div class="flex items-center justify-center mb-16" data-aos="fade-up">
-          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 flex items-center gap-3 section-heading">
+          <h2
+            class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 flex items-center gap-3 section-heading">
             <span class="text-brand-400 font-mono text-4xl italic neon-text">//</span> Latest Articles
           </h2>
         </div>
         <div class="grid md:grid-cols-2 gap-8">
-          <% if (typeof blogs !== 'undefined' && blogs.length > 0) { %>
-            <% blogs.forEach((blog, index) => { %>
-              <div class="glass-card rounded-2xl p-8 article-card card-shine gradient-border" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+          <% if (typeof blogs !=='undefined' && blogs.length> 0) { %>
+            <% blogs.forEach((blog, index)=> { %>
+              <div class="glass-card rounded-2xl p-8 article-card card-shine gradient-border" data-aos="fade-up"
+                data-aos-delay="<%= index * 100 %>">
                 <div class="text-brand-500 font-mono text-sm mb-3">
                   <%= new Date(blog.createdAt).toLocaleDateString() %>
                 </div>
@@ -598,16 +626,17 @@
                 <div class="prose dark:prose-invert text-slate-600 dark:text-slate-400 mb-6 line-clamp-3">
                   <%- blog.content %>
                 </div>
-                <a href="/blog/<%= blog.slug %>" class="text-brand-500 font-semibold hover:text-brand-400 flex items-center gap-2 group">
+                <a href="/blog/<%= blog.slug %>"
+                  class="text-brand-500 font-semibold hover:text-brand-400 flex items-center gap-2 group">
                   Read Article <span class="transform group-hover:translate-x-1 transition-transform">→</span>
                 </a>
               </div>
-            <% }) %>
-          <% } else { %>
-            <div class="col-span-2 text-center text-slate-500 py-12">
-              No blog posts published yet.
-            </div>
-          <% } %>
+              <% }) %>
+                <% } else { %>
+                  <div class="col-span-2 text-center text-slate-500 py-12">
+                    No blog posts published yet.
+                  </div>
+                  <% } %>
         </div>
       </div>
     </section>
@@ -617,7 +646,10 @@
       <div class="max-w-6xl mx-auto px-4">
         <div class="glass-card rounded-2xl p-8" data-aos="fade-up">
           <h3 class="text-2xl font-bold dark:text-white text-slate-900 mb-6 flex items-center gap-3">
-            <svg class="w-6 h-6 text-brand-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <svg class="w-6 h-6 text-brand-400" fill="currentColor" viewBox="0 0 24 24">
+              <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+            </svg>
             GitHub Contributions
           </h3>
           <div class="calendar w-full overflow-hidden text-xs">
@@ -729,8 +761,7 @@
           </div>
 
           <!-- Web & Mobile -->
-          <div
-            class="glass-card p-6 rounded-xl hover-lift hover:border-brand-500/50 transition-all duration-300"
+          <div class="glass-card p-6 rounded-xl hover-lift hover:border-brand-500/50 transition-all duration-300"
             data-aos="fade-up" data-aos-delay="200">
             <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
               <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -764,8 +795,7 @@
           </div>
 
           <!-- Info Systems -->
-          <div
-            class="glass-card p-6 rounded-xl hover-lift hover:border-brand-500/50 transition-all duration-300"
+          <div class="glass-card p-6 rounded-xl hover-lift hover:border-brand-500/50 transition-all duration-300"
             data-aos="fade-up" data-aos-delay="300">
             <h3 class="font-mono text-lg text-brand-400 mb-6 flex items-center gap-2">
               <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -820,131 +850,144 @@
       <div class="max-w-6xl mx-auto px-4 relative z-10">
         <div class="flex items-center gap-3 mb-12" data-aos="fade-up">
           <span class="sec-num neon-text">04</span>
-          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 section-heading">Featured Projects</h2>
+          <h2 class="text-3xl md:text-4xl font-bold dark:text-white text-slate-900 section-heading">Featured Projects
+          </h2>
           <div class="flex-1 h-px bg-gradient-to-r from-brand-500/40 to-transparent ml-4"></div>
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Project 1 -->
+          <!-- Project 1: GIS Analysis -->
           <div
             class="dark:bg-slate-900/50 bg-white rounded-xl overflow-hidden border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
             data-aos="fade-up">
             <div class="w-full h-48 relative overflow-hidden border-b dark:border-slate-700 border-slate-200">
-               <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="RISC-V CPU" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
+                alt="GIS Land Use Analysis"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="p-6 flex flex-col flex-grow">
-            <div class="flex justify-between items-start mb-6">
-              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                </svg>
-              </div>
-              <div class="flex gap-3">
-                <a href="#" class="dark:text-slate-400 text-slate-600 hover:text-brand-400 transition"
-                  aria-label="Github Repo">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+              <div class="flex justify-between items-start mb-6">
+                <div class="w-10 h-10 rounded bg-green-500/10 flex items-center justify-center text-green-500"
+                  style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 20l-5.447-2.724A1 1 0 003 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 16.382V5.618a1 1 0 00-1.447-.894L15 7m0 13V7m0 0L9 4" />
                   </svg>
-                </a>
+                </div>
+                <div class="flex gap-3">
+                  <a href="https://github.com"
+                    class="dark:text-slate-400 text-slate-600 hover:text-green-500 transition" aria-label="Github Repo"
+                    target="_blank">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
-            <h3
-              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
-              32-bit RISC-V Softcore</h3>
-            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
-              Designed a 5-stage pipelined RISC-V RV32I processor in Verilog from scratch. Implemented instruction/data
-              caches, UART controller, and deployed on an Artix-7 FPGA to run custom C programs.
-            </p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Verilog</span>
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">ModelSim</span>
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Artix-7</span>
-              <button
-                onclick="navigator.xr ? alert('Starting WebXR Session...') : alert('WebXR not supported on this device.')"
-                class="font-mono text-xs dark:bg-brand-500/20 bg-brand-500 text-white dark:text-brand-400 px-2 py-1 rounded border border-brand-500 hover:bg-brand-500 hover:text-white transition cursor-pointer ml-auto">AR
-                View</button>
-            </div>
+              <h3
+                class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-green-500 transition-colors">
+                Land Use Classification</h3>
+              <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+                Automated LULC mapping using satellite imagery and machine learning. Analyzed multi-temporal Sentinel-2
+                data to classify land cover across Nepal using Random Forest and Deep Learning models with 94% accuracy.
+              </p>
+              <div class="flex flex-wrap gap-2 mt-auto">
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">QGIS</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Python</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">TensorFlow</span>
+              </div>
             </div>
           </div>
 
-          <!-- Project 2 -->
+          <!-- Project 2: Web Development -->
           <div
             class="dark:bg-slate-900/50 bg-white rounded-xl overflow-hidden border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
             data-aos="fade-up" data-aos-delay="100">
             <div class="w-full h-48 relative overflow-hidden border-b dark:border-slate-700 border-slate-200">
-               <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="IoT Data Dashboard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1460925895917-aaf4b51beb6b?auto=format&fit=crop&w=800&q=80"
+                alt="Web Development Dashboard"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="p-6 flex flex-col flex-grow">
-            <div class="flex justify-between items-start mb-6">
-              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <div class="flex gap-3">
-                <a href="#" class="dark:text-slate-400 text-slate-600 hover:text-brand-400 transition"
-                  aria-label="Github Repo">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+              <div class="flex justify-between items-start mb-6">
+                <div class="w-10 h-10 rounded bg-blue-500/10 flex items-center justify-center text-blue-500"
+                  style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                   </svg>
-                </a>
+                </div>
+                <div class="flex gap-3">
+                  <a href="https://github.com/suraj-tharu/portfolio-website"
+                    class="dark:text-slate-400 text-slate-600 hover:text-blue-500 transition" aria-label="Github Repo"
+                    target="_blank">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
-            <h3
-              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
-              IoT Weather Station</h3>
-            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
-              Built a custom PCB incorporating an ESP32, BME280, and a solar charging IC. Wrote firmware to read sensor
-              data over I2C and publish telemetry via MQTT to a custom web dashboard.
-            </p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">C++</span>
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">ESP-IDF</span>
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">KiCad</span>
-            </div>
+              <h3
+                class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-blue-500 transition-colors">
+                Fullstack Portfolio App</h3>
+              <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+                Built a premium, ultra-responsive portfolio website with React, TypeScript, and Tailwind CSS. Features
+                include real-time data updates, 3D animations, dark mode, and server-side rendering for optimal
+                performance and SEO.
+              </p>
+              <div class="flex flex-wrap gap-2 mt-auto">
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">React</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">TypeScript</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Framer Motion</span>
+              </div>
             </div>
           </div>
 
-          <!-- Project 3 -->
+          <!-- Project 3: Machine Learning -->
           <div
             class="dark:bg-slate-900/50 bg-white rounded-xl overflow-hidden border dark:border-slate-700 border-slate-200 hover:border-brand-500 transition-colors group flex flex-col"
             data-aos="fade-up" data-aos-delay="200">
             <div class="w-full h-48 relative overflow-hidden border-b dark:border-slate-700 border-slate-200">
-               <img src="https://images.unsplash.com/photo-1597852074816-d933c7d2b988?auto=format&fit=crop&w=800&q=80" alt="STM32 Chip" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+              <img src="https://images.unsplash.com/photo-1551537482-f2b408d54fdb?auto=format&fit=crop&w=800&q=80"
+                alt="ML Data Analysis"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                loading="lazy">
             </div>
             <div class="p-6 flex flex-col flex-grow">
-            <div class="flex justify-between items-start mb-6">
-              <div class="w-10 h-10 rounded bg-brand-500/10 flex items-center justify-center text-brand-500">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <div class="flex gap-3">
-                <a href="#" class="dark:text-slate-400 text-slate-600 hover:text-brand-400 transition"
-                  aria-label="Github Repo">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                    <path
-                      d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+              <div class="flex justify-between items-start mb-6">
+                <div class="w-10 h-10 rounded bg-purple-500/10 flex items-center justify-center text-purple-500"
+                  style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
-                </a>
+                </div>
+                <div class="flex gap-3">
+                  <a href="#" class="dark:text-slate-400 text-slate-600 hover:text-purple-500 transition"
+                    aria-label="Research Paper" target="_blank">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path
+                        d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                    </svg>
+                  </a>
+                </div>
               </div>
-            </div>
-            <h3
-              class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-brand-400 transition-colors">
-              Bare-metal STM32 Drivers</h3>
-            <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
-              Developed a custom hardware abstraction layer (HAL) for STM32F4 series microcontrollers directly writing
-              to memory-mapped registers, bypassing standard bloated vendor HALs.
-            </p>
-            <div class="flex flex-wrap gap-2 mt-auto">
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">C</span>
-              <span class="font-mono text-xs dark:text-slate-400 text-slate-600">ARM Cortex-M4</span>
-            </div>
+              <h3
+                class="text-xl font-bold dark:text-slate-200 text-slate-800 mb-2 group-hover:text-purple-500 transition-colors">
+                Climate Change Impact Study</h3>
+              <p class="dark:text-slate-400 text-slate-600 text-sm mb-6 leading-relaxed flex-grow">
+                Developed predictive models using climate data and satellite imagery to assess environmental impacts.
+                Implemented CNN and LSTM networks for temporal pattern recognition across multiple geospatial datasets.
+              </p>
+              <div class="flex flex-wrap gap-2 mt-auto">
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Python</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">PyTorch</span>
+                <span class="font-mono text-xs dark:text-slate-400 text-slate-600">Google Earth Engine</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1107,20 +1150,25 @@
           </h2>
         </div>
 
-        <div class="relative w-full overflow-hidden group rounded-2xl border dark:border-slate-700 border-slate-200 bg-white dark:bg-slate-800/50 p-8 shadow-xl">
+        <div
+          class="relative w-full overflow-hidden group rounded-2xl border dark:border-slate-700 border-slate-200 bg-white dark:bg-slate-800/50 p-8 shadow-xl">
           <!-- Quote Icon -->
           <div class="absolute top-6 left-6 text-brand-500/20">
             <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              <path
+                d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
             </svg>
           </div>
-          
+
           <div class="relative z-10 flex flex-col items-center text-center mt-4">
-            <p class="text-lg md:text-xl font-medium dark:text-slate-300 text-slate-700 leading-relaxed italic mb-8 max-w-2xl">
-              "Suraj demonstrated exceptional analytical skills during his research on LULC. His ability to apply machine learning to spatial datasets was instrumental to our department's remote sensing initiatives."
+            <p
+              class="text-lg md:text-xl font-medium dark:text-slate-300 text-slate-700 leading-relaxed italic mb-8 max-w-2xl">
+              "Suraj demonstrated exceptional analytical skills during his research on LULC. His ability to apply
+              machine learning to spatial datasets was instrumental to our department's remote sensing initiatives."
             </p>
             <div class="flex items-center gap-4">
-              <img src="https://api.dicebear.com/7.x/initials/svg?seed=Prof&backgroundColor=0ea5e9" alt="Professor" class="w-12 h-12 rounded-full border-2 border-brand-500">
+              <img src="https://api.dicebear.com/7.x/initials/svg?seed=Prof&backgroundColor=0ea5e9" alt="Professor"
+                class="w-12 h-12 rounded-full border-2 border-brand-500">
               <div class="text-left">
                 <h4 class="font-bold dark:text-white text-slate-900">Dr. Binod Bhatta</h4>
                 <div class="text-sm dark:text-slate-400 text-slate-600 font-mono">Head of GIS Dept, TU</div>
@@ -1155,12 +1203,14 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="py-8 border-t dark:border-slate-800 border-slate-200 mt-12 text-center text-sm dark:text-slate-500 text-slate-500">
+  <footer
+    class="py-8 border-t dark:border-slate-800 border-slate-200 mt-12 text-center text-sm dark:text-slate-500 text-slate-500">
     <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
       <p>&copy; <%= new Date().getFullYear() %> Suraj Tharu Chaudhary. All rights reserved.</p>
       <div class="flex items-center gap-4">
         <a href="https://github.com/surajtharu" target="_blank" class="hover:text-brand-500 transition">GitHub</a>
-        <a href="https://linkedin.com/in/surajtharu" target="_blank" class="hover:text-brand-500 transition">LinkedIn</a>
+        <a href="https://linkedin.com/in/surajtharu" target="_blank"
+          class="hover:text-brand-500 transition">LinkedIn</a>
       </div>
     </div>
   </footer>
@@ -1214,7 +1264,8 @@
         <span>Score: <span id="game-score">0</span></span>
         <button id="close-game" class="hover:text-white transition">✕</button>
       </div>
-      <canvas id="game-canvas" width="600" height="400" class="block dark:bg-[#0f172a] bg-white max-w-full h-auto"></canvas>
+      <canvas id="game-canvas" width="600" height="400"
+        class="block dark:bg-[#0f172a] bg-white max-w-full h-auto"></canvas>
       <div id="game-overlay"
         class="absolute inset-0 flex items-center justify-center bg-slate-900/80 font-mono text-white text-center">
         <div>
@@ -1236,7 +1287,8 @@
       class="relative w-full max-w-2xl dark:bg-[#0f172a] bg-white border dark:border-[#1e293b] border-slate-200 rounded-xl shadow-[0_0_40px_rgba(14,165,233,0.15)] overflow-hidden font-mono mx-4 transform scale-95 opacity-0 transition-all duration-300"
       id="contact-box">
       <!-- Terminal Header -->
-      <div class="flex items-center px-4 py-3 dark:bg-[#0b1121] bg-slate-100 border-b dark:border-[#1e293b] border-slate-200">
+      <div
+        class="flex items-center px-4 py-3 dark:bg-[#0b1121] bg-slate-100 border-b dark:border-[#1e293b] border-slate-200">
         <div class="flex gap-2">
           <div class="w-3 h-3 rounded-full bg-red-500"></div>
           <div class="w-3 h-3 rounded-full bg-yellow-500"></div>

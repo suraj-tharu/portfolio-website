@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,42 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
   <style>
-    body { background-color: #0f172a; color: white; }
+    body {
+      background-color: #0f172a;
+      color: white;
+    }
+
     /* SimpleMDE Dark Theme Overrides */
-    .editor-toolbar { background-color: #1e293b; border-color: #334155; opacity: 1 !important; }
-    .editor-toolbar a { color: #94a3b8 !important; }
-    .editor-toolbar a:hover, .editor-toolbar a.active { background-color: #334155; border-color: #334155; color: #fff !important; }
-    .CodeMirror { background-color: #0f172a !important; color: #e2e8f0 !important; border-color: #334155 !important; }
-    .editor-preview { background-color: #0f172a; color: #e2e8f0; }
+    .editor-toolbar {
+      background-color: #1e293b;
+      border-color: #334155;
+      opacity: 1 !important;
+    }
+
+    .editor-toolbar a {
+      color: #94a3b8 !important;
+    }
+
+    .editor-toolbar a:hover,
+    .editor-toolbar a.active {
+      background-color: #334155;
+      border-color: #334155;
+      color: #fff !important;
+    }
+
+    .CodeMirror {
+      background-color: #0f172a !important;
+      color: #e2e8f0 !important;
+      border-color: #334155 !important;
+    }
+
+    .editor-preview {
+      background-color: #0f172a;
+      color: #e2e8f0;
+    }
   </style>
 </head>
+
 <body class="bg-slate-950 font-sans min-h-screen">
   <!-- Navbar -->
   <nav class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-50">
@@ -26,69 +54,89 @@
       </div>
       <div class="flex items-center gap-6">
         <a href="/" class="text-slate-400 hover:text-white transition text-sm">View Site</a>
-        <a href="/admin/logout" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition">Logout</a>
+        <a href="/admin/logout"
+          class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition">Logout</a>
       </div>
     </div>
   </nav>
 
   <div class="max-w-7xl mx-auto p-8 grid lg:grid-cols-3 gap-8">
-    
+
     <!-- Projects Section -->
     <div class="lg:col-span-2 space-y-8">
       <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl">
         <h2 class="text-2xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
           <span class="text-brand-400">#</span> Manage Projects / Research
         </h2>
-        
-        <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
+
+        <form action="/admin/api/projects" method="POST" enctype="multipart/form-data"
+          class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
           <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Add New Project</h3>
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs text-slate-400 mb-1">Title</label>
-              <input type="text" name="title" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+              <input type="text" name="title" required
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Image URL (Or upload below)</label>
-              <input type="url" name="imageUrl" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
-              
+              <input type="url" name="imageUrl"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+
               <label class="block text-xs text-slate-400 mt-2 mb-1">Upload Image File</label>
-              <input type="file" name="imageFile" accept="image/*" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-brand-500/20 file:text-brand-400 hover:file:bg-brand-500/30">
+              <input type="file" name="imageFile" accept="image/*"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-brand-500/20 file:text-brand-400 hover:file:bg-brand-500/30">
             </div>
             <div class="md:col-span-2">
               <label class="block text-xs text-slate-400 mb-1">Description</label>
-              <textarea name="description" required rows="2" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"></textarea>
+              <textarea name="description" required rows="2"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"></textarea>
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Live URL</label>
-              <input type="url" name="liveUrl" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+              <input type="url" name="liveUrl"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Tags (Comma separated)</label>
-              <input type="text" name="tags" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="QGIS, Python, GEE">
+              <input type="text" name="tags"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"
+                placeholder="QGIS, Python, GEE">
             </div>
           </div>
-          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Create Project</button>
+          <button type="submit"
+            class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Create
+            Project</button>
         </form>
 
         <div class="space-y-4">
-          <% projects.forEach(p => { %>
+          <% projects.forEach(p=> { %>
             <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
               <div class="flex items-center gap-4">
                 <% if (p.imageUrl) { %>
-                  <img src="<%= p.imageUrl %>" alt="Thumbnail" class="w-12 h-12 object-cover rounded-md border border-slate-800">
-                <% } else { %>
-                  <div class="w-12 h-12 bg-slate-900 rounded-md border border-slate-800 flex items-center justify-center text-xs text-slate-600">No Img</div>
-                <% } %>
-                <div>
-                  <div class="font-bold"><%= p.title %></div>
-                  <div class="text-xs text-slate-400 mt-1"><%= new Date(p.createdAt).toLocaleDateString() %></div>
-                </div>
+                  <img src="<%= p.imageUrl %>" alt="Thumbnail"
+                    class="w-12 h-12 object-cover rounded-md border border-slate-800">
+                  <% } else { %>
+                    <div
+                      class="w-12 h-12 bg-slate-900 rounded-md border border-slate-800 flex items-center justify-center text-xs text-slate-600">
+                      No Img</div>
+                    <% } %>
+                      <div>
+                        <div class="font-bold">
+                          <%= p.title %>
+                        </div>
+                        <div class="text-xs text-slate-400 mt-1">
+                          <%= new Date(p.createdAt).toLocaleDateString() %>
+                        </div>
+                      </div>
               </div>
-              <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this project?');">
-                <button type="submit" class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
+              <form action="/admin/api/projects/<%= p.id %>/delete" method="POST"
+                onsubmit="return confirm('Are you sure you want to delete this project?');">
+                <button type="submit"
+                  class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
               </form>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
 
@@ -97,56 +145,73 @@
         <h2 class="text-2xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
           <span class="text-brand-400">#</span> Manage Blog Posts
         </h2>
-        
-        <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
+
+        <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data"
+          class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
           <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Add New Post</h3>
           <div>
             <label class="block text-xs text-slate-400 mb-1">Title</label>
-            <input type="text" name="title" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+            <input type="text" name="title" required
+              class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
           </div>
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs text-slate-400 mb-1">Slug (URL)</label>
-              <input type="text" name="slug" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="my-awesome-post">
+              <input type="text" name="slug" required
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"
+                placeholder="my-awesome-post">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Cover Image</label>
-              <input type="file" name="imageFile" accept="image/*" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-brand-500/20 file:text-brand-400 hover:file:bg-brand-500/30">
+              <input type="file" name="imageFile" accept="image/*"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-brand-500/20 file:text-brand-400 hover:file:bg-brand-500/30">
             </div>
           </div>
           <div>
             <label class="block text-xs text-slate-400 mb-1">Content (Markdown supported)</label>
-            <textarea name="content" id="blog-content-editor" required rows="4" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none font-mono"></textarea>
+            <textarea name="content" id="blog-content-editor" required rows="4"
+              class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none font-mono"></textarea>
           </div>
           <div class="flex items-center gap-2">
-            <input type="checkbox" name="published" id="published" class="rounded bg-slate-900 border-slate-800" checked>
+            <input type="checkbox" name="published" id="published" class="rounded bg-slate-900 border-slate-800"
+              checked>
             <label for="published" class="text-sm text-slate-300">Published</label>
           </div>
-          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Create Post</button>
+          <button type="submit"
+            class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Create
+            Post</button>
         </form>
 
         <div class="space-y-4">
-          <% blogs.forEach(b => { %>
+          <% blogs.forEach(b=> { %>
             <div class="flex justify-between items-center p-4 bg-slate-950 rounded-xl border border-slate-800">
               <div class="flex items-center gap-4">
                 <% if (b.imageUrl) { %>
-                  <img src="<%= b.imageUrl %>" alt="Thumbnail" class="w-12 h-12 object-cover rounded-md border border-slate-800">
-                <% } else { %>
-                  <div class="w-12 h-12 bg-slate-900 rounded-md border border-slate-800 flex items-center justify-center text-xs text-slate-600">No Img</div>
-                <% } %>
-                <div>
-                  <div class="font-bold flex items-center gap-2">
-                    <%= b.title %> 
-                    <% if (!b.published) { %><span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full uppercase">Draft</span><% } %>
-                  </div>
-                  <div class="text-xs text-slate-400 mt-1">/<%= b.slug %></div>
-                </div>
+                  <img src="<%= b.imageUrl %>" alt="Thumbnail"
+                    class="w-12 h-12 object-cover rounded-md border border-slate-800">
+                  <% } else { %>
+                    <div
+                      class="w-12 h-12 bg-slate-900 rounded-md border border-slate-800 flex items-center justify-center text-xs text-slate-600">
+                      No Img</div>
+                    <% } %>
+                      <div>
+                        <div class="font-bold flex items-center gap-2">
+                          <%= b.title %>
+                            <% if (!b.published) { %><span
+                                class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded-full uppercase">Draft</span>
+                              <% } %>
+                        </div>
+                        <div class="text-xs text-slate-400 mt-1">/<%= b.slug %>
+                        </div>
+                      </div>
               </div>
-              <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this post?');">
-                <button type="submit" class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
+              <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST"
+                onsubmit="return confirm('Delete this post?');">
+                <button type="submit"
+                  class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
               </form>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
     </div>
@@ -155,54 +220,115 @@
     <div class="lg:col-span-3 space-y-8">
       <div class="bg-slate-900 rounded-2xl border border-slate-800 p-6 shadow-xl">
         <h2 class="text-2xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
-          <span class="text-brand-400">#</span> Manage Learning Hub Notes
+          <span class="text-brand-400">#</span> Student Resources (Learning Hub)
         </h2>
-        
-        <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
-          <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Add New Note</h3>
-          <div class="grid md:grid-cols-2 gap-4">
+
+        <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data"
+          class="space-y-6 mb-8 bg-gradient-to-br from-slate-950/50 to-slate-900/50 p-8 rounded-xl border border-slate-700 shadow-lg">
+          <h3 class="text-sm font-bold text-slate-300 mb-6 uppercase tracking-wider flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24"
+              style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+              <path d="M13 13H3v-2h10v2zm0-4H3V7h10v2zm0 8H3v-2h10v2zm8-8v4h4v-4h-4z" />
+            </svg>
+            Add New Resource
+          </h3>
+          <div class="grid md:grid-cols-2 gap-6">
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Grade / Category</label>
-              <select name="grade" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
-                <option value="Grade 10">Grade 10</option>
-                <option value="Grade 11">Grade 11</option>
-                <option value="Grade 12">Grade 12</option>
-                <option value="Teacher Training">Teacher Training</option>
+              <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">📚 Grade / Category</label>
+              <select name="grade" required
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+                <option value="Grade 10">📚 Grade 10</option>
+                <option value="Grade 11">📖 Grade 11</option>
+                <option value="Grade 12">🎓 Grade 12</option>
+                <option value="Teacher Training">👨‍🏫 Teacher Training</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Subject Title</label>
-              <input type="text" name="subject" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="e.g. Digital Design">
+              <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">Subject Title</label>
+              <input type="text" name="subject" required
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition"
+                placeholder="e.g. Digital Design & Architecture">
             </div>
             <div class="md:col-span-2">
-              <label class="block text-xs text-slate-400 mb-1">Description</label>
-              <input type="text" name="description" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="Short description of the notes">
+              <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">Description</label>
+              <input type="text" name="description"
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition"
+                placeholder="Brief description of the learning material">
             </div>
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">Upload File (PDF, DOC)</label>
-              <input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm text-slate-400 file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:bg-brand-500/20 file:text-brand-400 hover:file:bg-brand-500/30">
+            <div class="md:col-span-2">
+              <label class="block text-xs text-slate-400 mb-3 uppercase tracking-wide">📁 Upload File (PDF, DOC,
+                DOCX)</label>
+              <div class="relative">
+                <input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="hidden" id="file-upload">
+                <label for="file-upload"
+                  class="flex flex-col items-center justify-center w-full p-6 border-2 border-dashed border-slate-600 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-500/5 transition group"
+                  style="transform: perspective(800px)">
+                  <div class="text-center">
+                    <div
+                      class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto mb-2 group-hover:bg-blue-500/20 transition"
+                      style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+                      <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </div>
+                    <p class="text-sm font-semibold text-slate-300">Drop your file here or click to browse</p>
+                    <p class="text-xs text-slate-500 mt-1">PDF, DOC, or DOCX files up to 50MB</p>
+                  </div>
+                </label>
+              </div>
             </div>
-            <div>
-              <label class="block text-xs text-slate-400 mb-1">OR External URL (Google Drive, etc.)</label>
-              <input type="url" name="pdfUrl" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="https://drive.google.com/file/d/...">
+            <div class="md:col-span-2">
+              <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">OR External URL (Google Drive,
+                Dropbox, etc.)</label>
+              <input type="url" name="pdfUrl"
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition"
+                placeholder="https://drive.google.com/file/d/...">
             </div>
           </div>
-          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Add Note</button>
+          <button type="submit"
+            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg text-sm transition transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M5 13l4 4L19 7" />
+            </svg>
+            Add Resource
+          </button>
         </form>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <% learningMaterials.forEach(m => { %>
-            <div class="flex justify-between items-start p-4 bg-slate-950 rounded-xl border border-slate-800">
-              <div>
-                <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full uppercase"><%= m.grade %></span>
-                <div class="font-bold mt-2"><%= m.subject %></div>
-                <div class="text-xs text-slate-400 mt-1 line-clamp-1"><%= m.description || 'No description' %></div>
+          <% learningMaterials.forEach(m=> { %>
+            <div
+              class="flex flex-col p-4 bg-slate-950 rounded-xl border border-slate-700 hover:border-blue-500/50 transition group"
+              style="transform: perspective(800px)">
+              <div class="flex items-start justify-between mb-3">
+                <span
+                  class="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full uppercase font-bold tracking-wider">
+                  <%= m.grade %>
+                </span>
+                <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST"
+                  onsubmit="return confirm('Delete this resource?');" class="inline">
+                  <button type="submit"
+                    class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-2 py-1 rounded text-xs font-semibold transition">✕</button>
+                </form>
               </div>
-              <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this note?');">
-                <button type="submit" class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
-              </form>
+              <div class="mb-3">
+                <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center mb-2"
+                  style="transform: perspective(1000px) rotateX(20deg) rotateY(-20deg)">
+                  <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                  </svg>
+                </div>
+                <h3 class="font-bold text-slate-200 text-sm mb-1">
+                  <%= m.subject %>
+                </h3>
+                <p class="text-xs text-slate-400 line-clamp-2">
+                  <%= m.description || 'No description provided' %>
+                </p>
+              </div>
+              <div class="text-xs text-slate-500 text-center pt-2 border-t border-slate-700">
+                Added <%= new Date(m.createdAt).toLocaleDateString() %>
+              </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
     </div>
@@ -213,44 +339,63 @@
         <h2 class="text-2xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
           <span class="text-brand-400">#</span> Manage Timeline Events
         </h2>
-        
-        <form action="/admin/api/timeline" method="POST" class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
+
+        <form action="/admin/api/timeline" method="POST"
+          class="space-y-4 mb-8 bg-slate-950/50 p-6 rounded-xl border border-slate-800">
           <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">Add New Timeline Event</h3>
           <div class="grid md:grid-cols-2 gap-4">
             <div>
               <label class="block text-xs text-slate-400 mb-1">Year(s)</label>
-              <input type="text" name="year" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="e.g. 2013 - 2017">
+              <input type="text" name="year" required
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"
+                placeholder="e.g. 2013 - 2017">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Role / Title</label>
-              <input type="text" name="role" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="e.g. B.E. Computer Engineering">
+              <input type="text" name="role" required
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"
+                placeholder="e.g. B.E. Computer Engineering">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Location / Institution</label>
-              <input type="text" name="location" required class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none" placeholder="e.g. Mid-West University">
+              <input type="text" name="location" required
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none"
+                placeholder="e.g. Mid-West University">
             </div>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Order Index (Ascending)</label>
-              <input type="number" name="orderIndex" value="0" class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
+              <input type="number" name="orderIndex" value="0"
+                class="w-full bg-slate-900 border border-slate-800 rounded px-3 py-2 text-sm focus:border-brand-500 outline-none">
             </div>
           </div>
-          <button type="submit" class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Add Timeline Event</button>
+          <button type="submit"
+            class="bg-brand-500 hover:bg-brand-400 text-white font-bold py-2 px-4 rounded text-sm transition">Add
+            Timeline Event</button>
         </form>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <% timelineEvents.forEach(t => { %>
+          <% timelineEvents.forEach(t=> { %>
             <div class="flex justify-between items-start p-4 bg-slate-950 rounded-xl border border-slate-800">
               <div>
-                <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full uppercase"><%= t.year %></span>
-                <div class="font-bold mt-2"><%= t.role %></div>
-                <div class="text-xs text-slate-400 mt-1"><%= t.location %></div>
-                <div class="text-xs text-slate-500 mt-1">Order: <%= t.orderIndex %></div>
+                <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded-full uppercase">
+                  <%= t.year %>
+                </span>
+                <div class="font-bold mt-2">
+                  <%= t.role %>
+                </div>
+                <div class="text-xs text-slate-400 mt-1">
+                  <%= t.location %>
+                </div>
+                <div class="text-xs text-slate-500 mt-1">Order: <%= t.orderIndex %>
+                </div>
               </div>
-              <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete this timeline event?');">
-                <button type="submit" class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
+              <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST"
+                onsubmit="return confirm('Delete this timeline event?');">
+                <button type="submit"
+                  class="text-red-400 hover:text-red-300 bg-red-400/10 hover:bg-red-400/20 px-3 py-1.5 rounded text-xs font-semibold transition">Delete</button>
               </form>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </div>
     </div>
@@ -261,42 +406,54 @@
         <h2 class="text-xl font-bold mb-6 border-b border-slate-800 pb-4 flex items-center gap-2">
           <span class="text-brand-400">#</span> Inbox
         </h2>
-        
+
         <div class="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
-          <% if (messages.length === 0) { %>
+          <% if (messages.length===0) { %>
             <div class="text-center text-slate-500 py-8">No messages yet.</div>
-          <% } %>
-          <% messages.forEach(m => { %>
-            <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
-              <div class="flex justify-between items-start mb-2">
-                <div>
-                  <div class="font-bold text-sm"><%= m.name %></div>
-                  <a href="mailto:<%= m.email %>" class="text-xs text-brand-400 hover:underline"><%= m.email %></a>
+            <% } %>
+              <% messages.forEach(m=> { %>
+                <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                  <div class="flex justify-between items-start mb-2">
+                    <div>
+                      <div class="font-bold text-sm">
+                        <%= m.name %>
+                      </div>
+                      <a href="mailto:<%= m.email %>" class="text-xs text-brand-400 hover:underline">
+                        <%= m.email %>
+                      </a>
+                    </div>
+                    <div class="text-[10px] text-slate-500">
+                      <%= new Date(m.createdAt).toLocaleDateString() %>
+                    </div>
+                  </div>
+                  <% if (m.subject) { %>
+                    <div class="text-xs font-semibold text-slate-300 mb-1 border-b border-slate-800 pb-1">
+                      <%= m.subject %>
+                    </div>
+                    <% } %>
+                      <p class="text-sm text-slate-400 mt-2 mb-4 whitespace-pre-wrap">
+                        <%= m.message %>
+                      </p>
+
+                      <div class="flex justify-end border-t border-slate-800 pt-3">
+                        <form action="/admin/api/messages/<%= m.id %>/delete" method="POST"
+                          onsubmit="return confirm('Delete message?');">
+                          <button type="submit"
+                            class="text-slate-500 hover:text-red-400 text-xs transition">Delete</button>
+                        </form>
+                      </div>
                 </div>
-                <div class="text-[10px] text-slate-500"><%= new Date(m.createdAt).toLocaleDateString() %></div>
-              </div>
-              <% if (m.subject) { %>
-                <div class="text-xs font-semibold text-slate-300 mb-1 border-b border-slate-800 pb-1"><%= m.subject %></div>
-              <% } %>
-              <p class="text-sm text-slate-400 mt-2 mb-4 whitespace-pre-wrap"><%= m.message %></p>
-              
-              <div class="flex justify-end border-t border-slate-800 pt-3">
-                <form action="/admin/api/messages/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete message?');">
-                  <button type="submit" class="text-slate-500 hover:text-red-400 text-xs transition">Delete</button>
-                </form>
-              </div>
-            </div>
-          <% }) %>
+                <% }) %>
         </div>
       </div>
     </div>
-    
+
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
       // Initialize SimpleMDE for the Blog Content
-      var simplemde = new SimpleMDE({ 
+      var simplemde = new SimpleMDE({
         element: document.getElementById("blog-content-editor"),
         spellChecker: false,
         placeholder: "Write your amazing blog post here in Markdown..."
@@ -304,4 +461,5 @@
     });
   </script>
 </body>
+
 </html>
