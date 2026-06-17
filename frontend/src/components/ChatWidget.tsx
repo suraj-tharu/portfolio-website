@@ -63,11 +63,17 @@ export default function ChatWidget() {
     <>
       {/* Chat Toggle Button - Bottom Left to avoid FAB overlap */}
       <motion.button
-        className="fixed bottom-8 left-8 w-14 h-14 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-2xl z-[97] hover:bg-brand-400 hover:scale-105 transition-all"
+        className="w-14 h-14 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-2xl z-[97] hover:bg-brand-400 hover:scale-105 transition-all"
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        style={{ display: isOpen ? 'none' : 'flex' }}
+        style={{
+          display: isOpen ? 'none' : 'flex',
+          position: 'fixed',
+          bottom: '2rem',
+          left: '2rem',
+          zIndex: 97
+        }}
         aria-label="Open AI Chat Assistant"
         title="Chat with AI Assistant"
       >
@@ -84,7 +90,13 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-8 left-8 w-[90vw] max-w-[400px] h-[500px] max-h-[80vh] bg-surface border border-stroke rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
+            className="w-[90vw] max-w-[400px] h-[500px] max-h-[80vh] bg-surface border border-stroke rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
+            style={{
+              position: 'fixed',
+              bottom: '2rem',
+              left: '2rem',
+              zIndex: 97
+            }}
             role="dialog"
             aria-labelledby="chat-header"
             aria-modal="true"

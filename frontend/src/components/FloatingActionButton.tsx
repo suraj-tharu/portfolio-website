@@ -35,7 +35,17 @@ export default function FloatingActionButton() {
     ];
 
     return (
-        <div className="fixed bottom-8 right-8 z-[99] pointer-events-none" role="region" aria-label="Quick contact actions menu">
+        <div
+            className="z-[99] pointer-events-none"
+            style={{
+                position: 'fixed',
+                bottom: '2rem',
+                right: '2rem',
+                zIndex: 99
+            }}
+            role="region"
+            aria-label="Quick contact actions menu"
+        >
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
