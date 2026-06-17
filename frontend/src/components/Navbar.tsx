@@ -75,7 +75,7 @@ export default function Navbar() {
             aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
           >
-            {language === 'en' ? 'नेपाली' : 'EN'}
+            {language === 'en' ? 'NE' : 'EN'}
           </button>
 
           <button

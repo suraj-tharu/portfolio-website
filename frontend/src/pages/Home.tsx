@@ -15,6 +15,8 @@ import Certifications from '../components/Certifications';
 import AwardsAchievements from '../components/AwardsAchievements';
 import InteractiveResume from '../components/InteractiveResume';
 import Contact from '../components/Contact';
+import FAQ from '../components/FAQ';
+import EmailSubscription from '../components/EmailSubscription';
 
 export default function Home() {
   return (
@@ -35,6 +37,10 @@ export default function Home() {
       <Journal />
       <Stats />
       <InteractiveResume />
+      <div className="px-6 md:px-10 pb-20">
+        <EmailSubscription />
+      </div>
+      <FAQ />
       <Contact />
     </main>
   );
