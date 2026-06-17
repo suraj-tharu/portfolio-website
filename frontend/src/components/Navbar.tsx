@@ -46,10 +46,10 @@ export default function Navbar() {
   return (
     <>
       {/* Floating Toggle Button */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12 pointer-events-none">
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12 pointer-events-none" role="navigation" aria-label="Main navigation">
 
-        {/* Logo */}
-        <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke">
+        {/* Logo - SC on Left with proper spacing */}
+        <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
           <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
           <div className="absolute inset-[2px] bg-bg rounded-full flex items-center justify-center">
             <span className="font-display italic text-lg text-text-primary">SC</span>

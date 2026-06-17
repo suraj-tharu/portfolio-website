@@ -61,20 +61,22 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Floating Action Button */}
+      {/* Chat Toggle Button - Bottom Left to avoid FAB overlap */}
       <motion.button
-        className="fixed bottom-6 right-6 w-14 h-14 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-2xl z-50 hover:bg-brand-400 hover:scale-105 transition-all"
+        className="fixed bottom-8 left-8 w-14 h-14 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-2xl z-[97] hover:bg-brand-400 hover:scale-105 transition-all"
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         style={{ display: isOpen ? 'none' : 'flex' }}
+        aria-label="Open AI Chat Assistant"
+        title="Chat with AI Assistant"
       >
         <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
           <MessageCircle size={28} />
         </span>
       </motion.button>
 
-      {/* Chat Window */}
+      {/* Chat Window - Bottom Left to avoid FAB overlap */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -82,10 +84,13 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-6 right-6 w-[90vw] max-w-[400px] h-[500px] max-h-[80vh] bg-surface border border-stroke rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden"
+            className="fixed bottom-8 left-8 w-[90vw] max-w-[400px] h-[500px] max-h-[80vh] bg-surface border border-stroke rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
+            role="dialog"
+            aria-labelledby="chat-header"
+            aria-modal="true"
           >
             {/* Header */}
-            <div className="bg-brand-500 text-white px-5 py-4 flex justify-between items-center relative overflow-hidden">
+            <div className="bg-brand-500 text-white px-5 py-4 flex justify-between items-center relative overflow-hidden" id="chat-header">
               <div className="absolute inset-0 bg-gradient-to-r from-brand-600 to-transparent opacity-50"></div>
               <div className="relative z-10 flex items-center gap-3">
                 <div className="bg-white/20 p-2 rounded-full">
@@ -101,9 +106,11 @@ export default function ChatWidget() {
               <button
                 onClick={() => setIsOpen(false)}
                 className="relative z-10 p-2 hover:bg-white/20 rounded-full transition-colors"
+                aria-label="Close chat"
+                title="Close chat"
               >
                 <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-                  <X size={20} />
+                  <X size={20} aria-hidden="true" />
                 </span>
               </button>
             </div>

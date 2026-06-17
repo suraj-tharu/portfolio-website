@@ -35,7 +35,7 @@ export default function FloatingActionButton() {
     ];
 
     return (
-        <div className="fixed bottom-8 right-8 z-[99] pointer-events-none">
+        <div className="fixed bottom-8 right-8 z-[99] pointer-events-none" role="region" aria-label="Quick contact actions menu">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -44,6 +44,8 @@ export default function FloatingActionButton() {
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2 }}
                         className="absolute bottom-24 right-0 flex flex-col gap-4 pointer-events-auto"
+                        role="menu"
+                        aria-label="Contact options menu"
                     >
                         {menuItems.map((item, index) => (
                             <motion.a
@@ -63,6 +65,8 @@ export default function FloatingActionButton() {
                                 title={item.label}
                                 whileHover={{ scale: 1.15 }}
                                 whileTap={{ scale: 0.9 }}
+                                role="menuitem"
+                                aria-label={item.label}
                             >
                                 <item.icon size={24} />
                                 <motion.span
@@ -88,6 +92,11 @@ export default function FloatingActionButton() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                aria-label={isOpen ? 'Close quick contact menu' : 'Open quick contact menu'}
+                title="Quick contact actions"
+                role="button"
+                aria-expanded={isOpen}
+                aria-controls="fab-menu"
             >
                 <motion.div
                     animate={isOpen ? { rotate: 45 } : { rotate: 0 }}
@@ -103,6 +112,7 @@ export default function FloatingActionButton() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.3 }}
+                aria-label="3 unread messages"
             >
                 3
             </motion.div>
