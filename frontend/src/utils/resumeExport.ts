@@ -35,8 +35,17 @@ export interface ResumeData {
 // Export to PDF
 export const exportToPDF = async (resumeData: ResumeData) => {
     try {
-        // Using a library like jsPDF
-        const { jsPDF } = await import('jspdf');
+        // Using a library like jsPDF - optional dependency
+        let jsPDF: any;
+        try {
+            // @ts-ignore - jsPDF is optional dependency
+            const module = await import('jspdf');
+            jsPDF = module.jsPDF;
+        } catch (e) {
+            alert('jsPDF library not installed. Install with: npm install jspdf');
+            return;
+        }
+
         const doc = new jsPDF();
 
         let yPosition = 20;
@@ -145,7 +154,17 @@ export const exportToPDF = async (resumeData: ResumeData) => {
 // Export to Word
 export const exportToWord = async (resumeData: ResumeData) => {
     try {
-        const { Document, Packer, Paragraph, HeadingLevel } = await import('docx');
+        // Using a library like docx - optional dependency
+        let docxModules: any;
+        try {
+            // @ts-ignore - docx is optional dependency
+            docxModules = await import('docx');
+        } catch (e) {
+            alert('docx library not installed. Install with: npm install docx');
+            return;
+        }
+
+        const { Document, Packer, Paragraph, HeadingLevel } = docxModules;
 
         const sections = [];
 

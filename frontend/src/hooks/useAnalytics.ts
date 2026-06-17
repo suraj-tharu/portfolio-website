@@ -167,7 +167,7 @@ export function useHeatmapTracking(trackingId: string, service: 'hotjar' | 'clar
 declare global {
     interface Window {
         dataLayer: any[];
-        gtag: (...args: any[]) => void;
+        gtag?: (...args: any[]) => void;
         webVitals?: any;
     }
 }

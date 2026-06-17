@@ -21,7 +21,7 @@ export const initLogRocket = (userId?: string) => {
                         });
                     }
 
-                    window.LogRocket.getSessionURL(sessionURL => {
+                    window.LogRocket.getSessionURL((sessionURL: string) => {
                         console.log('LogRocket Session:', sessionURL);
                     });
 
@@ -39,10 +39,10 @@ export const initLogRocket = (userId?: string) => {
 export const initHotjar = () => {
     if (typeof window !== 'undefined' && !window.__hotjarInitialized) {
         try {
-            const hj = window.hj =
-                window.hj ||
+            (window as any).hj =
+                (window as any).hj ||
                 function () {
-                    (window.hj.q = window.hj.q || []).push(arguments);
+                    ((window as any).hj.q = (window as any).hj.q || []).push(arguments);
                 };
 
             const hjsTag = document.createElement('script');
@@ -182,7 +182,7 @@ export const initializeAnalytics = (options?: {
 // Declare window types for analytics
 declare global {
     interface Window {
-        gtag?: any;
+        gtag?: (...args: any[]) => void;
         LogRocket?: any;
         __logRocketInitialized?: boolean;
         hj?: any;

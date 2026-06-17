@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, Download, Menu } from 'lucide-react';
-import { exportToPDF, exportToWord, exportAsJSON, exportAsATS, ResumeData } from '../utils/resumeExport';
+import type { ResumeData } from '../utils/resumeExport';
+import { exportToPDF, exportToWord, exportAsJSON, exportAsATS } from '../utils/resumeExport';
 
 interface ResumeExportProps {
     resumeData: ResumeData;
