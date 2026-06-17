@@ -10,8 +10,8 @@ export const useThemeAnimation = () => {
         // Create a style element for smooth transitions
         const style = document.createElement('style');
         style.textContent = `
-      /* Smooth color transitions for theme changes */
-      * {
+      /* Smooth color transitions for theme changes - targeted approach */
+      body, [class*="bg-"], [class*="text-"] {
         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
       }
 
@@ -22,12 +22,12 @@ export const useThemeAnimation = () => {
 
       /* Smooth shadow transitions */
       [class*="shadow"] {
-        transition: box-shadow 0.3s ease;
+        transition: box-shadow 0.2s ease;
       }
 
       /* Animate theme toggle button */
       .theme-toggle-btn {
-        transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) !important;
       }
 
       .theme-toggle-btn:hover {
@@ -47,13 +47,13 @@ export const useThemeAnimation = () => {
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
-      /* Micro-interactions */
-      button {
+      /* Micro-interactions - better performance */
+      button:not([class*="motion"]) {
         position: relative;
         overflow: hidden;
       }
 
-      button::before {
+      button:not([class*="motion"])::before {
         content: '';
         position: absolute;
         top: 50%;
@@ -66,7 +66,7 @@ export const useThemeAnimation = () => {
         pointer-events: none;
       }
 
-      button:active::before {
+      button:not([class*="motion"]):active::before {
         animation: ripple 0.6s ease-out;
       }
 
@@ -106,6 +106,17 @@ export const useThemeAnimation = () => {
         outline: 2px solid var(--brand-light);
         outline-offset: 2px;
         border-radius: 4px;
+      }
+
+      /* Prevent animation jank on FAB and sections */
+      [class*="fixed"] {
+        will-change: auto;
+        backface-visibility: hidden;
+      }
+
+      /* Smooth section transitions */
+      section {
+        transition: opacity 0.3s ease, transform 0.3s ease;
       }
     `;
         document.head.appendChild(style);
