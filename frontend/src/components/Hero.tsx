@@ -4,12 +4,31 @@ import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
+import { FadeIn } from './FadeIn';
 
 export default function Hero() {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [greeting, setGreeting] = useState('');
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+      const hour = now.getHours();
+      const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
+      setGreeting(greet);
+    }, 60000);
+    // Initialize greeting immediately
+    const initHour = new Date().getHours();
+    const initGreet = initHour < 12 ? 'Good morning' : initHour < 18 ? 'Good afternoon' : 'Good evening';
+    setGreeting(initGreet);
+    return () => clearInterval(timer);
+  }, []);
   const roles = [t('hero.role.engineer'), t('hero.role.educator'), t('hero.role.researcher'), t('hero.role.gis')];
 
   useEffect(() => {
@@ -116,7 +135,10 @@ export default function Hero() {
         </h1>
 
         <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
-          <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
+            <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
+            <FadeIn delay={0.2} y={20} className="w-full">
+              <p className="text-lg text-[var(--text)]">{greeting}, it's {currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
+            </FadeIn>
         </div>
 
         <p className="blur-in text-fluid-xs md:text-fluid-base text-white max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">

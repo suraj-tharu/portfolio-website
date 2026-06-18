@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const defaultProjects = [
-  { title: "Automotive Motion", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Urban Architecture", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "AI Portfolio", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "C:/Users/NitrO/.gemini/antigravity-ide/brain/91c788c6-f033-460b-b7a8-4e5056ea56b9/ai_portfolio_1781801891700.png", url: "#" },
+  { title: "AI Dashboard", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "C:/Users/NitrO/.gemini/antigravity-ide/brain/91c788c6-f033-460b-b7a8-4e5056ea56b9/ai_dashboard_1781801938841.png", url: "#" },
   { title: "Human Perspective", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=1200&q=80", url: "#" },
   { title: "Brand Identity", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "New Project", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "C:/Users/NitrO/.gemini/antigravity-ide/brain/91c788c6-f033-460b-b7a8-4e5056ea56b9/ai_dashboard_1781801938841.png", url: "#" },
 ];
 
 type Project = {
@@ -57,7 +58,7 @@ export default function SelectedWorks() {
               <span className="text-xs text-muted uppercase tracking-[0.3em]">Selected Work</span>
             </div>
             <h2 className="text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight mb-4">
-              Featured <span className="font-display italic">projects</span>
+               Highlighted <span className="font-display italic">works</span>
             </h2>
             <p className="text-sm text-muted max-w-sm">
               A selection of projects I've worked on, from concept to launch.
