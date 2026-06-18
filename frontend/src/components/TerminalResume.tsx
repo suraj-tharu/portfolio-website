@@ -70,7 +70,7 @@ export default function TerminalResume() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-surface/80 backdrop-blur-md border border-stroke p-3 rounded-full hover:bg-brand-500 hover:border-brand-light transition-all shadow-lg group"
+        className="fixed bottom-6 left-6 z-40 bg-surface/80 backdrop-blur-md border border-stroke p-3 rounded-full hover:bg-brand-500 hover:border-brand-light transition-all shadow-lg group"
         aria-label="Open Terminal"
       >
         <TerminalIcon size={24} className="text-text-primary group-hover:text-white" />
