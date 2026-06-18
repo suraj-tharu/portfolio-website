@@ -8,7 +8,7 @@ export interface ErrorLog {
     message: string;
     stack?: string;
     level: 'error' | 'warning' | 'info';
-    context?: Record<string, any>;
+    context?: Record<string, unknown>;
     url: string;
     userAgent: string;
 }
@@ -40,7 +40,7 @@ export function initErrorTracking(sentryDsn?: string) {
 export function captureError(
     error: Error | string,
     level: 'error' | 'warning' | 'info' = 'error',
-    context?: Record<string, any>
+    context?: Record<string, unknown>
 ) {
     const errorLog: ErrorLog = {
         timestamp: new Date(),
@@ -102,7 +102,11 @@ export class PerformanceMonitor {
         }
 
         const duration = performance.now() - startTime;
-        console.log(`[Performance] ${label}: ${duration.toFixed(2)}ms`);
+        if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+            // Only log performance measurements in development
+            // eslint-disable-next-line no-console
+            console.debug(`[Performance] ${label}: ${duration.toFixed(2)}ms`);
+        }
         this.marks.delete(label);
         return duration;
     }
@@ -141,17 +145,29 @@ export class PerformanceMonitor {
 export function enableConsoleSpy() {
     const originalError = console.error;
     const originalWarn = console.warn;
+    // Guard flag prevents infinite recursion: captureError → console.error → spy → captureError …
+    let capturing = false;
 
-    console.error = function (...args: any[]) {
-        if (args.length > 0) {
-            captureError(args.join(' '), 'error');
+    console.error = function (...args: unknown[]) {
+        if (args.length > 0 && !capturing) {
+            capturing = true;
+            try {
+                captureError(args.map(String).join(' '), 'error');
+            } finally {
+                capturing = false;
+            }
         }
         originalError.apply(console, args);
     };
 
-    console.warn = function (...args: any[]) {
-        if (args.length > 0) {
-            captureError(args.join(' '), 'warning');
+    console.warn = function (...args: unknown[]) {
+        if (args.length > 0 && !capturing) {
+            capturing = true;
+            try {
+                captureError(args.map(String).join(' '), 'warning');
+            } finally {
+                capturing = false;
+            }
         }
         originalWarn.apply(console, args);
     };

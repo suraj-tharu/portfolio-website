@@ -2,7 +2,7 @@
  * Debounce function to limit function calls
  * Used for search, resize events, etc.
  */
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number
 ): (...args: Parameters<T>) => void {
@@ -23,7 +23,7 @@ export function debounce<T extends (...args: any[]) => any>(
  * Throttle function to limit function calls
  * Used for scroll, mouse movement, etc.
  */
-export function throttle<T extends (...args: any[]) => any>(
+export function throttle<T extends (...args: unknown[]) => unknown>(
     func: T,
     limit: number
 ): (...args: Parameters<T>) => void {
@@ -42,7 +42,7 @@ export function throttle<T extends (...args: any[]) => any>(
  * Request animation frame throttle
  * More efficient for animation-related throttling
  */
-export function rafThrottle<T extends (...args: any[]) => any>(
+export function rafThrottle<T extends (...args: unknown[]) => unknown>(
     func: T
 ): (...args: Parameters<T>) => void {
     let animationFrameId: number | null = null;
@@ -64,8 +64,10 @@ export function rafThrottle<T extends (...args: any[]) => any>(
  */
 export function deepClone<T>(obj: T): T {
     if (obj === null || typeof obj !== 'object') return obj;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (obj instanceof Date) return new Date(obj.getTime()) as any;
     if (obj instanceof Array) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return obj.map((item) => deepClone(item)) as any;
     }
     if (obj instanceof Object) {
@@ -83,7 +85,7 @@ export function deepClone<T>(obj: T): T {
 /**
  * Merge objects deeply
  */
-export function deepMerge<T extends Record<string, any>>(
+export function deepMerge<T extends Record<string, unknown>>(
     target: T,
     ...sources: Partial<T>[]
 ): T {
@@ -94,6 +96,7 @@ export function deepMerge<T extends Record<string, any>>(
         for (const key in source) {
             if (isObject(source[key])) {
                 if (!target[key]) Object.assign(target, { [key]: {} });
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 deepMerge(target[key] as any, source[key] as any);
             } else {
                 Object.assign(target, { [key]: source[key] });
@@ -104,8 +107,8 @@ export function deepMerge<T extends Record<string, any>>(
     return deepMerge(target, ...sources);
 }
 
-function isObject(item: any): item is Record<string, any> {
-    return item && typeof item === 'object' && !Array.isArray(item);
+function isObject(item: unknown): item is Record<string, unknown> {
+    return !!item && typeof item === 'object' && !Array.isArray(item);
 }
 
 /**

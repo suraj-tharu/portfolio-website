@@ -5,28 +5,58 @@ interface AnalyticsConfig {
     debug?: boolean;
 }
 
+interface WebVitalMetric {
+    name: string;
+    value: number;
+}
+
+type WebVitalsLib = {
+    onFCP: (cb: (m: WebVitalMetric) => void) => void;
+    onLCP: (cb: (m: WebVitalMetric) => void) => void;
+    onCLS: (cb: (m: WebVitalMetric) => void) => void;
+    onTTFB: (cb: (m: WebVitalMetric) => void) => void;
+    onINP?: (cb: (m: WebVitalMetric) => void) => void;
+};
+
+// Type augmentation for third-party globals
+declare global {
+    interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        dataLayer: any[];
+        gtag?: (...args: unknown[]) => void;
+        webVitals?: WebVitalsLib;
+        hj?: ((...args: unknown[]) => void) & { q?: unknown[]; };
+        _hjSettings?: { hjid: number; hjsv: number };
+        clarity?: ((...args: unknown[]) => void) & { q?: unknown[][]; };
+    }
+}
+
 /**
- * Google Analytics 4 initialization and tracking
- * Replace with your own GA4 tracking ID
+ * Google Analytics 4 initialization and tracking.
+ * Set VITE_GA_TRACKING_ID in your .env file.
  */
 export function useGoogleAnalytics(config?: AnalyticsConfig) {
-    const trackingId = config?.trackingId || 'G-XXXXXXXXXX'; // Replace with your GA4 ID
+    const trackingId = config?.trackingId || import.meta.env.VITE_GA_TRACKING_ID || 'G-XXXXXXXXXX';
     const debug = config?.debug || false;
 
     useEffect(() => {
+        // Prevent duplicate injection on hot-reload
+        const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
+        if (existingScript) return;
+
         // Initialize GA4
         const script = document.createElement('script');
         script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${trackingId}`;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(trackingId)}`;
         document.head.appendChild(script);
 
         window.dataLayer = window.dataLayer || [];
-        function gtag(...args: any[]) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        window.gtag = function (...args: any[]) {
             window.dataLayer.push(args);
-        }
-        (window as any).gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', trackingId, {
+        };
+        window.gtag('js', new Date());
+        window.gtag('config', trackingId, {
             debug_mode: debug,
             send_page_view: true,
         });
@@ -38,10 +68,10 @@ export function useGoogleAnalytics(config?: AnalyticsConfig) {
  */
 export function trackEvent(
     eventName: string,
-    eventData?: Record<string, any>
+    eventData?: Record<string, unknown>
 ) {
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-        (window as any).gtag('event', eventName, eventData);
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', eventName, eventData);
     }
 }
 
@@ -49,8 +79,8 @@ export function trackEvent(
  * Track page views
  */
 export function trackPageView(pagePath: string, pageTitle?: string) {
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-        (window as any).gtag('event', 'page_view', {
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', 'page_view', {
             page_path: pagePath,
             page_title: pageTitle || document.title,
         });
@@ -61,113 +91,91 @@ export function trackPageView(pagePath: string, pageTitle?: string) {
  * Track conversions
  */
 export function trackConversion(conversionName: string, value?: number) {
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
-        (window as any).gtag('event', conversionName, {
-            value: value || 1,
+    if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', conversionName, {
+            value: value ?? 1,
             currency: 'USD',
         });
     }
 }
 
 /**
- * Web Vitals tracking for Core Web Vitals
+ * Web Vitals tracking for Core Web Vitals.
+ * Loads web-vitals from CDN only once.
  */
 export function useWebVitals() {
     useEffect(() => {
-        // Load Web Vitals
+        // Prevent duplicate injection
+        const existing = document.querySelector('script[src*="web-vitals"]');
+        if (existing) return;
+
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/web-vitals@3/dist/web-vitals.iife.js';
         script.onload = () => {
-            if ((window as any).webVitals) {
-                const vitals = (window as any).webVitals;
+            const vitals = window.webVitals;
+            if (!vitals) return;
 
-                // Track FCP
-                vitals.onFCP((metric: any) => {
-                    trackEvent('web_vital_fcp', {
-                        value: Math.round(metric.value),
-                        label: metric.name,
-                    });
-                });
+            const report = (name: string) => (metric: WebVitalMetric) =>
+                trackEvent(`web_vital_${name}`, { value: Math.round(metric.value * 1000) / 1000, label: metric.name });
 
-                // Track LCP
-                vitals.onLCP((metric: any) => {
-                    trackEvent('web_vital_lcp', {
-                        value: Math.round(metric.value),
-                        label: metric.name,
-                    });
-                });
-
-                // Track CLS
-                vitals.onCLS((metric: any) => {
-                    trackEvent('web_vital_cls', {
-                        value: Math.round(metric.value * 1000) / 1000,
-                        label: metric.name,
-                    });
-                });
-
-                // Track TTFB
-                vitals.onTTFB((metric: any) => {
-                    trackEvent('web_vital_ttfb', {
-                        value: Math.round(metric.value),
-                        label: metric.name,
-                    });
-                });
-
-                // Track INP
-                if (vitals.onINP) {
-                    vitals.onINP((metric: any) => {
-                        trackEvent('web_vital_inp', {
-                            value: Math.round(metric.value),
-                            label: metric.name,
-                        });
-                    });
-                }
-            }
+            vitals.onFCP(report('fcp'));
+            vitals.onLCP(report('lcp'));
+            vitals.onCLS(report('cls'));
+            vitals.onTTFB(report('ttfb'));
+            vitals.onINP?.(report('inp'));
         };
         document.head.appendChild(script);
     }, []);
 }
 
 /**
- * Heatmap tracking integration (Hotjar or Clarity)
+ * Heatmap tracking — uses script.src (not innerHTML) to prevent XSS.
+ * trackingId is validated as a numeric ID before use.
  */
 export function useHeatmapTracking(trackingId: string, service: 'hotjar' | 'clarity' = 'hotjar') {
     useEffect(() => {
+        // Validate trackingId is numeric to prevent injection
+        const numericId = parseInt(trackingId, 10);
+        if (isNaN(numericId)) {
+            if (import.meta.env.DEV) {
+                console.warn('[Analytics] Invalid heatmap trackingId — must be numeric.');
+            }
+            return;
+        }
+
         if (service === 'hotjar') {
-            // Hotjar integration
+            // Prevent duplicate injection
+            if (document.querySelector('script[src*="hotjar.com"]')) return;
+
+            // Initialize Hotjar queue safely — no user-controlled strings in innerHTML
+            window.hj = window.hj || Object.assign(
+                function (...args: unknown[]) { window.hj!.q = window.hj!.q || []; window.hj!.q.push(args); },
+                { q: [] as unknown[] }
+            );
+            window._hjSettings = { hjid: numericId, hjsv: 6 };
+
             const script = document.createElement('script');
-            script.innerHTML = `
-        (function(h,o,t,j,a,r){
-          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-          h._hjSettings={hjid:${trackingId},hjsv:6};
-          a=o.getElementsByTagName('head')[0];
-          r=o.createElement('script');
-          r.async=1;
-          r.src=t+h._hjSettings.hjid;
-          a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-      `;
+            script.async = true;
+            // numericId is a validated integer — safe to interpolate
+            script.src = `https://static.hotjar.com/c/hotjar-${numericId}.js?sv=6`;
             document.head.appendChild(script);
+
         } else if (service === 'clarity') {
-            // Microsoft Clarity integration
+            // Prevent duplicate injection
+            if (document.querySelector('script[src*="clarity.ms"]')) return;
+
+            const clarityFn = window.clarity || function (...args: unknown[]) {
+                clarityFn.q = clarityFn.q || [];
+                clarityFn.q.push(args);
+            };
+            if (!clarityFn.q) clarityFn.q = [];
+            window.clarity = clarityFn;
+
             const script = document.createElement('script');
-            script.innerHTML = `
-        (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "${trackingId}");
-      `;
+            script.async = true;
+            // encodeURIComponent ensures the id is URL-safe
+            script.src = `https://www.clarity.ms/tag/${encodeURIComponent(String(numericId))}`;
             document.head.appendChild(script);
         }
     }, [trackingId, service]);
-}
-
-// Type augmentation
-declare global {
-    interface Window {
-        dataLayer: any[];
-        gtag?: (...args: any[]) => void;
-        webVitals?: any;
-    }
 }

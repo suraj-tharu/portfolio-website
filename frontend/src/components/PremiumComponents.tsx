@@ -89,7 +89,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({ children, durati
         enter: {
             opacity: 1,
             y: 0,
-            transition: { duration, ease: [0.22, 1, 0.36, 1] as any },
+            transition: { duration, ease: [0.22, 1, 0.36, 1] as const },
         },
         exit: { opacity: 0, y: 20 },
     };
@@ -159,7 +159,7 @@ export const MagneticButton: React.FC<MagneticButtonProps> = ({
 
     return (
         <motion.button
-            ref={ref as any}
+            ref={ref as React.RefObject<HTMLButtonElement>}
             onClick={onClick}
             animate={{
                 x: position.x,

@@ -116,11 +116,14 @@ export function usePerformanceMonitor(componentName: string) {
         const perfObserver = new PerformanceObserver((list) => {
             for (const entry of list.getEntries()) {
                 if (entry.name.includes(componentName)) {
-                    console.log(`[Performance] ${componentName}:`, {
-                        duration: entry.duration,
-                        startTime: entry.startTime,
-                        name: entry.name,
-                    });
+                    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
+                        // eslint-disable-next-line no-console
+                        console.debug(`[Performance] ${componentName}:`, {
+                            duration: entry.duration,
+                            startTime: entry.startTime,
+                            name: entry.name,
+                        });
+                    }
                 }
             }
         });

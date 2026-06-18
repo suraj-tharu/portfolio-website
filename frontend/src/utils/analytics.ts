@@ -29,8 +29,8 @@ export const initLogRocket = (userId?: string) => {
                         });
                     }
 
-                    window.LogRocket.getSessionURL((sessionURL: string) => {
-                        console.log('LogRocket Session:', sessionURL);
+                    window.LogRocket.getSessionURL((_sessionURL: string) => {
+                        // Session URL captured — available via LogRocket dashboard
                     });
 
                     window.__logRocketInitialized = true;
@@ -47,13 +47,16 @@ export const initLogRocket = (userId?: string) => {
 export const initHotjar = () => {
     if (typeof window !== 'undefined' && !window.__hotjarInitialized) {
         try {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const win = window as any;
-            win.hj =
-                win.hj ||
-                function () {
-                    (win.hj.q = win.hj.q || []).push(arguments);
+            // Initialize Hotjar queue function on window
+            if (!window.hj) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                window.hj = function (...args: any[]) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (window.hj!.q = window.hj!.q || []).push(args as any);
                 };
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (window.hj as any).q = [];
+            }
 
             const hjsTag = document.createElement('script');
             hjsTag.async = true;
@@ -71,35 +74,6 @@ export function isObject(item: unknown): item is Record<string, unknown> {
     return item !== null && typeof item === 'object' && !Array.isArray(item);
 }
 
-export function deepMerge<T extends Record<string, unknown>>(target: T, ...sources: Partial<T>[]): T {
-    if (!sources.length) return target;
-    const source = sources.shift();
-
-    if (isObject(target) && isObject(source)) {
-        for (const key in source) {
-            if (isObject(source[key])) {
-                if (!target[key]) Object.assign(target, { [key]: {} });
-                deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
-            } else {
-                Object.assign(target, { [key]: source[key] });
-            }
-        }
-    }
-
-    return deepMerge(target, ...sources);
-}
-
-export function debounce<T extends (...args: unknown[]) => unknown>(
-    func: T,
-    wait: number
-): (...args: Parameters<T>) => void {
-    let timeout: ReturnType<typeof setTimeout>;
-    return (...args: Parameters<T>) => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func(...args), wait);
-    };
-}
-
 // Track custom events
 export const trackEvent = (eventName: string, data?: Record<string, unknown>) => {
     try {
@@ -107,11 +81,7 @@ export const trackEvent = (eventName: string, data?: Record<string, unknown>) =>
             window.gtag('event', eventName, data);
         }
 
-        if (window.LogRocket) {
-            window.LogRocket.captureException(new Error(`Event: ${eventName}`));
-        }
-
-        console.log('Event tracked:', eventName, data);
+        // Event tracking recorded — accessible via analytics dashboard
     } catch (error) {
         console.error('Error tracking event:', error);
     }
@@ -230,7 +200,7 @@ declare global {
         LogRocket?: LogRocketInstance;
         __logRocketInitialized?: boolean;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        hj?: (...args: any[]) => void;
+        hj?: ((...args: any[]) => void) & { q?: unknown[][] };
         __hotjarInitialized?: boolean;
     }
 }

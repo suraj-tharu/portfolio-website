@@ -126,7 +126,7 @@ export class FormValidator {
      * Validate form data
      */
     static validateForm(
-        data: Record<string, any>,
+        data: Record<string, unknown>,
         schema: Record<string, ValidationRule[]>
     ): Record<string, string[]> {
         const errors: Record<string, string[]> = {};
@@ -147,7 +147,7 @@ export class FormValidator {
  */
 import { useState } from 'react';
 
-export function useFormValidation<T extends Record<string, any>>(
+export function useFormValidation<T extends Record<string, unknown>>(
     initialValues: T,
     schema: Record<keyof T, ValidationRule[]>,
     onSubmit: (values: T) => void | Promise<void>

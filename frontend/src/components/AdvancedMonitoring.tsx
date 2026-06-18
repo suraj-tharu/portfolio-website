@@ -22,36 +22,34 @@ export const PerformanceMonitor: React.FC = () => {
 
     useEffect(() => {
         // Collect Core Web Vitals
-        if ('web-vital' in window) {
-            // Use PerformanceObserver for real-time metrics
-            if ('PerformanceObserver' in window) {
-                try {
-                    const observer = new PerformanceObserver((list: any) => {
-                        for (const entry of list.getEntries()) {
-                            if (entry.name === 'first-contentful-paint') {
-                                setMetrics(prev => ({ ...prev, fcp: Math.round(entry.startTime) }));
-                            }
+        if ('PerformanceObserver' in window) {
+            try {
+                const observer = new PerformanceObserver((list: PerformanceObserverEntryList) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.name === 'first-contentful-paint') {
+                            setMetrics(prev => ({ ...prev, fcp: Math.round(entry.startTime) }));
                         }
-                    });
-                    observer.observe({ entryTypes: ['paint', 'measure', 'navigation'] });
-                } catch (e) {
-                    console.log('PerformanceObserver not available');
-                }
-            }
-
-            // Memory usage (Chrome only)
-            if ('memory' in performance) {
-                const memMetrics = (performance as any).memory;
-                setMetrics(prev => ({
-                    ...prev,
-                    memory: Math.round(memMetrics.usedJSHeapSize / 1048576),
-                }));
+                    }
+                });
+                observer.observe({ entryTypes: ['paint', 'measure', 'navigation'] });
+            } catch {
+                // PerformanceObserver not available in this environment
             }
         }
 
-        // Calculate FPS
+        // Memory usage (Chrome only — non-standard API)
+        if ('memory' in performance) {
+            const memMetrics = (performance as Performance & { memory: { usedJSHeapSize: number } }).memory;
+            setMetrics(prev => ({
+                ...prev,
+                memory: Math.round(memMetrics.usedJSHeapSize / 1048576),
+            }));
+        }
+
+        // Calculate FPS — track the latest RAF id so cleanup always cancels the running frame
         let frameCount = 0;
         let lastTime = performance.now();
+        let fpsFrameId = 0;
 
         const measureFPS = () => {
             frameCount++;
@@ -63,12 +61,12 @@ export const PerformanceMonitor: React.FC = () => {
                 lastTime = currentTime;
             }
 
-            requestAnimationFrame(measureFPS);
+            fpsFrameId = requestAnimationFrame(measureFPS);
         };
 
-        const fpsId = requestAnimationFrame(measureFPS);
+        fpsFrameId = requestAnimationFrame(measureFPS);
 
-        return () => cancelAnimationFrame(fpsId);
+        return () => cancelAnimationFrame(fpsFrameId);
     }, []);
 
     const metricsList = [
@@ -146,9 +144,13 @@ export const AnalyticsDashboard: React.FC = () => {
 
     useEffect(() => {
         // Fetch analytics data from localStorage or API
-        const storedAnalytics = localStorage.getItem('siteAnalytics');
-        if (storedAnalytics) {
-            setAnalyticsData(JSON.parse(storedAnalytics));
+        try {
+            const storedAnalytics = localStorage.getItem('siteAnalytics');
+            if (storedAnalytics) {
+                setAnalyticsData(JSON.parse(storedAnalytics) as AnalyticsData);
+            }
+        } catch {
+            // Ignore malformed or tampered localStorage data
         }
     }, []);
 
@@ -183,42 +185,57 @@ export const AnalyticsDashboard: React.FC = () => {
 /**
  * Print to PDF Export (Suggestion #26)
  */
+/**
+ * Exports an element to a print-ready window using a Blob URL.
+ * Avoids document.write() and does NOT interpolate raw innerHTML into a string,
+ * preventing XSS via deprecated APIs.
+ */
 export const exportToPDF = (elementId: string, filename: string = 'export.pdf') => {
     const element = document.getElementById(elementId);
     if (!element) return;
 
-    const printWindow = window.open('', '', 'width=800,height=600');
-    if (!printWindow) return;
-
     const styles = Array.from(document.styleSheets)
         .map(sheet => {
             try {
-                return Array.from(sheet.cssRules)
-                    .map(rule => rule.cssText)
-                    .join('\n');
+                return Array.from(sheet.cssRules).map(rule => rule.cssText).join('\n');
             } catch {
                 return '';
             }
         })
         .join('\n');
 
-    printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>${filename}</title>
-        <style>${styles}</style>
-      </head>
-      <body>
-        ${element.innerHTML}
-      </body>
-    </html>
-  `);
+    // Safe filename: strip characters that could break HTML attribute context
+    const safeFilename = filename.replace(/[<>"'&]/g, '_');
 
-    printWindow.document.close();
-    printWindow.print();
+    // Clone the target element to avoid mutating the live DOM
+    const cloned = element.cloneNode(true) as HTMLElement;
 
-    setTimeout(() => printWindow.close(), 1000);
+    // Build the HTML string from cloned DOM (trusted, not user input)
+    const html = [
+        '<!DOCTYPE html><html><head>',
+        `<title>${safeFilename}</title>`,
+        `<style>${styles}</style>`,
+        '</head><body>',
+        cloned.outerHTML,
+        '</body></html>',
+    ].join('');
+
+    // Use Blob URL instead of deprecated document.write
+    const blob = new Blob([html], { type: 'text/html' });
+    const blobUrl = URL.createObjectURL(blob);
+    const printWindow = window.open(blobUrl, '_blank', 'width=900,height=700');
+    if (!printWindow) {
+        URL.revokeObjectURL(blobUrl);
+        return;
+    }
+
+    printWindow.addEventListener('load', () => {
+        printWindow.print();
+        setTimeout(() => {
+            printWindow.close();
+            URL.revokeObjectURL(blobUrl);
+        }, 1000);
+    });
 };
 
 /**
