@@ -21,6 +21,12 @@ export default function TerminalResume() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
+  useEffect(() => {
+    const handler = () => setIsOpen(prev => !prev);
+    window.addEventListener('toggleTerminal', handler);
+    return () => window.removeEventListener('toggleTerminal', handler);
+  }, []);
+
   const handleCommand = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;

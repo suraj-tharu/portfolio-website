@@ -66,7 +66,11 @@ export default function CommandPalette() {
     const [filtered, setFiltered] = useState(commands);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    useKeyboardShortcut('k', () => setIsOpen(true), 'ctrl');
+    useEffect(() => {
+    const handler = () => setIsOpen(true);
+    window.addEventListener('openCommandPalette', handler);
+    return () => window.removeEventListener('openCommandPalette', handler);
+  }, []);
 
     useEffect(() => {
         const filtered = commands.filter((cmd) =>

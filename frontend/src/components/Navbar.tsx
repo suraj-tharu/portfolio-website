@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, X, Menu } from 'lucide-react';
+import { Sun, Moon, X, Menu, Search, TerminalIcon } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -58,6 +58,32 @@ export default function Navbar() {
 
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
+          
+          {/* Cmd+K Button */}
+          <button
+            onClick={() => {
+              // Dispatch event to open command palette
+              const ev = new Event('openCommandPalette');
+              window.dispatchEvent(ev);
+            }}
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
+            aria-label="Open Command Palette"
+          >
+            <Search size={16} className="text-muted" />
+          </button>
+
+          {/* Terminal Toggle Button */}
+          <button
+            onClick={() => {
+              const ev = new Event('toggleTerminal');
+              window.dispatchEvent(ev);
+            }}
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
+            aria-label="Toggle Terminal"
+          >
+            <TerminalIcon size={20} className="text-text-primary" />
+          </button>
+
           <button
             onClick={toggleTheme}
             className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
