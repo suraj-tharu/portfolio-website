@@ -164,11 +164,14 @@ export function useHeatmapTracking(trackingId: string, service: 'hotjar' | 'clar
             // Prevent duplicate injection
             if (document.querySelector('script[src*="clarity.ms"]')) return;
 
-            const clarityFn = window.clarity || function (...args: unknown[]) {
-                clarityFn.q = clarityFn.q || [];
-                clarityFn.q.push(args);
-            };
-            if (!clarityFn.q) clarityFn.q = [];
+            type ClarityFn = ((...args: unknown[]) => void) & { q?: unknown[][]; };
+            const clarityFn: ClarityFn = window.clarity || Object.assign(
+                function (...args: unknown[]) {
+                    clarityFn.q = clarityFn.q || [];
+                    clarityFn.q.push(args);
+                },
+                { q: [] as unknown[][] }
+            );
             window.clarity = clarityFn;
 
             const script = document.createElement('script');

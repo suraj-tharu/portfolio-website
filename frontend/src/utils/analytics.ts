@@ -49,13 +49,13 @@ export const initHotjar = () => {
         try {
             // Initialize Hotjar queue function on window
             if (!window.hj) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                window.hj = function (...args: any[]) {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    (window.hj!.q = window.hj!.q || []).push(args as any);
-                };
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                (window.hj as any).q = [];
+                window.hj = Object.assign(
+                    function (...args: unknown[]) {
+                        window.hj!.q = window.hj!.q || [];
+                        window.hj!.q.push(args);
+                    },
+                    { q: [] as unknown[] }
+                );
             }
 
             const hjsTag = document.createElement('script');
@@ -192,15 +192,11 @@ export const initializeAnalytics = (options?: {
     };
 };
 
-// Declare window types for analytics
+// Declare window types unique to this module (gtag and hj are declared in useAnalytics.ts)
 declare global {
     interface Window {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        gtag?: (...args: any[]) => void;
         LogRocket?: LogRocketInstance;
         __logRocketInitialized?: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        hj?: ((...args: any[]) => void) & { q?: unknown[][] };
         __hotjarInitialized?: boolean;
     }
 }

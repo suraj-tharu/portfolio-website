@@ -6,6 +6,7 @@ import MeetingWidget from './MeetingWidget';
 import type { ValidationRule } from '../utils/formValidation';
 
 interface ContactFormData {
+  [key: string]: string;
   name: string;
   email: string;
   subject: string;
