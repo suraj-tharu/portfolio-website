@@ -80,8 +80,8 @@ export default {
           '50%': { transform: 'translateY(-10px)' },
         },
         'glow-pulse': {
-          '0%, 100%': { opacity: '0.8', boxShadow: '0 0 20px rgba(123, 110, 246, 0.3)' },
-          '50%': { opacity: '1', boxShadow: '0 0 40px rgba(123, 110, 246, 0.5)' },
+          '0%, 100%': { opacity: '0.8', boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' },
+          '50%': { opacity: '1', boxShadow: '0 0 40px rgba(139, 92, 246, 0.5)' },
         },
         'shimmer': {
           '0%': { backgroundPosition: '-1200px 0' },

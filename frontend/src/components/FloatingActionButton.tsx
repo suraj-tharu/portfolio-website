@@ -39,7 +39,7 @@ export default function FloatingActionButton() {
             className="z-[99] pointer-events-none"
             style={{
                 position: 'fixed',
-                bottom: '2rem',
+                bottom: '6rem',
                 right: '2rem',
                 zIndex: 99
             }}

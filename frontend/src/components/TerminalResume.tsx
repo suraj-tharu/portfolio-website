@@ -70,7 +70,7 @@ export default function TerminalResume() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-40 bg-surface/80 backdrop-blur-md border border-stroke p-3 rounded-full hover:bg-brand-500 hover:border-brand-light transition-all shadow-lg group"
+        className="fixed bottom-20 left-6 z-40 bg-surface/80 backdrop-blur-md border border-stroke p-3 rounded-full hover:bg-brand-500 hover:border-brand-light transition-all shadow-lg group"
         aria-label="Open Terminal"
       >
         <TerminalIcon size={24} className="text-text-primary group-hover:text-white" />
@@ -81,7 +81,7 @@ export default function TerminalResume() {
           initial={{ opacity: 0, y: 50, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.9 }}
-          className="fixed bottom-24 right-6 w-[90vw] md:w-[500px] h-[400px] bg-[#050505]/95 backdrop-blur-xl border border-stroke rounded-xl shadow-2xl z-50 flex flex-col font-mono text-sm overflow-hidden"
+          className="fixed bottom-32 left-6 w-[90vw] md:w-[500px] h-[400px] bg-[#050505]/95 backdrop-blur-xl border border-stroke rounded-xl shadow-2xl z-50 flex flex-col font-mono text-sm overflow-hidden"
         >
           {/* Header */}
           <div className="flex justify-between items-center px-4 py-2 bg-surface/50 border-b border-stroke">

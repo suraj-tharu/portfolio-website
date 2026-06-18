@@ -20,9 +20,9 @@ export const MicroInteractionButton = ({
     const baseClasses = "px-8 py-3 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden";
 
     const variantClasses = {
-        primary: "bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/50",
-        secondary: "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/50",
-        outline: "border-2 border-white/30 text-white hover:bg-white/10"
+        primary: "bg-gradient-to-r from-violet-600 to-purple-600 text-white hover:shadow-lg hover:shadow-violet-500/40",
+        secondary: "bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/40",
+        outline: "border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50"
     };
 
     return (

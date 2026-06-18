@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Sparkles } from 'lucide-react';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -61,58 +61,99 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Chat Toggle Button - Bottom Left to avoid FAB overlap */}
-      <motion.button
-        className="w-14 h-14 bg-brand-500 text-white rounded-full flex items-center justify-center shadow-2xl z-[97] hover:bg-brand-400 hover:scale-105 transition-all"
-        onClick={() => setIsOpen(true)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{
-          display: isOpen ? 'none' : 'flex',
-          position: 'fixed',
-          bottom: '2rem',
-          left: '2rem',
-          zIndex: 97
-        }}
-        aria-label="Open AI Chat Assistant"
-        title="Chat with AI Assistant"
-      >
-        <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-          <MessageCircle size={28} />
-        </span>
-      </motion.button>
+      {/* Chat Toggle Button - Bottom Right with "Chat with AI Assistant" label */}
+      <AnimatePresence>
+        {!isOpen && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            className="fixed z-[97] flex items-center gap-3 shadow-2xl hover:scale-105 transition-all group"
+            onClick={() => setIsOpen(true)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              bottom: '2rem',
+              right: '2rem',
+              background: 'linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 50%, var(--brand-dark) 100%)',
+              backgroundSize: '200% 200%',
+              animation: 'gradient-shift 4s ease infinite',
+              padding: '14px 24px 14px 18px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255,255,255,0.15)',
+              color: '#fff',
+              cursor: 'pointer',
+            }}
+            aria-label="Chat with AI Assistant"
+            title="Chat with AI Assistant"
+          >
+            {/* Animated sparkle icon */}
+            <motion.span
+              animate={{ rotate: [0, 15, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              className="flex-shrink-0"
+            >
+              <Sparkles size={20} />
+            </motion.span>
+            <span className="font-semibold text-sm tracking-wide whitespace-nowrap hidden sm:inline">
+              Chat with AI Assistant
+            </span>
+            <span className="font-semibold text-sm tracking-wide whitespace-nowrap sm:hidden">
+              AI Chat
+            </span>
+            {/* Pulsing dot indicator */}
+            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
+            </span>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Chat Window - Bottom Left to avoid FAB overlap */}
+      {/* Chat Window - Bottom Right */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="w-[90vw] max-w-[400px] h-[500px] max-h-[80vh] bg-surface border border-stroke rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
+            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+            className="w-[92vw] max-w-[420px] h-[520px] max-h-[80vh] rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
             style={{
               position: 'fixed',
               bottom: '2rem',
-              left: '2rem',
-              zIndex: 97
+              right: '2rem',
+              zIndex: 97,
+              background: 'var(--surface)',
+              border: '1px solid var(--stroke)',
             }}
             role="dialog"
             aria-labelledby="chat-header"
             aria-modal="true"
           >
-            {/* Header */}
-            <div className="bg-brand-500 text-white px-5 py-4 flex justify-between items-center relative overflow-hidden" id="chat-header">
-              <div className="absolute inset-0 bg-gradient-to-r from-brand-600 to-transparent opacity-50"></div>
+            {/* Header — premium gradient */}
+            <div
+              className="text-white px-5 py-4 flex justify-between items-center relative overflow-hidden"
+              id="chat-header"
+              style={{
+                background: 'linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 100%)',
+              }}
+            >
+              <div className="absolute inset-0 bg-black/10"></div>
               <div className="relative z-10 flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-full">
-                  <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-                    <Bot size={20} />
-                  </span>
+                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
+                  <Bot size={20} />
                 </div>
                 <div>
                   <h3 className="font-bold font-display tracking-wide">AI Assistant</h3>
-                  <p className="text-xs text-white/80">Powered by Gemini</p>
+                  <p className="text-xs text-white/80 flex items-center gap-1">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+                    </span>
+                    Powered by Gemini
+                  </p>
                 </div>
               </div>
               <button
@@ -121,44 +162,60 @@ export default function ChatWidget() {
                 aria-label="Close chat"
                 title="Close chat"
               >
-                <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-                  <X size={20} aria-hidden="true" />
-                </span>
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 bg-bg/50">
+            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4" style={{ background: 'var(--bg)' }}>
               {messages.map((msg, i) => (
-                <div
+                <motion.div
                   key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
                   className={`flex gap-3 max-w-[85%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}
                 >
-                  <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${msg.role === 'user' ? 'bg-brand-500 text-white' : 'bg-surface border border-stroke text-brand-400'}`}>
-                    <span style={{ transform: "perspective(800px) rotateX(20deg) rotateY(-20deg)" }}>
-                      {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
-                    </span>
+                  <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${msg.role === 'user' ? 'text-white' : 'border text-brand-400'}`}
+                    style={{
+                      background: msg.role === 'user'
+                        ? 'linear-gradient(135deg, var(--brand), var(--accent-2))'
+                        : 'var(--surface)',
+                      borderColor: msg.role === 'user' ? 'transparent' : 'var(--stroke)',
+                    }}
+                  >
+                    {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
                   </div>
                   <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                    ? 'bg-brand-500 text-white rounded-tr-sm'
-                    : 'bg-surface border border-stroke text-text-primary rounded-tl-sm'
-                    }`}>
+                    ? 'text-white rounded-tr-sm'
+                    : 'rounded-tl-sm'
+                    }`}
+                    style={{
+                      background: msg.role === 'user'
+                        ? 'linear-gradient(135deg, var(--brand), var(--brand-dark))'
+                        : 'var(--surface)',
+                      color: msg.role === 'user' ? '#fff' : 'var(--text)',
+                      border: msg.role === 'user' ? 'none' : '1px solid var(--stroke)',
+                    }}
+                  >
                     {msg.content}
                   </div>
-                </div>
+                </motion.div>
               ))}
 
               {isTyping && (
                 <div className="flex gap-3 max-w-[85%] self-start">
-                  <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center bg-surface border border-stroke text-brand-400">
-                    <span style={{ transform: "perspective(800px) rotateX(20deg) rotateY(-20deg)" }}>
-                      <Bot size={16} />
-                    </span>
+                  <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center border text-brand-400"
+                    style={{ background: 'var(--surface)', borderColor: 'var(--stroke)' }}
+                  >
+                    <Bot size={16} />
                   </div>
-                  <div className="px-4 py-3 rounded-2xl bg-surface border border-stroke rounded-tl-sm flex items-center gap-1.5">
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} className="w-2 h-2 rounded-full bg-brand-500/50" />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-2 h-2 rounded-full bg-brand-500/50" />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }} className="w-2 h-2 rounded-full bg-brand-500/50" />
+                  <div className="px-4 py-3 rounded-2xl rounded-tl-sm flex items-center gap-1.5"
+                    style={{ background: 'var(--surface)', border: '1px solid var(--stroke)' }}
+                  >
+                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
+                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
+                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
                   </div>
                 </div>
               )}
@@ -166,23 +223,29 @@ export default function ChatWidget() {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 bg-surface border-t border-stroke">
+            <form onSubmit={handleSubmit} className="p-4" style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)' }}>
               <div className="relative flex items-center">
                 <input
                   type="text"
                   value={input}
                   onChange={e => setInput(e.target.value)}
                   placeholder="Ask me anything..."
-                  className="w-full bg-bg border border-stroke rounded-full pl-5 pr-12 py-3 text-sm focus:outline-none focus:border-brand-500 transition-colors text-text-primary placeholder:text-muted"
+                  className="w-full rounded-full pl-5 pr-12 py-3 text-sm focus:outline-none transition-colors"
+                  style={{
+                    background: 'var(--bg)',
+                    border: '1px solid var(--stroke)',
+                    color: 'var(--text)',
+                  }}
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isTyping}
-                  className="absolute right-2 p-2 bg-brand-500 text-white rounded-full hover:bg-brand-400 disabled:opacity-50 disabled:hover:bg-brand-500 transition-colors"
+                  className="absolute right-2 p-2 text-white rounded-full disabled:opacity-50 transition-colors"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--brand), var(--accent-2))',
+                  }}
                 >
-                  <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-                    <Send size={16} />
-                  </span>
+                  <Send size={16} />
                 </button>
               </div>
             </form>

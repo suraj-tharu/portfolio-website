@@ -84,7 +84,7 @@ export default function Hero() {
   return (
     <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background Video */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#0a0f1d] via-[#1c0a2e] to-[#000000]">
+      <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#06080F] via-[#1a0a2e] to-[#06080F]">
         <video
           ref={videoRef}
           autoPlay
@@ -101,11 +101,11 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(212,175,55,0.3)] px-2 w-full">
+        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(139,92,246,0.25)] px-2 w-full">
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block text-[#D4AF37]"
+              className="inline-block text-[var(--accent)]"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
               transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
@@ -125,13 +125,13 @@ export default function Hero() {
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
           <a href="#work">
-            <MicroInteractionButton variant="primary" glowColor="#3B82F6">
+            <MicroInteractionButton variant="primary" glowColor="#8B5CF6">
               ✨ See Works
             </MicroInteractionButton>
           </a>
 
           <a href="#contact">
-            <MicroInteractionButton variant="secondary" glowColor="#D4AF37">
+            <MicroInteractionButton variant="secondary" glowColor="#F59E0B">
               Reach out →
             </MicroInteractionButton>
           </a>

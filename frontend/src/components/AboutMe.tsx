@@ -82,16 +82,16 @@ export default function AboutMe() {
           {/* Remaining Biography Paragraphs */}
           <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 bg-[var(--surface)]/50 p-8 rounded-3xl border border-[var(--stroke)] shadow-xl backdrop-blur-sm">
             <p>
-              He completed his <strong className="text-[#D4AF37]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[#FF0000]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
+            He completed his <strong className="text-[var(--accent)]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[var(--accent-2)]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
             </p>
             <p>
-              He successfully completed a six-month internship at <strong className="text-[#000000]">Nepal Telecom</strong>, where he gained practical experience in telecommunications systems and information technology infrastructure.
+              He successfully completed a six-month internship at <strong className="text-[var(--brand-light)]">Nepal Telecom</strong>, where he gained practical experience in telecommunications systems and information technology infrastructure.
             </p>
             <p>
-              Mr. Tharu has extensive experience in technical education and vocational training. He served as an Senior Instructor at <strong className="text-[#D4AF37]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[#FF0000]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.
+              Mr. Tharu has extensive experience in technical education and vocational training. He served as an Senior Instructor at <strong className="text-[var(--accent)]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[var(--accent-2)]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.
             </p>
             <p>
-              Currently, he is working as a <strong className="text-[#000000]">Co-Ordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. He has been actively involved in teaching, curriculum implementation, ICT integration in education, and technical coordination.
+              Currently, he is working as a <strong className="text-[var(--brand-light)]">Co-Ordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. He has been actively involved in teaching, curriculum implementation, ICT integration in education, and technical coordination.
             </p>
           </FadeIn>
         </div>
