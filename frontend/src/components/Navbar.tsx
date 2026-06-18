@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, X, Menu, Search, Terminal } from 'lucide-react';
-import CommandPalette from './CommandPalette';
-import TerminalResume from './TerminalResume';
+import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -11,18 +9,6 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
-
-  // Helper to open the command palette
-  const openCommandPalette = () => {
-    const ev = new Event('openCommandPalette');
-    window.dispatchEvent(ev);
-  };
-
-  // Helper to toggle the terminal overlay
-  const toggleTerminal = () => {
-    const ev = new Event('toggleTerminal');
-    window.dispatchEvent(ev);
-  };
 
   useEffect(() => {
     if (isOpen) {
@@ -73,56 +59,6 @@ export default function Navbar() {
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
           
-          {/* Cmd+K Button */}
-          <button
-            onClick={openCommandPalette}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
-            style={{
-              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
-              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
-              color: 'var(--brand-light, #a8c4e0)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-            aria-label="Open Command Palette (Ctrl+K)"
-            title="Command Palette"
-          >
-            <Search size={18} aria-hidden="true" />
-          </button>
-
-          {/* Terminal Toggle Button */}
-          <button
-            onClick={toggleTerminal}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
-            style={{
-              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
-              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
-              color: 'var(--brand-light, #a8c4e0)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-            aria-label="Toggle Terminal"
-            title="Terminal"
-          >
-            <Terminal size={18} aria-hidden="true" />
-          </button>
-
           <button
             onClick={toggleTheme}
             className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
@@ -201,8 +137,6 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
-      <CommandPalette />
-      <TerminalResume />
 
       {/* Full Screen Overlay Menu */}
       <AnimatePresence>

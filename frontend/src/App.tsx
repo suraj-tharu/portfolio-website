@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
-import TerminalResume from './components/TerminalResume';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
-import CommandPalette from './components/CommandPalette';
 import FloatingActionButton from './components/FloatingActionButton';
 import { ToastProvider } from './components/Toast';
 import { useTheme } from './hooks/useTheme';
@@ -71,14 +69,6 @@ function AppContent() {
     }
   }, [systemColorScheme, setTheme]);
 
-  // Handle theme toggle from command palette
-  useEffect(() => {
-    const handleToggleTheme = () => {
-      setTheme(theme === 'dark' ? 'light' : 'dark');
-    };
-    window.addEventListener('toggleTheme', handleToggleTheme);
-    return () => window.removeEventListener('toggleTheme', handleToggleTheme);
-  }, [theme, setTheme]);
 
   return (
     <BrowserRouter>
@@ -89,9 +79,7 @@ function AppContent() {
 
           <CustomCursor />
           <ParticleBackground count={30} speed={0.3} />
-          <TerminalResume />
           <ChatWidget />
-          <CommandPalette />
           <FloatingActionButton />
 
           <div
