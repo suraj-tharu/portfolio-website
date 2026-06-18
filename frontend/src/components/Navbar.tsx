@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, X, Menu, Search, TerminalIcon } from 'lucide-react';
+import CommandPalette from './CommandPalette';
+import TerminalResume from './TerminalResume';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -162,6 +164,8 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
+      <CommandPalette />
+      <TerminalResume />
 
       {/* Full Screen Overlay Menu */}
       <AnimatePresence>
