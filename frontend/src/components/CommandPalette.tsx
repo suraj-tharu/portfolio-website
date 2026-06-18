@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Home, FileText, Mail, Settings, Code2 } from 'lucide-react';
-import { useKeyboardShortcut } from '../hooks/useAccessibility';
+
 
 interface CommandItem {
     id: string;
@@ -66,11 +66,24 @@ export default function CommandPalette() {
     const [filtered, setFiltered] = useState(commands);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
+    // Open via custom event (navbar button) or Ctrl+K shortcut
     useEffect(() => {
-    const handler = () => setIsOpen(true);
-    window.addEventListener('openCommandPalette', handler);
-    return () => window.removeEventListener('openCommandPalette', handler);
-  }, []);
+        const handler = () => setIsOpen(true);
+        window.addEventListener('openCommandPalette', handler);
+
+        const keyHandler = (e: KeyboardEvent) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                setIsOpen(true);
+            }
+        };
+        window.addEventListener('keydown', keyHandler);
+
+        return () => {
+            window.removeEventListener('openCommandPalette', handler);
+            window.removeEventListener('keydown', keyHandler);
+        };
+    }, []);
 
     useEffect(() => {
         const filtered = commands.filter((cmd) =>
@@ -114,15 +127,6 @@ export default function CommandPalette() {
 
     return (
         <>
-            {/* Trigger Button */}
-            <button
-                onClick={() => setIsOpen(true)}
-                className="fixed top-8 left-24 z-[99] hidden md:flex items-center gap-2 px-4 py-2.5 bg-surface/80 backdrop-blur-md border border-stroke rounded-full hover:border-stroke-strong transition-colors group"
-                aria-label="Open command palette"
-            >
-                <Search size={16} className="text-muted" />
-                <span className="text-sm text-muted">Cmd + K</span>
-            </button>
 
             {/* Backdrop */}
             <AnimatePresence>
