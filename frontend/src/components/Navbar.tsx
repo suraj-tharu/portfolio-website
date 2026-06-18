@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Sun, Moon, X, Menu, Search, TerminalIcon } from 'lucide-react';
+import { Sun, Moon, X, Menu, Search, Terminal } from 'lucide-react';
 import CommandPalette from './CommandPalette';
 import TerminalResume from './TerminalResume';
 import { useTheme } from '../hooks/useTheme';
@@ -11,6 +11,18 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
+
+  // Helper to open the command palette
+  const openCommandPalette = () => {
+    const ev = new Event('openCommandPalette');
+    window.dispatchEvent(ev);
+  };
+
+  // Helper to toggle the terminal overlay
+  const toggleTerminal = () => {
+    const ev = new Event('toggleTerminal');
+    window.dispatchEvent(ev);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -48,7 +60,7 @@ export default function Navbar() {
   return (
     <>
       {/* Floating Toggle Button */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12 pointer-events-none" role="navigation" aria-label="Main navigation">
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12" role="navigation" aria-label="Main navigation">
 
         {/* Logo - SC on Left with proper spacing */}
         <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
@@ -63,11 +75,7 @@ export default function Navbar() {
           
           {/* Cmd+K Button */}
           <button
-            onClick={() => {
-              // Dispatch event to open command palette
-              const ev = new Event('openCommandPalette');
-              window.dispatchEvent(ev);
-            }}
+            onClick={openCommandPalette}
             className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
             aria-label="Open Command Palette"
           >
@@ -76,14 +84,11 @@ export default function Navbar() {
 
           {/* Terminal Toggle Button */}
           <button
-            onClick={() => {
-              const ev = new Event('toggleTerminal');
-              window.dispatchEvent(ev);
-            }}
+            onClick={toggleTerminal}
             className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
             aria-label="Toggle Terminal"
           >
-            <TerminalIcon size={20} className="text-text-primary" />
+            <Terminal size={20} className="text-text-primary" />
           </button>
 
           <button
