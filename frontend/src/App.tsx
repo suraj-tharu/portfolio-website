@@ -48,7 +48,7 @@ function ScrollToTop() {
 
 function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
 
   // Initialize premium hooks
