@@ -113,7 +113,7 @@ export default function CommandPalette() {
             {/* Trigger Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 left-6 z-[8000] hidden md:flex items-center gap-2 px-4 py-2.5 bg-surface/80 backdrop-blur-md border border-stroke rounded-lg hover:border-stroke-strong transition-colors group"
+                className="fixed top-8 left-24 z-[99] hidden md:flex items-center gap-2 px-4 py-2.5 bg-surface/80 backdrop-blur-md border border-stroke rounded-full hover:border-stroke-strong transition-colors group"
                 aria-label="Open command palette"
             >
                 <Search size={16} className="text-muted" />

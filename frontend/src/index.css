@@ -45,6 +45,8 @@
     /* Violet-400 — hover, highlights */
     --brand-dark: #6D28D9;
     /* Violet-700 — pressed, deep accents */
+    --brand-rgb: 139, 92, 246;
+    /* RGB channels for rgba() usage */
 
     /* Accent — Warm Amber + Hot Pink */
     --accent: #F59E0B;
@@ -104,6 +106,8 @@
     /* Violet-600 — hover state */
     --brand-dark: #4C1D95;
     /* Violet-900 — pressed/active */
+    --brand-rgb: 109, 40, 217;
+    /* RGB channels for rgba() usage */
 
     /* Accent — Rich Amber + Deep Rose */
     --accent: #D97706;

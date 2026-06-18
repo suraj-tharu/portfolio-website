@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
-import Hls from 'hls.js';
 import { gsap } from 'gsap';
 
 export default function Footer() {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
   const marqueeItems = [
     "BUILDING THE FUTURE",
@@ -12,29 +10,6 @@ export default function Footer() {
     "CREATING EXCELLENCE",
     "ENGINEERING DREAMS",
   ];
-
-  useEffect(() => {
-    // Setup HLS Video
-    const video = videoRef.current;
-    if (!video) return;
-
-    const videoSrc = "https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8";
-
-    if (Hls.isSupported()) {
-      const hls = new Hls({ startPosition: -1, capLevelToPlayerSize: true });
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => { });
-      });
-      return () => hls.destroy();
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', () => {
-        video.play().catch(() => { });
-      });
-    }
-  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -51,18 +26,9 @@ export default function Footer() {
   return (
     <footer className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden flex flex-col z-20">
 
-      {/* Background Video */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-bg">
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-100"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-bg to-transparent" />
+      {/* Clean background */}
+      <div className="absolute inset-0 z-0" style={{ background: 'var(--bg)' }}>
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(var(--brand-rgb, 137,170,204), 0.03) 100%)' }} />
       </div>
 
       {/* Marquee */}

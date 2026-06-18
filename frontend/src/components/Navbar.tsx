@@ -60,7 +60,22 @@ export default function Navbar() {
         <div className="pointer-events-auto flex items-center gap-4">
           <button
             onClick={toggleTheme}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            style={{
+              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
+              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
+              color: 'var(--brand-light, #a8c4e0)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
           >
@@ -71,7 +86,22 @@ export default function Navbar() {
 
           <button
             onClick={toggleLanguage}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors font-medium text-sm focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border font-semibold text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            style={{
+              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
+              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
+              color: 'var(--brand-light, #a8c4e0)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
           >
@@ -80,7 +110,22 @@ export default function Navbar() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-surface/80 backdrop-blur-md border border-stroke text-text-primary hover:text-brand-light transition-colors group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            style={{
+              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
+              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
+              color: 'var(--brand-light, #a8c4e0)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
