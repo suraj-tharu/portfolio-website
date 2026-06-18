@@ -53,6 +53,8 @@
     /* Amber-500 — warm contrast pop */
     --accent-2: #EC4899;
     /* Pink-500 — vibrant secondary */
+    --accent-2-rgb: 236, 72, 153;
+    /* RGB channels for rgba() usage */
 
     /* Additional premium accents */
     --accent-cyan: #22D3EE;
@@ -114,6 +116,8 @@
     /* Amber-600 — warm pop */
     --accent-2: #DB2777;
     /* Pink-600 — vibrant secondary */
+    --accent-2-rgb: 219, 39, 119;
+    /* RGB channels for rgba() usage */
 
     /* Additional premium accents */
     --accent-cyan: #0891B2;

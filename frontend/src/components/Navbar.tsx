@@ -76,19 +76,51 @@ export default function Navbar() {
           {/* Cmd+K Button */}
           <button
             onClick={openCommandPalette}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
-            aria-label="Open Command Palette"
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            style={{
+              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
+              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
+              color: 'var(--brand-light, #a8c4e0)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+            aria-label="Open Command Palette (Ctrl+K)"
+            title="Command Palette"
           >
-            <Search size={16} className="text-muted" />
+            <Search size={18} aria-hidden="true" />
           </button>
 
           {/* Terminal Toggle Button */}
           <button
             onClick={toggleTerminal}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border border-stroke bg-surface/80 hover:bg-brand-500 transition-colors"
+            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            style={{
+              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
+              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
+              color: 'var(--brand-light, #a8c4e0)',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
+              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
+              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
             aria-label="Toggle Terminal"
+            title="Terminal"
           >
-            <Terminal size={20} className="text-text-primary" />
+            <Terminal size={18} aria-hidden="true" />
           </button>
 
           <button
