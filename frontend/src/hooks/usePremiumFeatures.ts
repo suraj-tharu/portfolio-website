@@ -169,7 +169,7 @@ export const useTouchGestures = () => {
 
 // Hook for theme detection and animation
 export const useThemeAnimation = () => {
-    const [theme, setTheme] = useState<'light' | 'dark'>(
+    const [theme] = useState<'light' | 'dark'>(
         () => (document.documentElement.classList.contains('dark') ? 'dark' : 'light')
     );
     const containerRef = useRef<HTMLDivElement>(null);

@@ -4,6 +4,14 @@
  * Integrates with LogRocket and Hotjar for user behavior tracking
  */
 
+// Minimal LogRocket interface to satisfy TypeScript
+interface LogRocketInstance {
+    init(appId: string): void;
+    identify(uid: string, traits?: Record<string, unknown>): void;
+    getSessionURL(callback: (url: string) => void): void;
+    captureException(err: Error): void;
+}
+
 // Initialize LogRocket
 export const initLogRocket = (userId?: string) => {
     if (typeof window !== 'undefined' && !window.__logRocketInitialized) {
@@ -39,10 +47,12 @@ export const initLogRocket = (userId?: string) => {
 export const initHotjar = () => {
     if (typeof window !== 'undefined' && !window.__hotjarInitialized) {
         try {
-            (window as any).hj =
-                (window as any).hj ||
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const win = window as any;
+            win.hj =
+                win.hj ||
                 function () {
-                    ((window as any).hj.q = (window as any).hj.q || []).push(arguments);
+                    (win.hj.q = win.hj.q || []).push(arguments);
                 };
 
             const hjsTag = document.createElement('script');
@@ -58,7 +68,7 @@ export const initHotjar = () => {
 };
 
 export function isObject(item: unknown): item is Record<string, unknown> {
-    return (item && typeof item === 'object' && !Array.isArray(item));
+    return item !== null && typeof item === 'object' && !Array.isArray(item);
 }
 
 export function deepMerge<T extends Record<string, unknown>>(target: T, ...sources: Partial<T>[]): T {
@@ -98,7 +108,7 @@ export const trackEvent = (eventName: string, data?: Record<string, unknown>) =>
         }
 
         if (window.LogRocket) {
-            (window.LogRocket as any).captureException(new Error(`Event: ${eventName}`));
+            window.LogRocket.captureException(new Error(`Event: ${eventName}`));
         }
 
         console.log('Event tracked:', eventName, data);
@@ -215,10 +225,12 @@ export const initializeAnalytics = (options?: {
 // Declare window types for analytics
 declare global {
     interface Window {
-        gtag?: (...args: unknown[]) => void;
-        LogRocket?: unknown;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        gtag?: (...args: any[]) => void;
+        LogRocket?: LogRocketInstance;
         __logRocketInitialized?: boolean;
-        hj?: unknown;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        hj?: (...args: any[]) => void;
         __hotjarInitialized?: boolean;
     }
 }
