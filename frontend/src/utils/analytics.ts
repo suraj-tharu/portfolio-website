@@ -57,15 +57,48 @@ export const initHotjar = () => {
     }
 };
 
+export function isObject(item: unknown): item is Record<string, unknown> {
+    return (item && typeof item === 'object' && !Array.isArray(item));
+}
+
+export function deepMerge<T extends Record<string, unknown>>(target: T, ...sources: Partial<T>[]): T {
+    if (!sources.length) return target;
+    const source = sources.shift();
+
+    if (isObject(target) && isObject(source)) {
+        for (const key in source) {
+            if (isObject(source[key])) {
+                if (!target[key]) Object.assign(target, { [key]: {} });
+                deepMerge(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
+            } else {
+                Object.assign(target, { [key]: source[key] });
+            }
+        }
+    }
+
+    return deepMerge(target, ...sources);
+}
+
+export function debounce<T extends (...args: unknown[]) => unknown>(
+    func: T,
+    wait: number
+): (...args: Parameters<T>) => void {
+    let timeout: ReturnType<typeof setTimeout>;
+    return (...args: Parameters<T>) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func(...args), wait);
+    };
+}
+
 // Track custom events
-export const trackEvent = (eventName: string, data?: Record<string, any>) => {
+export const trackEvent = (eventName: string, data?: Record<string, unknown>) => {
     try {
         if (window.gtag) {
             window.gtag('event', eventName, data);
         }
 
         if (window.LogRocket) {
-            window.LogRocket.captureException(new Error(`Event: ${eventName}`));
+            (window.LogRocket as any).captureException(new Error(`Event: ${eventName}`));
         }
 
         console.log('Event tracked:', eventName, data);
@@ -182,10 +215,10 @@ export const initializeAnalytics = (options?: {
 // Declare window types for analytics
 declare global {
     interface Window {
-        gtag?: (...args: any[]) => void;
-        LogRocket?: any;
+        gtag?: (...args: unknown[]) => void;
+        LogRocket?: unknown;
         __logRocketInitialized?: boolean;
-        hj?: any;
+        hj?: unknown;
         __hotjarInitialized?: boolean;
     }
 }

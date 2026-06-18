@@ -169,13 +169,11 @@ export const useTouchGestures = () => {
 
 // Hook for theme detection and animation
 export const useThemeAnimation = () => {
-    const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+    const [theme, setTheme] = useState<'light' | 'dark'>(
+        () => (document.documentElement.classList.contains('dark') ? 'dark' : 'light')
+    );
     const containerRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-        setTheme(currentTheme);
-    }, []);
-
+    // No effect needed; theme is initialized based on current document class.
     return { containerRef, theme };
 };
