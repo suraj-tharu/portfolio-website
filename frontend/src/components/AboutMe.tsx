@@ -1,42 +1,9 @@
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
 import { FadeIn } from './FadeIn';
 
-const paragraphText = "Suraj Tharu Chaudhary is a Computer Engineering professional, educator, and researcher from Ramgram-18, Nawalparasi West, Nepal.";
-
-// Extracted into its own component so hooks are called at top-level, not inside a .map()
-function AnimatedChar({ char, index, total, scrollYProgress }: {
-  char: string;
-  index: number;
-  total: number;
-  scrollYProgress: ReturnType<typeof useScroll>['scrollYProgress'];
-}) {
-  const charProgress = index / total;
-  const start = Math.max(0, charProgress - 0.1);
-  const end = Math.min(1, charProgress + 0.05);
-  const opacity = useTransform(scrollYProgress, [start, end], [0.2, 1]);
-
-  return (
-    <span className="relative inline-block">
-      <span className="invisible">{char === ' ' ? '\u00A0' : char}</span>
-      <motion.span className="absolute top-0 left-0" style={{ opacity }}>
-        {char === ' ' ? '\u00A0' : char}
-      </motion.span>
-    </span>
-  );
-}
-
 export default function AboutMe() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start 0.8', 'end 0.2']
-  });
-
-  const chars = paragraphText.split('');
 
   return (
-    <section ref={containerRef} id="about" className="relative w-full min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-24 bg-[var(--bg)] overflow-hidden font-kanit">
+    <section id="about" className="relative w-full min-h-screen flex flex-col items-center justify-center px-5 sm:px-8 md:px-10 py-24 bg-[var(--bg)] overflow-hidden font-kanit">
 
       {/* Decorative Images */}
       <FadeIn delay={0.1} duration={0.9} x={-80} y={0} className="absolute z-0 top-[4%] left-[1%] sm:left-[2%] md:left-[4%] w-[120px] sm:w-[160px] md:w-[210px] h-auto hidden md:block">
@@ -66,18 +33,12 @@ export default function AboutMe() {
             </h2>
           </FadeIn>
 
-          {/* Progressive Reveal Text */}
-          <p className="bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-medium text-center leading-relaxed max-w-[600px] text-[clamp(1.2rem,2.5vw,1.6rem)]">
-            {chars.map((char, index) => (
-              <AnimatedChar
-                key={index}
-                char={char}
-                index={index}
-                total={chars.length}
-                scrollYProgress={scrollYProgress}
-              />
-            ))}
-          </p>
+          {/* Section Summary */}
+          <FadeIn delay={0.1} y={30} className="text-white font-medium text-center leading-relaxed max-w-[700px] text-[clamp(1rem,2vw,1.3rem)]">
+            <p>
+              Computer Engineering professional with expertise in <strong className="text-[var(--brand-light)]">GIS, Remote Sensing,</strong> and <strong className="text-[var(--brand-light)]">Machine Learning</strong>. Passionate about leveraging technology for sustainable development and innovation.
+            </p>
+          </FadeIn>
 
           {/* Remaining Biography Paragraphs */}
           <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 bg-[var(--surface)]/50 p-8 rounded-3xl border border-[var(--stroke)] shadow-xl backdrop-blur-sm">

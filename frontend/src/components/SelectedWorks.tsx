@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const defaultProjects = [
-  { title: "Human Perspective", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Brand Identity", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "LULC Analysis - Nawalparasi", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "GIS Visualization & Mapping", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1526778548025-fa2fbfb2cbdf?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Remote Sensing Analysis", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Machine Learning Classification", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1551537482-f2b408d54fdb?auto=format&fit=crop&w=1200&q=80", url: "#" },
 ];
 
 type Project = {
