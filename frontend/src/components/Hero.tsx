@@ -148,11 +148,11 @@ export default function Hero() {
           >
             {roles[roleIndex]}
           </motion.span>
-          <span className="text-base md:text-lg text-white font-bold">{t('hero.location')}</span>
+          <span className="text-base md:text-lg bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold">{t('hero.location')}</span>
         </div>
 
         <motion.p
-          className="blur-in text-fluid-xs md:text-fluid-base text-white font-bold max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
+          className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
           animate={{ opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 3, repeat: Infinity }}
         >

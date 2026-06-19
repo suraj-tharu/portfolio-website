@@ -67,7 +67,7 @@ export default function AboutMe() {
           </FadeIn>
 
           {/* Progressive Reveal Text */}
-          <p className="text-[var(--text)] font-medium text-center leading-relaxed max-w-[600px] text-[clamp(1.2rem,2.5vw,1.6rem)]">
+          <p className="bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-medium text-center leading-relaxed max-w-[600px] text-[clamp(1.2rem,2.5vw,1.6rem)]">
             {chars.map((char, index) => (
               <AnimatedChar
                 key={index}
