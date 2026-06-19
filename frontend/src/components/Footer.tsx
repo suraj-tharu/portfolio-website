@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import VisitorCounter from './VisitorCounter';
 
 export default function Footer() {
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -80,9 +81,12 @@ export default function Footer() {
           <span className="text-sm dark:text-muted text-amber-600">Nawalparasi West, NP</span>
         </div>
 
-        {/* Copyright */}
-        <div className="text-sm dark:text-muted text-amber-600">
-          © 2026 Er. Suraj Tharu Chaudhary
+        {/* Copyright & Visitor Counter */}
+        <div className="flex flex-col items-center gap-2 md:items-end">
+          <div className="text-sm dark:text-muted text-amber-600">
+            © 2026 Er. Suraj Tharu Chaudhary
+          </div>
+          <VisitorCounter />
         </div>
       </div>
 
