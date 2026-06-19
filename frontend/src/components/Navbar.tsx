@@ -65,13 +65,13 @@ export default function Navbar() {
           </div>
         </a>
 
-        {/* Time Display - Center */}
-        <div className="hidden md:flex items-center text-sm md:text-base text-text-secondary font-medium">
-          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </div>
-
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
+
+          {/* Time Display - Next to toggle */}
+          <div className="hidden sm:flex items-center px-3 py-1 text-xs md:text-sm text-text-secondary font-medium">
+            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </div>
 
           <button
             onClick={toggleTheme}

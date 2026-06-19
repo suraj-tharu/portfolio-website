@@ -4,9 +4,11 @@ import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
+import { useGreeting } from './GreetingBanner';
 
 export default function Hero() {
   const { t } = useLanguage();
+  const greeting = useGreeting();
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
@@ -107,6 +109,23 @@ export default function Hero() {
 
       {/* Content with premium spacing and animations */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
+        {/* Premium Greeting */}
+        {greeting && (
+          <motion.div
+            className="mb-8 md:mb-12 text-center"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+          >
+            <p className="text-sm md:text-base tracking-widest uppercase font-medium text-text-secondary/80">
+              <span className="text-brand-light font-semibold">{greeting}</span>
+              <span className="mx-2 text-text-secondary/60">•</span>
+              <span className="text-text-secondary/70">Welcome back</span>
+            </p>
+            <div className="mt-3 h-px w-12 mx-auto bg-gradient-to-r from-transparent via-brand-500 to-transparent opacity-50" />
+          </motion.div>
+        )}
+
         <h1 className="text-fluid-3xl md:text-fluid-5xl lg:text-fluid-6xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
