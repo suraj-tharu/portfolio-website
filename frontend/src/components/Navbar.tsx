@@ -69,13 +69,13 @@ export default function Navbar() {
         <div className="pointer-events-auto flex items-center gap-4">
 
           {/* Ultra Premium Time Display */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-500/15 to-pink-500/15 border border-brand-500/30 backdrop-blur-md hover:border-brand-500/50 transition-all"
           >
             <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-            <span className="text-xs md:text-sm font-semibold text-transparent bg-gradient-to-r from-brand-200 to-cyan-200 bg-clip-text">
+            <span className="text-xs md:text-sm font-semibold text-cyan-200 hover:text-brand-200 transition-colors">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </motion.div>

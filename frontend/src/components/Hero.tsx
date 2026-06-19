@@ -119,7 +119,7 @@ export default function Hero() {
           >
             <div className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 backdrop-blur-md mb-4">
               <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-              <p className="text-xs md:text-sm tracking-widest uppercase font-bold text-transparent bg-gradient-to-r from-brand-200 via-pink-200 to-cyan-200 bg-clip-text">
+              <p className="text-xs md:text-sm tracking-widest uppercase font-bold text-brand-200 hover:text-cyan-200 transition-colors">
                 {greeting}
               </p>
               <div className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" />
