@@ -117,12 +117,12 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
-            <div className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 backdrop-blur-md mb-4">
-              <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-              <p className="text-xs md:text-sm tracking-widest uppercase font-bold text-brand-200 hover:text-cyan-200 transition-colors">
+            <div className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 backdrop-blur-md mb-4 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] transition-all duration-300">
+              <div className="w-2 h-2 rounded-full bg-brand-300 animate-pulse shadow-[0_0_10px_rgba(139,92,246,0.8)]" />
+              <p className="text-xs md:text-sm tracking-widest uppercase font-bold text-white dark:text-brand-100 bg-gradient-to-r from-brand-200 via-pink-200 to-cyan-200 bg-clip-text text-transparent dark:text-white dark:bg-none hover:drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]">
                 {greeting}
               </p>
-              <div className="w-2 h-2 rounded-full bg-pink-400 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-pink-300 animate-pulse shadow-[0_0_10px_rgba(236,72,153,0.8)]" />
             </div>
             <p className="text-xs md:text-sm tracking-widest uppercase font-medium text-text-secondary/80">
               <span className="text-text-secondary/70">Welcome back</span>

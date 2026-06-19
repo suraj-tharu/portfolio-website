@@ -72,10 +72,10 @@ export default function Navbar() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-500/15 to-pink-500/15 border border-brand-500/30 backdrop-blur-md hover:border-brand-500/50 transition-all"
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-500/15 to-pink-500/15 border border-brand-500/30 backdrop-blur-md hover:border-brand-500/50 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)]"
           >
-            <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
-            <span className="text-xs md:text-sm font-semibold text-cyan-200 hover:text-brand-200 transition-colors">
+            <div className="w-2 h-2 rounded-full bg-brand-300 animate-pulse shadow-[0_0_8px_rgba(139,92,246,0.6)]" />
+            <span className="text-xs md:text-sm font-bold text-white dark:text-cyan-200 dark:hover:text-brand-200 light:text-cyan-900 light:hover:text-brand-700 transition-colors drop-shadow-[0_0_4px_rgba(34,211,238,0.5)]">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </motion.div>
