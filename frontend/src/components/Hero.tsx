@@ -4,31 +4,12 @@ import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
-import { FadeIn } from './FadeIn';
 
 export default function Hero() {
   const { t } = useLanguage();
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
-  const [currentTime, setCurrentTime] = useState(new Date());
-  const [greeting, setGreeting] = useState('');
-
-  // Update time every minute
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      setCurrentTime(now);
-      const hour = now.getHours();
-      const greet = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
-      setGreeting(greet);
-    }, 60000);
-    // Initialize greeting immediately
-    const initHour = new Date().getHours();
-    const initGreet = initHour < 12 ? 'Good morning' : initHour < 18 ? 'Good afternoon' : 'Good evening';
-    setGreeting(initGreet);
-    return () => clearInterval(timer);
-  }, []);
   const roles = [t('hero.role.engineer'), t('hero.role.educator'), t('hero.role.researcher'), t('hero.role.gis')];
 
   useEffect(() => {
@@ -126,15 +107,15 @@ export default function Hero() {
 
       {/* Content with premium spacing and animations */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(139,92,246,0.25)] px-2 w-full luxury-glow-strong" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
+        <h1 className="text-fluid-3xl md:text-fluid-5xl lg:text-fluid-6xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block text-[var(--accent)] hover:luxury-glow transition-all duration-300"
+              className="inline-block text-text-primary hover:text-brand-light transition-all duration-300"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
               transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
-              whileHover={{ scale: 1.05, textShadow: '0 0 20px rgba(139, 92, 246, 0.5)' }}
+              whileHover={{ scale: 1.05 }}
             >
               {word}
             </motion.span>
@@ -149,9 +130,6 @@ export default function Hero() {
             {roles[roleIndex]}
           </motion.span>
           <span className="text-base md:text-lg text-text-secondary">{t('hero.location')}</span>
-          <FadeIn delay={0.2} y={20} className="w-full">
-            <p className="text-sm md:text-base text-[var(--text)] font-medium">{greeting}, it's {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-          </FadeIn>
         </div>
 
         <motion.p

@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
 
@@ -17,6 +18,14 @@ export default function Navbar() {
       document.body.style.overflow = 'auto';
     }
   }, [isOpen]);
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const navLinks = [
     { label: t('nav.home'), href: '#' },
@@ -56,9 +65,14 @@ export default function Navbar() {
           </div>
         </a>
 
+        {/* Time Display - Center */}
+        <div className="hidden md:flex items-center text-sm md:text-base text-text-secondary font-medium">
+          {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+        </div>
+
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
-          
+
           <button
             onClick={toggleTheme}
             className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
