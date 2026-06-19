@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { motion } from 'framer-motion';
 import VisitorCounter from './VisitorCounter';
 
 export default function Footer() {
@@ -27,9 +28,11 @@ export default function Footer() {
   return (
     <footer className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden flex flex-col z-20">
 
-      {/* Clean background */}
+      {/* Premium Background */}
       <div className="absolute inset-0 z-0" style={{ background: 'var(--bg)' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, transparent 0%, rgba(var(--brand-rgb, 137,170,204), 0.03) 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.05) 0%, rgba(236,72,153,0.03) 50%, rgba(34,211,238,0.05) 100%)' }} />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl" />
       </div>
 
       {/* Marquee */}
@@ -45,50 +48,93 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div className="relative z-10 flex flex-col items-center justify-center flex-grow px-6 py-20 text-center">
-        <div className="text-xs text-muted uppercase tracking-[0.3em] mb-6">Let's talk</div>
-        <h2 className="text-5xl md:text-7xl lg:text-[7rem] font-display text-text-primary tracking-tight leading-none mb-12">
+      {/* Premium CTA */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+        className="relative z-10 flex flex-col items-center justify-center flex-grow px-6 py-20 text-center"
+      >
+        <motion.div className="text-xs text-muted uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
+          <div className="w-2 h-2 rounded-full bg-brand-500" />
+          Let's talk
+          <div className="w-2 h-2 rounded-full bg-pink-500" />
+        </motion.div>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="text-5xl md:text-7xl lg:text-[7rem] font-display text-text-primary tracking-tight leading-none mb-12 bg-gradient-to-r from-white via-slate-200 to-cyan-100 bg-clip-text text-transparent"
+        >
           Ready to create <br className="hidden md:block" />
           <span className="italic">something special?</span>
-        </h2>
+        </motion.h2>
 
-        <a href="mailto:suraj.xaudhary@gmail.com" className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
-          <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-          <div className="absolute inset-[2px] bg-bg rounded-full" />
-          <span className="relative z-10 text-text-primary font-medium">suraj.xaudhary@gmail.com</span>
-        </a>
-      </div>
+        <motion.a
+          href="mailto:suraj.xaudhary@gmail.com"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg font-medium overflow-hidden"
+        >
+          {/* Animated background gradient */}
+          <span className="absolute inset-0 bg-gradient-to-r from-brand-500 via-pink-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
+          <span className="absolute inset-[2px] bg-bg rounded-full group-hover:bg-black/20 transition-colors" />
+          <span className="relative z-10 text-text-primary group-hover:text-white transition-colors">suraj.xaudhary@gmail.com</span>
+        </motion.a>
+      </motion.div>
 
-      {/* Footer Bar */}
-      <div className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-6 pt-12 border-t border-white/5">
-
-        {/* Availability */}
-        <div className="flex items-center gap-3 bg-surface/50 backdrop-blur-sm border border-stroke rounded-full px-4 py-2">
-          <div className="relative flex h-2 w-2">
+      {/* Premium Footer Bar */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-white/10 backdrop-blur-sm"
+      >
+        {/* Availability Status */}
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="group flex items-center gap-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 backdrop-blur-md border border-green-500/30 rounded-full px-4 py-2.5 hover:border-green-500/50 transition-all duration-300"
+        >
+          <div className="relative flex h-2.5 w-2.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 group-hover:bg-green-400 transition-colors"></span>
           </div>
-          <span className="text-sm text-text-primary">Available for projects</span>
+          <span className="text-sm font-medium text-green-100">Available for projects</span>
+        </motion.div>
+
+        {/* Social Links */}
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center mt-4 md:mt-0">
+          {[
+            { label: 'LinkedIn', url: 'https://www.linkedin.com/in/suraj-tharu/', icon: '💼' },
+            { label: 'GitHub', url: 'https://github.com/suraj-tharu', icon: '🐙' },
+            { label: 'Scholar', url: 'https://scholar.google.com', icon: '📚' },
+            { label: 'ResearchGate', url: 'https://www.researchgate.net', icon: '🔬' },
+          ].map((social) => (
+            <motion.a
+              key={social.label}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1, y: -2 }}
+              className="text-sm font-medium bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 hover:border-brand-500 rounded-full px-3 py-1.5 text-brand-200 hover:text-white transition-all duration-300 backdrop-blur-sm"
+            >
+              {social.icon} {social.label}
+            </motion.a>
+          ))}
+          <div className="text-sm text-muted px-3 py-1.5">📍 Nawalparasi West, NP</div>
         </div>
 
-        {/* Links */}
-        <div className="flex flex-wrap items-center gap-4 sm:gap-6 justify-center mt-4 md:mt-0">
-          <a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">LinkedIn</a>
-          <a href="https://github.com/suraj-tharu" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">GitHub</a>
-          <a href="https://scholar.google.com" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">Google Scholar</a>
-          <a href="https://www.researchgate.net" target="_blank" rel="noopener noreferrer" className="text-sm dark:text-muted text-amber-600 hover:text-amber-500 dark:hover:text-text-primary transition-colors">ResearchGate</a>
-          <span className="text-sm dark:text-muted text-amber-600">Nawalparasi West, NP</span>
-        </div>
-
-        {/* Copyright & Visitor Counter */}
-        <div className="flex flex-col items-center gap-2 md:items-end">
-          <div className="text-sm dark:text-muted text-amber-600">
+        {/* Copyright & Stats */}
+        <motion.div
+          className="flex flex-col items-center gap-2.5 md:items-end"
+        >
+          <div className="text-xs font-semibold tracking-widest uppercase text-transparent bg-gradient-to-r from-brand-300 to-cyan-300 bg-clip-text">
             © 2026 Er. Suraj Tharu Chaudhary
           </div>
           <VisitorCounter />
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
     </footer>
   );
