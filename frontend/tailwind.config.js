@@ -111,11 +111,52 @@ export default {
       },
       transitionTimingFunction: {
         'custom': 'cubic-bezier(0.23, 1, 0.320, 1)',
+        'smooth': 'cubic-bezier(0.23, 1, 0.320, 1)',
+        'bounce-smooth': 'cubic-bezier(0.4, 0.0, 0.2, 1)',
       },
       borderRadius: {
         'xl': '1rem',
         '2xl': '1.25rem',
         '3xl': '1.5rem',
+      },
+      boxShadow: {
+        'luxury': '0 0 20px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
+        'luxury-strong': '0 0 30px rgba(139, 92, 246, 0.5), 0 0 80px rgba(139, 92, 246, 0.2)',
+      },
+      animation: {
+        'blob': 'blob 7s infinite',
+        'luxury-float': 'luxury-float 5s cubic-bezier(0.4, 0.0, 0.2, 1) infinite',
+        'ambient-breathe': 'ambient-breathe 4s ease-in-out infinite',
+        'luxury-pulse': 'luxury-pulse 2s infinite',
+        'luxury-shine': 'luxury-shine 3s infinite',
+      },
+      keyframes: {
+        'blob': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+        },
+        'luxury-float': {
+          '0%, 100%': { transform: 'translateY(0px) rotateZ(0deg)', opacity: '0.8' },
+          '25%': { transform: 'translateY(-8px) rotateZ(0.5deg)', opacity: '0.9' },
+          '50%': { transform: 'translateY(-16px) rotateZ(0deg)', opacity: '1' },
+          '75%': { transform: 'translateY(-8px) rotateZ(-0.5deg)', opacity: '0.9' },
+        },
+        'ambient-breathe': {
+          '0%, 100%': { opacity: '0.4', filter: 'blur(0px) brightness(1)' },
+          '50%': { opacity: '0.6', filter: 'blur(1px) brightness(1.1)' },
+        },
+        'luxury-pulse': {
+          '0%, 100%': { opacity: '1', boxShadow: '0 0 0 0 rgba(139, 92, 246, 0.7)' },
+          '50%': { opacity: '0.8', boxShadow: '0 0 0 10px rgba(139, 92, 246, 0)' },
+        },
+        'luxury-shine': {
+          '0%': { left: '-100%' },
+          '100%': { left: '100%' },
+        },
+      },
+      backgroundImage: {
+        'radial-gradient': 'radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.3) 100%)',
       }
     },
   },

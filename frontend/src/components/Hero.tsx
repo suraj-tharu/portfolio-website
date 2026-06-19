@@ -102,7 +102,7 @@ export default function Hero() {
 
   return (
     <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Video */}
+      {/* Background Video with Premium Lighting */}
       <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#06080F] via-[#1a0a2e] to-[#06080F]">
         <video
           ref={videoRef}
@@ -112,38 +112,55 @@ export default function Hero() {
           playsInline
           className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen"
         />
-        {/* Premium Gradient Overlay (always visible fallback) */}
+        {/* Premium Gradient Overlay with sophistication */}
         <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/80 via-transparent to-[var(--bg)]" />
+
+        {/* Ultra-premium ambient lighting effects */}
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-violet-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-blob" style={{ animationDelay: '0s' }} />
+        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-pink-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-blob" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-blob" style={{ animationDelay: '4s' }} />
+
         {/* Additional glow overlay */}
         <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-30" />
       </div>
 
-      {/* Content */}
+      {/* Content with premium spacing and animations */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
-        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(139,92,246,0.25)] px-2 w-full">
+        <h1 className="text-fluid-6xl md:text-fluid-8xl lg:text-fluid-9xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8),0_4px_16px_rgba(139,92,246,0.25)] px-2 w-full luxury-glow-strong" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block text-[var(--accent)]"
+              className="inline-block text-[var(--accent)] hover:luxury-glow transition-all duration-300"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
               transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
+              whileHover={{ scale: 1.05, textShadow: '0 0 20px rgba(139, 92, 246, 0.5)' }}
             >
               {word}
             </motion.span>
           ))}
         </h1>
 
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex items-center gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
-            <span key={roleIndex} className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold">{roles[roleIndex]}</span> {t('hero.location')}
-            <FadeIn delay={0.2} y={20} className="w-full">
-              <p className="text-lg text-[var(--text)]">{greeting}, it's {currentTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</p>
-            </FadeIn>
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex flex-col items-center gap-3 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
+          <motion.span
+            key={roleIndex}
+            className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
+          >
+            {roles[roleIndex]}
+          </motion.span>
+          <span className="text-base md:text-lg text-text-secondary">{t('hero.location')}</span>
+          <FadeIn delay={0.2} y={20} className="w-full">
+            <p className="text-sm md:text-base text-[var(--text)] font-medium">{greeting}, it's {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+          </FadeIn>
         </div>
 
-        <p className="blur-in text-fluid-xs md:text-fluid-base text-white max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)]">
+        <motion.p
+          className="blur-in text-fluid-xs md:text-fluid-base text-text-secondary max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
+          animate={{ opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
           {t('hero.description')}
-        </p>
+        </motion.p>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
           <a href="#work">
@@ -167,6 +184,6 @@ export default function Hero() {
           <div className="absolute top-0 left-0 w-full h-full bg-brand-light/50 animate-scroll-down" />
         </div>
       </div>
-    </section>
+    </section >
   );
 }
