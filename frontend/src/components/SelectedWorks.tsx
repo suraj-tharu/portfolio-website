@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 
 const defaultProjects = [
   { title: "LULC Analysis - Nawalparasi", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "GIS Visualization & Mapping", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1569163139394-de4798aa62b3?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "GIS Visualization & Mapping", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1526778548025-fa2fbfb2cbdf?auto=format&fit=crop&w=1200&q=80", url: "#" },
   { title: "Remote Sensing Analysis", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", url: "#" },
   { title: "Machine Learning Classification", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80", url: "#" },
 ];

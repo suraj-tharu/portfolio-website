@@ -68,10 +68,17 @@ export default function Navbar() {
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">
 
-          {/* Time Display - Next to toggle */}
-          <div className="hidden sm:flex items-center px-3 py-1 text-xs md:text-sm text-text-secondary font-medium">
-            {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-          </div>
+          {/* Ultra Premium Time Display */}
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-500/15 to-pink-500/15 border border-brand-500/30 backdrop-blur-md hover:border-brand-500/50 transition-all"
+          >
+            <div className="w-2 h-2 rounded-full bg-brand-400 animate-pulse" />
+            <span className="text-xs md:text-sm font-semibold text-transparent bg-gradient-to-r from-brand-200 to-cyan-200 bg-clip-text">
+              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </motion.div>
 
           <button
             onClick={toggleTheme}
