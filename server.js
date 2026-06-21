@@ -206,12 +206,12 @@ app.use('/dist', express.static(path.join(__dirname, 'dist'), {
   maxAge: '1y',
   immutable: true,
 }));
+app.use('/assets/uploads', express.static(path.join(__dirname, 'uploads'), {
+  maxAge: '1d',
+}));
 app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'assets'), {
   maxAge: '1y',
   immutable: true,
-}));
-app.use('/assets/uploads', express.static(path.join(__dirname, 'uploads'), {
-  maxAge: '1d',
 }));
 app.use('/icons', express.static(path.join(__dirname, 'icons'), { maxAge: '1d' }));
 app.use(express.static(path.join(__dirname, '.'), {

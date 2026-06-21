@@ -20,6 +20,7 @@ import { ParticleBackground } from './components/premium';
 
 import Home from './pages/Home';
 import ResearchDashboard from './pages/ResearchDashboard';
+import NotFound from './pages/NotFound';
 
 // Initialize error tracking on app load
 initErrorTracking(); // Add your Sentry DSN here if available
@@ -94,6 +95,7 @@ function AppContent() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/research" element={<ResearchDashboard />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </div>
