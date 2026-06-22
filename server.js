@@ -387,6 +387,20 @@ app.post('/admin/api/projects/:id/delete', authenticateAdmin, async (req, res) =
   } catch (e) { res.status(500).send('Error deleting project'); }
 });
 
+app.post('/admin/api/projects/:id/update', authenticateAdmin, upload.single('imageFile'), async (req, res) => {
+  try {
+    const { title, description, imageUrl, githubUrl, liveUrl, tags } = req.body;
+    const dataToUpdate = { title, description, githubUrl, liveUrl, tags };
+    if (req.file) {
+      dataToUpdate.imageUrl = await saveUploadedFile(req.file);
+    } else if (imageUrl) {
+      dataToUpdate.imageUrl = imageUrl;
+    }
+    await prisma.project.update({ where: { id: parseInt(req.params.id) }, data: dataToUpdate });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error updating project'); }
+});
+
 app.post('/admin/api/blogs', authenticateAdmin, upload.single('imageFile'), async (req, res) => {
   try {
     const { title, slug, content, published } = req.body;
@@ -404,6 +418,18 @@ app.post('/admin/api/blogs/:id/delete', authenticateAdmin, async (req, res) => {
     await prisma.blogPost.delete({ where: { id: parseInt(req.params.id) } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error deleting blog'); }
+});
+
+app.post('/admin/api/blogs/:id/update', authenticateAdmin, upload.single('imageFile'), async (req, res) => {
+  try {
+    const { title, slug, content, published } = req.body;
+    const dataToUpdate = { title, slug, content, published: published === 'on' };
+    if (req.file) {
+      dataToUpdate.imageUrl = await saveUploadedFile(req.file);
+    }
+    await prisma.blogPost.update({ where: { id: parseInt(req.params.id) }, data: dataToUpdate });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error updating blog'); }
 });
 
 app.post('/admin/api/messages/:id/delete', authenticateAdmin, async (req, res) => {
@@ -432,6 +458,20 @@ app.post('/admin/api/learning-materials/:id/delete', authenticateAdmin, async (r
   } catch (e) { res.status(500).send('Error deleting learning material'); }
 });
 
+app.post('/admin/api/learning-materials/:id/update', authenticateAdmin, upload.single('pdfFile'), async (req, res) => {
+  try {
+    const { grade, category, subject, description, pdfUrl } = req.body;
+    const dataToUpdate = { grade, category, subject, description };
+    if (req.file) {
+      dataToUpdate.pdfUrl = await saveUploadedFile(req.file);
+    } else if (pdfUrl) {
+      dataToUpdate.pdfUrl = pdfUrl;
+    }
+    await prisma.learningMaterial.update({ where: { id: parseInt(req.params.id) }, data: dataToUpdate });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error updating learning material'); }
+});
+
 app.post('/admin/api/timeline', authenticateAdmin, async (req, res) => {
   try {
     const { year, role, location, orderIndex } = req.body;
@@ -445,6 +485,14 @@ app.post('/admin/api/timeline/:id/delete', authenticateAdmin, async (req, res) =
     await prisma.timelineEvent.delete({ where: { id: parseInt(req.params.id) } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error deleting timeline event'); }
+});
+
+app.post('/admin/api/timeline/:id/update', authenticateAdmin, async (req, res) => {
+  try {
+    const { year, role, location, orderIndex } = req.body;
+    await prisma.timelineEvent.update({ where: { id: parseInt(req.params.id) }, data: { year, role, location, orderIndex: parseInt(orderIndex) || 0 } });
+    res.redirect('/admin');
+  } catch (e) { res.status(500).send('Error updating timeline event'); }
 });
 
 // ─── Blog Detail Page ─────────────────────────────────────────────────────────

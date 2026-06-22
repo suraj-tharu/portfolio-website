@@ -14,7 +14,6 @@
       font-family: 'Inter', sans-serif;
     }
     
-    /* SimpleMDE Premium Dark Theme */
     .editor-toolbar {
       background-color: var(--surface-2, #151B28) !important;
       border-color: var(--stroke, #1E293B) !important;
@@ -22,11 +21,8 @@
       border-top-right-radius: 0.5rem;
       opacity: 1 !important;
     }
-    .editor-toolbar a {
-      color: var(--text-secondary, #A8B2D1) !important;
-    }
-    .editor-toolbar a:hover,
-    .editor-toolbar a.active {
+    .editor-toolbar a { color: var(--text-secondary, #A8B2D1) !important; }
+    .editor-toolbar a:hover, .editor-toolbar a.active {
       background-color: var(--stroke-strong, #334155) !important;
       border-color: transparent !important;
       color: var(--text, #FFF) !important;
@@ -38,28 +34,13 @@
       border-bottom-left-radius: 0.5rem;
       border-bottom-right-radius: 0.5rem;
     }
-    .editor-preview {
-      background-color: var(--surface, #0D1117);
-      color: var(--text, #e2e8f0);
-    }
+    .editor-preview { background-color: var(--surface, #0D1117); color: var(--text, #e2e8f0); }
     
-    /* Hide scrollbar for sidebar */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* Tab Transitions */
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.4s ease forwards;
-    }
-    .tab-content.active {
-      display: block;
-    }
+    .tab-content { display: none; animation: fadeIn 0.4s ease forwards; }
+    .tab-content.active { display: block; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -88,7 +69,11 @@
     </div>
     
     <nav class="flex-1 p-4 space-y-2">
-      <button data-tab="projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-sm font-medium text-brand bg-brand/10 transition-all border border-brand/20">
+      <button data-tab="overview" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-sm font-medium text-brand bg-brand/10 border border-brand/20 transition-all">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+        Overview
+      </button>
+      <button data-tab="projects" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface-2 transition-all border border-transparent">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         Projects
       </button>
@@ -127,53 +112,88 @@
   <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-bg relative h-[calc(100vh-60px)] md:h-screen">
     
     <!-- ════════════════════════════════════════════════════════════
-         PROJECTS SECTION
+         OVERVIEW SECTION
     ════════════════════════════════════════════════════════════ -->
-    <div id="projects" class="tab-content active max-w-5xl mx-auto space-y-8 pb-20">
+    <div id="overview" class="tab-content active max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold text-text-primary">Projects & Research</h1>
+        <h1 class="text-3xl font-bold text-text-primary">Dashboard Overview</h1>
       </div>
 
-      <!-- Add Form -->
-      <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative">
-        <div class="absolute top-0 left-0 w-1 h-full bg-brand rounded-l-lg"></div>
-        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add New Project</h3>
-        
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label>
-            <input type="text" name="title" required class="premium-input text-sm">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="premium-card p-6 flex flex-col items-center justify-center text-center">
+          <div class="w-12 h-12 rounded-full bg-brand/10 text-brand flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Image URL (Or upload)</label>
-            <input type="url" name="imageUrl" class="premium-input text-sm mb-3">
-            <input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 transition cursor-pointer">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label>
-            <textarea name="description" required rows="2" class="premium-input text-sm"></textarea>
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Live URL</label>
-            <input type="url" name="liveUrl" class="premium-input text-sm">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Tags (Comma separated)</label>
-            <input type="text" name="tags" placeholder="React, Node, QGIS" class="premium-input text-sm">
-          </div>
+          <h3 class="text-3xl font-bold text-text-primary"><%= projects.length %></h3>
+          <p class="text-sm text-text-secondary mt-1 uppercase tracking-wider font-semibold">Projects</p>
         </div>
-        <div class="mt-8 flex justify-end">
-          <button type="submit" class="premium-button bg-brand border-transparent text-white hover:bg-brand-light brand-glow py-2.5">
-            Create Project
-          </button>
+        <div class="premium-card p-6 flex flex-col items-center justify-center text-center">
+          <div class="w-12 h-12 rounded-full bg-pink-500/10 text-pink-500 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold text-text-primary"><%= blogs.length %></h3>
+          <p class="text-sm text-text-secondary mt-1 uppercase tracking-wider font-semibold">Blogs</p>
         </div>
-      </form>
+        <div class="premium-card p-6 flex flex-col items-center justify-center text-center">
+          <div class="w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M13 13H3v-2h10v2zm0-4H3V7h10v2zm0 8H3v-2h10v2zm8-8v4h4v-4h-4z"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold text-text-primary"><%= learningMaterials.length %></h3>
+          <p class="text-sm text-text-secondary mt-1 uppercase tracking-wider font-semibold">Resources</p>
+        </div>
+        <div class="premium-card p-6 flex flex-col items-center justify-center text-center">
+          <div class="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-4">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+          </div>
+          <h3 class="text-3xl font-bold text-text-primary"><%= messages.length %></h3>
+          <p class="text-sm text-text-secondary mt-1 uppercase tracking-wider font-semibold">Messages</p>
+        </div>
+      </div>
+
+      <div class="premium-card p-6">
+        <h3 class="text-lg font-bold text-text-primary mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5 text-brand" fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/><path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          Recent Messages
+        </h3>
+        <div class="space-y-4">
+          <% if (messages.length === 0) { %>
+            <p class="text-muted text-sm italic">No recent messages.</p>
+          <% } %>
+          <% messages.slice(0, 3).forEach(m => { %>
+            <div class="border-b border-stroke pb-3 last:border-0 last:pb-0">
+              <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-text-primary text-sm"><%= m.name %></span>
+                <span class="text-xs text-muted font-mono"><%= new Date(m.createdAt).toLocaleDateString() %></span>
+              </div>
+              <p class="text-xs text-text-secondary truncate"><%= m.subject ? m.subject + ' - ' : '' %><%= m.message %></p>
+            </div>
+          <% }) %>
+          <% if (messages.length > 3) { %>
+            <button onclick="document.querySelector('[data-tab=\'messages\']').click()" class="text-sm text-brand hover:underline mt-2">View all messages →</button>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ════════════════════════════════════════════════════════════
+         PROJECTS SECTION
+    ════════════════════════════════════════════════════════════ -->
+    <div id="projects" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold text-text-primary">Projects & Research</h1>
+        <button onclick="openModal('project-modal', null)" class="premium-button bg-brand border-transparent text-white hover:bg-brand-light brand-glow py-2 px-4 shadow-[0_0_20px_rgba(var(--brand-rgb),0.3)] flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Add New
+        </button>
+      </div>
+
+      <input type="text" id="search-projects" placeholder="Search projects by title or tag..." class="premium-input w-full md:w-1/2 mb-4">
 
       <!-- List -->
-      <div class="grid gap-4">
-        <h3 class="text-sm font-bold text-text-secondary uppercase tracking-wider mb-2 mt-4">Existing Projects (<%= projects.length %>)</h3>
+      <div class="grid gap-4" id="projects-list">
         <% projects.forEach(p=> { %>
-          <div class="premium-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-brand/40">
+          <div class="premium-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-brand/40" data-search="<%= p.title.toLowerCase() %> <%= p.tags.toLowerCase() %>">
             <div class="flex items-center gap-4">
               <div class="w-16 h-16 rounded-xl bg-surface-2 flex-shrink-0 overflow-hidden border border-stroke">
                 <% if (p.imageUrl) { %>
@@ -193,9 +213,12 @@
                 </div>
               </div>
             </div>
-            <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');" class="sm:shrink-0 flex justify-end">
-              <button type="submit" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">Delete</button>
-            </form>
+            <div class="sm:shrink-0 flex items-center justify-end gap-2">
+              <button onclick='openModal("project-modal", <%= JSON.stringify(p) %>)' class="text-xs font-semibold px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors">Edit</button>
+              <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');">
+                <button type="submit" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">Delete</button>
+              </form>
+            </div>
           </div>
         <% }) %>
       </div>
@@ -208,49 +231,18 @@
     <div id="blogs" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Blog Posts</h1>
+        <button onclick="openModal('blog-modal', null)" class="premium-button bg-pink-500 border-transparent text-white hover:bg-pink-400 py-2 px-4 shadow-[0_0_20px_rgba(236,72,153,0.3)] flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Write New
+        </button>
       </div>
 
-      <!-- Add Form -->
-      <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative">
-        <div class="absolute top-0 left-0 w-1 h-full bg-pink-500 rounded-l-lg"></div>
-        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Write New Post</h3>
-        
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label>
-            <input type="text" name="title" required class="premium-input text-sm">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Slug (URL)</label>
-            <input type="text" name="slug" required class="premium-input text-sm" placeholder="my-awesome-post">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Cover Image</label>
-            <input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-500 hover:file:bg-pink-500/20 transition cursor-pointer">
-          </div>
-          <div class="flex items-center gap-3">
-            <div class="flex items-center h-5">
-              <input type="checkbox" name="published" id="published" class="w-5 h-5 rounded border-stroke bg-surface focus:ring-pink-500 text-pink-500 cursor-pointer" checked>
-            </div>
-            <label for="published" class="text-sm font-semibold text-text-primary cursor-pointer">Publish immediately</label>
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Content (Markdown)</label>
-            <textarea name="content" id="blog-content-editor" required rows="6"></textarea>
-          </div>
-        </div>
-        <div class="mt-8 flex justify-end">
-          <button type="submit" class="premium-button bg-pink-500 border-transparent text-white hover:bg-pink-400 py-2.5 shadow-[0_0_20px_rgba(236,72,153,0.3)]">
-            Create Post
-          </button>
-        </div>
-      </form>
+      <input type="text" id="search-blogs" placeholder="Search blogs by title or slug..." class="premium-input w-full md:w-1/2 mb-4">
 
       <!-- List -->
-      <div class="grid gap-4">
-        <h3 class="text-sm font-bold text-text-secondary uppercase tracking-wider mb-2 mt-4">Existing Posts (<%= blogs.length %>)</h3>
+      <div class="grid gap-4" id="blogs-list">
         <% blogs.forEach(b=> { %>
-          <div class="premium-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-pink-500/40">
+          <div class="premium-card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group hover:border-pink-500/40" data-search="<%= b.title.toLowerCase() %> <%= b.slug.toLowerCase() %>">
             <div class="flex items-center gap-4">
               <div class="w-16 h-16 rounded-xl bg-surface-2 flex-shrink-0 overflow-hidden border border-stroke">
                 <% if (b.imageUrl) { %>
@@ -269,9 +261,12 @@
                 <div class="text-xs text-text-secondary mt-1 font-mono">/<%= b.slug %> &bull; <%= new Date(b.createdAt).toLocaleDateString() %></div>
               </div>
             </div>
-            <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this post?');" class="sm:shrink-0 flex justify-end">
-              <button type="submit" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">Delete</button>
-            </form>
+            <div class="sm:shrink-0 flex items-center justify-end gap-2">
+              <button onclick='openModal("blog-modal", <%= JSON.stringify(b) %>)' class="text-xs font-semibold px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors">Edit</button>
+              <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this post?');">
+                <button type="submit" class="text-xs font-semibold px-3 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">Delete</button>
+              </form>
+            </div>
           </div>
         <% }) %>
       </div>
@@ -283,80 +278,31 @@
     ════════════════════════════════════════════════════════════ -->
     <div id="learning" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold text-text-primary">Learning Hub Resources</h1>
+        <h1 class="text-3xl font-bold text-text-primary">Learning Resources</h1>
+        <button onclick="openModal('learning-modal', null)" class="premium-button bg-blue-500 border-transparent text-white hover:bg-blue-400 py-2 px-4 shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Upload
+        </button>
       </div>
 
-      <!-- Add Form -->
-      <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative">
-        <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 rounded-l-lg"></div>
-        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Upload Resource</h3>
-        
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">📚 Grade / Group</label>
-            <select name="grade" required class="premium-input text-sm cursor-pointer">
-              <option value="Grade 10">Grade 10</option>
-              <option value="Grade 11">Grade 11</option>
-              <option value="Grade 12">Grade 12</option>
-              <option value="Teacher Training">Teacher Training</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">📂 Category</label>
-            <select name="category" required class="premium-input text-sm cursor-pointer">
-              <option value="Course Notes">Course Notes</option>
-              <option value="Question Banks">Question Banks</option>
-              <option value="Syllabus">Syllabus</option>
-              <option value="Lab Manuals">Lab Manuals</option>
-              <option value="Reference Materials">Reference Materials</option>
-            </select>
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Subject Title</label>
-            <input type="text" name="subject" required class="premium-input text-sm" placeholder="e.g. Digital Design">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label>
-            <input type="text" name="description" class="premium-input text-sm" placeholder="Brief context...">
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-3 uppercase tracking-wide font-semibold">📁 Upload File (PDF/DOC)</label>
-            <div class="relative">
-              <input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="hidden" id="file-upload">
-              <label for="file-upload" class="flex flex-col items-center justify-center w-full p-8 border-2 border-dashed border-stroke bg-surface-2 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-500/5 transition group">
-                <div class="w-12 h-12 rounded-full bg-surface border border-stroke flex items-center justify-center mb-3 group-hover:bg-blue-500/10 group-hover:border-blue-500/30 group-hover:text-blue-400 transition-colors">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                </div>
-                <p class="text-sm font-bold text-text-primary">Click to browse or drop file</p>
-                <p class="text-xs text-muted mt-1">PDF, DOC, DOCX up to 50MB</p>
-              </label>
-            </div>
-          </div>
-          <div class="md:col-span-2">
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">OR External URL</label>
-            <input type="url" name="pdfUrl" class="premium-input text-sm" placeholder="https://drive.google.com/...">
-          </div>
-        </div>
-        <div class="mt-8 flex justify-end">
-          <button type="submit" class="premium-button bg-blue-500 border-transparent text-white hover:bg-blue-400 py-2.5 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-            Upload Resource
-          </button>
-        </div>
-      </form>
+      <input type="text" id="search-learning" placeholder="Search resources by subject or description..." class="premium-input w-full md:w-1/2 mb-4">
 
       <!-- List -->
-      <div class="grid md:grid-cols-2 gap-4">
+      <div class="grid md:grid-cols-2 gap-4" id="learning-list">
         <% learningMaterials.forEach(m=> { %>
-          <div class="premium-card p-5 flex flex-col justify-between group hover:border-blue-500/40">
+          <div class="premium-card p-5 flex flex-col justify-between group hover:border-blue-500/40" data-search="<%= m.subject.toLowerCase() %> <%= m.description ? m.description.toLowerCase() : '' %>">
             <div>
               <div class="flex items-start justify-between mb-4">
                 <div class="flex flex-wrap gap-2">
                   <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider"><%= m.grade %></span>
                   <span class="text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded uppercase font-bold tracking-wider"><%= m.category || 'Course Notes' %></span>
                 </div>
-                <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this resource?');">
-                  <button type="submit" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">✕</button>
-                </form>
+                <div class="flex items-center gap-2">
+                  <button onclick='openModal("learning-modal", <%= JSON.stringify(m) %>)' class="text-xs font-semibold px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors">✎</button>
+                  <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this resource?');">
+                    <button type="submit" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">✕</button>
+                  </form>
+                </div>
               </div>
               <h3 class="font-bold text-text-primary text-lg mb-1"><%= m.subject %></h3>
               <p class="text-sm text-text-secondary line-clamp-2"><%= m.description || 'No description' %></p>
@@ -376,37 +322,11 @@
     <div id="timeline" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Timeline Events</h1>
+        <button onclick="openModal('timeline-modal', null)" class="premium-button bg-emerald-500 border-transparent text-white hover:bg-emerald-400 py-2 px-4 shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center gap-2">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Add Event
+        </button>
       </div>
-
-      <!-- Add Form -->
-      <form action="/admin/api/timeline" method="POST" class="premium-card p-6 md:p-8 relative">
-        <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-l-lg"></div>
-        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add Timeline Milestone</h3>
-        
-        <div class="grid md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Year(s)</label>
-            <input type="text" name="year" required class="premium-input text-sm" placeholder="e.g. 2021 - Present">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Role / Title</label>
-            <input type="text" name="role" required class="premium-input text-sm" placeholder="Senior Educator">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Location / Institution</label>
-            <input type="text" name="location" required class="premium-input text-sm" placeholder="ABC University">
-          </div>
-          <div>
-            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Order Index</label>
-            <input type="number" name="orderIndex" value="0" class="premium-input text-sm font-mono">
-          </div>
-        </div>
-        <div class="mt-8 flex justify-end">
-          <button type="submit" class="premium-button bg-emerald-500 border-transparent text-white hover:bg-emerald-400 py-2.5 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
-            Add Milestone
-          </button>
-        </div>
-      </form>
 
       <!-- List -->
       <div class="grid md:grid-cols-2 gap-4">
@@ -418,9 +338,12 @@
               <p class="text-sm text-text-secondary mt-1"><%= t.location %></p>
               <p class="text-[10px] text-muted font-mono mt-3">Order: <%= t.orderIndex %></p>
             </div>
-            <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete this timeline event?');">
-              <button type="submit" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">✕</button>
-            </form>
+            <div class="flex flex-col gap-2">
+              <button onclick='openModal("timeline-modal", <%= JSON.stringify(t) %>)' class="text-xs font-semibold px-2 py-1 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors text-center">Edit</button>
+              <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete this timeline event?');">
+                <button type="submit" class="text-xs font-semibold px-2 py-1 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors text-center">✕</button>
+              </form>
+            </div>
           </div>
         <% }) %>
       </div>
@@ -483,60 +406,227 @@
   <!-- Overlay for mobile sidebar -->
   <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 hidden md:hidden"></div>
 
-  <!-- Javascript for Tabs & Interactivity -->
+  <!-- ════════════════════════════════════════════════════════════
+       MODALS FOR EDIT / ADD
+  ════════════════════════════════════════════════════════════ -->
+
+  <div id="modal-backdrop" class="fixed inset-0 bg-bg/80 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+    
+    <!-- Project Modal -->
+    <div id="project-modal" class="modal-content premium-card bg-surface w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+      <form id="project-form" method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="project-modal-title" class="text-xl font-bold text-text-primary">Add Project</h3>
+          <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label>
+            <input type="text" name="title" id="p-title" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Image URL (Or upload)</label>
+            <input type="url" name="imageUrl" id="p-imageUrl" class="premium-input text-sm mb-3">
+            <input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 transition cursor-pointer">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label>
+            <textarea name="description" id="p-description" required rows="2" class="premium-input text-sm"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Live URL</label>
+            <input type="url" name="liveUrl" id="p-liveUrl" class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Tags</label>
+            <input type="text" name="tags" id="p-tags" placeholder="React, Node" class="premium-input text-sm">
+          </div>
+        </div>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="premium-button bg-surface-2 text-text-primary hover:bg-stroke py-2">Cancel</button>
+          <button type="submit" class="premium-button bg-brand border-transparent text-white hover:bg-brand-light brand-glow py-2">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Blog Modal -->
+    <div id="blog-modal" class="modal-content premium-card bg-surface w-full max-w-4xl max-h-[90vh] overflow-y-auto hidden">
+      <form id="blog-form" method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="blog-modal-title" class="text-xl font-bold text-text-primary">Add Blog</h3>
+          <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label>
+            <input type="text" name="title" id="b-title" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Slug (URL)</label>
+            <input type="text" name="slug" id="b-slug" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Cover Image</label>
+            <input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-500 hover:file:bg-pink-500/20 transition cursor-pointer">
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="checkbox" name="published" id="b-published" class="w-5 h-5 rounded border-stroke bg-surface focus:ring-pink-500 text-pink-500 cursor-pointer">
+            <label for="b-published" class="text-sm font-semibold text-text-primary cursor-pointer">Published</label>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Content</label>
+            <!-- Important: Do not use SimpleMDE inside a display:none container initially, it bugs out. We will initialize it on open. -->
+            <textarea name="content" id="b-content" rows="6" class="premium-input font-mono"></textarea>
+          </div>
+        </div>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="premium-button bg-surface-2 text-text-primary hover:bg-stroke py-2">Cancel</button>
+          <button type="submit" class="premium-button bg-pink-500 border-transparent text-white hover:bg-pink-400 py-2 shadow-[0_0_20px_rgba(236,72,153,0.3)]">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Learning Modal -->
+    <div id="learning-modal" class="modal-content premium-card bg-surface w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+      <form id="learning-form" method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="learning-modal-title" class="text-xl font-bold text-text-primary">Add Resource</h3>
+          <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Grade</label>
+            <select name="grade" id="l-grade" required class="premium-input text-sm">
+              <option value="Grade 10">Grade 10</option>
+              <option value="Grade 11">Grade 11</option>
+              <option value="Grade 12">Grade 12</option>
+              <option value="Teacher Training">Teacher Training</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Category</label>
+            <select name="category" id="l-category" required class="premium-input text-sm">
+              <option value="Course Notes">Course Notes</option>
+              <option value="Question Banks">Question Banks</option>
+              <option value="Syllabus">Syllabus</option>
+              <option value="Lab Manuals">Lab Manuals</option>
+              <option value="Reference Materials">Reference Materials</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Subject Title</label>
+            <input type="text" name="subject" id="l-subject" required class="premium-input text-sm">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label>
+            <input type="text" name="description" id="l-description" class="premium-input text-sm">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Update File (Optional)</label>
+            <input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/10 file:text-blue-500 hover:file:bg-blue-500/20 transition cursor-pointer">
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">OR External URL</label>
+            <input type="url" name="pdfUrl" id="l-pdfUrl" class="premium-input text-sm">
+          </div>
+        </div>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="premium-button bg-surface-2 text-text-primary hover:bg-stroke py-2">Cancel</button>
+          <button type="submit" class="premium-button bg-blue-500 border-transparent text-white hover:bg-blue-400 py-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]">Save</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Timeline Modal -->
+    <div id="timeline-modal" class="modal-content premium-card bg-surface w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+      <form id="timeline-form" method="POST" class="p-6 md:p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="timeline-modal-title" class="text-xl font-bold text-text-primary">Add Event</h3>
+          <button type="button" onclick="closeModal()" class="text-text-secondary hover:text-white"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Year(s)</label>
+            <input type="text" name="year" id="t-year" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Role</label>
+            <input type="text" name="role" id="t-role" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Location</label>
+            <input type="text" name="location" id="t-location" required class="premium-input text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Order Index</label>
+            <input type="number" name="orderIndex" id="t-orderIndex" required class="premium-input text-sm">
+          </div>
+        </div>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="premium-button bg-surface-2 text-text-primary hover:bg-stroke py-2">Cancel</button>
+          <button type="submit" class="premium-button bg-emerald-500 border-transparent text-white hover:bg-emerald-400 py-2 shadow-[0_0_20px_rgba(16,185,129,0.3)]">Save</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
   <script>
+    let simplemde = null;
+
     document.addEventListener("DOMContentLoaded", function () {
-      // Initialize SimpleMDE
-      if(document.getElementById("blog-content-editor")) {
-        new SimpleMDE({
-          element: document.getElementById("blog-content-editor"),
-          spellChecker: false,
-          placeholder: "Write your amazing blog post here in Markdown..."
+      
+      // Setup Search Filters
+      function setupSearch(inputId, listId) {
+        const input = document.getElementById(inputId);
+        const list = document.getElementById(listId);
+        if(!input || !list) return;
+        
+        input.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase();
+          const items = list.children;
+          Array.from(items).forEach(item => {
+            const data = item.getAttribute('data-search') || '';
+            if (data.includes(query)) {
+              item.style.display = 'flex';
+            } else {
+              item.style.display = 'none';
+            }
+          });
         });
       }
+      
+      setupSearch('search-projects', 'projects-list');
+      setupSearch('search-blogs', 'blogs-list');
+      setupSearch('search-learning', 'learning-list');
 
       // Tab Switching Logic
       const navBtns = document.querySelectorAll('.nav-btn');
       const tabContents = document.querySelectorAll('.tab-content');
       
-      // Setup Initial State (Projects active)
       function setActiveTab(tabId) {
-        // Reset all buttons
         navBtns.forEach(btn => {
           btn.classList.remove('text-brand', 'bg-brand/10', 'border-brand/20');
           btn.classList.add('text-text-secondary', 'border-transparent', 'hover:bg-surface-2', 'hover:text-text-primary');
         });
         
-        // Hide all contents
-        tabContents.forEach(content => {
-          content.classList.remove('active');
-        });
+        tabContents.forEach(content => { content.classList.remove('active'); });
         
-        // Activate selected button
         const activeBtn = document.querySelector(`.nav-btn[data-tab="${tabId}"]`);
         if (activeBtn) {
           activeBtn.classList.remove('text-text-secondary', 'border-transparent', 'hover:bg-surface-2', 'hover:text-text-primary');
           activeBtn.classList.add('text-brand', 'bg-brand/10', 'border-brand/20');
         }
         
-        // Show selected content
         const activeContent = document.getElementById(tabId);
-        if (activeContent) {
-          activeContent.classList.add('active');
-        }
+        if (activeContent) { activeContent.classList.add('active'); }
         
-        // Scroll to top
         document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Close mobile sidebar if open
         closeSidebar();
       }
 
-      // Add click listeners to tabs
       navBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          setActiveTab(btn.dataset.tab);
-        });
+        btn.addEventListener('click', () => { setActiveTab(btn.dataset.tab); });
       });
 
       // Mobile Sidebar Toggle
@@ -563,24 +653,97 @@
       mobileBtn.addEventListener('click', openSidebar);
       overlay.addEventListener('click', closeSidebar);
       
-      // Auto-hide mobile sidebar off-screen initially
-      if(window.innerWidth < 768) {
-        sidebar.classList.add('-translate-x-full');
-      }
+      if(window.innerWidth < 768) { sidebar.classList.add('-translate-x-full'); }
       
-      // Handle window resize
       window.addEventListener('resize', () => {
         if(window.innerWidth >= 768) {
           sidebar.classList.remove('hidden', '-translate-x-full');
           overlay.classList.add('hidden');
           document.body.style.overflow = '';
         } else if (!overlay.classList.contains('hidden')) {
-          // If it was open on mobile
         } else {
           sidebar.classList.add('hidden', '-translate-x-full');
         }
       });
     });
+
+    // Modal Logic
+    function openModal(modalId, data) {
+      document.getElementById('modal-backdrop').classList.remove('hidden');
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('hidden');
+      
+      // Populate logic
+      if (modalId === 'project-modal') {
+        const form = document.getElementById('project-form');
+        if (data) {
+          document.getElementById('project-modal-title').innerText = 'Edit Project';
+          form.action = `/admin/api/projects/${data.id}/update`;
+          document.getElementById('p-title').value = data.title;
+          document.getElementById('p-imageUrl').value = data.imageUrl || '';
+          document.getElementById('p-description').value = data.description;
+          document.getElementById('p-liveUrl').value = data.liveUrl || '';
+          document.getElementById('p-tags').value = data.tags || '';
+        } else {
+          document.getElementById('project-modal-title').innerText = 'Add Project';
+          form.action = `/admin/api/projects`;
+          form.reset();
+        }
+      } else if (modalId === 'blog-modal') {
+        const form = document.getElementById('blog-form');
+        if (data) {
+          document.getElementById('blog-modal-title').innerText = 'Edit Blog';
+          form.action = `/admin/api/blogs/${data.id}/update`;
+          document.getElementById('b-title').value = data.title;
+          document.getElementById('b-slug').value = data.slug;
+          document.getElementById('b-published').checked = data.published;
+          document.getElementById('b-content').value = data.content;
+        } else {
+          document.getElementById('blog-modal-title').innerText = 'Add Blog';
+          form.action = `/admin/api/blogs`;
+          form.reset();
+        }
+        // Initialize or Update SimpleMDE
+        if (!simplemde) {
+          simplemde = new SimpleMDE({ element: document.getElementById("b-content"), spellChecker: false });
+        }
+        simplemde.value(data ? data.content : '');
+      } else if (modalId === 'learning-modal') {
+        const form = document.getElementById('learning-form');
+        if (data) {
+          document.getElementById('learning-modal-title').innerText = 'Edit Resource';
+          form.action = `/admin/api/learning-materials/${data.id}/update`;
+          document.getElementById('l-grade').value = data.grade;
+          document.getElementById('l-category').value = data.category || 'Course Notes';
+          document.getElementById('l-subject').value = data.subject;
+          document.getElementById('l-description').value = data.description || '';
+          document.getElementById('l-pdfUrl').value = data.pdfUrl || '';
+        } else {
+          document.getElementById('learning-modal-title').innerText = 'Add Resource';
+          form.action = `/admin/api/learning-materials`;
+          form.reset();
+        }
+      } else if (modalId === 'timeline-modal') {
+        const form = document.getElementById('timeline-form');
+        if (data) {
+          document.getElementById('timeline-modal-title').innerText = 'Edit Event';
+          form.action = `/admin/api/timeline/${data.id}/update`;
+          document.getElementById('t-year').value = data.year;
+          document.getElementById('t-role').value = data.role;
+          document.getElementById('t-location').value = data.location;
+          document.getElementById('t-orderIndex').value = data.orderIndex;
+        } else {
+          document.getElementById('timeline-modal-title').innerText = 'Add Event';
+          form.action = `/admin/api/timeline`;
+          form.reset();
+        }
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('modal-backdrop').classList.add('hidden');
+      document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+    }
   </script>
 </body>
 </html>
