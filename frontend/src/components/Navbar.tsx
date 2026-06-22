@@ -182,7 +182,7 @@ export default function Navbar() {
                       <a
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[18px]"
                       >
                         {link.label}
                       </a>
@@ -190,7 +190,7 @@ export default function Navbar() {
                       <Link
                         to={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[18px]"
                       >
                         {link.label}
                       </Link>

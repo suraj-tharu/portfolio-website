@@ -164,7 +164,7 @@ termIn.addEventListener('keydown', (e) => {
       } else if (cmd === 'whoami') {
         out = 'Suraj Tharu Chaudhary - Computer Engineer';
       } else if (cmd === 'contact') {
-        out = 'Reach out at suraj.tharu@example.com';
+        out = 'Reach out at suraj.xaudhary@gmail.com';
       } else if (cmd === 'connect usb') {
         if (navigator.usb) { navigator.usb.requestDevice({ filters: [] }).catch(e => console.log(e)); out = 'Scanning for WebUSB devices...'; }
         else out = 'WebUSB not supported in this browser.';
@@ -696,7 +696,7 @@ setInterval(() => {
 document.getElementById('visit-count').textContent = '42';
 
 // --- 9. Encrypted Form Simulation ---
-const contactBtn = document.querySelector('a[href="mailto:suraj.tharu@example.com"]');
+const contactBtn = document.querySelector('a[href="mailto:suraj.xaudhary@gmail.com"]');
 if (contactBtn) {
   contactBtn.addEventListener('click', (e) => {
     if (!contactBtn.classList.contains('secure-ready')) {
@@ -707,7 +707,7 @@ if (contactBtn) {
         contactBtn.classList.remove('encrypting');
         contactBtn.classList.add('secure-ready');
         contactBtn.innerHTML = 'Connection Secure ✅';
-        setTimeout(() => { window.location.href = "mailto:suraj.tharu@example.com"; }, 500);
+        setTimeout(() => { window.location.href = "mailto:suraj.xaudhary@gmail.com"; }, 500);
       }, 1500);
     }
   });
