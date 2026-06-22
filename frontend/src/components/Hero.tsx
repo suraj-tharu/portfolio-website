@@ -112,7 +112,7 @@ export default function Hero() {
         {/* Ultra Premium Greeting */}
         {greeting && (
           <motion.div
-            className="mb-8 md:mb-12 text-center"
+            className="mb-4 md:mb-6 text-center"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
@@ -135,7 +135,7 @@ export default function Hero() {
           </motion.div>
         )}
 
-        <h1 className="text-fluid-3xl md:text-fluid-5xl lg:text-fluid-6xl font-display italic leading-[0.9] tracking-tight hero-heading mb-4 md:mb-6 flex flex-wrap justify-center gap-2 md:gap-4 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
+        <h1 className="text-fluid-3xl md:text-fluid-5xl lg:text-fluid-6xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
               key={i}
@@ -150,7 +150,7 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-6 md:mb-8 flex flex-col items-center gap-3 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
           <motion.span
             key={roleIndex}
             className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
@@ -161,7 +161,7 @@ export default function Hero() {
         </div>
 
         <motion.p
-          className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-8 md:mb-12 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
+          className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
           animate={{ opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 3, repeat: Infinity }}
         >
