@@ -182,11 +182,23 @@
     <div id="projects" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Projects & Research</h1>
-        <button onclick="openModal('project-modal', null)" class="premium-button bg-brand border-transparent text-white hover:bg-brand-light brand-glow py-2 px-4 shadow-[0_0_20px_rgba(var(--brand-rgb),0.3)] flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Add New
-        </button>
       </div>
+
+      <!-- Add Form -->
+      <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative mb-8">
+        <div class="absolute top-0 left-0 w-1 h-full bg-brand rounded-l-lg"></div>
+        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add New Project</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label><input type="text" name="title" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Image URL (Or upload)</label><input type="url" name="imageUrl" class="premium-input text-sm mb-3"><input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand/10 file:text-brand hover:file:bg-brand/20 transition cursor-pointer"></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label><textarea name="description" required rows="2" class="premium-input text-sm"></textarea></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Live URL</label><input type="url" name="liveUrl" class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Tags</label><input type="text" name="tags" placeholder="React, Node" class="premium-input text-sm"></div>
+        </div>
+        <div class="mt-8 flex justify-end">
+          <button type="submit" class="premium-button bg-brand border-transparent text-white hover:bg-brand-light brand-glow py-2">Create Project</button>
+        </div>
+      </form>
 
       <input type="text" id="search-projects" placeholder="Search projects by title or tag..." class="premium-input w-full md:w-1/2 mb-4">
 
@@ -231,11 +243,23 @@
     <div id="blogs" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Blog Posts</h1>
-        <button onclick="openModal('blog-modal', null)" class="premium-button bg-pink-500 border-transparent text-white hover:bg-pink-400 py-2 px-4 shadow-[0_0_20px_rgba(236,72,153,0.3)] flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Write New
-        </button>
       </div>
+
+      <!-- Add Form -->
+      <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative mb-8">
+        <div class="absolute top-0 left-0 w-1 h-full bg-pink-500 rounded-l-lg"></div>
+        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add Blog</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Title</label><input type="text" name="title" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Slug (URL)</label><input type="text" name="slug" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-pink-500/10 file:text-pink-500 hover:file:bg-pink-500/20 transition cursor-pointer"></div>
+          <div class="flex items-center gap-3"><input type="checkbox" name="published" class="w-5 h-5 rounded border-stroke bg-surface focus:ring-pink-500 text-pink-500 cursor-pointer" checked><label class="text-sm font-semibold text-text-primary cursor-pointer">Published</label></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Content</label><textarea name="content" id="blog-add-editor" rows="6" class="premium-input font-mono"></textarea></div>
+        </div>
+        <div class="mt-8 flex justify-end">
+          <button type="submit" class="premium-button bg-pink-500 border-transparent text-white hover:bg-pink-400 py-2 shadow-[0_0_20px_rgba(236,72,153,0.3)]">Publish</button>
+        </div>
+      </form>
 
       <input type="text" id="search-blogs" placeholder="Search blogs by title or slug..." class="premium-input w-full md:w-1/2 mb-4">
 
@@ -279,11 +303,24 @@
     <div id="learning" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Learning Resources</h1>
-        <button onclick="openModal('learning-modal', null)" class="premium-button bg-blue-500 border-transparent text-white hover:bg-blue-400 py-2 px-4 shadow-[0_0_20px_rgba(59,130,246,0.3)] flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Upload
-        </button>
       </div>
+
+      <!-- Add Form -->
+      <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="premium-card p-6 md:p-8 relative mb-8">
+        <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 rounded-l-lg"></div>
+        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add Resource</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Grade</label><select name="grade" required class="premium-input text-sm"><option value="Grade 10">Grade 10</option><option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option><option value="Teacher Training">Teacher Training</option></select></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Category</label><select name="category" required class="premium-input text-sm"><option value="Course Notes">Course Notes</option><option value="Question Banks">Question Banks</option><option value="Syllabus">Syllabus</option><option value="Lab Manuals">Lab Manuals</option><option value="Reference Materials">Reference Materials</option></select></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Subject Title</label><input type="text" name="subject" required class="premium-input text-sm"></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Description</label><input type="text" name="description" class="premium-input text-sm"></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Upload File</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="w-full text-sm text-text-secondary file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-500/10 file:text-blue-500 hover:file:bg-blue-500/20 transition cursor-pointer"></div>
+          <div class="md:col-span-2"><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">OR External URL</label><input type="url" name="pdfUrl" class="premium-input text-sm"></div>
+        </div>
+        <div class="mt-8 flex justify-end">
+          <button type="submit" class="premium-button bg-blue-500 border-transparent text-white hover:bg-blue-400 py-2 shadow-[0_0_20px_rgba(59,130,246,0.3)]">Upload Resource</button>
+        </div>
+      </form>
 
       <input type="text" id="search-learning" placeholder="Search resources by subject or description..." class="premium-input w-full md:w-1/2 mb-4">
 
@@ -322,11 +359,22 @@
     <div id="timeline" class="tab-content max-w-5xl mx-auto space-y-8 pb-20">
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-3xl font-bold text-text-primary">Timeline Events</h1>
-        <button onclick="openModal('timeline-modal', null)" class="premium-button bg-emerald-500 border-transparent text-white hover:bg-emerald-400 py-2 px-4 shadow-[0_0_20px_rgba(16,185,129,0.3)] flex items-center gap-2">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-          Add Event
-        </button>
       </div>
+
+      <!-- Add Form -->
+      <form action="/admin/api/timeline" method="POST" class="premium-card p-6 md:p-8 relative mb-8">
+        <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500 rounded-l-lg"></div>
+        <h3 class="text-lg font-bold text-text-primary mb-6 flex items-center gap-2">Add Event</h3>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Year(s)</label><input type="text" name="year" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Role</label><input type="text" name="role" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Location</label><input type="text" name="location" required class="premium-input text-sm"></div>
+          <div><label class="block text-xs text-muted mb-2 uppercase tracking-wide font-semibold">Order Index</label><input type="number" name="orderIndex" value="0" required class="premium-input text-sm"></div>
+        </div>
+        <div class="mt-8 flex justify-end">
+          <button type="submit" class="premium-button bg-emerald-500 border-transparent text-white hover:bg-emerald-400 py-2 shadow-[0_0_20px_rgba(16,185,129,0.3)]">Save Event</button>
+        </div>
+      </form>
 
       <!-- List -->
       <div class="grid md:grid-cols-2 gap-4">
