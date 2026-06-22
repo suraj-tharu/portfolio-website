@@ -415,12 +415,12 @@ app.post('/admin/api/messages/:id/delete', authenticateAdmin, async (req, res) =
 
 app.post('/admin/api/learning-materials', authenticateAdmin, upload.single('pdfFile'), async (req, res) => {
   try {
-    const { grade, subject, description, pdfUrl } = req.body;
+    const { grade, category, subject, description, pdfUrl } = req.body;
     let finalPdfUrl = pdfUrl;
     if (req.file) {
       finalPdfUrl = await saveUploadedFile(req.file);
     }
-    await prisma.learningMaterial.create({ data: { grade, subject, description, pdfUrl: finalPdfUrl } });
+    await prisma.learningMaterial.create({ data: { grade, category, subject, description, pdfUrl: finalPdfUrl } });
     res.redirect('/admin');
   } catch (e) { res.status(500).send('Error creating learning material'); }
 });

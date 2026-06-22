@@ -52,12 +52,17 @@
               </h2>
               <div class="grid md:grid-cols-2 gap-4">
                 <% categoryMaterials.forEach(m => { %>
-                  <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex items-center justify-between group hover:border-custom-primary transition">
+                  <div class="bg-custom-surface/50 p-4 rounded-xl border border-glass-border flex flex-col md:flex-row md:items-center justify-between group hover:border-custom-primary transition gap-4">
                     <div>
-                      <h3 class="font-bold text-custom-primary"><%= m.subject %></h3>
+                      <div class="flex items-center gap-3 mb-1">
+                        <h3 class="font-bold text-custom-primary text-lg"><%= m.subject %></h3>
+                        <span class="text-[10px] px-2 py-0.5 rounded text-purple-400 bg-purple-500/10 border border-purple-500/20 font-semibold tracking-wider uppercase shrink-0">
+                          <%= m.category || 'Course Notes' %>
+                        </span>
+                      </div>
                       <p class="text-sm text-custom-secondary"><%= m.description || 'No description provided' %></p>
                     </div>
-                    <a href="<%= m.pdfUrl %>" target="_blank" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition shrink-0 ml-4">PDF ↓</a>
+                    <a href="<%= m.pdfUrl %>" target="_blank" class="px-4 py-2 bg-custom-primary/10 text-custom-primary rounded-lg font-mono text-sm hover:bg-custom-primary hover:text-custom-background transition shrink-0 text-center">Download ↓</a>
                   </div>
                 <% }) %>
               </div>

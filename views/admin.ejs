@@ -340,7 +340,7 @@
         </h3>
         <div class="grid md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">📚 Grade / Category</label>
+            <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">📚 Grade / Group</label>
             <select name="grade" required
               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition">
               <option value="Grade 10">📚 Grade 10</option>
@@ -350,6 +350,17 @@
             </select>
           </div>
           <div>
+            <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">📂 Category</label>
+            <select name="category" required
+              class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition">
+              <option value="Course Notes">Course Notes</option>
+              <option value="Question Banks">Question Banks</option>
+              <option value="Syllabus">Syllabus</option>
+              <option value="Lab Manuals">Lab Manuals</option>
+              <option value="Reference Materials">Reference Materials</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
             <label class="block text-xs text-slate-400 mb-2 uppercase tracking-wide">Subject Title</label>
             <input type="text" name="subject" required
               class="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-sm focus:border-blue-500 outline-none focus:ring-2 focus:ring-blue-500/20 transition"
@@ -406,10 +417,16 @@
             class="flex flex-col p-4 bg-slate-950 rounded-xl border border-slate-700 hover:border-blue-500/50 transition group"
             style="transform: perspective(800px)">
             <div class="flex items-start justify-between mb-3">
-              <span
-                class="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full uppercase font-bold tracking-wider">
-                <%= m.grade %>
-              </span>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  class="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full uppercase font-bold tracking-wider">
+                  <%= m.grade %>
+                </span>
+                <span
+                  class="text-[10px] bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full uppercase font-bold tracking-wider">
+                  <%= m.category || 'Course Notes' %>
+                </span>
+              </div>
               <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST"
                 onsubmit="return confirm('Delete this resource?');" class="inline">
                 <button type="submit"

@@ -46,6 +46,7 @@ model ContactMessage {
 model LearningMaterial {
   id          Int      @id @default(autoincrement())
   grade       String   // e.g., "Grade 10", "Grade 12"
+  category    String   @default("Course Notes") // e.g., "Course Notes", "Question Banks"
   subject     String   // e.g., "Digital Design", "OOP using C++"
   description String?
   pdfUrl      String   // URL to download the PDF
