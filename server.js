@@ -26,22 +26,62 @@ const app = express();
 const multer = require('multer');
 const fs = require('fs');
 
-// Ensure uploads directory exists at root level (persistent across deployments)
+// Ensure uploads directory exists at root level (fallback for local deployments)
 const uploadDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+let storage;
+const useCloudinary = !!(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
+
+if (useCloudinary) {
+  console.log('[UPLOAD] Cloudinary credentials found. Using Cloudinary storage.');
+  const cloudinary = require('cloudinary').v2;
+  const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+  cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+
+  storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: async (req, file) => {
+      const ext = path.extname(file.originalname);
+      const isPdf = ext.toLowerCase() === '.pdf';
+      const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      return {
+        folder: 'portfolio',
+        resource_type: isPdf ? 'raw' : 'auto',
+        public_id: isPdf ? `${uniqueName}${ext}` : uniqueName
+      };
+    }
+  });
+} else {
+  console.log('[UPLOAD] Cloudinary credentials not found. Using local disk storage.');
+  storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, uniqueSuffix + path.extname(file.originalname));
+    }
+  });
+}
+
 const upload = multer({ storage: storage });
+
+// Helper to determine public URL of uploaded file
+function getUploadedFileUrl(file) {
+  if (!file) return null;
+  if (useCloudinary) {
+    return file.path;
+  }
+  return '/assets/uploads/' + file.filename;
+}
 
 // --- Edge Caching & Optimization ---
 app.use(compression({
@@ -351,7 +391,7 @@ app.post('/admin/api/projects', authenticateAdmin, upload.single('imageFile'), a
     const { title, description, imageUrl, githubUrl, liveUrl, tags } = req.body;
     let finalImageUrl = imageUrl;
     if (req.file) {
-      finalImageUrl = '/assets/uploads/' + req.file.filename;
+      finalImageUrl = getUploadedFileUrl(req.file);
     }
     await prisma.project.create({ data: { title, description, imageUrl: finalImageUrl, githubUrl, liveUrl, tags } });
     res.redirect('/admin');
@@ -370,7 +410,7 @@ app.post('/admin/api/blogs', authenticateAdmin, upload.single('imageFile'), asyn
     const { title, slug, content, published } = req.body;
     let finalImageUrl = null;
     if (req.file) {
-      finalImageUrl = '/assets/uploads/' + req.file.filename;
+      finalImageUrl = getUploadedFileUrl(req.file);
     }
     await prisma.blogPost.create({ data: { title, slug, content, imageUrl: finalImageUrl, published: published === 'on' } });
     res.redirect('/admin');
@@ -396,7 +436,7 @@ app.post('/admin/api/learning-materials', authenticateAdmin, upload.single('pdfF
     const { grade, subject, description, pdfUrl } = req.body;
     let finalPdfUrl = pdfUrl;
     if (req.file) {
-      finalPdfUrl = '/assets/uploads/' + req.file.filename;
+      finalPdfUrl = getUploadedFileUrl(req.file);
     }
     await prisma.learningMaterial.create({ data: { grade, subject, description, pdfUrl: finalPdfUrl } });
     res.redirect('/admin');
