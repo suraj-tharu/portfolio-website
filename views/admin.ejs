@@ -336,7 +336,7 @@
                   </div>
                 </div>
                 <div class="sm:shrink-0 flex items-center justify-end gap-2 mt-4 sm:mt-0">
-                  <button onclick='openModal("project-modal", <%= JSON.stringify(p) %>)' class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
+                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(p)) %>" class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
                   <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');">
                     <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 hover:border-transparent">Delete</button>
                   </form>
@@ -430,7 +430,7 @@
                   </div>
                 </div>
                 <div class="sm:shrink-0 flex items-center justify-end gap-2 mt-4 sm:mt-0">
-                  <button onclick='openModal("blog-modal", <%= JSON.stringify(b) %>)' class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
+                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(b)) %>" class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
                   <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this post?');">
                     <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 hover:border-transparent">Delete</button>
                   </form>
@@ -502,7 +502,7 @@
                       <span class="text-[9px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-1 rounded uppercase font-black tracking-widest"><%= m.category || 'Course Notes' %></span>
                     </div>
                     <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onclick='openModal("learning-modal", <%= JSON.stringify(m) %>)' class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+                      <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(m)) %>" class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
                       <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this resource?');">
                         <button type="submit" class="p-2 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
                       </form>
@@ -565,7 +565,7 @@
                   </div>
                 </div>
                 <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onclick='openModal("timeline-modal", <%= JSON.stringify(t) %>)' class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(t)) %>" class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
                   <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete this timeline event?');">
                     <button type="submit" class="p-2 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
                   </form>
