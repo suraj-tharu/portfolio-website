@@ -60,3 +60,11 @@ model TimelineEvent {
   orderIndex  Int      @default(0)
   createdAt   DateTime @default(now())
 }
+
+model UploadedFile {
+  id        Int      @id @default(autoincrement())
+  filename  String   @unique
+  mimeType  String
+  content   Bytes
+  createdAt DateTime @default(now())
+}
