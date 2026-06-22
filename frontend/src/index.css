@@ -201,16 +201,16 @@
     background-image: linear-gradient(135deg, #6D28D9 0%, #DB2777 50%, #D97706 100%);
   }
 
-  /* Hero heading — luminous gradient text */
+  /* Hero heading — luminous golden gradient text */
   .hero-heading {
-    background: linear-gradient(160deg, #FFFFFF 0%, #F0F2F8 35%, #A78BFA 100%);
+    background: linear-gradient(160deg, #FDE68A 0%, #F59E0B 45%, #B45309 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .light .hero-heading {
-    background: linear-gradient(160deg, #0F172A 0%, #334155 55%, #6D28D9 100%);
+    background: linear-gradient(160deg, #B45309 0%, #D97706 45%, #F59E0B 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

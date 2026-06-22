@@ -127,15 +127,10 @@ export default function Hero() {
             <p className="text-xs md:text-sm tracking-widest uppercase font-medium text-text-secondary/80">
               <span className="text-text-secondary/70">Welcome back</span>
             </p>
-            <div className="mt-4 flex items-center justify-center gap-3">
-              <div className="h-px w-8 bg-gradient-to-r from-transparent to-brand-500" />
-              <span className="text-brand-500 text-lg">✨</span>
-              <div className="h-px w-8 bg-gradient-to-l from-transparent to-pink-500" />
-            </div>
           </motion.div>
         )}
 
-        <h1 className="text-fluid-3xl md:text-fluid-5xl lg:text-fluid-6xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
+        <h1 className="text-fluid-4xl md:text-fluid-7xl lg:text-fluid-8xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
               key={i}
