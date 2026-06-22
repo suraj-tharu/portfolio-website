@@ -182,7 +182,7 @@ export default function Navbar() {
                       <a
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[clamp(2rem,6vh,5rem)]"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-3xl sm:text-4xl md:text-5xl"
                       >
                         {link.label}
                       </a>
@@ -190,7 +190,7 @@ export default function Navbar() {
                       <Link
                         to={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[clamp(2rem,6vh,5rem)]"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-3xl sm:text-4xl md:text-5xl"
                       >
                         {link.label}
                       </Link>
@@ -209,7 +209,7 @@ export default function Navbar() {
             >
               <div>
                 <p>Nawalparasi West, Nepal</p>
-                <p>suraj.tharu@example.com</p>
+                <p>suraj.xaudhary@gmail.com</p>
               </div>
               <div className="flex gap-4">
                 <a href="#" className="hover:text-brand-light transition-colors focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1">LinkedIn</a>
