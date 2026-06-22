@@ -83,13 +83,13 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                 <div className="flex flex-col items-center text-center mb-16">
                     <div className="flex items-center justify-center gap-4 mb-4">
                         <div className="hidden md:block w-8 h-px bg-stroke" />
-                        <span className="text-xs text-muted uppercase tracking-[0.3em]">Questions</span>
+                        <span className="text-xs font-bold uppercase tracking-[0.4em] bg-gradient-to-r from-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent drop-shadow-sm">Questions</span>
                         <div className="hidden md:block w-8 h-px bg-stroke" />
                     </div>
                     <h2 className="text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight mb-4">
                         Frequently <span className="font-display italic text-text-secondary">Asked</span>
                     </h2>
-                    <p className="text-sm text-muted max-w-md mx-auto">
+                    <p className="text-sm max-w-md mx-auto font-medium bg-gradient-to-r from-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent leading-relaxed">
                         Find answers to common questions about my work, services, and expertise
                     </p>
                 </div>
