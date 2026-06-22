@@ -174,7 +174,7 @@ export default function Navbar() {
           >
             <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E')] opacity-[0.03] pointer-events-none mix-blend-screen" />
 
-            <motion.div variants={containerVars} initial="initial" animate="open" exit="initial" className="flex flex-col gap-4">
+            <motion.div variants={containerVars} initial="initial" animate="open" exit="initial" className="flex flex-col gap-2 sm:gap-3 md:gap-4 flex-grow justify-center">
               {navLinks.map((link, i) => (
                 <div key={i} className="overflow-hidden">
                   <motion.div variants={linkVars}>
@@ -182,7 +182,7 @@ export default function Navbar() {
                       <a
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display italic leading-tight md:leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-2 md:hover:translate-x-8 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-2 md:py-1 break-words max-w-full"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[clamp(2rem,6vh,5rem)]"
                       >
                         {link.label}
                       </a>
@@ -190,7 +190,7 @@ export default function Navbar() {
                       <Link
                         to={link.href}
                         onClick={() => setIsOpen(false)}
-                        className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-display italic leading-tight md:leading-[0.85] tracking-tight hover:text-[var(--brand)] hover:translate-x-2 md:hover:translate-x-8 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-2 md:py-1 break-words max-w-full"
+                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[clamp(2rem,6vh,5rem)]"
                       >
                         {link.label}
                       </Link>
@@ -205,7 +205,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.8, duration: 1 }}
-              className="mt-12 flex flex-col md:flex-row justify-between items-start md:items-end text-muted text-sm border-t border-stroke/50 pt-6 gap-4"
+              className="mt-6 flex flex-col md:flex-row justify-between items-start md:items-end text-muted text-xs sm:text-sm border-t border-stroke/50 pt-4 gap-4"
             >
               <div>
                 <p>Nawalparasi West, Nepal</p>
