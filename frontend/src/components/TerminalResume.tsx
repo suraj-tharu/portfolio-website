@@ -55,7 +55,7 @@ export default function TerminalResume() {
         output = 'Languages: Python, JS/TS, C++, C#. Frameworks: React, Django, Express. Tools: Docker, QGIS, TensorFlow.';
         break;
       case 'contact':
-        output = 'Email: suraj.tharu@example.com | Location: Nawalparasi West, Nepal';
+        output = 'Email: suraj.xaudhary@gmail.com | Location: Nawalparasi West, Nepal';
         break;
       case 'clear':
         setHistory([]);
