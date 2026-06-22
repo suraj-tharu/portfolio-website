@@ -81,13 +81,13 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
             <div className="max-w-4xl mx-auto px-6 md:px-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-16">
-                    <span className="text-xs dark:text-muted text-gray-600 uppercase tracking-[0.3em] mb-4">
+                    <span className="text-xs text-muted uppercase tracking-[0.3em] mb-4">
                         Questions
                     </span>
-                    <h2 className="text-4xl md:text-6xl dark:text-text-primary text-gray-900 tracking-tight font-display italic mb-6">
+                    <h2 className="text-4xl md:text-6xl text-text-primary tracking-tight font-display italic mb-6">
                         Frequently Asked
                     </h2>
-                    <p className="text-lg dark:text-text-secondary text-gray-700 max-w-2xl">
+                    <p className="text-lg text-text-secondary max-w-2xl">
                         Find answers to common questions about my work, services, and expertise
                     </p>
                 </div>
@@ -97,7 +97,7 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                     {categories.map(cat => (
                         <button
                             key={cat}
-                            className="px-4 py-2 rounded-full text-sm font-medium dark:bg-surface dark:text-text-secondary bg-gray-100 text-gray-700 hover:dark:bg-surface/80 hover:bg-gray-200 transition-colors"
+                            className="px-4 py-2 rounded-full text-sm font-medium bg-surface text-text-secondary hover:bg-surface-2 transition-colors"
                         >
                             {cat}
                         </button>
@@ -111,13 +111,13 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                             key={item.id}
                             initial={false}
                             animate={{ opacity: 1 }}
-                            className="dark:bg-surface/40 bg-white/40 backdrop-blur-md dark:border-stroke/20 border-gray-200/30 border rounded-2xl overflow-hidden hover:dark:bg-surface/60 hover:bg-white/60 transition-colors"
+                            className="bg-surface/40 backdrop-blur-md border border-stroke rounded-2xl overflow-hidden hover:bg-surface/60 transition-colors"
                         >
                             <button
                                 onClick={() => toggleFAQ(item.id)}
                                 className="w-full px-6 md:px-8 py-6 flex items-center justify-between text-left"
                             >
-                                <span className="dark:text-text-primary text-gray-900 font-semibold text-lg md:text-xl">
+                                <span className="text-text-primary font-semibold text-lg md:text-xl">
                                     {item.question}
                                 </span>
                                 <motion.div
@@ -140,7 +140,7 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                                         exit={{ height: 0, opacity: 0 }}
                                         transition={{ duration: 0.3 }}
                                     >
-                                        <div className="px-6 md:px-8 pb-6 dark:text-text-secondary text-gray-700 border-t dark:border-stroke/20 border-gray-200/30 pt-6">
+                                        <div className="px-6 md:px-8 pb-6 text-text-secondary border-t border-stroke pt-6">
                                             {item.answer}
                                         </div>
                                     </motion.div>
@@ -151,11 +151,11 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-16 p-8 md:p-12 rounded-2xl dark:bg-gradient-to-r dark:from-brand-dark/20 dark:to-brand-light/20 bg-gradient-to-r from-brand-dark/10 to-brand-light/10 border dark:border-brand/30 border-brand/10 text-center">
-                    <h3 className="text-2xl md:text-3xl font-display italic dark:text-text-primary text-gray-900 mb-4">
+                <div className="mt-16 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-brand-dark/20 to-brand-light/20 border border-brand/30 text-center">
+                    <h3 className="text-2xl md:text-3xl font-display italic text-text-primary mb-4">
                         Still have questions?
                     </h3>
-                    <p className="dark:text-text-secondary text-gray-700 mb-6">
+                    <p className="text-text-secondary mb-6">
                         Can't find the answer you're looking for? Let's chat!
                     </p>
                     <a
