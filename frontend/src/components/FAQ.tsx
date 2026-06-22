@@ -81,13 +81,15 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
             <div className="max-w-4xl mx-auto px-6 md:px-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-16">
-                    <span className="text-xs text-muted uppercase tracking-[0.3em] mb-4">
-                        Questions
-                    </span>
-                    <h2 className="text-4xl md:text-6xl text-text-primary tracking-tight font-display italic mb-6">
-                        Frequently Asked
+                    <div className="flex items-center justify-center gap-4 mb-4">
+                        <div className="hidden md:block w-8 h-px bg-stroke" />
+                        <span className="text-xs text-muted uppercase tracking-[0.3em]">Questions</span>
+                        <div className="hidden md:block w-8 h-px bg-stroke" />
+                    </div>
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight mb-4">
+                        Frequently <span className="font-display italic text-text-secondary">Asked</span>
                     </h2>
-                    <p className="text-lg text-text-secondary max-w-2xl">
+                    <p className="text-sm text-muted max-w-md mx-auto">
                         Find answers to common questions about my work, services, and expertise
                     </p>
                 </div>
@@ -111,7 +113,7 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                             key={item.id}
                             initial={false}
                             animate={{ opacity: 1 }}
-                            className="bg-surface/40 backdrop-blur-md border border-stroke rounded-2xl overflow-hidden hover:bg-surface/60 transition-colors"
+                            className="bg-surface border border-stroke rounded-2xl overflow-hidden hover:border-brand-light/50 transition-colors"
                         >
                             <button
                                 onClick={() => toggleFAQ(item.id)}
@@ -127,7 +129,7 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                                 >
                                     <ChevronDown
                                         size={24}
-                                        className="dark:text-brand-light text-brand-dark"
+                                        className="text-brand-light"
                                     />
                                 </motion.div>
                             </button>
@@ -151,19 +153,24 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                 </div>
 
                 {/* CTA */}
-                <div className="mt-16 p-8 md:p-12 rounded-2xl bg-gradient-to-r from-brand-dark/20 to-brand-light/20 border border-brand/30 text-center">
-                    <h3 className="text-2xl md:text-3xl font-display italic text-text-primary mb-4">
-                        Still have questions?
-                    </h3>
-                    <p className="text-text-secondary mb-6">
-                        Can't find the answer you're looking for? Let's chat!
-                    </p>
-                    <a
-                        href="#contact"
-                        className="inline-block px-8 py-3 bg-gradient-to-r from-brand-light to-brand-dark text-white rounded-lg font-semibold hover:shadow-lg transition-all"
-                    >
-                        Get in Touch
-                    </a>
+                <div className="mt-16 p-8 md:p-12 rounded-3xl bg-surface border border-stroke text-center relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-20 mix-blend-multiply pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '4px 4px' }} />
+                    <div className="relative z-10">
+                        <h3 className="text-2xl md:text-3xl text-text-primary tracking-tight mb-4">
+                            Still have <span className="font-display italic text-text-secondary">questions?</span>
+                        </h3>
+                        <p className="text-sm text-muted mb-8">
+                            Can't find the answer you're looking for? Let's chat!
+                        </p>
+                        <a
+                            href="#contact"
+                            className="inline-flex group relative items-center justify-center rounded-full px-8 py-3 text-sm bg-bg border border-stroke hover:border-transparent transition-colors overflow-hidden"
+                        >
+                            <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
+                            <div className="absolute inset-[2px] bg-bg rounded-full" />
+                            <span className="relative z-10 flex items-center gap-2 text-text-primary">Get in Touch &rarr;</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
