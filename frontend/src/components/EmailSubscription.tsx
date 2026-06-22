@@ -41,7 +41,7 @@ export default function EmailSubscription() {
             } else {
                 setError('Failed to subscribe. Please try again.');
             }
-        } catch (err) {
+        } catch {
             setError('Something went wrong. Please try again later.');
         } finally {
             setIsLoading(false);

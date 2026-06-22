@@ -633,7 +633,7 @@
   <!-- ════════════════════════════════════════════════════════════
        MODALS FOR EDIT
   ════════════════════════════════════════════════════════════ -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] hidden flex items-center justify-center p-4 transition-opacity">
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] hidden items-center justify-center p-4 transition-opacity">
     
     <!-- Project Modal -->
     <div id="project-modal" class="modal-content premium-card w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
@@ -770,7 +770,9 @@
 
     // Modal Logic for Editing
     function openModal(modalId, data) {
-      document.getElementById('modal-backdrop').classList.remove('hidden');
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.remove('hidden');
+      backdrop.classList.add('flex');
       const modal = document.getElementById(modalId);
       modal.classList.remove('hidden');
       
@@ -822,7 +824,9 @@
     }
 
     function closeModal() {
-      document.getElementById('modal-backdrop').classList.add('hidden');
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      backdrop.classList.remove('flex');
       document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
     }
   </script>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
@@ -36,18 +36,18 @@ export default function Navbar() {
     { label: t('nav.contact'), href: '#contact' }
   ];
 
-  const menuVars: any = {
+  const menuVars: Variants = {
     initial: { scaleY: 0 },
     animate: { scaleY: 1, transition: { duration: 0.7, ease: [0.12, 0, 0.39, 0] } },
     exit: { scaleY: 0, transition: { duration: 0.7, ease: [0.12, 0, 0.39, 1] } }
   };
 
-  const linkVars: any = {
+  const linkVars: Variants = {
     initial: { y: "30vh", transition: { duration: 0.5, ease: [0.37, 0, 0.63, 1] } },
     open: { y: 0, transition: { duration: 0.7, ease: [0, 0.55, 0.45, 1] } }
   };
 
-  const containerVars: any = {
+  const containerVars: Variants = {
     initial: { transition: { staggerChildren: 0.09, staggerDirection: -1 } },
     open: { transition: { delayChildren: 0.3, staggerChildren: 0.09, staggerDirection: 1 } }
   };

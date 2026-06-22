@@ -24,7 +24,6 @@ const DOMPurify = require('dompurify')(new JSDOM('').window);
 const app = express();
 
 const multer = require('multer');
-const fs = require('fs');
 
 // Configure multer to use memory storage
 const storage = multer.memoryStorage();

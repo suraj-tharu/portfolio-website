@@ -67,7 +67,7 @@ export default function Hero() {
       setRoleIndex((prev) => (prev + 1) % roles.length);
     }, 2000);
     return () => clearInterval(interval);
-  }, []);
+  }, [roles.length]);
 
   useEffect(() => {
     // GSAP Animations for elements not handled by framer-motion
@@ -148,7 +148,7 @@ export default function Hero() {
         <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
           <motion.span
             key={roleIndex}
-            className="animate-role-fade-in inline-block text-[var(--accent)] font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
+            className="animate-role-fade-in inline-block font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
           >
             {roles[roleIndex]}
           </motion.span>
