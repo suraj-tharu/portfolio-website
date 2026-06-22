@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+
+// Access Leaflet from window global loaded via CDN
+const L = (window as any).L;
 
 const layers = [
   { id: '2016', name: '2016 Base Map' },
@@ -10,6 +13,79 @@ const layers = [
 export default function GISShowcase() {
   const [activeLayer, setActiveLayer] = useState('2026');
   const [isZoomed, setIsZoomed] = useState(false);
+  const mapRef = useRef<any>(null);
+  const tileLayerRef = useRef<any>(null);
+
+  const tileLayerUrls: Record<string, string> = {
+    '2016': 'https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png',
+    '2026': 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    'hotspots': 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
+  };
+
+  // Swaps tile layer URL dynamically when layer selection changes
+  useEffect(() => {
+    if (tileLayerRef.current && L) {
+      tileLayerRef.current.setUrl(tileLayerUrls[activeLayer]);
+    }
+  }, [activeLayer]);
+
+  // Adjust size of Leaflet canvas when container scales (e.g. on full screen click)
+  useEffect(() => {
+    if (mapRef.current) {
+      setTimeout(() => {
+        mapRef.current.invalidateSize();
+      }, 750); // Match transition duration of container scaling
+    }
+  }, [isZoomed]);
+
+  useEffect(() => {
+    if (typeof L === 'undefined') return;
+
+    // Fix Leaflet default marker icons not loading correctly due to packaging relative paths
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+    });
+
+    const currentYear = new Date().getFullYear();
+    const dynamicCopyright = `&copy; 2026${currentYear > 2026 ? ' - ' + currentYear : ''} Er. Suraj Tharu Chaudhary`;
+
+    const map = L.map('react-gis-map').setView([27.5319, 83.6922], 9);
+    mapRef.current = map;
+
+    const tileLayer = L.tileLayer(tileLayerUrls[activeLayer], {
+      attribution: `${dynamicCopyright} &copy; OpenStreetMap &copy; CARTO`,
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+    tileLayerRef.current = tileLayer;
+
+    // Add Surkhet marker
+    const surkhetMarker = L.marker([28.6015, 81.6322]).addTo(map);
+    surkhetMarker.bindPopup(`
+      <div style="color: #0f172a; font-family: 'Space Mono', monospace; min-width: 150px;">
+        <h4 style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">Birendranagar, Surkhet</h4>
+        <p style="font-size: 11px; margin: 0; color: #475569;">LULC Analysis using Random Forest</p>
+      </div>
+    `);
+
+    // Add Nawalparasi marker
+    const nawalparasiMarker = L.marker([27.5319, 83.6922]).addTo(map);
+    nawalparasiMarker.bindPopup(`
+      <div style="color: #0f172a; font-family: 'Space Mono', monospace; min-width: 150px;">
+        <h4 style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">Nawalparasi West</h4>
+        <p style="font-size: 11px; margin: 0; color: #475569;">Decadal LULC Dynamics (2016-2026)</p>
+      </div>
+    `).openPopup();
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+      tileLayerRef.current = null;
+    };
+  }, []);
 
   return (
     <section id="gis-showcase" className="py-24 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">
@@ -50,77 +126,15 @@ export default function GISShowcase() {
         {/* Map Container */}
         <motion.div 
           layout
-          className={`relative rounded-3xl overflow-hidden border border-[var(--stroke)] bg-[var(--surface)] transition-all duration-700 ease-in-out cursor-pointer ${
-            isZoomed ? 'aspect-square md:aspect-video z-50 fixed inset-4 md:inset-10 shadow-2xl shadow-black/50' : 'aspect-[4/3] md:aspect-[21/9]'
+          className={`relative rounded-3xl overflow-hidden border border-[var(--stroke)] bg-[var(--surface)] transition-all duration-700 ease-in-out ${
+            isZoomed ? 'z-50 fixed inset-4 md:inset-10 shadow-2xl shadow-black/50' : 'relative aspect-[4/3] md:aspect-[21/9]'
           }`}
-          onClick={() => setIsZoomed(!isZoomed)}
         >
-          {/* Mock Map Background Layer */}
-          <div className="absolute inset-0 bg-[#0F1422] opacity-80" />
-          
-          {/* Grid lines */}
-          <div 
-            className="absolute inset-0 opacity-20 pointer-events-none"
-            style={{ 
-              backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)', 
-              backgroundSize: '40px 40px' 
-            }}
-          />
+          {/* Actual Leaflet Map Element */}
+          <div id="react-gis-map" className="w-full h-full min-h-[450px]" style={{ height: '100%' }} />
 
-          {/* Map Images depending on active layer */}
-          <AnimatePresence mode="wait">
-            {activeLayer === '2016' && (
-              <motion.img 
-                key="2016"
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                animate={{ opacity: 0.6, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, filter: 'blur(10px)' }}
-                transition={{ duration: 0.8 }}
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1600&q=80"
-                className="absolute inset-0 w-full h-full object-cover mix-blend-luminosity grayscale"
-                alt="2016 Map"
-              />
-            )}
-            
-            {activeLayer === '2026' && (
-              <motion.img 
-                key="2026"
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                animate={{ opacity: 0.7, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, filter: 'blur(10px)' }}
-                transition={{ duration: 0.8 }}
-                src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1600&q=80"
-                className="absolute inset-0 w-full h-full object-cover"
-                alt="2026 Map"
-              />
-            )}
-
-            {activeLayer === 'hotspots' && (
-              <motion.img 
-                key="hotspots"
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                animate={{ opacity: 0.8, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, filter: 'blur(10px)' }}
-                transition={{ duration: 0.8 }}
-                src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80"
-                className="absolute inset-0 w-full h-full object-cover saturate-200 contrast-125"
-                alt="Hotspots"
-              />
-            )}
-          </AnimatePresence>
-
-          {/* UI Overlays */}
-          <div className="absolute top-6 right-6 flex flex-col gap-2">
-            <div className="bg-[var(--surface-2)]/80 backdrop-blur-md border border-[var(--stroke)] text-[var(--text)] text-xs px-3 py-2 rounded-lg font-mono">
-              LAT: 27.5333° N<br/>
-              LON: 83.7167° E
-            </div>
-            <div className="bg-[var(--surface-2)]/80 backdrop-blur-md border border-[var(--stroke)] text-[var(--text)] text-xs px-3 py-2 rounded-lg font-mono">
-              RES: 10m/px
-            </div>
-          </div>
-          
-          <div className="absolute bottom-6 left-6 right-6 md:right-auto md:w-[300px]">
+          {/* Dynamic Layer Info Overlay */}
+          <div className="absolute bottom-6 left-6 z-[1000] right-6 md:right-auto md:w-[300px] pointer-events-auto">
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -154,14 +168,26 @@ export default function GISShowcase() {
               </div>
             </motion.div>
           </div>
-          
-          {/* Zoom hint */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="bg-black/50 backdrop-blur-md text-white text-xs px-4 py-2 rounded-full border border-white/10">
-              {isZoomed ? "Click to minimize" : "Click to expand"}
+
+          {/* Expand/Minimize Control Button Overlay */}
+          <button 
+            onClick={() => setIsZoomed(!isZoomed)}
+            className="absolute top-6 left-6 z-[1000] bg-[var(--surface-2)]/90 hover:bg-[var(--brand)] hover:text-white backdrop-blur-md border border-[var(--stroke)] text-[var(--text)] text-xs px-3.5 py-2.5 rounded-xl font-mono flex items-center gap-2 transition-all duration-300 shadow-lg pointer-events-auto"
+          >
+            {isZoomed ? "⛶ Minimize" : "⛶ Expand Map"}
+          </button>
+
+          {/* Coordinates UI Overlays */}
+          <div className="absolute top-6 right-6 z-[1000] flex flex-col gap-2 pointer-events-none">
+            <div className="bg-[var(--surface-2)]/90 backdrop-blur-md border border-[var(--stroke)] text-[var(--text)] text-xs px-3 py-2 rounded-lg font-mono">
+              LAT: 27.5333° N<br/>
+              LON: 83.7167° E
+            </div>
+            <div className="bg-[var(--surface-2)]/90 backdrop-blur-md border border-[var(--stroke)] text-[var(--text)] text-xs px-3 py-2 rounded-lg font-mono">
+              RES: 10m/px
             </div>
           </div>
-          
+
         </motion.div>
       </div>
     </section>
