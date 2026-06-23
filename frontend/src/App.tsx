@@ -18,6 +18,7 @@ import { initializeAnalytics } from './utils/analytics';
 import { setMetaTags, defaultMetaTags } from './utils/metaTags';
 import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
 import { FluidBackground } from './components/premium';
+import { DeveloperMode } from './components/DeveloperMode';
 
 import Home from './pages/Home';
 
@@ -89,6 +90,7 @@ function AppContent() {
             style={{ scaleX: scrollYProgress }}
           />
           <FluidBackground />
+          <DeveloperMode />
           <ChatWidget />
           <FloatingActionButton />
 

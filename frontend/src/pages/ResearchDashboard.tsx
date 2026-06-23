@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import GISShowcase from '../components/GISShowcase';
 import Stats from '../components/Stats';
+import GlobeShowcase from '../components/GlobeShowcase';
 
 export default function ResearchDashboard() {
 
@@ -17,7 +18,7 @@ export default function ResearchDashboard() {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 mt-8"
+          className="mb-12 mt-8"
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-8 h-px bg-[var(--brand)]" />
@@ -26,9 +27,11 @@ export default function ResearchDashboard() {
           <h1 className="text-5xl md:text-7xl font-display italic tracking-tight mb-6">
             Research <span className="text-[var(--text-secondary)]">Dashboard</span>
           </h1>
-          <p className="text-[var(--muted)] max-w-2xl text-lg">
+          <p className="text-[var(--muted)] max-w-2xl text-lg mb-12">
             A comprehensive overview of geospatial datasets, machine learning models, and analytical results from my ongoing research in environmental engineering and urbanization.
           </p>
+
+          <GlobeShowcase />
         </motion.div>
 
         {/* Stats Summary */}

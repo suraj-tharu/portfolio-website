@@ -6,12 +6,14 @@ import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 import { MagneticWrapper } from './premium/MagneticWrapper';
 import { useScrollSpy } from '../hooks/useScrollSpy';
+import { useSoundEffects } from '../hooks/useSoundEffects';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
+  const { playHover, playClick } = useSoundEffects();
 
   useEffect(() => {
     if (isOpen) {
@@ -98,6 +100,8 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 className="relative px-3 py-1.5 rounded-full text-sm font-medium transition-colors group"
+                onMouseEnter={() => playHover()}
+                onClick={() => playClick()}
               >
                 {isActive && (
                   <motion.div
@@ -129,7 +133,8 @@ export default function Navbar() {
           </motion.div>
 
           <button
-            onClick={toggleTheme}
+            onClick={() => { playClick(); toggleTheme(); }}
+            onMouseEnter={() => playHover()}
             className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
@@ -138,7 +143,8 @@ export default function Navbar() {
           </button>
 
           <button
-            onClick={toggleLanguage}
+            onClick={() => { playClick(); toggleLanguage(); }}
+            onMouseEnter={() => playHover()}
             className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 font-semibold text-xs text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
@@ -147,7 +153,8 @@ export default function Navbar() {
           </button>
 
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => { playClick(); setIsOpen(!isOpen); }}
+            onMouseEnter={() => playHover()}
             className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 text-text-secondary hover:text-brand-light transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
