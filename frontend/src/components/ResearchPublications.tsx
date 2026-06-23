@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { BookOpen } from 'lucide-react';
+import { GlowCard } from './premium/GlowCard';
 
 const publications = [
   {
@@ -44,26 +45,27 @@ export default function ResearchPublications() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="group relative flex flex-col md:flex-row md:items-start gap-6 p-6 md:p-8 bg-surface/30 hover:bg-surface border border-stroke rounded-3xl transition-all duration-300"
             >
-              <div className="flex-shrink-0 w-12 h-12 bg-bg border border-stroke rounded-full flex items-center justify-center text-muted group-hover:text-blue-400 transition-colors mt-1">
-                <BookOpen size={20} />
-              </div>
-
-              <div className="flex-grow">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-xs font-medium px-3 py-1 rounded-full bg-stroke/50 text-text-primary/80">
-                    {pub.type}
-                  </span>
-                  <span className="text-sm text-muted">{pub.year}</span>
+              <GlowCard className="flex flex-col md:flex-row md:items-start gap-6 p-6 md:p-8 bg-surface/30 hover:bg-surface border-transparent transition-all duration-300 h-full rounded-3xl">
+                <div className="flex-shrink-0 w-12 h-12 bg-bg border border-stroke rounded-full flex items-center justify-center text-muted group-hover:text-blue-400 transition-colors mt-1">
+                  <BookOpen size={20} />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-text-primary group-hover:text-white transition-colors mb-4 leading-snug">
-                  {pub.title}
-                </h3>
-                <p className="text-[0.95rem] md:text-base text-muted/90 leading-relaxed">
-                  {pub.description}
-                </p>
-              </div>
+
+                <div className="flex-grow">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-xs font-medium px-3 py-1 rounded-full bg-stroke/50 text-text-primary/80">
+                      {pub.type}
+                    </span>
+                    <span className="text-sm text-muted">{pub.year}</span>
+                  </div>
+                  <h3 className="text-xl md:text-2xl font-bold text-text-primary group-hover:text-white transition-colors mb-4 leading-snug">
+                    {pub.title}
+                  </h3>
+                  <p className="text-[0.95rem] md:text-base text-muted/90 leading-relaxed">
+                    {pub.description}
+                  </p>
+                </div>
+              </GlowCard>
             </motion.div>
           ))}
         </div>

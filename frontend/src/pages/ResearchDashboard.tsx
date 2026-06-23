@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import GISShowcase from '../components/GISShowcase';
 import Stats from '../components/Stats';
 
 export default function ResearchDashboard() {
 
   return (
-    <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] font-sans pt-24">
-      <Navbar />
-      
+    <motion.div 
+      initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-[var(--bg)] min-h-screen text-[var(--text)] font-sans pt-24"
+    >
       <main className="max-w-[1200px] mx-auto px-6 md:px-10 pb-24">
         {/* Header */}
         <motion.div 
@@ -72,8 +74,6 @@ export default function ResearchDashboard() {
         </motion.section>
 
       </main>
-      
-      <Footer />
-    </div>
+    </motion.div>
   );
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
+import { MagneticWrapper } from './premium/MagneticWrapper';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -198,21 +199,25 @@ export default function Navbar() {
                 <div key={i} className="overflow-hidden">
                   <motion.div variants={linkVars}>
                     {link.external || link.href.startsWith('/#') || link.href.startsWith('#') ? (
-                      <a
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[18px]"
-                      >
-                        {link.label}
-                      </a>
+                      <MagneticWrapper>
+                        <a
+                          href={link.href}
+                          onClick={() => setIsOpen(false)}
+                          className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[24px]"
+                        >
+                          {link.label}
+                        </a>
+                      </MagneticWrapper>
                     ) : (
-                      <Link
-                        to={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[18px]"
-                      >
-                        {link.label}
-                      </Link>
+                      <MagneticWrapper>
+                        <Link
+                          to={link.href}
+                          onClick={() => setIsOpen(false)}
+                          className="font-display italic leading-tight tracking-tight hover:text-[var(--brand)] hover:translate-x-3 md:hover:translate-x-6 transition-all duration-300 inline-block focus:outline-none focus:ring-2 focus:ring-brand rounded px-2 py-1 break-words max-w-full text-[24px]"
+                        >
+                          {link.label}
+                        </Link>
+                      </MagneticWrapper>
                     )}
                   </motion.div>
                 </div>

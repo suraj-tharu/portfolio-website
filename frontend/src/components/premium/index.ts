@@ -27,3 +27,7 @@ export { NotificationCenter, useNotification } from './NotificationCenter';
 export type { NotificationType } from './NotificationCenter';
 export { Accordion } from './Accordion';
 export { Tabs } from './Tabs';
+export { MagneticWrapper } from './MagneticWrapper';
+export { TextReveal } from './TextReveal';
+export { GlowCard } from './GlowCard';
+export { FluidBackground } from './FluidBackground';

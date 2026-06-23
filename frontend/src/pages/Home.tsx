@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
 import AboutMe from '../components/AboutMe';
 import SelectedWorks from '../components/SelectedWorks';
@@ -19,7 +20,12 @@ import FAQ from '../components/FAQ';
 
 export default function Home() {
   return (
-    <main>
+    <motion.main
+      initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+    >
       <Hero />
       <AcademicTimeline />
       <SkillsVisualization />
@@ -38,6 +44,6 @@ export default function Home() {
       <InteractiveResume />
       <FAQ />
       <Contact />
-    </main>
+    </motion.main>
   );
 }

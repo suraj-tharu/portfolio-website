@@ -3,6 +3,7 @@ import Hls from 'hls.js';
 import { gsap } from 'gsap';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
+import { TextReveal } from './premium/TextReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { useGreeting } from './GreetingBanner';
 
@@ -163,13 +164,9 @@ export default function Hero() {
           <span className="text-base md:text-lg bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold">{t('hero.location')}</span>
         </div>
 
-        <motion.p
-          className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed"
-          animate={{ opacity: [0.8, 1, 0.8] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          {t('hero.description')}
-        </motion.p>
+        <div className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center">
+          <TextReveal text={t('hero.description')} delay={3.8} staggerDuration={0.03} splitBy="word" />
+        </div>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
           <a href="#work">

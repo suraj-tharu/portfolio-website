@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import LoadingScreen from './components/LoadingScreen';
@@ -17,7 +17,7 @@ import { initErrorTracking, enableConsoleSpy } from './utils/errorTracking';
 import { initializeAnalytics } from './utils/analytics';
 import { setMetaTags, defaultMetaTags } from './utils/metaTags';
 import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
-import { ParticleBackground } from './components/premium';
+import { FluidBackground } from './components/premium';
 
 import Home from './pages/Home';
 import ResearchDashboard from './pages/ResearchDashboard';
@@ -53,6 +53,7 @@ function AppContent() {
   const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
   const location = useLocation();
+  const { scrollYProgress } = useScroll();
 
   // Initialize premium hooks
   useThemeAnimation(); // Smooth theme transitions
@@ -81,7 +82,11 @@ function AppContent() {
           {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
 
           <CustomCursor />
-          <ParticleBackground count={30} speed={0.3} />
+          <motion.div
+            className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 via-pink-500 to-amber-500 origin-left z-[110]"
+            style={{ scaleX: scrollYProgress }}
+          />
+          <FluidBackground />
           <ChatWidget />
           <FloatingActionButton />
 
