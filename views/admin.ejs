@@ -582,8 +582,6 @@
           <% }) } else { %><div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;">No messages yet</div><% } %>
         </div>
       </div>
-
-      @media (max-width: 640px) { [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr; } }
     </div>
 
     <!-- ============================
@@ -1043,13 +1041,10 @@
         mdeCreate = new SimpleMDE({ element: blogCreateEl, spellChecker: false, status: false });
       }
 
-      // Restore active tab from hash
+      // Restore active tab from hash, or default to overview
       const hash = location.hash.replace('#','');
       const tabs = ['overview','projects','blogs','learning','timeline','messages'];
-      if (tabs.includes(hash)) {
-        const link = document.querySelector(`[data-tab="${hash}"]`);
-        if (link) switchTab(hash, link);
-      }
+      switchTab(tabs.includes(hash) ? hash : 'overview');
 
       // Mobile close button
       document.getElementById('close-sb-btn').style.display = 'block';

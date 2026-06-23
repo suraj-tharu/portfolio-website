@@ -25,9 +25,9 @@ const app = express();
 
 const multer = require('multer');
 
-// Configure multer to use memory storage
+// Configure multer to use memory storage (50MB max)
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } });
 
 // Helper to save uploaded file buffer directly to the database and return public URL
 async function saveUploadedFile(file) {
@@ -166,8 +166,8 @@ app.use(helmet({
 }));
 
 app.use(cors(corsOptions));
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true })); // Added to parse form submissions
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' })); // Added to parse form submissions
 app.use(cookieParser());
 
 app.use('/api', (req, res, next) => {
@@ -227,6 +227,13 @@ app.get('/assets/uploads/:filename', async (req, res, next) => {
     }
     res.setHeader('Content-Type', file.mimeType);
     res.setHeader('Cache-Control', 'public, max-age=31536000, immutable'); // Cache for 1 year
+    // For PDFs/Docs trigger a download; for images serve inline
+    const downloadableTypes = ['application/pdf', 'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/zip', 'application/octet-stream'];
+    if (downloadableTypes.includes(file.mimeType)) {
+      res.setHeader('Content-Disposition', `attachment; filename="${file.filename}"`);
+    }
     res.send(file.content);
   } catch (err) {
     console.error('[DATABASE FILE SERVER] Error serving file:', err);
