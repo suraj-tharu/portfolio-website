@@ -3,726 +3,532 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Suraj's Portfolio</title>
-  <link href="/dist/tailwind.css" rel="stylesheet">
+  <title>Admin Dashboard - Suraj Tharu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { 
+            bg: '#080B14', 
+            surface: 'rgba(255,255,255,0.03)', 
+            stroke: 'rgba(255,255,255,0.1)' 
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Motion One (Framer Motion for Vanilla JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+  <!-- SimpleMDE -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
   <style>
-    body {
-      background-color: #03050B;
-      color: #F0F2F8;
-      font-family: 'Inter', sans-serif;
-      scroll-behavior: smooth;
-      position: relative;
+    body { 
+      background-color: #080B14; 
+      color: #f8fafc; 
+      font-family: system-ui, -apple-system, sans-serif; 
     }
     
-    /* Animated Aurora Background */
-    .aurora-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      overflow: hidden;
-      background: #03050B;
+    .bg-grid {
+      background-size: 40px 40px;
+      background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
     }
-    .aurora-blob {
-      position: absolute;
-      filter: blur(80px);
-      opacity: 0.4;
-      animation: float 20s infinite ease-in-out alternate;
-    }
-    .aurora-blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%); animation-delay: 0s; }
-    .aurora-blob-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%); animation-delay: -5s; }
-    .aurora-blob-3 { top: 40%; left: 30%; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%); animation-delay: -10s; }
 
-    @keyframes float {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(5%, 10%) scale(1.1); }
-      100% { transform: translate(-5%, -5%) scale(0.9); }
+    .ambient-glow {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 100vw; height: 100vh; pointer-events: none; z-index: -1;
+      background: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.15), transparent 50%),
+                  radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1), transparent 50%);
     }
-    
-    .premium-card {
+
+    .glass-card {
       background: rgba(15, 20, 30, 0.4);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 1.25rem;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-      position: relative;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 1.5rem;
+      transition: all 0.3s ease;
     }
-    
-    .premium-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
+    .glass-card:hover {
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
     }
 
-    .premium-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 20px rgba(255,255,255,0.05);
-      background: rgba(20, 25, 40, 0.6);
-    }
-    
-    .premium-input {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .glass-input {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
       border-radius: 0.75rem;
       padding: 0.75rem 1rem;
       color: white;
       width: 100%;
-      transition: all 0.3s ease;
+      transition: all 0.2s;
     }
-    .premium-input:focus {
+    .glass-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 2px rgba(124,58,237,0.2);
       outline: none;
-      background: rgba(0, 0, 0, 0.5);
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
     }
 
-    /* Gradient Buttons */
-    .btn-gradient-brand {
-      background: linear-gradient(135deg, #3B82F6, #8B5CF6);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    .btn-gradient {
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: white; font-weight: 600; padding: 0.75rem 1.5rem; 
+      border-radius: 0.75rem; transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(124,58,237,0.3);
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
     }
-    .btn-gradient-brand:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5); transform: translateY(-1px); }
-    
-    .btn-gradient-pink {
-      background: linear-gradient(135deg, #EC4899, #F43F5E);
-      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(124,58,237,0.5);
     }
-    .btn-gradient-pink:hover { box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5); transform: translateY(-1px); }
 
-    .btn-gradient-blue {
-      background: linear-gradient(135deg, #0EA5E9, #2563EB);
-      box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3);
-    }
-    .btn-gradient-blue:hover { box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5); transform: translateY(-1px); }
+    /* SimpleMDE Overrides */
+    .editor-toolbar { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
+    .editor-toolbar a { color: #cbd5e1 !important; }
+    .CodeMirror { background: rgba(0,0,0,0.3) !important; border-color: rgba(255,255,255,0.1) !important; color: #f8fafc !important; }
 
-    .btn-gradient-emerald {
-      background: linear-gradient(135deg, #10B981, #059669);
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-    }
-    .btn-gradient-emerald:hover { box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5); transform: translateY(-1px); }
-
-    .btn-gradient-indigo {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-    }
-    .btn-gradient-indigo:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5); transform: translateY(-1px); }
-
-    .section-header {
-      font-size: 0.85rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      font-weight: 800;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-    }
-    .section-header::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
-    }
-    
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    /* SimpleMDE Overrides for Dark Theme */
-    .editor-toolbar {
-      background-color: rgba(255,255,255,0.05) !important;
-      border-color: rgba(255,255,255,0.1) !important;
-      border-top-left-radius: 0.75rem;
-      border-top-right-radius: 0.75rem;
-    }
-    .editor-toolbar a { color: #A8B2D1 !important; }
-    .editor-toolbar a:hover, .editor-toolbar a.active {
-      background-color: rgba(255,255,255,0.1) !important;
-      border-color: transparent !important;
-      color: #FFF !important;
-    }
-    .CodeMirror {
-      background-color: rgba(0,0,0,0.3) !important;
-      color: #e2e8f0 !important;
-      border-color: rgba(255,255,255,0.1) !important;
-      border-bottom-left-radius: 0.75rem;
-      border-bottom-right-radius: 0.75rem;
-    }
-    .editor-preview { background-color: #0D1117; color: #e2e8f0; }
-
-    .nav-link {
-      position: relative;
-      color: rgba(255,255,255,0.6);
-      transition: color 0.3s ease;
-    }
-    .nav-link:hover { color: white; }
-    .nav-link::after {
-      content: ''; position: absolute; bottom: -12px; left: 0; width: 0%; height: 2px;
-      background: white; transition: width 0.3s ease;
-    }
-    .nav-link:hover::after { width: 100%; }
-
-    .stat-card {
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-card::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
-      transform: translateX(-100%);
-      transition: transform 0.6s ease;
-    }
-    .stat-card:hover::before { transform: translateX(100%); }
+    /* Hide scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
   </style>
 </head>
-<body class="font-sans min-h-screen text-white">
+<body class="bg-grid min-h-screen relative overflow-x-hidden text-sm">
+  <div class="ambient-glow"></div>
 
-  <!-- Animated Background -->
-  <div class="aurora-bg">
-    <div class="aurora-blob aurora-blob-1"></div>
-    <div class="aurora-blob aurora-blob-2"></div>
-    <div class="aurora-blob aurora-blob-3"></div>
-  </div>
-
-  <!-- Fixed Topbar -->
-  <header class="sticky top-0 bg-[#06080F]/70 backdrop-blur-xl border-b border-white/5 z-50 p-4 md:px-12 flex justify-between items-center transition-all">
-    <div class="font-mono text-xl font-bold text-white tracking-tight flex items-center gap-2">
-      <div class="w-8 h-8 rounded bg-gradient-to-br from-brand to-purple-500 flex items-center justify-center text-white shadow-lg">A</div>
-      Admin<span class="text-white/50 font-light">Dashboard</span>
+  <!-- Sidebar / Navigation -->
+  <nav class="fixed top-0 left-0 h-full w-20 lg:w-64 border-r border-stroke bg-bg/80 backdrop-blur-xl z-40 flex flex-col transition-all duration-300">
+    <div class="h-20 flex items-center justify-center lg:justify-start lg:px-8 border-b border-stroke">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center font-bold text-lg shadow-lg shadow-violet-500/20">
+        A
+      </div>
+      <span class="ml-3 font-black tracking-tight text-lg hidden lg:block bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">AdminPanel</span>
     </div>
-    <div class="flex items-center gap-4">
-      <a href="/" class="text-sm font-semibold text-white/50 hover:text-white transition hidden md:block">View Live Site</a>
-      <a href="/admin/logout" class="text-xs font-bold px-5 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all uppercase tracking-wider border border-red-500/20 hover:border-transparent shadow-lg shadow-red-500/10">
-        Log Out
+    
+    <div class="flex-1 py-8 px-4 flex flex-col gap-2">
+      <a href="#overview" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="layout-dashboard"></i> <span class="hidden lg:block font-medium">Overview</span>
+      </a>
+      <a href="#projects" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="briefcase"></i> <span class="hidden lg:block font-medium">Projects</span>
+      </a>
+      <a href="#blogs" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="file-text"></i> <span class="hidden lg:block font-medium">Blog Posts</span>
+      </a>
+      <a href="#learning" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="book-open"></i> <span class="hidden lg:block font-medium">Learning Hub</span>
+      </a>
+      <a href="#timeline" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="clock"></i> <span class="hidden lg:block font-medium">Timeline</span>
+      </a>
+      <a href="#messages" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors">
+        <i data-lucide="inbox"></i> <span class="hidden lg:block font-medium">Messages</span>
       </a>
     </div>
-  </header>
 
-  <!-- Navigation Links -->
-  <nav class="bg-[#06080F]/70 backdrop-blur-xl border-b border-white/5 z-40 sticky top-[73px] overflow-x-auto no-scrollbar shadow-lg shadow-black/20">
-    <div class="max-w-7xl mx-auto px-4 md:px-12 flex items-center gap-8 text-sm font-semibold whitespace-nowrap py-4">
-      <a href="#overview" class="nav-link">Overview</a>
-      <a href="#projects" class="nav-link">Projects</a>
-      <a href="#blogs" class="nav-link">Blog Posts</a>
-      <a href="#learning" class="nav-link">Learning Hub</a>
-      <a href="#timeline" class="nav-link">Timeline</a>
-      <a href="#messages" class="nav-link">Inbox</a>
+    <div class="p-4 border-t border-stroke">
+      <a href="/" target="_blank" class="flex items-center justify-center lg:justify-start gap-3 p-3 rounded-xl hover:bg-white/5 text-white/50 hover:text-white transition-colors mb-2">
+        <i data-lucide="external-link"></i> <span class="hidden lg:block font-medium">View Site</span>
+      </a>
+      <a href="/admin/logout" class="flex items-center justify-center lg:justify-start gap-3 p-3 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+        <i data-lucide="log-out"></i> <span class="hidden lg:block font-bold">Logout</span>
+      </a>
     </div>
   </nav>
 
-  <!-- Main Content Area -->
-  <main class="max-w-7xl mx-auto p-4 md:p-12 space-y-40 pb-40">
-    
-    <!-- ════════════════════════════════════════════════════════════
-         OVERVIEW SECTION
-    ════════════════════════════════════════════════════════════ -->
-    <section id="overview" class="scroll-mt-40">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/50">O V E R V I E W</span></div>
+  <!-- Main Content -->
+  <main class="ml-20 lg:ml-64 p-8 lg:p-12 min-h-screen">
+    <div class="max-w-6xl mx-auto space-y-32 pb-32">
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <div class="premium-card stat-card p-8 flex flex-col items-center justify-center text-center">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(59,130,246,0.15)]">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3 class="text-4xl font-black text-white tracking-tight"><%= projects.length %></h3>
-          <p class="text-xs text-white/40 mt-2 uppercase tracking-widest font-bold">Projects</p>
+      <!-- ==============================================
+           OVERVIEW
+      =============================================== -->
+      <section id="overview" class="motion-section scroll-mt-24">
+        <div class="flex items-center gap-4 mb-8">
+          <i data-lucide="bar-chart-2" class="text-violet-500"></i>
+          <h2 class="text-2xl font-black tracking-tight">Dashboard Overview</h2>
         </div>
-        <div class="premium-card stat-card p-8 flex flex-col items-center justify-center text-center">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500/20 to-rose-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-5-9h10v2H7z"/></svg>
-          </div>
-          <h3 class="text-4xl font-black text-white tracking-tight"><%= blogs.length %></h3>
-          <p class="text-xs text-white/40 mt-2 uppercase tracking-widest font-bold">Blog Posts</p>
-        </div>
-        <div class="premium-card stat-card p-8 flex flex-col items-center justify-center text-center">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(6,182,212,0.15)]">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M13 13H3v-2h10v2zm0-4H3V7h10v2zm0 8H3v-2h10v2zm8-8v4h4v-4h-4z"/></svg>
-          </div>
-          <h3 class="text-4xl font-black text-white tracking-tight"><%= learningMaterials.length %></h3>
-          <p class="text-xs text-white/40 mt-2 uppercase tracking-widest font-bold">Resources</p>
-        </div>
-        <div class="premium-card stat-card p-8 flex flex-col items-center justify-center text-center">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(16,185,129,0.15)]">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-          </div>
-          <h3 class="text-4xl font-black text-white tracking-tight"><%= messages.length %></h3>
-          <p class="text-xs text-white/40 mt-2 uppercase tracking-widest font-bold">Messages</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ════════════════════════════════════════════════════════════
-         PROJECTS SECTION (SPLIT VIEW)
-    ════════════════════════════════════════════════════════════ -->
-    <section id="projects" class="scroll-mt-40">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">P R O J E C T S</span></div>
-
-      <div class="md:grid md:grid-cols-12 md:gap-10 items-start">
         
-        <!-- Left Column: Add Form (Sticky) -->
-        <div class="md:col-span-5 md:sticky md:top-40 mb-10 md:mb-0 z-10">
-          <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="premium-card p-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-            <h3 class="text-2xl font-black text-white mb-8 relative z-10">Create Project</h3>
-            <div class="space-y-5 relative z-10">
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Project Title</label><input type="text" name="title" required class="premium-input text-sm"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Cover Image (URL or Upload)</label>
-                <div class="flex flex-col gap-2">
-                  <input type="url" name="imageUrl" placeholder="https://..." class="premium-input text-sm">
-                  <div class="relative">
-                    <input type="file" name="imageFile" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                    <div class="premium-input text-sm text-center border-dashed border-white/20 text-white/40 hover:text-white hover:border-blue-400/50 hover:bg-blue-400/5 transition flex items-center justify-center gap-2 py-4">
-                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                      Click to Browse Files
-                    </div>
-                  </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="glass-card p-6 flex flex-col lg:flex-row items-center gap-6">
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20">
+              <i data-lucide="folder"></i>
+            </div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-black"><%= projects.length %></p>
+              <p class="text-[10px] text-white/40 uppercase tracking-widest font-bold">Projects</p>
+            </div>
+          </div>
+          <div class="glass-card p-6 flex flex-col lg:flex-row items-center gap-6">
+            <div class="w-14 h-14 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20">
+              <i data-lucide="file-text"></i>
+            </div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-black"><%= blogs.length %></p>
+              <p class="text-[10px] text-white/40 uppercase tracking-widest font-bold">Articles</p>
+            </div>
+          </div>
+          <div class="glass-card p-6 flex flex-col lg:flex-row items-center gap-6">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+              <i data-lucide="book"></i>
+            </div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-black"><%= learningMaterials.length %></p>
+              <p class="text-[10px] text-white/40 uppercase tracking-widest font-bold">Resources</p>
+            </div>
+          </div>
+          <div class="glass-card p-6 flex flex-col lg:flex-row items-center gap-6">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20">
+              <i data-lucide="mail"></i>
+            </div>
+            <div class="text-center lg:text-left">
+              <p class="text-3xl font-black"><%= messages.length %></p>
+              <p class="text-[10px] text-white/40 uppercase tracking-widest font-bold">Messages</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           PROJECTS
+      =============================================== -->
+      <section id="projects" class="motion-section scroll-mt-24">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400"><i data-lucide="briefcase"></i></div>
+          <h2 class="text-2xl font-black tracking-tight">Manage Projects</h2>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-10 items-start">
+          <!-- Create Form -->
+          <div class="lg:col-span-5 lg:sticky top-24 z-10">
+            <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="glass-card p-8 relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500"></div>
+              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-400"></i> New Project</h3>
+              <div class="space-y-4">
+                <div><label class="block text-xs text-white/50 mb-1">Title</label><input type="text" name="title" required class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Cover Image URL</label><input type="url" name="imageUrl" class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Upload Cover File</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Description</label><textarea name="description" required rows="3" class="glass-input"></textarea></div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div><label class="block text-xs text-white/50 mb-1">Live URL</label><input type="url" name="liveUrl" class="glass-input"></div>
+                  <div><label class="block text-xs text-white/50 mb-1">Tags (csv)</label><input type="text" name="tags" class="glass-input"></div>
                 </div>
               </div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Description</label><textarea name="description" required rows="3" class="premium-input text-sm"></textarea></div>
-              <div class="grid grid-cols-2 gap-4">
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Live URL</label><input type="url" name="liveUrl" class="premium-input text-sm"></div>
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Tags</label><input type="text" name="tags" placeholder="React, Node" class="premium-input text-sm"></div>
-              </div>
-            </div>
-            <button type="submit" class="btn-gradient-brand text-white font-bold py-3.5 px-6 rounded-xl w-full mt-8 relative z-10 tracking-wide text-sm flex justify-center items-center gap-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              Publish Project
-            </button>
-          </form>
-        </div>
-
-        <!-- Right Column: List -->
-        <div class="md:col-span-7 space-y-6">
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            </div>
-            <input type="text" id="search-projects" placeholder="Search projects by title or tag..." class="premium-input w-full pl-12 py-4 bg-black/20 text-base shadow-lg shadow-black/20 border-white/5 rounded-2xl">
+              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #3b82f6, #4f46e5)"><i data-lucide="send" class="w-4 h-4"></i> Publish Project</button>
+            </form>
           </div>
-
-          <div class="grid gap-4" id="projects-list">
+          <!-- List -->
+          <div class="lg:col-span-7 space-y-4">
             <% projects.forEach(p=> { %>
-              <div class="premium-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-5 group" data-search="<%= p.title.toLowerCase() %> <%= p.tags.toLowerCase() %>">
-                <div class="flex items-center gap-5">
-                  <div class="w-20 h-20 rounded-xl bg-black/40 flex-shrink-0 overflow-hidden border border-white/5 shadow-inner">
-                    <% if (p.imageUrl) { %>
-                      <img src="<%= p.imageUrl %>" alt="Thumbnail" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                    <% } else { %>
-                      <div class="w-full h-full flex items-center justify-center text-white/20">
-                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-                      </div>
-                    <% } %>
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-white text-xl group-hover:text-blue-400 transition-colors"><%= p.title %></h4>
-                    <div class="flex flex-wrap gap-2 mt-3">
-                      <% p.tags.split(',').forEach(tag => { %>
-                        <span class="text-[10px] px-2.5 py-1 rounded bg-white/5 text-white/60 border border-white/10 uppercase tracking-wider font-bold"><%= tag.trim() %></span>
-                      <% }) %>
-                    </div>
+              <div class="glass-card p-4 flex flex-col sm:flex-row gap-4 items-center group">
+                <div class="w-full sm:w-32 h-32 sm:h-24 rounded-xl bg-black/50 overflow-hidden shrink-0 border border-white/5 relative flex items-center justify-center">
+                  <% if (p.imageUrl) { %>
+                    <img src="<%= p.imageUrl %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                  <% } else { %>
+                    <i data-lucide="image" class="text-white/20"></i>
+                  <% } %>
+                </div>
+                <div class="flex-1 text-center sm:text-left">
+                  <h4 class="font-bold text-lg"><%= p.title %></h4>
+                  <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
+                    <% p.tags.split(',').forEach(tag => { %>
+                      <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-white/60 uppercase"><%= tag.trim() %></span>
+                    <% }) %>
                   </div>
                 </div>
-                <div class="sm:shrink-0 flex items-center justify-end gap-2 mt-4 sm:mt-0">
-                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(p)) %>" class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
-                  <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');">
-                    <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 hover:border-transparent">Delete</button>
+                <div class="flex sm:flex-col w-full sm:w-auto gap-2 shrink-0">
+                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(p)) %>')))" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors text-xs font-bold border border-blue-500/20"><i data-lucide="edit-2" class="w-3 h-3 inline"></i> Edit</button>
+                  <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');" class="flex-1 sm:flex-none">
+                    <button type="submit" class="w-full px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors text-xs font-bold border border-red-500/20"><i data-lucide="trash" class="w-3 h-3 inline"></i> Del</button>
                   </form>
                 </div>
               </div>
             <% }) %>
-            <% if (projects.length === 0) { %>
-              <div class="text-center py-12 text-white/40 italic text-sm">No projects yet. Create one on the left!</div>
-            <% } %>
+            <% if(projects.length === 0) { %><div class="text-white/30 text-center py-10">No projects found.</div><% } %>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         BLOG POSTS SECTION (SPLIT VIEW)
-    ════════════════════════════════════════════════════════════ -->
-    <section id="blogs" class="scroll-mt-40">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-rose-400">B L O G &nbsp; P O S T S</span></div>
-
-      <div class="md:grid md:grid-cols-12 md:gap-10 items-start">
-        
-        <!-- Left Column: Add Form (Sticky) -->
-        <div class="md:col-span-5 md:sticky md:top-40 mb-10 md:mb-0 z-10">
-          <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="premium-card p-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-            <h3 class="text-2xl font-black text-white mb-8 relative z-10">Write Article</h3>
-            <div class="space-y-5 relative z-10">
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Article Title</label><input type="text" name="title" required class="premium-input text-sm"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Slug (URL Path)</label><input type="text" name="slug" required class="premium-input text-sm font-mono text-pink-300"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Cover Image</label>
-                <div class="relative">
-                  <input type="file" name="imageFile" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                  <div class="premium-input text-sm text-center border-dashed border-white/20 text-white/40 hover:text-white hover:border-pink-400/50 hover:bg-pink-400/5 transition flex items-center justify-center gap-2 py-4">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                    Browse Cover Image
-                  </div>
-                </div>
-              </div>
-              <div class="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
-                <div class="relative flex items-center">
-                  <input type="checkbox" name="published" id="b-published-add" class="peer w-6 h-6 opacity-0 absolute cursor-pointer z-20" checked>
-                  <div class="w-12 h-6 bg-white/10 rounded-full peer-checked:bg-pink-500 transition-colors z-10 border border-white/10 relative">
-                    <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-6 shadow-md"></div>
-                  </div>
-                </div>
-                <label for="b-published-add" class="text-sm font-bold text-white tracking-wide cursor-pointer">Publish Immediately</label>
-              </div>
-              <div>
-                <label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Content (Markdown)</label>
-                <textarea name="content" id="blog-add-editor" rows="6" class="premium-input font-mono"></textarea>
-              </div>
-            </div>
-            <button type="submit" class="btn-gradient-pink text-white font-bold py-3.5 px-6 rounded-xl w-full mt-8 relative z-10 tracking-wide text-sm flex justify-center items-center gap-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              Publish Article
-            </button>
-          </form>
+      <!-- ==============================================
+           BLOG POSTS
+      =============================================== -->
+      <section id="blogs" class="motion-section scroll-mt-24">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400"><i data-lucide="file-text"></i></div>
+          <h2 class="text-2xl font-black tracking-tight">Manage Articles</h2>
         </div>
 
-        <!-- Right Column: List -->
-        <div class="md:col-span-7 space-y-6">
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            </div>
-            <input type="text" id="search-blogs" placeholder="Search articles by title or slug..." class="premium-input w-full pl-12 py-4 bg-black/20 text-base shadow-lg shadow-black/20 border-white/5 rounded-2xl">
+        <div class="grid lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-5 lg:sticky top-24 z-10">
+            <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="glass-card p-8 relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-500"></div>
+              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5 text-pink-400"></i> Write Article</h3>
+              <div class="space-y-4">
+                <div><label class="block text-xs text-white/50 mb-1">Title</label><input type="text" name="title" required class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Slug (URL)</label><input type="text" name="slug" required class="glass-input font-mono text-pink-300"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
+                <div class="flex items-center gap-3 bg-black/20 p-3 rounded-xl border border-white/5">
+                  <input type="checkbox" name="published" checked class="w-4 h-4 rounded bg-white/10 border-white/20 text-pink-500 focus:ring-pink-500/50">
+                  <label class="text-sm font-bold">Publish Immediately</label>
+                </div>
+                <div>
+                  <label class="block text-xs text-white/50 mb-1">Markdown Content</label>
+                  <textarea name="content" id="blog-add-editor" rows="5"></textarea>
+                </div>
+              </div>
+              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #ec4899, #f43f5e)"><i data-lucide="upload-cloud" class="w-4 h-4"></i> Publish Article</button>
+            </form>
           </div>
-
-          <div class="grid gap-4" id="blogs-list">
+          <div class="lg:col-span-7 space-y-4">
             <% blogs.forEach(b=> { %>
-              <div class="premium-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-5 group" data-search="<%= b.title.toLowerCase() %> <%= b.slug.toLowerCase() %>">
-                <div class="flex items-center gap-5">
-                  <div class="w-20 h-20 rounded-xl bg-black/40 flex-shrink-0 overflow-hidden border border-white/5 shadow-inner">
-                    <% if (b.imageUrl) { %>
-                      <img src="<%= b.imageUrl %>" alt="Thumbnail" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
-                    <% } else { %>
-                      <div class="w-full h-full flex items-center justify-center text-white/20 font-mono text-[10px]">No Img</div>
-                    <% } %>
-                  </div>
-                  <div>
-                    <div class="flex items-center gap-3">
-                      <h4 class="font-bold text-white text-xl group-hover:text-pink-400 transition-colors"><%= b.title %></h4>
-                      <% if (!b.published) { %>
-                        <span class="text-[9px] bg-yellow-500/10 text-yellow-500 border border-yellow-500/20 px-2 py-0.5 rounded uppercase font-black tracking-widest">Draft</span>
-                      <% } %>
-                    </div>
-                    <div class="text-xs text-white/40 mt-2 font-mono flex items-center gap-2">
-                      <span class="text-pink-400">/<%= b.slug %></span> &bull; <%= new Date(b.createdAt).toLocaleDateString() %>
-                    </div>
-                  </div>
+              <div class="glass-card p-4 flex flex-col sm:flex-row gap-4 items-center group">
+                <div class="w-full sm:w-16 h-32 sm:h-16 rounded-xl bg-black/50 overflow-hidden shrink-0 border border-white/5 flex items-center justify-center">
+                  <% if (b.imageUrl) { %>
+                    <img src="<%= b.imageUrl %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
+                  <% } else { %>
+                    <i data-lucide="type" class="text-white/20"></i>
+                  <% } %>
                 </div>
-                <div class="sm:shrink-0 flex items-center justify-end gap-2 mt-4 sm:mt-0">
-                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(b)) %>" class="text-xs font-bold px-4 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-all border border-blue-500/20 hover:border-transparent">Edit</button>
-                  <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete this post?');">
-                    <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all border border-red-500/20 hover:border-transparent">Delete</button>
+                <div class="flex-1 text-center sm:text-left">
+                  <div class="flex flex-col sm:flex-row items-center gap-2">
+                    <h4 class="font-bold text-lg"><%= b.title %></h4>
+                    <% if(!b.published) { %><span class="px-2 py-0.5 text-[9px] bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 rounded uppercase font-bold">Draft</span><% } %>
+                  </div>
+                  <p class="text-xs text-white/40 font-mono mt-1">/<%= b.slug %></p>
+                </div>
+                <div class="flex w-full sm:w-auto gap-2 shrink-0 justify-center">
+                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(b)) %>')))" class="p-2 rounded-lg bg-white/5 hover:bg-white/20 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                  <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete article?');">
+                    <button type="submit" class="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><i data-lucide="trash" class="w-4 h-4"></i></button>
                   </form>
                 </div>
               </div>
             <% }) %>
-            <% if (blogs.length === 0) { %>
-              <div class="text-center py-12 text-white/40 italic text-sm">No blogs yet. Write your first one!</div>
-            <% } %>
+            <% if(blogs.length === 0) { %><div class="text-white/30 text-center py-10">No blogs found.</div><% } %>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         LEARNING HUB SECTION (SPLIT VIEW)
-    ════════════════════════════════════════════════════════════ -->
-    <section id="learning" class="scroll-mt-40">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">L E A R N I N G &nbsp; H U B</span></div>
-
-      <div class="md:grid md:grid-cols-12 md:gap-10 items-start">
-        
-        <!-- Left Column: Add Form (Sticky) -->
-        <div class="md:col-span-5 md:sticky md:top-40 mb-10 md:mb-0 z-10">
-          <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="premium-card p-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-            <h3 class="text-2xl font-black text-white mb-8 relative z-10">Upload Resource</h3>
-            <div class="space-y-5 relative z-10">
-              <div class="grid grid-cols-2 gap-4">
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Grade</label><select name="grade" required class="premium-input text-sm appearance-none"><option value="Grade 10">Grade 10</option><option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option><option value="Teacher Training">Teacher Training</option></select></div>
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Category</label><select name="category" required class="premium-input text-sm appearance-none"><option value="Course Notes">Course Notes</option><option value="Question Banks">Question Banks</option><option value="Syllabus">Syllabus</option><option value="Lab Manuals">Lab Manuals</option><option value="Reference Materials">Reference Materials</option></select></div>
-              </div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Subject Title</label><input type="text" name="subject" required class="premium-input text-sm"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Description</label><input type="text" name="description" class="premium-input text-sm"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Upload Document</label>
-                <div class="relative">
-                  <input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                  <div class="premium-input text-sm text-center border-dashed border-white/20 text-white/40 hover:text-white hover:border-cyan-400/50 hover:bg-cyan-400/5 transition flex items-center justify-center gap-2 py-4">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Select PDF or Word Doc
+      <!-- ==============================================
+           LEARNING HUB
+      =============================================== -->
+      <section id="learning" class="motion-section scroll-mt-24">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400"><i data-lucide="book-open"></i></div>
+          <h2 class="text-2xl font-black tracking-tight">Learning Hub</h2>
+        </div>
+        <div class="grid lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-5 lg:sticky top-24 z-10">
+            <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="glass-card p-8 relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
+              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="file-up" class="w-5 h-5 text-cyan-400"></i> Upload Resource</h3>
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs text-white/50 mb-1">Grade</label>
+                    <select name="grade" class="glass-input"><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option><option>Teacher Training</option></select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-white/50 mb-1">Category</label>
+                    <select name="category" class="glass-input"><option>Course Notes</option><option>Question Banks</option><option>Syllabus</option><option>Lab Manuals</option><option>Reference Materials</option></select>
                   </div>
                 </div>
+                <div><label class="block text-xs text-white/50 mb-1">Subject</label><input type="text" name="subject" required class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Description</label><input type="text" name="description" class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">PDF File</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="glass-input text-xs"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Or URL</label><input type="url" name="pdfUrl" class="glass-input"></div>
               </div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">OR External URL</label><input type="url" name="pdfUrl" class="premium-input text-sm"></div>
-            </div>
-            <button type="submit" class="btn-gradient-blue text-white font-bold py-3.5 px-6 rounded-xl w-full mt-8 relative z-10 tracking-wide text-sm flex justify-center items-center gap-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              Upload Material
-            </button>
-          </form>
-        </div>
-
-        <!-- Right Column: List -->
-        <div class="md:col-span-7 space-y-6">
-          <div class="relative">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-white/40">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            </div>
-            <input type="text" id="search-learning" placeholder="Search resources..." class="premium-input w-full pl-12 py-4 bg-black/20 text-base shadow-lg shadow-black/20 border-white/5 rounded-2xl">
+              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #06b6d4, #3b82f6)"><i data-lucide="upload" class="w-4 h-4"></i> Upload Resource</button>
+            </form>
           </div>
-
-          <div class="grid md:grid-cols-2 gap-4" id="learning-list">
+          <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4">
             <% learningMaterials.forEach(m=> { %>
-              <div class="premium-card p-6 flex flex-col justify-between group" data-search="<%= m.subject.toLowerCase() %> <%= m.description ? m.description.toLowerCase() : '' %>">
-                <div>
-                  <div class="flex items-start justify-between mb-5">
-                    <div class="flex flex-col gap-2 items-start">
-                      <span class="text-[9px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-1 rounded uppercase font-black tracking-widest"><%= m.grade %></span>
-                      <span class="text-[9px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2 py-1 rounded uppercase font-black tracking-widest"><%= m.category || 'Course Notes' %></span>
-                    </div>
-                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(m)) %>" class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
-                      <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this resource?');">
-                        <button type="submit" class="p-2 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
-                      </form>
-                    </div>
-                  </div>
-                  <h3 class="font-bold text-white text-lg mb-2"><%= m.subject %></h3>
-                  <p class="text-sm text-white/50 line-clamp-2"><%= m.description || 'No description' %></p>
+              <div class="glass-card p-5 relative group overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
+                <div class="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
+                  <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(m)) %>')))" class="p-1.5 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                  <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
+                    <button type="submit" class="p-1.5 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="trash" class="w-3 h-3"></i></button>
+                  </form>
                 </div>
-                <div class="mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] text-white/30 font-mono font-bold uppercase tracking-widest">
-                  <span><%= new Date(m.createdAt).toLocaleDateString() %></span>
+                <div class="mb-4 flex gap-2">
+                  <span class="px-2 py-1 text-[9px] bg-cyan-500/20 text-cyan-400 rounded uppercase font-bold border border-cyan-500/30"><%= m.grade %></span>
+                  <span class="px-2 py-1 text-[9px] bg-white/5 text-white/50 rounded uppercase font-bold border border-white/10"><%= m.category %></span>
                 </div>
+                <h4 class="font-bold text-lg mb-1 relative z-10"><%= m.subject %></h4>
+                <p class="text-xs text-white/50 line-clamp-2 relative z-10"><%= m.description %></p>
               </div>
             <% }) %>
-            <% if (learningMaterials.length === 0) { %>
-              <div class="col-span-2 text-center py-12 text-white/40 italic text-sm">No resources uploaded.</div>
-            <% } %>
+            <% if(learningMaterials.length === 0) { %><div class="col-span-2 text-white/30 text-center py-10">No learning materials.</div><% } %>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         TIMELINE SECTION (SPLIT VIEW)
-    ════════════════════════════════════════════════════════════ -->
-    <section id="timeline" class="scroll-mt-40">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-400">T I M E L I N E</span></div>
-
-      <div class="md:grid md:grid-cols-12 md:gap-10 items-start">
-        
-        <!-- Left Column: Add Form (Sticky) -->
-        <div class="md:col-span-5 md:sticky md:top-40 mb-10 md:mb-0 z-10">
-          <form action="/admin/api/timeline" method="POST" class="premium-card p-8 relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-            <h3 class="text-2xl font-black text-white mb-8 relative z-10">Add Event</h3>
-            <div class="space-y-5 relative z-10">
-              <div class="grid grid-cols-2 gap-4">
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Year(s)</label><input type="text" name="year" required class="premium-input text-sm"></div>
-                <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Order Index</label><input type="number" name="orderIndex" value="0" required class="premium-input text-sm"></div>
-              </div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Role / Title</label><input type="text" name="role" required class="premium-input text-sm"></div>
-              <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Location / Institution</label><input type="text" name="location" required class="premium-input text-sm"></div>
-            </div>
-            <button type="submit" class="btn-gradient-emerald text-white font-bold py-3.5 px-6 rounded-xl w-full mt-8 relative z-10 tracking-wide text-sm flex justify-center items-center gap-2">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-              Save Event
-            </button>
-          </form>
+      <!-- ==============================================
+           TIMELINE
+      =============================================== -->
+      <section id="timeline" class="motion-section scroll-mt-24">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400"><i data-lucide="clock"></i></div>
+          <h2 class="text-2xl font-black tracking-tight">Timeline</h2>
         </div>
-
-        <!-- Right Column: List -->
-        <div class="md:col-span-7">
-          <div class="grid gap-4">
-            <% timelineEvents.forEach(t=> { %>
-              <div class="premium-card p-6 flex justify-between items-center group">
-                <div class="flex items-center gap-6">
-                  <div class="text-sm font-mono font-bold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 whitespace-nowrap"><%= t.year %></div>
-                  <div>
-                    <h3 class="font-bold text-white text-lg"><%= t.role %></h3>
-                    <p class="text-sm text-white/50 mt-1"><%= t.location %></p>
-                  </div>
+        <div class="grid lg:grid-cols-12 gap-10 items-start">
+          <div class="lg:col-span-5 lg:sticky top-24 z-10">
+            <form action="/admin/api/timeline" method="POST" class="glass-card p-8 relative overflow-hidden">
+              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
+              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="plus" class="w-5 h-5 text-emerald-400"></i> Add Event</h3>
+              <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                  <div><label class="block text-xs text-white/50 mb-1">Year(s)</label><input type="text" name="year" required class="glass-input"></div>
+                  <div><label class="block text-xs text-white/50 mb-1">Order Index</label><input type="number" name="orderIndex" value="0" required class="glass-input"></div>
                 </div>
-                <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(t)) %>" class="p-2 rounded bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
-                  <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete this timeline event?');">
-                    <button type="submit" class="p-2 rounded bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                <div><label class="block text-xs text-white/50 mb-1">Role / Title</label><input type="text" name="role" required class="glass-input"></div>
+                <div><label class="block text-xs text-white/50 mb-1">Location / Institution</label><input type="text" name="location" required class="glass-input"></div>
+              </div>
+              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #10b981, #059669)"><i data-lucide="check" class="w-4 h-4"></i> Save Event</button>
+            </form>
+          </div>
+          <div class="lg:col-span-7 space-y-4">
+            <% timelineEvents.forEach(t=> { %>
+              <div class="glass-card p-5 flex items-center gap-4 group hover:bg-white/5">
+                <div class="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 font-mono text-sm rounded border border-emerald-500/20 font-bold"><%= t.year %></div>
+                <div class="flex-1">
+                  <h4 class="font-bold text-lg"><%= t.role %></h4>
+                  <p class="text-sm text-white/50"><%= t.location %></p>
+                </div>
+                <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(t)) %>')))" class="p-2 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                  <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
+                    <button type="submit" class="p-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="trash" class="w-4 h-4"></i></button>
                   </form>
                 </div>
               </div>
             <% }) %>
-            <% if (timelineEvents.length === 0) { %>
-              <div class="text-center py-12 text-white/40 italic text-sm">No timeline events yet.</div>
-            <% } %>
+            <% if(timelineEvents.length === 0) { %><div class="text-white/30 text-center py-10">No events found.</div><% } %>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ════════════════════════════════════════════════════════════
-         MESSAGES SECTION
-    ════════════════════════════════════════════════════════════ -->
-    <section id="messages" class="scroll-mt-40 max-w-4xl mx-auto">
-      <div class="section-header"><span class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">I N B O X</span></div>
-
-      <div class="space-y-4">
-        <% if (messages.length === 0) { %>
-          <div class="premium-card py-24 text-center text-white/30 flex flex-col items-center justify-center">
-            <svg class="w-16 h-16 mb-4 opacity-20" fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-            <p class="font-medium tracking-wide">Your inbox is empty.</p>
-          </div>
-        <% } %>
-        <% messages.forEach(m=> { %>
-          <div class="premium-card p-8 flex flex-col gap-6 group">
-            <div class="flex justify-between items-start border-b border-white/5 pb-6">
-              <div class="flex items-center gap-5">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500/20 to-purple-500/20 text-indigo-400 font-black text-xl flex items-center justify-center border border-indigo-500/30 uppercase shadow-inner">
-                  <%= m.name.charAt(0) %>
+      <!-- ==============================================
+           MESSAGES
+      =============================================== -->
+      <section id="messages" class="motion-section scroll-mt-24 max-w-4xl mx-auto">
+        <div class="flex items-center gap-4 mb-8">
+          <div class="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400"><i data-lucide="inbox"></i></div>
+          <h2 class="text-2xl font-black tracking-tight">Inbox</h2>
+        </div>
+        <div class="space-y-4">
+          <% messages.forEach(m=> { %>
+            <div class="glass-card p-6 border-t-[3px] border-t-violet-500/50">
+              <div class="flex flex-col sm:flex-row justify-between items-start mb-4 pb-4 border-b border-white/5">
+                <div class="flex gap-4 items-center">
+                  <div class="w-10 h-10 rounded-full bg-violet-500/20 text-violet-400 flex items-center justify-center font-bold font-mono border border-violet-500/30">
+                    <%= m.name.charAt(0).toUpperCase() %>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-lg"><%= m.name %></h4>
+                    <a href="mailto:<%= m.email %>" class="text-violet-400 text-sm hover:underline"><%= m.email %></a>
+                  </div>
                 </div>
-                <div>
-                  <h4 class="font-bold text-white text-lg"><%= m.name %></h4>
-                  <a href="mailto:<%= m.email %>" class="text-sm text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"><%= m.email %></a>
-                </div>
+                <span class="text-[10px] text-white/40 font-mono uppercase bg-white/5 px-2 py-1 rounded mt-4 sm:mt-0"><%= new Date(m.createdAt).toLocaleString() %></span>
               </div>
-              <div class="text-[10px] text-white/40 font-mono font-bold uppercase tracking-widest whitespace-nowrap bg-white/5 px-3 py-1.5 rounded-lg border border-white/5">
-                <%= new Date(m.createdAt).toLocaleString() %>
+              <% if (m.subject) { %><h5 class="font-bold mb-2"><%= m.subject %></h5><% } %>
+              <p class="text-sm text-white/80 whitespace-pre-wrap bg-black/20 p-4 rounded-xl border border-white/5"><%= m.message %></p>
+              <div class="mt-4 pt-4 border-t border-white/5 flex justify-end">
+                <form action="/admin/api/messages/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete message?');">
+                  <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors flex items-center gap-2"><i data-lucide="trash-2" class="w-3 h-3"></i> Delete</button>
+                </form>
               </div>
             </div>
-            <div>
-              <% if (m.subject) { %>
-                <h5 class="font-bold text-white mb-3 text-lg"><%= m.subject %></h5>
-              <% } %>
-              <p class="text-sm text-white/70 whitespace-pre-wrap bg-black/20 p-6 rounded-2xl border border-white/5 leading-relaxed"><%= m.message %></p>
-            </div>
-            <div class="flex justify-end pt-2">
-              <form action="/admin/api/messages/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete message?');">
-                <button type="submit" class="text-xs font-bold px-5 py-2.5 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all flex items-center gap-2 border border-red-500/20 hover:border-transparent">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13H5v-2h14v2z"/></svg>
-                  Delete Message
-                </button>
-              </form>
-            </div>
-          </div>
-        <% }) %>
-      </div>
-    </section>
+          <% }) %>
+          <% if (messages.length === 0) { %>
+            <div class="text-center py-20 text-white/30"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Inbox is empty.</p></div>
+          <% } %>
+        </div>
+      </section>
 
+    </div>
   </main>
-  
-  <!-- ════════════════════════════════════════════════════════════
-       MODALS FOR EDIT
-  ════════════════════════════════════════════════════════════ -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] hidden items-center justify-center p-4 transition-opacity">
+
+  <!-- ==============================================
+       MODALS
+  =============================================== -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
     
-    <!-- Project Modal -->
-    <div id="project-modal" class="modal-content premium-card w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+    <!-- Edit Project Modal -->
+    <div id="project-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-blue-500">
       <form id="project-form" method="POST" enctype="multipart/form-data" class="p-8">
-        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-          <h3 id="project-modal-title" class="text-2xl font-black text-white">Edit Project</h3>
-          <button type="button" onclick="closeModal()" class="text-white/40 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <h3 class="text-2xl font-black mb-6">Edit Project</h3>
+        <div class="space-y-4">
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Title</label><input type="text" name="title" id="p-title" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Image URL</label><input type="url" name="imageUrl" id="p-imageUrl" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Replace Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Description</label><textarea name="description" id="p-description" class="glass-input" rows="3"></textarea></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Tags</label><input type="text" name="tags" id="p-tags" class="glass-input"></div>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Title</label><input type="text" name="title" id="p-title" required class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Image URL (Or upload)</label><input type="url" name="imageUrl" id="p-imageUrl" class="premium-input text-sm mb-3"><input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-white/50 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-blue-400 hover:file:bg-blue-500/30 transition cursor-pointer"></div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Description</label><textarea name="description" id="p-description" required rows="3" class="premium-input text-sm"></textarea></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Tags</label><input type="text" name="tags" id="p-tags" placeholder="React, Node" class="premium-input text-sm"></div>
-        </div>
-        <div class="mt-10 flex justify-end gap-4">
-          <button type="button" onclick="closeModal()" class="px-6 py-3 rounded-xl font-bold text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient-brand text-white font-bold py-3 px-8 rounded-xl text-sm">Save Changes</button>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold">Cancel</button>
+          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #3b82f6, #4f46e5)">Save Changes</button>
         </div>
       </form>
     </div>
 
-    <!-- Blog Modal -->
-    <div id="blog-modal" class="modal-content premium-card w-full max-w-4xl max-h-[90vh] overflow-y-auto hidden">
+    <!-- Edit Blog Modal -->
+    <div id="blog-modal" class="modal-content glass-card w-full max-w-4xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-pink-500">
       <form id="blog-form" method="POST" enctype="multipart/form-data" class="p-8">
-        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-          <h3 id="blog-modal-title" class="text-2xl font-black text-white">Edit Blog</h3>
-          <button type="button" onclick="closeModal()" class="text-white/40 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <h3 class="text-2xl font-black mb-6">Edit Blog</h3>
+        <div class="space-y-4">
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Title</label><input type="text" name="title" id="b-title" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Slug</label><input type="text" name="slug" id="b-slug" class="glass-input font-mono"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input"></div>
+          <div class="bg-black/20 p-3 rounded-xl border border-white/5"><label class="flex items-center gap-2 font-bold"><input type="checkbox" name="published" id="b-published-edit" class="w-4 h-4 rounded bg-white/10 text-pink-500"> Published</label></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Content</label><textarea name="content" id="b-content" rows="6"></textarea></div>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Title</label><input type="text" name="title" id="b-title" required class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Slug (URL)</label><input type="text" name="slug" id="b-slug" required class="premium-input text-sm font-mono text-pink-300"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="w-full text-sm text-white/50 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-pink-500/20 file:text-pink-400 hover:file:bg-pink-500/30 transition cursor-pointer"></div>
-          <div class="flex items-center gap-4 bg-black/20 p-4 rounded-xl border border-white/5">
-            <div class="relative flex items-center">
-              <input type="checkbox" name="published" id="b-published-edit" class="peer w-6 h-6 opacity-0 absolute cursor-pointer z-20">
-              <div class="w-12 h-6 bg-white/10 rounded-full peer-checked:bg-pink-500 transition-colors z-10 border border-white/10 relative">
-                <div class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full transition-transform peer-checked:translate-x-6 shadow-md"></div>
-              </div>
-            </div>
-            <label for="b-published-edit" class="text-sm font-bold text-white tracking-wide cursor-pointer">Published</label>
-          </div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Content</label><textarea name="content" id="b-content" rows="6" class="premium-input font-mono"></textarea></div>
-        </div>
-        <div class="mt-10 flex justify-end gap-4">
-          <button type="button" onclick="closeModal()" class="px-6 py-3 rounded-xl font-bold text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient-pink text-white font-bold py-3 px-8 rounded-xl text-sm">Save Changes</button>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold">Cancel</button>
+          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #ec4899, #f43f5e)">Save Changes</button>
         </div>
       </form>
     </div>
 
-    <!-- Learning Modal -->
-    <div id="learning-modal" class="modal-content premium-card w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+    <!-- Edit Learning Modal -->
+    <div id="learning-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-cyan-500">
       <form id="learning-form" method="POST" enctype="multipart/form-data" class="p-8">
-        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-          <h3 id="learning-modal-title" class="text-2xl font-black text-white">Edit Resource</h3>
-          <button type="button" onclick="closeModal()" class="text-white/40 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <h3 class="text-2xl font-black mb-6">Edit Resource</h3>
+        <div class="space-y-4">
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Grade</label><input type="text" name="grade" id="l-grade" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Category</label><input type="text" name="category" id="l-category" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Subject</label><input type="text" name="subject" id="l-subject" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Description</label><input type="text" name="description" id="l-description" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Upload New PDF</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Or PDF URL</label><input type="url" name="pdfUrl" id="l-pdfUrl" class="glass-input"></div>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Grade</label><select name="grade" id="l-grade" required class="premium-input text-sm appearance-none"><option value="Grade 10">Grade 10</option><option value="Grade 11">Grade 11</option><option value="Grade 12">Grade 12</option><option value="Teacher Training">Teacher Training</option></select></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Category</label><select name="category" id="l-category" required class="premium-input text-sm appearance-none"><option value="Course Notes">Course Notes</option><option value="Question Banks">Question Banks</option><option value="Syllabus">Syllabus</option><option value="Lab Manuals">Lab Manuals</option><option value="Reference Materials">Reference Materials</option></select></div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Subject Title</label><input type="text" name="subject" id="l-subject" required class="premium-input text-sm"></div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Description</label><input type="text" name="description" id="l-description" class="premium-input text-sm"></div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Update File (Optional)</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="w-full text-sm text-white/50 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-cyan-500/20 file:text-cyan-400 hover:file:bg-cyan-500/30 transition cursor-pointer"></div>
-          <div class="md:col-span-2"><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">OR External URL</label><input type="url" name="pdfUrl" id="l-pdfUrl" class="premium-input text-sm"></div>
-        </div>
-        <div class="mt-10 flex justify-end gap-4">
-          <button type="button" onclick="closeModal()" class="px-6 py-3 rounded-xl font-bold text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient-blue text-white font-bold py-3 px-8 rounded-xl text-sm">Save Changes</button>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold">Cancel</button>
+          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #06b6d4, #3b82f6)">Save Changes</button>
         </div>
       </form>
     </div>
 
-    <!-- Timeline Modal -->
-    <div id="timeline-modal" class="modal-content premium-card w-full max-w-2xl max-h-[90vh] overflow-y-auto hidden">
+    <!-- Edit Timeline Modal -->
+    <div id="timeline-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-emerald-500">
       <form id="timeline-form" method="POST" class="p-8">
-        <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-          <h3 id="timeline-modal-title" class="text-2xl font-black text-white">Edit Event</h3>
-          <button type="button" onclick="closeModal()" class="text-white/40 hover:text-white p-2 rounded-lg hover:bg-white/10 transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+        <h3 class="text-2xl font-black mb-6">Edit Event</h3>
+        <div class="space-y-4">
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Year</label><input type="text" name="year" id="t-year" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Order Index</label><input type="number" name="orderIndex" id="t-orderIndex" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Role / Title</label><input type="text" name="role" id="t-role" class="glass-input"></div>
+          <div><label class="block text-[10px] uppercase text-white/50 mb-1">Location / Institution</label><input type="text" name="location" id="t-location" class="glass-input"></div>
         </div>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Year(s)</label><input type="text" name="year" id="t-year" required class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Order Index</label><input type="number" name="orderIndex" id="t-orderIndex" required class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Role</label><input type="text" name="role" id="t-role" required class="premium-input text-sm"></div>
-          <div><label class="block text-[10px] text-white/50 mb-2 uppercase tracking-widest font-bold">Location</label><input type="text" name="location" id="t-location" required class="premium-input text-sm"></div>
-        </div>
-        <div class="mt-10 flex justify-end gap-4">
-          <button type="button" onclick="closeModal()" class="px-6 py-3 rounded-xl font-bold text-white/60 hover:text-white hover:bg-white/10 transition-colors text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient-emerald text-white font-bold py-3 px-8 rounded-xl text-sm">Save Changes</button>
+        <div class="mt-8 flex justify-end gap-3">
+          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors font-bold">Cancel</button>
+          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #10b981, #059669)">Save Changes</button>
         </div>
       </form>
     </div>
@@ -730,104 +536,78 @@
   </div>
 
   <script>
-    let simplemde = null;
+    lucide.createIcons();
 
-    document.addEventListener("DOMContentLoaded", function () {
-      
-      // Setup Search Filters
-      function setupSearch(inputId, listId) {
-        const input = document.getElementById(inputId);
-        const list = document.getElementById(listId);
-        if(!input || !list) return;
-        
-        input.addEventListener('input', (e) => {
-          const query = e.target.value.toLowerCase();
-          const items = list.children;
-          Array.from(items).forEach(item => {
-            const data = item.getAttribute('data-search') || '';
-            if (data.includes(query)) {
-              item.style.display = 'flex';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-      }
-      
-      setupSearch('search-projects', 'projects-list');
-      setupSearch('search-blogs', 'blogs-list');
-      setupSearch('search-learning', 'learning-list');
-
-      // Initialize SimpleMDE for the Add Blog form
+    let mdeCreate = null;
+    let mdeEdit = null;
+    document.addEventListener("DOMContentLoaded", () => {
       if(document.getElementById("blog-add-editor")) {
-        new SimpleMDE({
-          element: document.getElementById("blog-add-editor"),
-          spellChecker: false,
-          placeholder: "Write your amazing blog post here in Markdown..."
+        mdeCreate = new SimpleMDE({ element: document.getElementById("blog-add-editor"), spellChecker: false });
+      }
+
+      if (window.Motion) {
+        const { animate, inView, stagger } = window.Motion;
+        inView(".motion-section", (info) => {
+          animate(info.target, { opacity: [0, 1], y: [40, 0] }, { duration: 0.8, easing: "ease-out" });
         });
+        const cards = document.querySelectorAll('.glass-card');
+        animate(cards, { opacity: [0, 1], scale: [0.95, 1] }, { duration: 0.5, delay: stagger(0.05) });
       }
     });
 
-    // Modal Logic for Editing
     function openModal(modalId, data) {
       const backdrop = document.getElementById('modal-backdrop');
-      backdrop.classList.remove('hidden');
-      backdrop.classList.add('flex');
+      backdrop.classList.remove('opacity-0', 'pointer-events-none');
+      
+      document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
       const modal = document.getElementById(modalId);
       modal.classList.remove('hidden');
       
-      // Populate logic
+      if (window.Motion) {
+        window.Motion.animate(modal, { scale: [0.95, 1], opacity: [0, 1] }, { duration: 0.3, easing: "ease-out" });
+      }
+
       if (modalId === 'project-modal') {
-        const form = document.getElementById('project-form');
-        if (data) {
-          form.action = `/admin/api/projects/${data.id}/update`;
-          document.getElementById('p-title').value = data.title;
-          document.getElementById('p-imageUrl').value = data.imageUrl || '';
-          document.getElementById('p-description').value = data.description;
-          document.getElementById('p-liveUrl').value = data.liveUrl || '';
-          document.getElementById('p-tags').value = data.tags || '';
-        }
+        document.getElementById('project-form').action = `/admin/api/projects/${data.id}/update`;
+        document.getElementById('p-title').value = data.title;
+        document.getElementById('p-imageUrl').value = data.imageUrl || '';
+        document.getElementById('p-description').value = data.description || '';
+        document.getElementById('p-liveUrl').value = data.liveUrl || '';
+        document.getElementById('p-tags').value = data.tags || '';
       } else if (modalId === 'blog-modal') {
-        const form = document.getElementById('blog-form');
-        if (data) {
-          form.action = `/admin/api/blogs/${data.id}/update`;
-          document.getElementById('b-title').value = data.title;
-          document.getElementById('b-slug').value = data.slug;
-          document.getElementById('b-published-edit').checked = data.published;
-          document.getElementById('b-content').value = data.content;
-        }
-        // Initialize or Update SimpleMDE for Edit Modal
-        if (!simplemde) {
-          simplemde = new SimpleMDE({ element: document.getElementById("b-content"), spellChecker: false });
-        }
-        simplemde.value(data ? data.content : '');
+        document.getElementById('blog-form').action = `/admin/api/blogs/${data.id}/update`;
+        document.getElementById('b-title').value = data.title;
+        document.getElementById('b-slug').value = data.slug;
+        document.getElementById('b-published-edit').checked = data.published;
+        if (!mdeEdit) { mdeEdit = new SimpleMDE({ element: document.getElementById("b-content"), spellChecker: false }); }
+        mdeEdit.value(data.content || '');
       } else if (modalId === 'learning-modal') {
-        const form = document.getElementById('learning-form');
-        if (data) {
-          form.action = `/admin/api/learning-materials/${data.id}/update`;
-          document.getElementById('l-grade').value = data.grade;
-          document.getElementById('l-category').value = data.category || 'Course Notes';
-          document.getElementById('l-subject').value = data.subject;
-          document.getElementById('l-description').value = data.description || '';
-          document.getElementById('l-pdfUrl').value = data.pdfUrl || '';
-        }
+        document.getElementById('learning-form').action = `/admin/api/learning-materials/${data.id}/update`;
+        document.getElementById('l-grade').value = data.grade;
+        document.getElementById('l-category').value = data.category || '';
+        document.getElementById('l-subject').value = data.subject;
+        document.getElementById('l-description').value = data.description || '';
+        document.getElementById('l-pdfUrl').value = data.pdfUrl || '';
       } else if (modalId === 'timeline-modal') {
-        const form = document.getElementById('timeline-form');
-        if (data) {
-          form.action = `/admin/api/timeline/${data.id}/update`;
-          document.getElementById('t-year').value = data.year;
-          document.getElementById('t-role').value = data.role;
-          document.getElementById('t-location').value = data.location;
-          document.getElementById('t-orderIndex').value = data.orderIndex;
-        }
+        document.getElementById('timeline-form').action = `/admin/api/timeline/${data.id}/update`;
+        document.getElementById('t-year').value = data.year;
+        document.getElementById('t-orderIndex').value = data.orderIndex;
+        document.getElementById('t-role').value = data.role;
+        document.getElementById('t-location').value = data.location;
       }
     }
 
     function closeModal() {
       const backdrop = document.getElementById('modal-backdrop');
-      backdrop.classList.add('hidden');
-      backdrop.classList.remove('flex');
-      document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+      backdrop.classList.add('opacity-0', 'pointer-events-none');
+      if (window.Motion) {
+        document.querySelectorAll('.modal-content:not(.hidden)').forEach(m => {
+          window.Motion.animate(m, { scale: 0.95, opacity: 0 }, { duration: 0.2 });
+        });
+      }
+      setTimeout(() => {
+        document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+      }, 250);
     }
   </script>
 </body>
