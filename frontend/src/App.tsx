@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import LoadingScreen from './components/LoadingScreen';
@@ -51,6 +52,7 @@ function AppContent() {
   const [isLoading, setIsLoading] = useState(true);
   const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
+  const location = useLocation();
 
   // Initialize premium hooks
   useThemeAnimation(); // Smooth theme transitions
@@ -72,7 +74,7 @@ function AppContent() {
 
 
   return (
-    <BrowserRouter>
+    <>
       <ScrollToTop />
       <SmoothScroll>
         <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] transition-colors duration-300">
@@ -92,23 +94,28 @@ function AppContent() {
             }}
           >
             <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/research" element={<ResearchDashboard />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AnimatePresence mode="wait">
+              <Routes location={location} key={location.pathname}>
+                <Route path="/" element={<Home />} />
+                <Route path="/research" element={<ResearchDashboard />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AnimatePresence>
             <Footer />
           </div>
         </div>
       </SmoothScroll>
-    </BrowserRouter>
+    </>
   );
 }
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AppContent />
-    </ToastProvider>
+    <BrowserRouter>
+      <ToastProvider>
+        <AppContent />
+      </ToastProvider>
+    </BrowserRouter>
   );
 }
+

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const defaultProjects = [
   { title: "LULC Analysis - Nawalparasi", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80", url: "#" },
@@ -14,6 +14,92 @@ type Project = {
   imageUrl: string | null;
   githubUrl: string | null;
   liveUrl: string | null;
+};
+
+type DisplayProject = {
+  title: string;
+  span: string;
+  aspect: string;
+  img: string;
+  url: string;
+};
+
+const ProjectCard = ({ project, index }: { project: DisplayProject, index: number }) => {
+  const ref = useRef<HTMLAnchorElement>(null);
+  
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.a
+      ref={ref}
+      href={project.url}
+      target={project.url !== "#" ? "_blank" : undefined}
+      rel={project.url !== "#" ? "noopener noreferrer" : undefined}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        rotateX,
+        rotateY,
+        transformPerspective: 1000,
+        transformStyle: "preserve-3d"
+      }}
+      className={`group relative overflow-hidden premium-card luxury-glow rounded-3xl ${project.span} ${project.aspect} block`}
+    >
+      {/* Background Image */}
+      <img
+        src={project.img}
+        alt={project.title}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+
+      {/* Halftone Overlay */}
+      <div
+        className="absolute inset-0 opacity-20 mix-blend-multiply pointer-events-none"
+        style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '4px 4px' }}
+      />
+
+      {/* Hover Dark Overlay & Blur */}
+      <div className="absolute inset-0 bg-bg/70 opacity-0 group-hover:opacity-100 backdrop-blur-lg transition-all duration-500 flex items-center justify-center">
+        {/* Hover Label */}
+        <div className="relative inline-flex items-center justify-center p-[2px] rounded-full overflow-hidden transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100" style={{ transform: "translateZ(50px)" }}>
+          <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] animate-[spin_2s_linear_infinite]" />
+          <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium shadow-lg-premium">
+            View — <span className="font-display italic text-base">{project.title}</span>
+          </div>
+        </div>
+      </div>
+    </motion.a>
+  );
 };
 
 export default function SelectedWorks() {
@@ -71,44 +157,9 @@ export default function SelectedWorks() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6" style={{ perspective: "1500px" }}>
           {displayProjects.map((project, i) => (
-            <motion.a
-              href={project.url}
-              target={project.url !== "#" ? "_blank" : undefined}
-              rel={project.url !== "#" ? "noopener noreferrer" : undefined}
-              key={project.title + i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-              whileHover={{ scale: 1.02, y: -5 }}
-              className={`group relative overflow-hidden premium-card luxury-glow rounded-3xl ${project.span} ${project.aspect} block`}
-            >
-              {/* Background Image */}
-              <img
-                src={project.img}
-                alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-
-              {/* Halftone Overlay */}
-              <div
-                className="absolute inset-0 opacity-20 mix-blend-multiply pointer-events-none"
-                style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '4px 4px' }}
-              />
-
-              {/* Hover Dark Overlay & Blur */}
-              <div className="absolute inset-0 bg-bg/70 opacity-0 group-hover:opacity-100 backdrop-blur-lg transition-all duration-500 flex items-center justify-center">
-                {/* Hover Label */}
-                <div className="relative inline-flex items-center justify-center p-[2px] rounded-full overflow-hidden transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
-                  <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] animate-[spin_2s_linear_infinite]" />
-                  <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium shadow-lg-premium">
-                    View — <span className="font-display italic text-base">{project.title}</span>
-                  </div>
-                </div>
-              </div>
-            </motion.a>
+            <ProjectCard key={project.title + i} project={project} index={i} />
           ))}
         </div>
 

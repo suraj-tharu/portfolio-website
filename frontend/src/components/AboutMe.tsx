@@ -1,4 +1,5 @@
 import { FadeIn } from './FadeIn';
+import { motion } from 'framer-motion';
 
 export default function AboutMe() {
 
@@ -41,20 +42,33 @@ export default function AboutMe() {
           </FadeIn>
 
           {/* Remaining Biography Paragraphs */}
-          <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 premium-card luxury-glow glass rounded-3xl border border-stroke backdrop-blur-md">
-            <p>
-              I completed my <strong className="text-[var(--accent)]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[var(--accent-2)]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
-            </p>
-            <p>
-              I successfully completed a six-month internship at <strong className="text-[var(--brand-light)]">Nepal Telecom</strong>, where I gained practical experience in telecommunications systems and information technology infrastructure.
-            </p>
-            <p>
-              I have extensive experience in technical education and vocational training. I served as a Senior Instructor at <strong className="text-[var(--accent)]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[var(--accent-2)]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.
-            </p>
-            <p>
-              Currently, I am working as a <strong className="text-[var(--brand-light)]">Coordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. I have been actively involved in teaching, curriculum implementation, ICT integration in education, technical coordination, and academic leadership. My professional focus includes computer engineering education, technology-driven learning, research, web and mobile application development, and capacity building in technical and vocational education.
-            </p>
-          </FadeIn>
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
+              hidden: { opacity: 0 }
+            }}
+            className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 premium-card luxury-glow glass rounded-3xl border border-stroke backdrop-blur-md"
+          >
+            {[
+              <>I completed my <strong className="text-[var(--accent)]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[var(--accent-2)]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.</>,
+              <>I successfully completed a six-month internship at <strong className="text-[var(--brand-light)]">Nepal Telecom</strong>, where I gained practical experience in telecommunications systems and information technology infrastructure.</>,
+              <>I have extensive experience in technical education and vocational training. I served as a Senior Instructor at <strong className="text-[var(--accent)]">Shree Buddhi Bikash Secondary School</strong> and <strong className="text-[var(--accent-2)]">Additional Technical School</strong>, Ratamata-6, Rolpa, delivering technical and computer engineering education.</>,
+              <>Currently, I am working as a <strong className="text-[var(--brand-light)]">Coordinator</strong> at Shree Tri Shaheed Model Secondary School, Aandhikhola-1, Syangja. I have been actively involved in teaching, curriculum implementation, ICT integration in education, technical coordination, and academic leadership. My professional focus includes computer engineering education, technology-driven learning, research, web and mobile application development, and capacity building in technical and vocational education.</>
+            ].map((text, index) => (
+              <motion.p
+                key={index}
+                variants={{
+                  visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.8, ease: "easeOut" } },
+                  hidden: { opacity: 0, y: 20, filter: "blur(5px)" }
+                }}
+              >
+                {text}
+              </motion.p>
+            ))}
+          </motion.div>
         </div>
 
       </div>

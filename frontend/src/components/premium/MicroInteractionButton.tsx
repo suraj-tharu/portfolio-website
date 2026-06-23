@@ -1,6 +1,6 @@
 // MicroInteractionButton - Premium button with micro-interactions
-import { motion } from 'framer-motion';
-
+import { useRef } from 'react';
+import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 interface MicroInteractionButtonProps {
     children: React.ReactNode;
@@ -17,6 +17,32 @@ export const MicroInteractionButton = ({
     className = "",
     glowColor = "#D4AF37"
 }: MicroInteractionButtonProps) => {
+    const ref = useRef<HTMLButtonElement>(null);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
+    const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+
+    const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+        if (!ref.current) return;
+        const rect = ref.current.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        
+        x.set(xPct * 20); // Magnetic pull radius X
+        y.set(yPct * 20); // Magnetic pull radius Y
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
     const baseClasses = "px-8 py-3 rounded-lg font-semibold transition-all duration-300 relative overflow-hidden";
 
     const variantClasses = {
@@ -27,18 +53,27 @@ export const MicroInteractionButton = ({
 
     return (
         <motion.button
+            ref={ref}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={onClick}
             className={`${baseClasses} ${variantClasses[variant]} ${className}`}
             style={{
+                x: mouseXSpring,
+                y: mouseYSpring,
                 boxShadow: `0 0 30px ${glowColor}00`
             }}
-            onHoverStart={(e: any) => {
-                e.currentTarget.style.boxShadow = `0 0 30px ${glowColor}80, inset 0 0 20px ${glowColor}40`;
+            onHoverStart={() => {
+                if (ref.current) {
+                    ref.current.style.boxShadow = `0 0 30px ${glowColor}80, inset 0 0 20px ${glowColor}40`;
+                }
             }}
-            onHoverEnd={(e: any) => {
-                e.currentTarget.style.boxShadow = `0 0 30px ${glowColor}00`;
+            onHoverEnd={() => {
+                if (ref.current) {
+                    ref.current.style.boxShadow = `0 0 30px ${glowColor}00`;
+                }
             }}
         >
             <motion.span

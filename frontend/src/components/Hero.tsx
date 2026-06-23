@@ -89,26 +89,30 @@ export default function Hero() {
 
   return (
     <motion.section ref={containerRef} style={{ opacity: sectionOpacity }} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
-      {/* Background Video with Premium Lighting */}
-      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#06080F] via-[#1a0a2e] to-[#06080F]">
+      {/* Background Video with Premium Lighting & Fallback */}
+      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 overflow-hidden">
+        {/* Premium Animated Gradient Background Base */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(10,10,26,1)_0%,rgba(28,10,46,1)_50%,rgba(0,0,0,1)_100%)] dark:bg-[linear-gradient(135deg,rgba(10,10,26,1)_0%,rgba(28,10,46,1)_50%,rgba(0,0,0,1)_100%)] light:bg-[linear-gradient(135deg,rgba(250,251,252,1)_0%,rgba(235,230,240,1)_50%,rgba(255,255,255,1)_100%)] transition-colors duration-500" />
+        
         <video
           ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
-          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen"
+          className="absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen transition-opacity duration-1000"
         />
+        
         {/* Premium Gradient Overlay with sophistication */}
         <div className="absolute inset-0 bg-gradient-to-b from-[var(--bg)]/80 via-transparent to-[var(--bg)]" />
 
         {/* Ultra-premium ambient lighting effects */}
-        <div className="absolute -top-40 -left-40 w-80 h-80 bg-violet-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-blob" style={{ animationDelay: '0s' }} />
-        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-pink-600 rounded-full mix-blend-screen filter blur-3xl opacity-15 animate-blob" style={{ animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-3xl opacity-10 animate-blob" style={{ animationDelay: '4s' }} />
+        <div className="absolute -top-40 -left-40 w-80 h-80 bg-violet-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-blob" style={{ animationDelay: '0s' }} />
+        <div className="absolute -bottom-40 -right-40 w-80 h-80 bg-pink-600 rounded-full mix-blend-screen filter blur-[120px] opacity-20 animate-blob" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500 rounded-full mix-blend-screen filter blur-[120px] opacity-15 animate-blob" style={{ animationDelay: '4s' }} />
 
         {/* Additional glow overlay */}
-        <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-30" />
+        <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-40" />
       </motion.div>
 
       {/* Content with premium spacing and animations */}
