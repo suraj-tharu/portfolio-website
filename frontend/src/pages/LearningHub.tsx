@@ -29,6 +29,8 @@ const categories = [
   { id: 'Grade 11',         label: 'Grade 11 (NEB)',   icon: FileText },
   { id: 'Grade 12',         label: 'Grade 12 (NEB)',   icon: Layers },
   { id: 'Teacher Training', label: 'Teacher Training', icon: PenTool },
+  { id: 'Project',          label: 'Projects',         icon: Code2 },
+  { id: 'Blog',             label: 'Blogs',            icon: Globe },
 ];
 
 /* Grade → gradient colour */
@@ -37,14 +39,18 @@ const gradeColor: Record<string, string> = {
   'Grade 11':         'from-blue-500 to-cyan-600',
   'Grade 12':         'from-emerald-500 to-teal-600',
   'Teacher Training': 'from-pink-500 to-rose-600',
+  'Project':          'from-cyan-500 to-blue-600',
+  'Blog':             'from-amber-500 to-orange-600',
 };
 
 /* Grade → icon */
 const gradeIcon: Record<string, typeof Cpu> = {
   'Grade 10':         Cpu,
-  'Grade 11':         Code2,
-  'Grade 12':         Database,
-  'Teacher Training': Globe,
+  'Grade 11':         Database,
+  'Grade 12':         Archive,
+  'Teacher Training': BookOpen,
+  'Project':          Code2,
+  'Blog':             Globe,
 };
 
 
@@ -112,15 +118,15 @@ function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) 
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/6">
           <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-white/35">
             <FileText size={11} />
-            {hasFile ? 'File available' : 'No file yet'}
+            {hasFile ? (mat.grade === 'Project' || mat.grade === 'Blog' ? 'Link available' : 'File available') : 'No file yet'}
           </div>
 
           {hasFile ? (
             <motion.a
               href={mat.pdfUrl!}
-              target="_blank"
+              target={mat.grade === 'Blog' ? '_self' : '_blank'}
               rel="noopener noreferrer"
-              download
+              download={mat.grade !== 'Project' && mat.grade !== 'Blog'}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-1.5 text-xs font-bold
@@ -129,7 +135,11 @@ function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) 
                 transition-colors"
               onClick={e => e.stopPropagation()}
             >
-              <Download size={12} /> Download
+              {mat.grade === 'Project' || mat.grade === 'Blog' ? (
+                <><ExternalLink size={12} /> View</>
+              ) : (
+                <><Download size={12} /> Download</>
+              )}
             </motion.a>
           ) : (
             <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 dark:text-white/25 cursor-not-allowed">
@@ -158,13 +168,42 @@ export default function LearningHub() {
   const [error, setError]         = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/learning-materials')
-      .then(r => {
-        if (!r.ok) throw new Error('Failed to fetch');
-        return r.json();
-      })
-      .then(data => {
-        setMaterials(data.materials || []);
+    Promise.all([
+      fetch('/api/learning-materials').then(r => r.ok ? r.json() : { materials: [] }),
+      fetch('/api/portfolio-data').then(r => r.ok ? r.json() : { projects: [], blogs: [] })
+    ])
+      .then(([matsData, portData]) => {
+        const rawMaterials = matsData.materials || [];
+        const rawProjects = portData.projects || [];
+        const rawBlogs = portData.blogs || [];
+
+        // Map Projects into the LearningMaterial shape
+        const projectMaterials: LearningMaterial[] = rawProjects.map((p: any) => ({
+          id: p.id + 10000,
+          grade: 'Project',
+          category: 'Portfolio',
+          subject: p.title,
+          description: p.description,
+          pdfUrl: p.liveUrl || p.githubUrl || '#',
+          createdAt: p.createdAt
+        }));
+
+        // Map Blogs into the LearningMaterial shape
+        const blogMaterials: LearningMaterial[] = rawBlogs.map((b: any) => ({
+          id: b.id + 20000,
+          grade: 'Blog',
+          category: 'Article',
+          subject: b.title,
+          description: b.content ? b.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '',
+          pdfUrl: `/blog/${b.slug}`,
+          createdAt: b.createdAt
+        }));
+
+        const combined = [...rawMaterials, ...projectMaterials, ...blogMaterials].sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+        setMaterials(combined);
         setLoading(false);
       })
       .catch(() => {
