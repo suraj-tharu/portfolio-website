@@ -33,10 +33,13 @@ export default function Hero() {
         video.play().catch(() => { });
       });
       hls.on(Hls.Events.ERROR, (_event, data) => {
-        console.warn('HLS Error:', data);
-        // Fallback: hide video if it fails
-        if (video.parentElement) {
-          video.parentElement.style.opacity = '0';
+        if (data.fatal) {
+          console.warn('HLS Fatal Error, disabling video:', data.type);
+          hls.destroy();
+          // Fallback: hide video if it fails
+          if (video.parentElement) {
+            video.parentElement.style.opacity = '0';
+          }
         }
       });
 

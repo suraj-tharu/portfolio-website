@@ -155,6 +155,8 @@ app.use(helmet({
         "https://*.logrocket.io",
         "https://www.google-analytics.com",
         "https://stats.g.doubleclick.net",
+        "ws:",
+        "wss:",
         ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
       mediaSrc: ["'self'", "blob:", "https://stream.mux.com", "https://d8j0ntlcm91z4.cloudfront.net"],
@@ -235,7 +237,12 @@ app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'asse
   maxAge: '1y',
   immutable: true,
 }));
-app.use('/icons', express.static(path.join(__dirname, 'icons'), { maxAge: '1d' }));
+
+// Catch legacy /icons/* requests (from cached manifests) and redirect to the modern favicon
+app.get('/icons/*', (req, res) => {
+  res.redirect(301, '/favicon.svg');
+});
+
 app.use(express.static(path.join(__dirname, '.'), {
   maxAge: '1d',
   // Allowlist: only serve known safe top-level files
@@ -256,7 +263,7 @@ app.use((req, res, next) => {
   const ext = path.extname(urlPath).toLowerCase();
   const base = path.basename(urlPath);
   // Block any request that tries to reach a sensitive file at the root level
-  if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/icons/') && !urlPath.startsWith('/assets/') &&
+  if (!urlPath.startsWith('/dist/') && !urlPath.startsWith('/assets/') &&
     !safeTopLevelFiles.includes(base) && !safeImageExts.includes(ext) &&
     urlPath !== '/') {
     // Allow only known safe patterns — everything else goes to route handlers
