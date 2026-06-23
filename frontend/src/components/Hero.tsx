@@ -76,10 +76,10 @@ export default function Hero() {
   useEffect(() => {
     // GSAP Animations for elements not handled by framer-motion
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 });
+      const tl = gsap.timeline({ delay: 0.2 });
       tl.fromTo('.blur-in',
-        { opacity: 0, y: 20, filter: "blur(10px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, stagger: 0.1, ease: "power3.out" }
+        { opacity: 0, y: 30, filter: "blur(12px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1.4, stagger: 0.15, ease: "expo.out" }
       );
     }, containerRef);
     return () => ctx.revert();
@@ -142,15 +142,15 @@ export default function Hero() {
           </motion.div>
         )}
 
-        <h1 className="text-fluid-4xl md:text-fluid-7xl lg:text-fluid-8xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
+        <h1 className="text-fluid-4xl md:text-fluid-7xl lg:text-fluid-8xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary">
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block gradient-text-premium hover:text-brand-light transition-all duration-300"
-              initial={{ y: 100, opacity: 0, rotateZ: 5 }}
-              animate={{ y: 0, opacity: 1, rotateZ: 0 }}
-              transition={{ duration: 1.2, delay: 0.5 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
-              whileHover={{ scale: 1.05 }}
+              className="inline-block gradient-text-premium hover:text-brand-light transition-all duration-500"
+              initial={{ y: 50, opacity: 0, filter: 'blur(10px)' }}
+              animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
+              transition={{ duration: 1.4, delay: 0.1 + i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ scale: 1.02 }}
             >
               {word}
             </motion.span>
@@ -168,7 +168,7 @@ export default function Hero() {
         </div>
 
         <div className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-sm dark:drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center">
-          <TextReveal text={t('hero.description')} delay={1.2} staggerDuration={0.03} splitBy="word" />
+          <TextReveal text={t('hero.description')} delay={0.6} staggerDuration={0.015} splitBy="word" />
         </div>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
