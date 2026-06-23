@@ -49,7 +49,7 @@ function ScrollToTop() {
 }
 
 function AppContent() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
   const location = useLocation();
@@ -90,10 +90,13 @@ function AppContent() {
           <ChatWidget />
           <FloatingActionButton />
 
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          <div
+            className="transition-opacity duration-1000 ease-in-out"
+            style={{
+              opacity: isLoading ? 0 : 1,
+              height: isLoading ? '100vh' : 'auto',
+              overflow: isLoading ? 'hidden' : 'visible'
+            }}
           >
             <Navbar />
             <AnimatePresence mode="wait">
@@ -104,7 +107,7 @@ function AppContent() {
               </Routes>
             </AnimatePresence>
             <Footer />
-          </motion.div>
+          </div>
         </div>
       </SmoothScroll>
     </>

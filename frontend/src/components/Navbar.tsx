@@ -76,7 +76,7 @@ export default function Navbar() {
           hidden: { y: -100, opacity: 0 }
         }}
         animate={hidden ? "hidden" : "visible"}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
         className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-6 py-3 md:py-4 flex justify-between items-center bg-bg/70 dark:bg-bg/80 backdrop-blur-xl border-b border-stroke/80 shadow-sm"
         role="navigation" aria-label="Main navigation"
       >
