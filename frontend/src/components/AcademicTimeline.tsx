@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useMotionTemplate, type MotionValue } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { GraduationCap, Briefcase, MapPin, Calendar } from 'lucide-react';
 import { useSoundEffects } from '../hooks/useSoundEffects';
@@ -20,7 +20,7 @@ const defaultTimeline: TimelineEvent[] = [
   { year: "2024 - Present", role: "MSc Information System Engineering", location: "Purbanchal University", type: 'education' },
 ];
 
-function TimelineCard({ item, index, mouseX, mouseY }: { item: TimelineEvent, index: number, mouseX: any, mouseY: any }) {
+function TimelineCard({ item, index, mouseX, mouseY }: { item: TimelineEvent, index: number, mouseX: MotionValue<number>, mouseY: MotionValue<number> }) {
   const { playHover } = useSoundEffects();
   const cardRef = useRef<HTMLDivElement>(null);
   const [rect, setRect] = useState<DOMRect | null>(null);
@@ -117,7 +117,7 @@ export default function AcademicTimeline() {
       .then(data => {
         if (data.timeline && data.timeline.length > 0) {
           // Infer type if not present
-          const enhanced = data.timeline.map((item: any) => ({
+          const enhanced = data.timeline.map((item: TimelineEvent) => ({
             ...item,
             type: item.type || (item.role.toLowerCase().includes('b.e.') || item.role.toLowerCase().includes('msc') ? 'education' : 'work')
           }));

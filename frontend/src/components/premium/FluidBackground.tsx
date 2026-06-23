@@ -81,7 +81,6 @@ export const FluidBackground = () => {
             ref={canvasRef}
             className="fixed inset-0 pointer-events-none z-[-1] transition-opacity duration-1000"
             style={{
-                filter: 'blur(60px)',
                 opacity: 0.8
             }}
         />

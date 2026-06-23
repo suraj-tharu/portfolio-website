@@ -21,7 +21,10 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
-      setIsVisible(true);
+      setIsVisible(prev => {
+        if (!prev) return true;
+        return prev;
+      });
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
     };

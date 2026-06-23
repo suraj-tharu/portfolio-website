@@ -3,6 +3,7 @@ import Globe from 'react-globe.gl';
 import { motion } from 'framer-motion';
 
 export default function GlobeShowcase() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const globeEl = useRef<any>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement>(null);

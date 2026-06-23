@@ -312,10 +312,7 @@
     animation: stagger-in 0.5s ease-out forwards;
 }
 
-/* Smooth Scroll Behavior */
-html {
-    scroll-behavior: smooth;
-}
+/* Removed native smooth scroll behavior to prevent conflict with Lenis JS smooth scroll */
 
 /* Focus Ring Enhancement */
 :focus-visible {
