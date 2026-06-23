@@ -1,9 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import {
-  BookOpen, Download, FileText, Archive, PenTool,
+  BookOpen, Download, FileText, Archive, PenTool, Layers,
   Clock, ArrowRight, Search, Star, ExternalLink, ChevronRight,
-  Code2, Database, Globe, Cpu, BarChart2, FlaskConical, Sparkles,
+  Code2, Database, Globe, Cpu, Sparkles,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
@@ -11,93 +12,85 @@ import {
 ═══════════════════════════════════════════════════════════ */
 const categories = [
   { id: 'all',         label: 'All',              icon: Sparkles },
-  { id: 'notes',       label: 'Course Notes',     icon: FileText },
-  { id: 'qbank',       label: 'Question Banks',   icon: Archive },
-  { id: 'lab',         label: 'Lab Manuals',      icon: PenTool },
-  { id: 'reference',   label: 'References',       icon: BookOpen },
-  { id: 'software',    label: 'Software & Tools', icon: Code2 },
+  { id: 'class-10',    label: 'Class 10 (SEE)',   icon: BookOpen },
+  { id: 'class-11',    label: 'Class 11 (NEB)',   icon: FileText },
+  { id: 'class-12',    label: 'Class 12 (NEB)',   icon: Layers },
+  { id: 'diploma',     label: 'Diploma Level',    icon: Archive },
+  { id: 'bachelor',    label: 'Bachelor Level',   icon: Code2 },
 ];
 
 const resources = [
   {
-    id: 1, category: 'notes',
-    title: 'Digital Design & Architecture',
-    description: 'Complete lecture notes covering combinational circuits, flip-flops, memory, and FPGA basics.',
+    id: 1, category: 'class-10',
+    title: 'Class 10 Computer Science Notes',
+    description: 'Complete SEE syllabus notes covering programming, database, and computer networking basics.',
     icon: Cpu, color: 'from-violet-500 to-purple-600',
-    badge: 'Updated 2026', files: 12, downloads: 340, stars: 4.8,
-    tags: ['CMOS', 'Logic Gates', 'FPGA'],
+    badge: 'Updated 2026', files: 1, downloads: 1204, stars: 4.8,
+    tags: ['SEE', 'Computer Science', 'QBasic'],
+    fileUrl: '/downloads/class-10-notes.pdf'
   },
   {
-    id: 2, category: 'notes',
-    title: 'Object-Oriented Programming (C++)',
-    description: 'OOP fundamentals: classes, polymorphism, inheritance, templates and STL with practical examples.',
+    id: 2, category: 'class-11',
+    title: 'Class 11 Computer Science',
+    description: 'NEB board notes including Number Systems, Boolean Logic, and C Programming fundamentals.',
     icon: Code2, color: 'from-blue-500 to-cyan-600',
-    badge: 'Popular', files: 9, downloads: 520, stars: 4.9,
-    tags: ['C++', 'STL', 'Patterns'],
+    badge: 'Popular', files: 1, downloads: 856, stars: 4.9,
+    tags: ['NEB', 'C Programming', 'Logic Gates'],
+    fileUrl: '/downloads/class-11-notes.pdf'
   },
   {
-    id: 3, category: 'notes',
-    title: 'Database Management Systems',
-    description: 'ER diagrams, normalization, SQL, transactions, NoSQL & query optimization.',
+    id: 3, category: 'class-12',
+    title: 'Class 12 CS & Physics Notes',
+    description: 'Complete NEB Class 12 notes covering Database Management, Networking, OOP in C++, and Physics core topics.',
     icon: Database, color: 'from-emerald-500 to-teal-600',
-    badge: 'New', files: 8, downloads: 280, stars: 4.7,
-    tags: ['SQL', 'NoSQL', 'ER Diagrams'],
+    badge: 'New', files: 1, downloads: 920, stars: 4.7,
+    tags: ['NEB', 'C++', 'Physics'],
+    fileUrl: '/downloads/class-12-notes.pdf'
   },
   {
-    id: 4, category: 'notes',
-    title: 'Geographic Information Systems',
+    id: 4, category: 'bachelor',
+    title: 'Geographic Information Systems (GIS)',
     description: 'Spatial data concepts, coordinate systems, map projections and GIS software workflows.',
     icon: Globe, color: 'from-orange-500 to-amber-600',
     badge: 'Updated 2026', files: 15, downloads: 410, stars: 4.9,
     tags: ['QGIS', 'ArcGIS', 'Remote Sensing'],
+    fileUrl: '#'
   },
   {
-    id: 5, category: 'qbank',
-    title: 'Digital Design Q-Bank (5 Years)',
-    description: 'Previous year exam papers with detailed solutions and model answers.',
+    id: 5, category: 'diploma',
+    title: 'Engineering Materials Q-Bank',
+    description: 'Previous year CTEVT exam papers with detailed solutions and model answers.',
     icon: Archive, color: 'from-pink-500 to-rose-600',
     badge: '2019–2024', files: 5, downloads: 620, stars: 5.0,
     tags: ['Exam Prep', 'Past Papers'],
+    fileUrl: '#'
   },
   {
-    id: 6, category: 'qbank',
+    id: 6, category: 'bachelor',
     title: 'DBMS Question Bank',
     description: 'Chapter-wise questions with solutions for semester exams and competitive prep.',
     icon: Archive, color: 'from-indigo-500 to-blue-600',
     badge: '5 Years', files: 5, downloads: 450, stars: 4.8,
     tags: ['Exam Prep', 'SQL Practice'],
+    fileUrl: '#'
   },
   {
-    id: 7, category: 'lab',
+    id: 7, category: 'bachelor',
     title: 'C++ Lab Manual (8 Exercises)',
     description: 'Step-by-step lab exercises with code samples, expected output and viva questions.',
     icon: PenTool, color: 'from-cyan-500 to-blue-500',
     badge: '8 Labs', files: 8, downloads: 290, stars: 4.7,
     tags: ['Practicals', 'Code Samples'],
+    fileUrl: '#'
   },
   {
-    id: 8, category: 'lab',
+    id: 8, category: 'bachelor',
     title: 'GIS Practical Manual',
     description: 'Hands-on exercises in QGIS: digitizing, spatial analysis, web mapping.',
     icon: Globe, color: 'from-green-500 to-emerald-600',
     badge: '10 Practicals', files: 10, downloads: 310, stars: 4.9,
     tags: ['QGIS', 'Spatial Analysis'],
-  },
-  {
-    id: 9, category: 'reference',
-    title: 'Machine Learning Resources',
-    description: 'Curated links to papers, datasets, Jupyter notebooks and free courses for ML/AI.',
-    icon: BarChart2, color: 'from-purple-500 to-violet-600',
-    badge: '20+ Links', files: 0, downloads: 870, stars: 5.0,
-    tags: ['Python', 'Scikit-learn', 'TensorFlow'],
-  },
-  {
-    id: 10, category: 'software',
-    title: 'QGIS + Extensions Pack',
-    description: 'Installation guides, recommended plugins list and beginner configuration templates.',
-    icon: FlaskConical, color: 'from-lime-500 to-green-600',
-    badge: 'Free Tool', files: 3, downloads: 180, stars: 4.6,
-    tags: ['Open Source', 'GIS'],
+    fileUrl: '#'
   },
 ];
 
@@ -206,20 +199,31 @@ function ResourceCard({ res, index }: { res: (typeof resources)[0]; index: numbe
               {res.stars}
             </div>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-1.5 text-xs font-bold
-              text-violet-600 dark:text-violet-400
-              hover:text-violet-800 dark:hover:text-violet-200
-              transition-colors"
-          >
-            {res.files > 0 ? (
-              <><Download size={12} /> Download</>
-            ) : (
-              <><ExternalLink size={12} /> Explore</>
-            )}
-          </motion.button>
+          {res.fileUrl && res.fileUrl !== '#' ? (
+            <motion.a
+              href={res.fileUrl}
+              download
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1.5 text-xs font-bold
+                text-violet-600 dark:text-violet-400
+                hover:text-violet-800 dark:hover:text-violet-200
+                transition-colors"
+            >
+              <Download size={12} /> Download
+            </motion.a>
+          ) : (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1.5 text-xs font-bold
+                text-violet-600 dark:text-violet-400
+                hover:text-violet-800 dark:hover:text-violet-200
+                transition-colors"
+            >
+              <ExternalLink size={12} /> Explore
+            </motion.button>
+          )}
         </div>
       </div>
     </motion.div>
@@ -280,9 +284,23 @@ function JournalCard({ entry, index }: { entry: (typeof journals)[0]; index: num
    MAIN PAGE
 ═══════════════════════════════════════════════════════════ */
 export default function LearningHub() {
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'all';
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [query, setQuery]                   = useState('');
   const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat && categories.some(c => c.id === cat)) {
+      setActiveCategory(cat);
+      // Scroll smoothly to resources grid
+      setTimeout(() => {
+        const el = document.getElementById('resources-grid');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [searchParams]);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
   const heroY   = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
@@ -444,7 +462,7 @@ export default function LearningHub() {
       </div>
 
       {/* ── RESOURCES SECTION ─────────────────────────── */}
-      <section className="relative z-20 py-16 md:py-24 px-5 sm:px-8 max-w-7xl mx-auto">
+      <section id="resources-grid" className="relative z-20 py-16 md:py-24 px-5 sm:px-8 max-w-7xl mx-auto">
 
         {/* Section header */}
         <motion.div

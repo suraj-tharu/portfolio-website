@@ -3,11 +3,11 @@ import { Download, FileText, BookOpen, Layers, Archive, PenTool } from 'lucide-r
 import { Link } from 'react-router-dom';
 
 const resources = [
-  { title: "Course Notes", count: "12 Files", icon: <FileText size={24} /> },
-  { title: "Question Banks", count: "5 Years", icon: <Archive size={24} /> },
-  { title: "Syllabus", count: "Updated 2026", icon: <Layers size={24} /> },
-  { title: "Lab Manuals", count: "8 Exercises", icon: <PenTool size={24} /> },
-  { title: "Reference Materials", count: "20+ Links", icon: <BookOpen size={24} /> },
+  { title: "Class 10 (SEE)", count: "Computer Science & Math", icon: <BookOpen size={24} />, link: "/learning-hub?category=class-10" },
+  { title: "Class 11 (NEB)", count: "Computer Science Notes", icon: <FileText size={24} />, link: "/learning-hub?category=class-11" },
+  { title: "Class 12 (NEB)", count: "CS & Physics Notes", icon: <Layers size={24} />, link: "/learning-hub?category=class-12" },
+  { title: "Diploma Level", count: "Engineering Materials", icon: <Archive size={24} />, link: "/learning-hub?category=diploma" },
+  { title: "Bachelor Level", count: "C++, DBMS, GIS", icon: <PenTool size={24} />, link: "/learning-hub?category=bachelor" },
 ];
 
 export default function StudentResources() {
@@ -34,7 +34,7 @@ export default function StudentResources() {
           {resources.map((res, i) => (
             <Link
               key={i}
-              to="/learning-hub"
+              to={res.link}
               className="group relative overflow-hidden bg-surface border border-stroke rounded-3xl p-8 hover:border-blue-500/50 transition-colors cursor-pointer block"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -48,7 +48,7 @@ export default function StudentResources() {
                 <p className="text-sm text-muted mb-8">{res.count}</p>
                 
                 <div className="mt-auto flex items-center gap-2 text-sm font-medium text-text-primary group-hover:text-blue-400 transition-colors">
-                  <Download size={16} /> Download
+                  <Download size={16} /> View Resources
                 </div>
               </div>
             </Link>
