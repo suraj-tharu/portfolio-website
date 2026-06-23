@@ -24,6 +24,7 @@ import Home from './pages/Home';
 
 // Lazy loaded pages to reduce initial bundle size (>500kb fix)
 const ResearchDashboard = lazy(() => import('./pages/ResearchDashboard'));
+const LearningHub = lazy(() => import('./pages/LearningHub'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Initialize error tracking on app load
@@ -108,6 +109,7 @@ function AppContent() {
                 <Routes location={location} key={location.pathname}>
                   <Route path="/" element={<Home />} />
                   <Route path="/research" element={<ResearchDashboard />} />
+                  <Route path="/learning-hub" element={<LearningHub />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </AnimatePresence>
