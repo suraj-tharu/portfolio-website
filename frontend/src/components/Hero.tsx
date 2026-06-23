@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
-import { gsap } from 'gsap';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { TextReveal } from './premium/TextReveal';
+import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
 import { useGreeting } from './GreetingBanner';
 
@@ -73,17 +72,7 @@ export default function Hero() {
     return () => clearInterval(interval);
   }, [roles.length]);
 
-  useEffect(() => {
-    // GSAP Animations for elements not handled by framer-motion
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.5 });
-      tl.fromTo('.blur-in',
-        { opacity: 0, y: 20, filter: "blur(10px)" },
-        { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, stagger: 0.1, ease: "power3.out" }
-      );
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+  // Removed GSAP. All animations will be handled natively by Framer Motion.
 
   const name = "Suraj Tharu Chaudhary".split(" ");
 
@@ -119,15 +108,26 @@ export default function Hero() {
         <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-40" />
       </motion.div>
 
-      {/* Content with premium spacing and animations */}
-      <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
+      <motion.div
+        className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+          }
+        }}
+      >
         {/* Ultra Premium Greeting */}
         {greeting && (
           <motion.div
             className="mb-4 md:mb-6 text-center"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            variants={{
+              hidden: { opacity: 0, y: -20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } }
+            }}
           >
             <div className="inline-flex items-center justify-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 backdrop-blur-md mb-4 shadow-[0_0_20px_rgba(139,92,246,0.4)] hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] transition-all duration-300">
               <div className="w-2 h-2 rounded-full bg-brand-300 animate-pulse shadow-[0_0_10px_rgba(139,92,246,0.8)]" />
@@ -157,7 +157,13 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
+        <motion.div 
+          className="text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]"
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+            visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } }
+          }}
+        >
           <motion.span
             key={roleIndex}
             className="animate-role-fade-in inline-block font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
@@ -165,13 +171,25 @@ export default function Hero() {
             {roles[roleIndex]}
           </motion.span>
           <span className="text-base md:text-lg bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold">{t('hero.location')}</span>
-        </div>
+        </motion.div>
 
-        <div className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-sm dark:drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center">
+        <motion.div 
+          className="text-fluid-xs md:text-fluid-base bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-sm dark:drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center"
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+            visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } }
+          }}
+        >
           <TextReveal text={t('hero.description')} delay={1.2} staggerDuration={0.03} splitBy="word" />
-        </div>
+        </motion.div>
 
-        <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
+        <motion.div 
+          className="flex flex-col sm:flex-row items-center gap-6"
+          variants={{
+            hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+            visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 1, ease: 'easeOut' } }
+          }}
+        >
           <a href="#work">
             <MicroInteractionButton variant="primary" glowColor="#8B5CF6">
               ✨ See Works
@@ -183,8 +201,8 @@ export default function Hero() {
               Reach out →
             </MicroInteractionButton>
           </a>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10 opacity-70">

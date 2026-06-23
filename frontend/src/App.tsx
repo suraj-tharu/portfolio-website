@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
@@ -20,8 +20,10 @@ import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
 import { FluidBackground } from './components/premium';
 
 import Home from './pages/Home';
-import ResearchDashboard from './pages/ResearchDashboard';
-import NotFound from './pages/NotFound';
+
+// Lazy loaded pages to reduce initial bundle size (>500kb fix)
+const ResearchDashboard = lazy(() => import('./pages/ResearchDashboard'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Initialize error tracking on app load
 initErrorTracking(); // Add your Sentry DSN here if available
@@ -99,13 +101,15 @@ function AppContent() {
             }}
           >
             <Navbar />
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/research" element={<ResearchDashboard />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </AnimatePresence>
+            <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-brand">Loading...</div>}>
+              <AnimatePresence mode="wait">
+                <Routes location={location} key={location.pathname}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/research" element={<ResearchDashboard />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AnimatePresence>
+            </Suspense>
             <Footer />
           </div>
         </div>
