@@ -27,22 +27,39 @@ export default function Home() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <Hero />
+      <div className="section-divider" />
       <AcademicTimeline />
+      <div className="section-divider" />
       <SkillsVisualization />
+      <div className="section-divider" />
       <AboutMe />
+      <div className="section-divider" />
       <TeachingExperience />
+      <div className="section-divider" />
       <AutomationHero />
+      <div className="section-divider" />
       <SelectedWorks />
+      <div className="section-divider" />
       <ResearchPublications />
+      <div className="section-divider" />
       <GISShowcase />
+      <div className="section-divider" />
       <Explorations />
+      <div className="section-divider" />
       <StudentResources />
+      <div className="section-divider" />
       <Certifications />
+      <div className="section-divider" />
       <AwardsAchievements />
+      <div className="section-divider" />
       <Journal />
+      <div className="section-divider" />
       <Stats />
+      <div className="section-divider" />
       <InteractiveResume />
+      <div className="section-divider" />
       <FAQ />
+      <div className="section-divider" />
       <Contact />
     </motion.main>
   );

@@ -4,8 +4,7 @@ import { ChevronDown } from 'lucide-react';
 import { addJsonLdSchema, faqSchema } from '../utils/jsonLdSchema';
 
 /**
- * FAQ Section Component with JSON-LD Schema
- * Suggestion #15: FAQ Section
+ * FAQ Section Component with JSON-LD Schema & working category filter
  */
 
 interface FAQItem {
@@ -60,6 +59,7 @@ const defaultFAQs: FAQItem[] = [
 
 export default function FAQ({ items = defaultFAQs }: FAQProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
     // Add JSON-LD schema on mount
     useState(() => {
@@ -74,7 +74,11 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
         setExpandedId(expandedId === id ? null : id);
     };
 
-    const categories = Array.from(new Set(items.map(item => item.category || 'General')));
+    const categories = ['All', ...Array.from(new Set(items.map(item => item.category || 'General')))];
+
+    const filteredItems = selectedCategory === 'All'
+        ? items
+        : items.filter(item => (item.category || 'General') === selectedCategory);
 
     return (
         <section id="faq" className="py-20 md:py-32 relative z-20">
@@ -89,68 +93,90 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
                     <h2 className="text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight mb-4">
                         Frequently <span className="font-display italic text-text-secondary">Asked</span>
                     </h2>
-                    <p className="text-sm max-w-md mx-auto font-medium bg-gradient-to-r from-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent leading-relaxed">
+                    <p className="text-sm max-w-md mx-auto font-medium text-muted leading-relaxed">
                         Find answers to common questions about my work, services, and expertise
                     </p>
                 </div>
 
-                {/* Category Filter */}
+                {/* Category Filter — now functional */}
                 <div className="flex flex-wrap gap-2 justify-center mb-12">
                     {categories.map(cat => (
                         <button
                             key={cat}
-                            className="px-4 py-2 rounded-full text-sm font-medium bg-surface text-text-secondary hover:bg-surface-2 transition-colors"
+                            onClick={() => {
+                                setSelectedCategory(cat);
+                                setExpandedId(null); // Close any open item on filter change
+                            }}
+                            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                                selectedCategory === cat
+                                    ? 'bg-brand-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.4)]'
+                                    : 'bg-surface text-text-secondary hover:bg-surface-2 hover:text-text-primary'
+                            }`}
                         >
                             {cat}
                         </button>
                     ))}
                 </div>
 
-                {/* FAQ Items */}
-                <div className="space-y-4">
-                    {items.map((item) => (
-                        <motion.div
-                            key={item.id}
-                            initial={false}
-                            animate={{ opacity: 1 }}
-                            className="bg-surface border border-stroke rounded-2xl overflow-hidden hover:border-brand-light/50 transition-colors"
-                        >
-                            <button
-                                onClick={() => toggleFAQ(item.id)}
-                                className="w-full px-6 md:px-8 py-6 flex items-center justify-between text-left"
+                {/* FAQ Items with AnimatePresence for filter transitions */}
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={selectedCategory}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-4"
+                    >
+                        {filteredItems.length === 0 && (
+                            <p className="text-center text-muted py-8">No questions in this category.</p>
+                        )}
+                        {filteredItems.map((item, i) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.3, delay: i * 0.05 }}
+                                className="bg-surface border border-stroke rounded-2xl overflow-hidden hover:border-brand-light/50 transition-colors"
                             >
-                                <span className="text-text-primary font-semibold text-lg md:text-xl">
-                                    {item.question}
-                                </span>
-                                <motion.div
-                                    animate={{ rotate: expandedId === item.id ? 180 : 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="flex-shrink-0 ml-4"
+                                <button
+                                    onClick={() => toggleFAQ(item.id)}
+                                    className="w-full px-6 md:px-8 py-6 flex items-center justify-between text-left"
+                                    aria-expanded={expandedId === item.id}
                                 >
-                                    <ChevronDown
-                                        size={24}
-                                        className="text-brand-light"
-                                    />
-                                </motion.div>
-                            </button>
-
-                            <AnimatePresence>
-                                {expandedId === item.id && (
+                                    <span className="text-text-primary font-semibold text-lg md:text-xl">
+                                        {item.question}
+                                    </span>
                                     <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
+                                        animate={{ rotate: expandedId === item.id ? 180 : 0 }}
                                         transition={{ duration: 0.3 }}
+                                        className="flex-shrink-0 ml-4"
                                     >
-                                        <div className="px-6 md:px-8 pb-6 text-text-secondary border-t border-stroke pt-6">
-                                            {item.answer}
-                                        </div>
+                                        <ChevronDown
+                                            size={24}
+                                            className="text-brand-light"
+                                        />
                                     </motion.div>
-                                )}
-                            </AnimatePresence>
-                        </motion.div>
-                    ))}
-                </div>
+                                </button>
+
+                                <AnimatePresence>
+                                    {expandedId === item.id && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <div className="px-6 md:px-8 pb-6 text-text-secondary border-t border-stroke pt-6 leading-relaxed">
+                                                {item.answer}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                </AnimatePresence>
 
                 {/* CTA */}
                 <div className="mt-16 p-8 md:p-12 rounded-3xl bg-surface border border-stroke text-center relative overflow-hidden">

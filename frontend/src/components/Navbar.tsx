@@ -5,6 +5,7 @@ import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 import { MagneticWrapper } from './premium/MagneticWrapper';
+import { useScrollSpy } from '../hooks/useScrollSpy';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function Navbar() {
 
   const { scrollY } = useScroll();
   const [hidden, setHidden] = useState(false);
+  const activeSection = useScrollSpy(['', 'skills', 'work', 'research', 'contact'], 300);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -84,6 +86,32 @@ export default function Navbar() {
             <span className="font-display italic text-lg text-text-primary">SC</span>
           </div>
         </a>
+
+        {/* Desktop Navigation */}
+        <div className="hidden lg:flex items-center gap-1 bg-surface/50 border border-stroke rounded-full px-2 py-1 backdrop-blur-md">
+          {navLinks.map((link) => {
+            const sectionId = link.href.startsWith('/#') ? link.href.replace('/#', '') : link.href.replace('#', '');
+            const isActive = activeSection === sectionId;
+            return (
+              <a
+                key={link.label}
+                href={link.href}
+                className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors group"
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="nav-pill"
+                    className="absolute inset-0 bg-brand-500/10 border border-brand-500/20 rounded-full z-0 shadow-[0_0_15px_rgba(139,92,246,0.2)]"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <span className={`relative z-10 ${isActive ? 'text-brand-light' : 'text-text-secondary group-hover:text-text-primary'}`}>
+                  {link.label}
+                </span>
+              </a>
+            );
+          })}
+        </div>
 
         {/* Controls */}
         <div className="pointer-events-auto flex items-center gap-4">

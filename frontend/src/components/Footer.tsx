@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { motion } from 'framer-motion';
 import VisitorCounter from './VisitorCounter';
+import { Briefcase, Terminal, GraduationCap, Microscope } from 'lucide-react';
 
 export default function Footer() {
   const marqueeRef = useRef<HTMLDivElement>(null);
@@ -106,22 +107,24 @@ export default function Footer() {
         {/* Social Links */}
         <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center mt-4 md:mt-0">
           {[
-            { label: 'LinkedIn', url: 'https://www.linkedin.com/in/suraj-tharu/', icon: '💼' },
-            { label: 'GitHub', url: 'https://github.com/suraj-tharu', icon: '🐙' },
-            { label: 'Scholar', url: 'https://scholar.google.com', icon: '📚' },
-            { label: 'ResearchGate', url: 'https://www.researchgate.net', icon: '🔬' },
-          ].map((social) => (
+            { label: 'LinkedIn', url: 'https://www.linkedin.com/in/suraj-tharu/', icon: Briefcase },
+            { label: 'GitHub', url: 'https://github.com/suraj-tharu', icon: Terminal },
+            { label: 'Scholar', url: 'https://scholar.google.com', icon: GraduationCap },
+            { label: 'ResearchGate', url: 'https://www.researchgate.net', icon: Microscope },
+          ].map((social) => {
+            const Icon = social.icon;
+            return (
             <motion.a
               key={social.label}
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1, y: -2 }}
-              className="text-sm font-medium bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 hover:border-brand-500 rounded-full px-3 py-1.5 text-brand-200 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              className="flex items-center gap-2 text-sm font-medium bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 hover:border-brand-500 rounded-full px-3 py-1.5 text-brand-200 hover:text-white transition-all duration-300 backdrop-blur-sm"
             >
-              {social.icon} {social.label}
+              <Icon size={14} /> {social.label}
             </motion.a>
-          ))}
+          )})}
           <div className="text-sm text-muted px-3 py-1.5">📍 Nawalparasi West, NP</div>
         </div>
 

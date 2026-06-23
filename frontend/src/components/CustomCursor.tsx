@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useState } from 'react';
+
+type CursorState = 'default' | 'link' | 'view' | 'read' | 'drag';
 
 export default function CustomCursor() {
-  const [isHovering, setIsHovering] = useState(false);
+  const [cursorState, setCursorState] = useState<CursorState>('default');
   const [isVisible, setIsVisible] = useState(false);
+  const [cursorLabel, setCursorLabel] = useState('');
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -29,10 +32,33 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.tagName.toLowerCase() === 'a' || target.tagName.toLowerCase() === 'button' || target.closest('a') || target.closest('button')) {
-        setIsHovering(true);
+      const anchor = target.closest('a');
+      const button = target.closest('button');
+      const img = target.closest('img, [data-cursor="view"]');
+      const draggable = target.closest('[data-cursor="drag"]');
+      const readable = target.closest('article, p, [data-cursor="read"]');
+
+      if (draggable) {
+        setCursorState('drag');
+        setCursorLabel('Drag');
+      } else if (img) {
+        setCursorState('view');
+        setCursorLabel('View');
+      } else if (anchor) {
+        setCursorState('link');
+        // Use aria-label or inner text if short
+        const text = anchor.getAttribute('aria-label') || anchor.innerText.trim().slice(0, 12);
+        setCursorLabel(text || 'Open');
+      } else if (button) {
+        setCursorState('link');
+        const text = button.getAttribute('aria-label') || button.innerText.trim().slice(0, 12);
+        setCursorLabel(text || 'Click');
+      } else if (readable) {
+        setCursorState('read');
+        setCursorLabel('Read');
       } else {
-        setIsHovering(false);
+        setCursorState('default');
+        setCursorLabel('');
       }
     };
 
@@ -49,8 +75,11 @@ export default function CustomCursor() {
 
   if (!isVisible) return null;
 
+  const isHovering = cursorState !== 'default';
+
   return (
     <>
+      {/* Main dot */}
       <motion.div
         className="fixed top-0 left-0 w-3 h-3 bg-brand-500 rounded-full pointer-events-none z-[9999] mix-blend-screen"
         style={{
@@ -60,13 +89,15 @@ export default function CustomCursor() {
           translateY: "-50%"
         }}
         animate={{
-          scale: isHovering ? 2 : 1,
-          opacity: isHovering ? 0.5 : 1,
+          scale: isHovering ? 0 : 1,
+          opacity: isHovering ? 0 : 1,
         }}
         transition={{ duration: 0.2 }}
       />
+
+      {/* Outer ring / label container */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-brand-light rounded-full pointer-events-none z-[9998] mix-blend-screen shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+        className="fixed top-0 left-0 pointer-events-none z-[9998] mix-blend-screen flex items-center justify-center"
         style={{
           x: trailX,
           y: trailY,
@@ -74,11 +105,33 @@ export default function CustomCursor() {
           translateY: "-50%"
         }}
         animate={{
-          scale: isHovering ? 1.5 : 1,
-          backgroundColor: isHovering ? "rgba(139,92,246,0.1)" : "transparent"
+          width: isHovering ? 72 : 40,
+          height: isHovering ? 72 : 40,
         }}
-        transition={{ duration: 0.2 }}
-      />
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <motion.div
+          className="w-full h-full rounded-full border border-brand-light flex items-center justify-center overflow-hidden"
+          animate={{
+            backgroundColor: isHovering ? "rgba(139,92,246,0.15)" : "transparent",
+            borderColor: isHovering ? "rgba(139,92,246,0.7)" : "rgba(167,139,250,0.6)",
+            boxShadow: isHovering ? "0 0 20px rgba(139,92,246,0.4)" : "0 0 10px rgba(139,92,246,0.3)"
+          }}
+          transition={{ duration: 0.3 }}
+        >
+          {cursorLabel && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.2 }}
+              className="text-[10px] font-bold text-white tracking-wider uppercase select-none"
+            >
+              {cursorLabel}
+            </motion.span>
+          )}
+        </motion.div>
+      </motion.div>
     </>
   );
 }

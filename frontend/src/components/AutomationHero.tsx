@@ -17,8 +17,8 @@ export default function AutomationHero() {
       />
 
       {/* Transparent Section Content */}
-      <section className="relative z-10 flex flex-col justify-center h-screen px-[18px] md:px-[32px] pt-[90px] md:pt-[70px] pb-[32px] font-helvetica bg-transparent">
-        <div className="flex flex-col items-start max-w-[720px] mx-auto w-full">
+      <section className="relative z-10 flex flex-col justify-center h-screen px-[18px] md:px-[32px] pt-[90px] md:pt-[70px] pb-[32px] font-helvetica bg-transparent pointer-events-none">
+        <div className="flex flex-col items-start max-w-[720px] mx-auto w-full pointer-events-auto">
           
           <h2 className="flex flex-wrap gap-[0.25em] m-0 text-white font-bold leading-[1.08] tracking-[-0.01em] uppercase text-[clamp(26px,3vw,42px)]">
             {headingWords.map((word, index) => (

@@ -16,8 +16,20 @@ type Blog = {
   createdAt: string;
 };
 
+// Skeleton card
+const SkeletonEntry = () => (
+  <div className="flex items-center gap-4 sm:gap-6 p-3 sm:p-4 bg-surface/30 border border-stroke rounded-[40px] sm:rounded-full animate-pulse">
+    <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-full bg-surface" />
+    <div className="flex flex-col gap-2 w-full pr-4">
+      <div className="h-4 bg-surface rounded-full w-3/4" />
+      <div className="h-3 bg-surface/70 rounded-full w-1/3" />
+    </div>
+  </div>
+);
+
 export default function Journal() {
   const [dbBlogs, setDbBlogs] = useState<Blog[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('/api/portfolio-data')
@@ -27,7 +39,11 @@ export default function Journal() {
           setDbBlogs(data.blogs.slice(0, 4));
         }
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        // Short delay so skeleton is visible even on fast connections
+        setTimeout(() => setIsLoading(false), 600);
+      });
   }, []);
 
   const displayEntries = dbBlogs.length > 0 ? dbBlogs.map((b, i) => {
@@ -64,39 +80,45 @@ export default function Journal() {
             </h2>
           </div>
           
-          <button className="hidden md:inline-flex group relative items-center justify-center rounded-full px-6 py-3 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
-             <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-             <div className="absolute inset-[2px] bg-bg rounded-full" />
-             <span className="relative z-10 flex items-center gap-2">View all &rarr;</span>
-          </button>
+          <a
+            href="/learning-hub"
+            className="hidden md:inline-flex group relative items-center justify-center rounded-full px-6 py-3 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden"
+          >
+            <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
+            <div className="absolute inset-[2px] bg-bg rounded-full" />
+            <span className="relative z-10 flex items-center gap-2">View all &rarr;</span>
+          </a>
         </motion.div>
 
-        {/* Entries */}
+        {/* Entries or Skeletons */}
         <div className="flex flex-col gap-4">
-          {displayEntries.map((entry, i) => (
-            <motion.a 
-              href={entry.url}
-              key={entry.title + i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
-              className="flex items-center gap-4 sm:gap-6 p-3 sm:p-4 bg-surface/30 hover:bg-surface border border-stroke rounded-[40px] sm:rounded-full transition-all duration-300 group"
-            >
-              <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 overflow-hidden rounded-full">
-                <img src={entry.img} alt={entry.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              </div>
-              
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full pr-4 sm:pr-8 gap-2 sm:gap-4">
-                <h3 className="text-lg sm:text-xl font-medium text-text-primary group-hover:text-white transition-colors">{entry.title}</h3>
-                <div className="flex items-center gap-4 text-xs sm:text-sm text-muted">
-                  <span>{entry.read}</span>
-                  <span className="hidden sm:block w-1 h-1 rounded-full bg-stroke" />
-                  <span>{entry.date}</span>
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, i) => <SkeletonEntry key={i} />)
+            : displayEntries.map((entry, i) => (
+              <motion.a 
+                href={entry.url}
+                key={entry.title + i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: "easeOut" }}
+                className="flex items-center gap-4 sm:gap-6 p-3 sm:p-4 bg-surface/30 hover:bg-surface border border-stroke rounded-[40px] sm:rounded-full transition-all duration-300 group"
+              >
+                <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 overflow-hidden rounded-full">
+                  <img src={entry.img} alt={entry.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 </div>
-              </div>
-            </motion.a>
-          ))}
+                
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full pr-4 sm:pr-8 gap-2 sm:gap-4">
+                  <h3 className="text-lg sm:text-xl font-medium text-text-primary group-hover:text-white transition-colors">{entry.title}</h3>
+                  <div className="flex items-center gap-4 text-xs sm:text-sm text-muted shrink-0">
+                    <span>{entry.read}</span>
+                    <span className="hidden sm:block w-1 h-1 rounded-full bg-stroke" />
+                    <span>{entry.date}</span>
+                  </div>
+                </div>
+              </motion.a>
+            ))
+          }
         </div>
 
       </div>

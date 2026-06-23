@@ -56,24 +56,14 @@ const images = [
 
 export default function Explorations() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const col1Ref = useRef<HTMLDivElement>(null);
   const col2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Pin center content
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        pin: contentRef.current,
-        pinSpacing: false,
-      });
-
-      // Parallax columns
+      // Parallax columns only — removed pinning to prevent overlap issues
       gsap.to(col1Ref.current, {
-        yPercent: -50,
+        yPercent: -30,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -84,7 +74,7 @@ export default function Explorations() {
       });
 
       gsap.to(col2Ref.current, {
-        yPercent: -80,
+        yPercent: -50,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -99,19 +89,19 @@ export default function Explorations() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative bg-bg min-h-[300vh] overflow-hidden z-20">
+    <section ref={sectionRef} id="explorations" className="relative bg-bg py-24 md:py-36 overflow-hidden z-20">
       
       <AnimatedDecoration />
 
-      {/* Layer 1: Pinned Center */}
-      <div ref={contentRef} className="absolute inset-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none z-10 px-4">
+      {/* Section header — in normal flow, no absolute/pinning */}
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 mb-16 md:mb-24">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-8 h-px bg-stroke" />
           <span className="text-xs text-muted uppercase tracking-[0.3em]">Explorations</span>
           <div className="w-8 h-px bg-stroke" />
         </div>
         
-        <h2 className="text-5xl md:text-7xl lg:text-8xl text-text-primary tracking-tight mb-6 text-center">
+        <h2 className="text-5xl md:text-7xl lg:text-8xl text-text-primary tracking-tight mb-6">
           Visual <span className="font-display italic">playground</span>
         </h2>
         
@@ -119,38 +109,59 @@ export default function Explorations() {
           A collection of experiments, generative art, and conceptual UI interactions.
         </p>
 
-        <button className="pointer-events-auto group relative inline-flex items-center justify-center rounded-full px-8 py-3.5 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
-           <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-           <div className="absolute inset-[2px] bg-bg rounded-full" />
-           <span className="relative z-10 flex items-center gap-2">View Dribbble</span>
-        </button>
+        <a
+          href="https://dribbble.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative inline-flex items-center justify-center rounded-full px-8 py-3.5 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden"
+        >
+          <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
+          <div className="absolute inset-[2px] bg-bg rounded-full" />
+          <span className="relative z-10 flex items-center gap-2">View Dribbble →</span>
+        </a>
       </div>
 
-      {/* Layer 2: Parallax Columns */}
-      <div className="absolute inset-0 z-20 max-w-[1400px] mx-auto w-full h-full pointer-events-none px-6 md:px-20 lg:px-32">
-        <div className="grid grid-cols-2 gap-12 md:gap-40 h-full relative pt-[100vh]">
+      {/* Parallax image columns — normal flow with relative positioning */}
+      <div className="relative z-20 max-w-[1200px] mx-auto w-full px-6 md:px-16">
+        <div className="grid grid-cols-2 gap-6 md:gap-12">
           
           {/* Column 1 */}
-          <div ref={col1Ref} className="flex flex-col gap-12 md:gap-32 pointer-events-auto items-end">
+          <div ref={col1Ref} className="flex flex-col gap-6 md:gap-10 items-end">
             {images.slice(0, 3).map((img, i) => (
-              <div 
+              <motion.div 
                 key={`col1-${i}`} 
-                className="w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-105 hover:rotate-2 border border-stroke"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, delay: i * 0.1 }}
+                className="w-full max-w-[280px] md:max-w-[380px] aspect-square rounded-3xl overflow-hidden cursor-pointer border border-stroke group"
               >
-                <img src={img} alt="Exploration" className="w-full h-full object-cover" />
-              </div>
+                <img 
+                  src={img} 
+                  alt={`Exploration ${i + 1}`} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+              </motion.div>
             ))}
           </div>
 
-          {/* Column 2 (Offset starting position) */}
-          <div ref={col2Ref} className="flex flex-col gap-12 md:gap-32 mt-[30vh] pointer-events-auto items-start">
+          {/* Column 2 (offset start) */}
+          <div ref={col2Ref} className="flex flex-col gap-6 md:gap-10 mt-[10vh] md:mt-[20vh] items-start">
             {images.slice(3, 6).map((img, i) => (
-              <div 
+              <motion.div 
                 key={`col2-${i}`} 
-                className="w-full max-w-[320px] aspect-square rounded-3xl overflow-hidden cursor-pointer transition-transform duration-500 hover:scale-105 hover:-rotate-2 border border-stroke"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.7, delay: i * 0.1 + 0.15 }}
+                className="w-full max-w-[280px] md:max-w-[380px] aspect-square rounded-3xl overflow-hidden cursor-pointer border border-stroke group"
               >
-                <img src={img} alt="Exploration" className="w-full h-full object-cover" />
-              </div>
+                <img 
+                  src={img} 
+                  alt={`Exploration ${i + 4}`} 
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                />
+              </motion.div>
             ))}
           </div>
 
