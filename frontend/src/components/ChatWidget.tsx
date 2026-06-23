@@ -245,7 +245,7 @@ export default function ChatWidget() {
                         boxShadow: '0 0 0 2px rgba(52,211,153,0.3)',
                       }}
                     />
-                    Online · Powered by Gemini
+                    Online · Powered by Groq
                   </div>
                 </div>
               </div>

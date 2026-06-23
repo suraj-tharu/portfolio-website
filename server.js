@@ -553,7 +553,7 @@ app.get('/blog/:slug', async (req, res) => {
   }
 });
 
-// ─── OpenAI / Cloudflare AI ───────────────────────────────────────────────
+// ─── Groq AI Chat ───────────────────────────────────────────────────────────
 
 const SYSTEM_PROMPT = `You are an AI assistant embedded in the portfolio website of Suraj Tharu Chaudhary, a Computer Engineer from Nepal.
 Your goal is to answer questions about Suraj's skills, experience, and projects.
@@ -581,12 +581,12 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     message = xss(message);
     if (context) context = xss(context);
 
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+    const groqApiKey = process.env.GROQ_API_KEY;
 
-    // Detect missing keys
-    if (!apiKey || apiKey.trim() === '') {
+    // Detect missing key
+    if (!groqApiKey || groqApiKey.trim() === '') {
       return res.json({
-        reply: "The AI assistant needs a valid Gemini API key. Get a free one at aistudio.google.com/apikey and set GOOGLE_GENERATIVE_AI_API_KEY in your .env file."
+        reply: "The AI assistant needs a Groq API key. Get a free one at console.groq.com/keys and set GROQ_API_KEY in your .env file."
       });
     }
 
@@ -595,59 +595,49 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
       dynamicSystemPrompt += `\n\nCURRENT CONTEXT: The user is looking at: ${context}.`;
     }
 
-    const geminiMessages = [];
-    geminiMessages.push({ role: 'user', parts: [{ text: dynamicSystemPrompt }] });
-    geminiMessages.push({ role: 'model', parts: [{ text: 'Understood. I am ready to assist visitors with questions about Suraj Tharu Chaudhary.' }] });
+    // Build messages in OpenAI format (Groq is OpenAI-compatible)
+    const groqMessages = [
+      { role: 'system', content: dynamicSystemPrompt }
+    ];
 
     if (history && history.length > 0) {
       history.forEach(turn => {
-        geminiMessages.push({
-          role: turn.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: xss(turn.content) }]
+        groqMessages.push({
+          role: turn.role === 'assistant' ? 'assistant' : 'user',
+          content: xss(turn.content)
         });
       });
     }
-    geminiMessages.push({ role: 'user', parts: [{ text: message }] });
+    groqMessages.push({ role: 'user', content: message });
 
-    // Determine auth method: AIza = API key in URL, AQ. = OAuth Bearer token in header
-    const isOAuthToken = apiKey.trim().startsWith('AQ.');
-
-    // Try multiple models in order of preference
-    const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-lite-latest', 'gemini-flash-latest'];
+    // Try models in order: fast first, powerful fallback
+    const models = ['llama-3.1-8b-instant', 'llama-3.3-70b-versatile', 'mixtral-8x7b-32768'];
     let lastError = null;
 
     for (const model of models) {
       try {
-        // Build URL and headers depending on auth type
-        const url = isOAuthToken
-          ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
-          : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-
-        const headers = { 'Content-Type': 'application/json' };
-        if (isOAuthToken) {
-          headers['Authorization'] = `Bearer ${apiKey.trim()}`;
-        }
-
-        const fetchResponse = await fetch(url, {
+        const fetchResponse = await fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
-          headers,
-          body: JSON.stringify({ contents: geminiMessages })
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${groqApiKey.trim()}`
+          },
+          body: JSON.stringify({
+            model,
+            messages: groqMessages,
+            max_tokens: 1024,
+            temperature: 0.7
+          })
         });
-
-        if (fetchResponse.status === 400) {
-          const errData = await fetchResponse.json().catch(() => ({}));
-          const errMsg = (errData && errData.error && errData.error.message) || '';
-          console.error(`[CHAT] Gemini 400 error (${model}):`, errMsg);
-          lastError = new Error('API error 400: ' + errMsg);
-          continue;
-        }
 
         if (fetchResponse.status === 401 || fetchResponse.status === 403) {
           const errData = await fetchResponse.json().catch(() => ({}));
-          const errMsg = (errData && errData.error && errData.error.message) || '';
-          console.error(`[CHAT] Gemini auth error ${fetchResponse.status} (${model}):`, errMsg);
-          lastError = new Error('Auth error ' + fetchResponse.status + ': ' + errMsg);
-          continue;
+          const errMsg = (errData && errData.error && errData.error.message) || 'Invalid API key';
+          console.error(`[CHAT] Groq auth error (${model}):`, errMsg);
+          // Auth errors won't be fixed by switching model — return immediately
+          return res.json({
+            reply: "AI authentication failed. Please check your GROQ_API_KEY in the .env file. Get a free key at console.groq.com/keys"
+          });
         }
 
         if (fetchResponse.status === 429) {
@@ -657,21 +647,19 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 
         if (!fetchResponse.ok) {
           const errText = await fetchResponse.text().catch(() => '');
-          console.error('Gemini API Error:', fetchResponse.status, errText.slice(0, 200));
-          lastError = new Error('API returned ' + fetchResponse.status);
+          console.error(`[CHAT] Groq error (${model}):`, fetchResponse.status, errText.slice(0, 200));
+          lastError = new Error('Groq API returned ' + fetchResponse.status);
           continue;
         }
 
         const data = await fetchResponse.json();
-        const replyText = data.candidates &&
-          data.candidates[0] &&
-          data.candidates[0].content &&
-          data.candidates[0].content.parts &&
-          data.candidates[0].content.parts[0] &&
-          data.candidates[0].content.parts[0].text;
+        const replyText = data.choices &&
+          data.choices[0] &&
+          data.choices[0].message &&
+          data.choices[0].message.content;
 
         if (!replyText) {
-          lastError = new Error('Empty response from API');
+          lastError = new Error('Empty response from Groq');
           continue;
         }
 
@@ -684,7 +672,7 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     }
 
     // All models failed
-    console.error('AI API Error (all models failed):', lastError && (lastError.message || lastError));
+    console.error('[CHAT] Groq API Error (all models failed):', lastError && (lastError.message || lastError));
     res.json({
       reply: "I am temporarily unavailable. Please try again in a moment, or contact Suraj directly at suraj.xaudhary@gmail.com"
     });
