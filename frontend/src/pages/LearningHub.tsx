@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useSearchParams } from 'react-router-dom';
 import {
   BookOpen, Download, FileText, Archive, PenTool, Layers,
-  Clock, ArrowRight, Search, Star, ExternalLink, ChevronRight,
+  Clock, ArrowRight, Search, ExternalLink, ChevronRight,
   Code2, Database, Globe, Cpu, Sparkles, AlertCircle, Loader2,
 } from 'lucide-react';
 
@@ -229,7 +229,6 @@ export default function LearningHub() {
   const [error, setError]         = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
     fetch('/api/learning-materials')
       .then(r => {
         if (!r.ok) throw new Error('Failed to fetch');
@@ -376,7 +375,7 @@ export default function LearningHub() {
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-200/40 to-pink-200/30 dark:from-violet-900/30 dark:to-pink-900/20 blur-xl" />
                 <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] p-6 space-y-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-content-center flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
                       <BookOpen size={15} className="text-white" />
                     </div>
                     <span className="text-sm font-bold text-slate-900 dark:text-white">Latest Resources</span>
