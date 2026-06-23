@@ -366,6 +366,17 @@
       .form-card { padding: 20px; }
       .modal-header, .modal-footer { padding-left: 20px; padding-right: 20px; }
       .modal-body { padding-left: 20px; padding-right: 20px; }
+      .modal-body { padding-left: 20px; padding-right: 20px; }
+    }
+    .split-layout {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 1024px) {
+      .split-layout { grid-template-columns: 1fr; }
+      .form-card { position: relative !important; top: 0 !important; }
     }
   </style>
 </head>
@@ -511,6 +522,28 @@
             <div class="stat-label">Messages</div>
           </div>
         </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div style="margin-bottom:32px;">
+        <div style="font-weight:800;font-size:15px;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+          <i data-lucide="zap" style="width:16px;height:16px;color:#fbbf24;"></i> Quick Actions
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <button onclick="switchTab('projects',document.querySelector('[data-tab=projects]'))" class="btn btn-blue" style="flex:1;min-width:140px;">
+            <i data-lucide="folder-plus" style="width:16px;height:16px;"></i> Add Project
+          </button>
+          <button onclick="switchTab('blogs',document.querySelector('[data-tab=blogs]'))" class="btn btn-pink" style="flex:1;min-width:140px;">
+            <i data-lucide="file-plus-2" style="width:16px;height:16px;"></i> Write Article
+          </button>
+          <button onclick="switchTab('learning',document.querySelector('[data-tab=learning]'))" class="btn btn-cyan" style="flex:1;min-width:140px;">
+            <i data-lucide="upload-cloud" style="width:16px;height:16px;"></i> Upload Resource
+          </button>
+          <button onclick="switchTab('timeline',document.querySelector('[data-tab=timeline]'))" class="btn btn-green" style="flex:1;min-width:140px;">
+            <i data-lucide="milestone" style="width:16px;height:16px;"></i> Add Timeline Event
+          </button>
+        </div>
       </div>
 
       <!-- Recent Activity Row -->
@@ -568,7 +601,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+      <div class="split-layout">
         <!-- Add Form -->
         <div class="form-card card-accent-blue" style="position:sticky;top:24px;z-index:5;">
           <div class="form-card-title"><i data-lucide="plus-circle" style="width:18px;height:18px;color:#60a5fa;"></i> Add New Project</div>
@@ -643,7 +676,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+      <div class="split-layout">
         <!-- Add Form -->
         <div class="form-card card-accent-pink" style="position:sticky;top:24px;z-index:5;">
           <div class="form-card-title"><i data-lucide="pen-line" style="width:18px;height:18px;color:#f472b6;"></i> Write New Article</div>
@@ -709,7 +742,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+      <div class="split-layout">
         <!-- Upload Form -->
         <div class="form-card card-accent-cyan" style="position:sticky;top:24px;z-index:5;">
           <div class="form-card-title"><i data-lucide="upload" style="width:18px;height:18px;color:#22d3ee;"></i> Upload Resource</div>
@@ -788,7 +821,7 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+      <div class="split-layout">
         <!-- Add Form -->
         <div class="form-card card-accent-green" style="position:sticky;top:24px;z-index:5;">
           <div class="form-card-title"><i data-lucide="plus-circle" style="width:18px;height:18px;color:#34d399;"></i> Add Event</div>
