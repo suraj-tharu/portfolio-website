@@ -107,6 +107,8 @@ app.use(helmet({
         "https://www.google-analytics.com",
         "blob:",
       ],
+      // Allow inline onclick= event handlers (needed by admin panel)
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc: [
         "'self'",
         "'unsafe-inline'",
