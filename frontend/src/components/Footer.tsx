@@ -163,11 +163,11 @@ export default function Footer() {
         className="
           relative z-10 px-6 md:px-14 pb-8 md:pb-10
           border-t border-slate-100 dark:border-white/10
-          grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-10
+          flex flex-col lg:flex-row gap-10 lg:gap-6 justify-between pt-10
         "
       >
         {/* ── Column 1: Status + Location */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 lg:w-1/3">
           {/* Availability pill */}
           <motion.div
             whileHover={{ scale: 1.02 }}
@@ -195,9 +195,9 @@ export default function Footer() {
         </div>
 
         {/* ── Column 2: Social links */}
-        <div className="flex flex-col gap-3">
-          <p className="text-xs uppercase tracking-[0.25em] text-slate-400 dark:text-white/30 font-semibold">Connect</p>
-          <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-3 lg:items-center lg:w-1/3">
+          <p className="text-xs uppercase tracking-[0.25em] text-slate-400 dark:text-white/30 font-semibold text-left lg:text-center w-full">Connect</p>
+          <div className="flex flex-wrap gap-2 lg:justify-center">
             {socials.map(({ label, url, icon: Icon }) => (
               <motion.a
                 key={label}
@@ -224,12 +224,12 @@ export default function Footer() {
         </div>
 
         {/* ── Column 3: Copyright + Visitor counter */}
-        <div className="flex flex-col items-start sm:items-start lg:items-end gap-3 justify-end">
+        <div className="flex flex-col items-start lg:items-end gap-3 justify-end lg:w-1/3">
           {/* Copyright */}
-          <p className="text-xs font-bold uppercase tracking-widest text-transparent bg-gradient-to-r from-violet-500 to-cyan-500 bg-clip-text">
+          <p className="text-xs font-bold uppercase tracking-widest text-transparent bg-gradient-to-r from-violet-500 to-cyan-500 bg-clip-text lg:text-right">
             © 2026 Er. Suraj Tharu Chaudhary.
           </p>
-          <p className="text-xs text-slate-400 dark:text-white/35 tracking-wide -mt-2">
+          <p className="text-xs text-slate-400 dark:text-white/35 tracking-wide -mt-2 lg:text-right">
             All rights reserved.
           </p>
           {/* Visitor badge */}
