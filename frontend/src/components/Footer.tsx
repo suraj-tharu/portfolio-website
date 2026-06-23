@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import VisitorCounter from './VisitorCounter';
 import { Briefcase, Terminal, GraduationCap, Microscope } from 'lucide-react';
 
 export default function Footer() {
   const marqueeRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
   const marqueeItems = [
     "BUILDING THE FUTURE",
     "INNOVATING TOMORROW",
@@ -13,6 +14,13 @@ export default function Footer() {
     "CREATING EXCELLENCE",
     "ENGINEERING DREAMS",
   ];
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["-20%", "0%"]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -27,24 +35,29 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden flex flex-col z-20">
+    <footer ref={containerRef} className="relative bg-[#050505] text-white pt-24 md:pt-32 pb-8 md:pb-12 overflow-hidden flex flex-col z-20 border-t border-white/10 rounded-t-[40px] md:rounded-t-[80px]">
 
-      {/* Premium Background */}
-      <div className="absolute inset-0 z-0" style={{ background: 'var(--bg)' }}>
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(139,92,246,0.05) 0%, rgba(236,72,153,0.03) 50%, rgba(34,211,238,0.05) 100%)' }} />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl" />
+      {/* Massive Background Typography */}
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center overflow-hidden pointer-events-none opacity-[0.03] select-none z-0">
+        <h1 className="text-[20vw] font-display italic font-black whitespace-nowrap">SURAJ THARU</h1>
       </div>
 
+      {/* Premium Background Orbs */}
+      <motion.div style={{ y }} className="absolute inset-0 z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/20 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[120px]" />
+        <div className="absolute top-[40%] left-[50%] w-[400px] h-[400px] bg-cyan-600/20 rounded-full blur-[100px] translate-x-[-50%]" />
+      </motion.div>
+
       {/* Marquee */}
-      <div className="relative z-10 w-full overflow-hidden py-10 md:py-20 flex whitespace-nowrap">
-        <div ref={marqueeRef} className="flex text-7xl md:text-9xl font-display italic text-text-primary/10 tracking-tight">
+      <div className="relative z-10 w-full overflow-hidden pb-16 md:pb-24 flex whitespace-nowrap border-b border-white/5">
+        <div ref={marqueeRef} className="flex text-7xl md:text-9xl font-display italic text-white/10 tracking-tight">
           {Array.from({ length: 10 }).map((_, i) => (
-            <span key={i} className="px-4">{marqueeItems[i % marqueeItems.length]} •</span>
+            <span key={i} className="px-4 hover:text-white/30 transition-colors duration-500 cursor-default">{marqueeItems[i % marqueeItems.length]} •</span>
           ))}
           {/* Duplicate for seamless looping */}
           {Array.from({ length: 10 }).map((_, i) => (
-            <span key={`dup-${i}`} className="px-4">{marqueeItems[i % marqueeItems.length]} •</span>
+            <span key={`dup-${i}`} className="px-4 hover:text-white/30 transition-colors duration-500 cursor-default">{marqueeItems[i % marqueeItems.length]} •</span>
           ))}
         </div>
       </div>
@@ -53,59 +66,53 @@ export default function Footer() {
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 1 }}
         viewport={{ once: true }}
-        className="relative z-10 flex flex-col items-center justify-center flex-grow px-6 py-20 text-center"
+        className="relative z-10 flex flex-col items-center justify-center flex-grow px-6 py-24 md:py-32 text-center"
       >
-        <motion.div className="text-xs text-muted uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
-          <div className="w-2 h-2 rounded-full bg-brand-500" />
-          Let's talk
-          <div className="w-2 h-2 rounded-full bg-pink-500" />
+        <motion.div className="text-xs text-white/50 uppercase tracking-[0.4em] mb-8 flex items-center gap-4">
+          <div className="w-12 h-px bg-white/20" />
+          <span>Let's collaborate</span>
+          <div className="w-12 h-px bg-white/20" />
         </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-[7rem] font-display tracking-tight leading-none mb-12 text-text-primary dark:text-white light:text-slate-900 drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)] dark:drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)]"
-        >
-          Ready to create <br className="hidden md:block" />
-          <span className="italic bg-gradient-to-r from-brand-200 via-pink-200 to-cyan-200 dark:from-brand-300 dark:via-pink-300 dark:to-cyan-300 bg-clip-text text-transparent">something special?</span>
-        </motion.h2>
+        
+        <h2 className="text-5xl md:text-7xl lg:text-[7rem] font-display tracking-tighter leading-[0.9] mb-12 drop-shadow-2xl">
+          Ready to create <br />
+          <span className="italic text-transparent bg-gradient-to-r from-brand-400 via-pink-400 to-cyan-400 bg-clip-text">something special?</span>
+        </h2>
 
         <motion.a
           href="mailto:suraj.xaudhary@gmail.com"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="group relative inline-flex items-center justify-center rounded-full px-10 py-5 text-base md:text-lg font-medium overflow-hidden"
+          className="group relative inline-flex items-center justify-center rounded-full px-12 py-6 text-lg font-medium overflow-hidden bg-white/5 border border-white/10 backdrop-blur-xl"
         >
-          {/* Animated background gradient */}
-          <span className="absolute inset-0 bg-gradient-to-r from-brand-500 via-pink-500 to-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse" />
-          <span className="absolute inset-[2px] bg-bg rounded-full group-hover:bg-black/20 transition-colors" />
-          <span className="relative z-10 text-text-primary group-hover:text-white transition-colors">suraj.xaudhary@gmail.com</span>
+          <span className="absolute inset-0 bg-gradient-to-r from-brand-600 via-pink-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <span className="absolute inset-[1px] bg-[#0a0a0a] rounded-full group-hover:bg-transparent transition-colors duration-500" />
+          <span className="relative z-10 text-white/80 group-hover:text-white flex items-center gap-3 transition-colors duration-300">
+            suraj.xaudhary@gmail.com
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </span>
         </motion.a>
       </motion.div>
 
       {/* Premium Footer Bar */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-black/5 dark:border-white/10 backdrop-blur-sm"
-      >
+      <div className="relative z-10 mt-auto px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-white/10">
+        
         {/* Availability Status */}
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="group flex items-center gap-3 bg-gradient-to-r from-green-500/10 to-emerald-500/10 backdrop-blur-md border border-green-500/30 rounded-full px-4 py-2.5 hover:border-green-500/50 transition-all duration-300"
+          whileHover={{ scale: 1.02 }}
+          className="group flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full px-5 py-3"
         >
           <div className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500 group-hover:bg-green-400 transition-colors"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </div>
-          <span className="text-sm font-medium text-green-100">Available for projects</span>
+          <span className="text-sm font-medium text-white/80">Available for projects</span>
         </motion.div>
 
         {/* Social Links */}
-        <div className="flex flex-wrap items-center gap-3 sm:gap-4 justify-center mt-4 md:mt-0">
+        <div className="flex flex-wrap items-center gap-3 justify-center">
           {[
             { label: 'LinkedIn', url: 'https://www.linkedin.com/in/suraj-tharu/', icon: Briefcase },
             { label: 'GitHub', url: 'https://github.com/suraj-tharu', icon: Terminal },
@@ -119,25 +126,22 @@ export default function Footer() {
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, y: -2 }}
-              className="flex items-center gap-2 text-sm font-medium bg-gradient-to-r from-brand-500/20 to-pink-500/20 border border-brand-500/30 hover:border-brand-500 rounded-full px-3 py-1.5 text-brand-200 hover:text-white transition-all duration-300 backdrop-blur-sm"
+              whileHover={{ scale: 1.1, y: -2, backgroundColor: 'rgba(255,255,255,0.1)' }}
+              className="flex items-center gap-2 text-sm font-medium bg-white/5 border border-white/10 rounded-full px-4 py-2 text-white/70 hover:text-white transition-all duration-300"
             >
               <Icon size={14} /> {social.label}
             </motion.a>
           )})}
-          <div className="text-sm text-muted px-3 py-1.5">📍 Nawalparasi West, NP</div>
         </div>
 
         {/* Copyright & Stats */}
-        <motion.div
-          className="flex flex-col items-center gap-2.5 md:items-end"
-        >
-          <div className="text-xs font-semibold tracking-widest uppercase text-transparent bg-gradient-to-r from-brand-300 to-cyan-300 bg-clip-text">
+        <div className="flex flex-col items-center gap-3 md:items-end">
+          <div className="text-xs font-semibold tracking-widest uppercase text-transparent bg-gradient-to-r from-brand-400 to-cyan-400 bg-clip-text">
             © 2026 Er. Suraj Tharu Chaudhary. All rights reserved.
           </div>
           <VisitorCounter />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
     </footer>
   );
