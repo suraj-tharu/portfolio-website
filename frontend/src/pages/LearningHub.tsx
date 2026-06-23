@@ -178,7 +178,9 @@ export default function LearningHub() {
         const rawBlogs = portData.blogs || [];
 
         // Map Projects into the LearningMaterial shape
-        const projectMaterials: LearningMaterial[] = rawProjects.map((p: any) => ({
+        const projectMaterials: LearningMaterial[] = rawProjects.map((p: {
+          id: number; title: string; description: string; liveUrl: string; githubUrl: string; createdAt: string;
+        }) => ({
           id: p.id + 10000,
           grade: 'Project',
           category: 'Portfolio',
@@ -189,7 +191,9 @@ export default function LearningHub() {
         }));
 
         // Map Blogs into the LearningMaterial shape
-        const blogMaterials: LearningMaterial[] = rawBlogs.map((b: any) => ({
+        const blogMaterials: LearningMaterial[] = rawBlogs.map((b: {
+          id: number; title: string; content: string; slug: string; createdAt: string;
+        }) => ({
           id: b.id + 20000,
           grade: 'Blog',
           category: 'Article',
