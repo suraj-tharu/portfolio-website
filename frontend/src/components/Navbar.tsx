@@ -77,11 +77,11 @@ export default function Navbar() {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-4 md:top-6 left-0 right-0 z-[100] px-4 md:px-6 flex justify-between items-center"
+        className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-6 py-3 md:py-4 flex justify-between items-center bg-bg/70 dark:bg-bg/80 backdrop-blur-xl border-b border-stroke/80 shadow-sm"
         role="navigation" aria-label="Main navigation"
       >
         {/* Left — Logo */}
-        <a href="#" className="pointer-events-auto group relative w-11 h-11 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 glass shadow-lg-premium border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
+        <a href="#" className="pointer-events-auto group relative w-11 h-11 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
           <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
           <div className="absolute inset-[2px] bg-bg rounded-full flex items-center justify-center">
             <span className="font-display italic text-base text-text-primary">SC</span>
@@ -89,7 +89,7 @@ export default function Navbar() {
         </a>
 
         {/* Center — Desktop Navigation Pills */}
-        <div className="hidden lg:flex items-center gap-1 glass shadow-lg-premium border border-stroke rounded-full px-2 py-1 pointer-events-auto absolute left-1/2 -translate-x-1/2">
+        <div className="hidden lg:flex items-center gap-1 rounded-full px-2 py-1 pointer-events-auto absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => {
             const sectionId = link.href.startsWith('/#') ? link.href.replace('/#', '') : link.href.replace('#', '');
             const isActive = activeSection === sectionId;
@@ -120,7 +120,7 @@ export default function Navbar() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/40 transition-all"
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full transition-all"
           >
             <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
             <span className="text-xs font-bold text-text-secondary">
@@ -130,7 +130,7 @@ export default function Navbar() {
 
           <button
             onClick={toggleTheme}
-            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
           >
@@ -139,7 +139,7 @@ export default function Navbar() {
 
           <button
             onClick={toggleLanguage}
-            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 font-semibold text-xs text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 font-semibold text-xs text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
           >
@@ -148,7 +148,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 text-text-secondary hover:text-brand-light transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
+            className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-stroke/30 text-text-secondary hover:text-brand-light transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
