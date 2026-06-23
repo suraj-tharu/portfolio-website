@@ -1,727 +1,1135 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Suraj Tharu</title>
+  <title>Admin — Suraj Tharu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: { 
-            bg: '#080B14', 
-            surface: 'rgba(255,255,255,0.03)', 
-            stroke: 'rgba(255,255,255,0.1)' 
-          },
-          animation: {
-            'blob': 'blob 10s infinite alternate',
-          },
-          keyframes: {
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '100%': { transform: 'translate(30px, -50px) scale(1.1)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Motion One (Framer Motion for Vanilla JS) -->
-  <script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
-  <!-- SimpleMDE -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
   <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-
   <style>
-    body { 
-      background-color: #080B14; 
-      color: #f8fafc; 
-      font-family: system-ui, -apple-system, sans-serif; 
+    :root {
+      --bg: #060910;
+      --surface: rgba(255,255,255,0.035);
+      --surface-hover: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.18);
+      --text-muted: rgba(255,255,255,0.45);
+      --accent: #7c3aed;
+      --accent-glow: rgba(124,58,237,0.35);
     }
-    
-    .bg-grid {
-      background-size: 40px 40px;
-      background-image: linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px);
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #f0f4ff;
+      font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
-
-    .glass-card {
-      background: rgba(255, 255, 255, 0.02);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 1.5rem;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
-    }
-    .glass-card:hover {
-      border-color: rgba(255,255,255,0.2);
-      background: rgba(255, 255, 255, 0.04);
-      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.3);
-    }
-
-    .glass-input {
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 0.75rem;
-      padding: 0.75rem 1rem;
-      color: white;
-      width: 100%;
-      transition: all 0.2s;
-    }
-    .glass-input:focus {
-      border-color: #7c3aed;
-      box-shadow: 0 0 0 2px rgba(124,58,237,0.3);
-      outline: none;
-      background: rgba(0,0,0,0.6);
-    }
-
-    .search-input {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
-      border-radius: 1rem;
-      color: white;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-    .search-input:focus {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.2);
-      outline: none;
-      box-shadow: 0 0 20px rgba(255,255,255,0.05);
-    }
-
-    .btn-gradient {
-      background: linear-gradient(135deg, #7c3aed, #ec4899);
-      color: white; font-weight: 600; padding: 0.75rem 1.5rem; 
-      border-radius: 0.75rem; transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(124,58,237,0.3);
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    }
-    .btn-gradient:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(124,58,237,0.5);
-    }
-
-    /* SimpleMDE Overrides */
-    .editor-toolbar { background: rgba(255,255,255,0.05) !important; border-color: rgba(255,255,255,0.1) !important; }
-    .editor-toolbar a { color: #cbd5e1 !important; }
-    .CodeMirror { background: rgba(0,0,0,0.3) !important; border-color: rgba(255,255,255,0.1) !important; color: #f8fafc !important; }
-
-    /* Hide scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+
+    /* === AURORA BG === */
+    .aurora {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .aurora-orb {
+      position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.18;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .aurora-orb:nth-child(1) { width: 700px; height: 700px; background: #7c3aed; top: -200px; left: -200px; animation-duration: 18s; }
+    .aurora-orb:nth-child(2) { width: 600px; height: 600px; background: #ec4899; top: 30%; right: -200px; animation-duration: 24s; animation-delay: -6s; }
+    .aurora-orb:nth-child(3) { width: 500px; height: 500px; background: #0ea5e9; bottom: -150px; left: 30%; animation-duration: 20s; animation-delay: -12s; }
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, -60px) scale(1.08); }
+    }
+
+    /* === GRID === */
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 44px 44px;
+    }
+
+    /* === SIDEBAR === */
+    #sidebar {
+      position: fixed; top: 0; left: 0; height: 100%; width: 260px;
+      background: rgba(6,9,16,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; z-index: 100;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sidebar-brand {
+      height: 68px; padding: 0 20px;
+      display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .brand-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; color: white;
+      box-shadow: 0 0 20px rgba(124,58,237,0.4);
+      flex-shrink: 0;
+    }
+    .brand-name { font-weight: 800; font-size: 17px; letter-spacing: -0.5px; color: #fff; }
+    .brand-sub  { font-size: 10px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.5px; }
+
+    .nav-section-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-muted);
+      padding: 16px 20px 6px; margin-top: 4px;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; margin: 2px 8px;
+      border-radius: 10px; cursor: pointer;
+      color: var(--text-muted); font-weight: 600; font-size: 13.5px;
+      transition: all 0.2s ease; text-decoration: none;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .nav-item:hover { color: #fff; background: var(--surface-hover); }
+    .nav-item.active {
+      color: #fff; background: rgba(124,58,237,0.15);
+      border-color: rgba(124,58,237,0.3);
+      box-shadow: 0 0 20px rgba(124,58,237,0.1);
+    }
+    .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto; min-width: 20px; height: 20px; padding: 0 6px;
+      border-radius: 10px; background: rgba(124,58,237,0.2);
+      color: #a78bfa; font-size: 10px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* === MAIN === */
+    #main {
+      margin-left: 260px;
+      min-height: 100vh;
+      transition: margin-left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* === TOPBAR === */
+    #topbar {
+      height: 68px; padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: rgba(6,9,16,0.6);
+      backdrop-filter: blur(20px);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-title { font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
+    .topbar-sub   { font-size: 12px; color: var(--text-muted); font-weight: 500; margin-top: 2px; }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+    .topbar-btn {
+      display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+      border-radius: 9px; font-weight: 600; font-size: 12.5px; cursor: pointer;
+      transition: all 0.2s; text-decoration: none; border: none;
+    }
+    .topbar-btn-ghost { background: var(--surface); color: rgba(255,255,255,0.7); border: 1px solid var(--border); }
+    .topbar-btn-ghost:hover { background: var(--surface-hover); color: #fff; }
+    #hamburger {
+      display: none; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer; color: #fff;
+    }
+
+    /* === TAB PANELS === */
+    .tab-panel { display: none; padding: 32px; animation: fadeSlide 0.3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* === CARDS === */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .card:hover { border-color: var(--border-hover); background: var(--surface-hover); }
+    .card-accent-blue   { border-top: 3px solid #3b82f6; }
+    .card-accent-pink   { border-top: 3px solid #ec4899; }
+    .card-accent-cyan   { border-top: 3px solid #06b6d4; }
+    .card-accent-green  { border-top: 3px solid #10b981; }
+    .card-accent-violet { border-top: 3px solid #7c3aed; }
+
+    /* Stat Cards */
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; display: flex; align-items: center;
+      gap: 20px; transition: all 0.25s ease; cursor: default;
+    }
+    .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .stat-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .stat-value { font-weight: 800; font-size: 32px; line-height: 1; letter-spacing: -1px; }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-top: 4px; }
+
+    /* === INPUTS === */
+    .field-label {
+      display: block; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-muted); margin-bottom: 6px;
+    }
+    .field-input, .field-select, .field-textarea {
+      width: 100%; padding: 10px 14px;
+      background: rgba(0,0,0,0.35); color: #f0f4ff;
+      border: 1px solid var(--border); border-radius: 10px;
+      font-family: 'Inter', sans-serif; font-size: 13.5px;
+      transition: all 0.2s; outline: none;
+    }
+    .field-input:focus, .field-select:focus, .field-textarea:focus {
+      border-color: var(--accent); background: rgba(0,0,0,0.5);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .field-input.mono { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: #a78bfa; }
+    .field-select option { background: #0f1117; color: #f0f4ff; }
+    .field-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+    .field-file {
+      width: 100%; padding: 10px 14px;
+      background: rgba(0,0,0,0.35); color: var(--text-muted);
+      border: 1px dashed var(--border); border-radius: 10px;
+      font-size: 12.5px; cursor: pointer; transition: all 0.2s;
+    }
+    .field-file:hover { border-color: var(--accent); color: #fff; }
+    .field-check {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border); border-radius: 10px; cursor: pointer;
+    }
+    .field-check input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
+    .field-check span { font-weight: 600; font-size: 13.5px; }
+
+    /* === BUTTONS === */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 7px; padding: 10px 20px; border-radius: 10px; font-weight: 700;
+      font-size: 13px; cursor: pointer; transition: all 0.2s; border: none;
+      font-family: 'Inter', sans-serif; text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #6d28d9);
+      color: #fff; box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.45); }
+    .btn-blue   { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; box-shadow: 0 4px 14px rgba(59,130,246,0.3); }
+    .btn-pink   { background: linear-gradient(135deg, #ec4899, #db2777); color: #fff; box-shadow: 0 4px 14px rgba(236,72,153,0.3); }
+    .btn-cyan   { background: linear-gradient(135deg, #06b6d4, #0284c7); color: #fff; box-shadow: 0 4px 14px rgba(6,182,212,0.3); }
+    .btn-green  { background: linear-gradient(135deg, #10b981, #059669); color: #fff; box-shadow: 0 4px 14px rgba(16,185,129,0.3); }
+    .btn-blue:hover, .btn-pink:hover, .btn-cyan:hover, .btn-green:hover { transform: translateY(-1px); filter: brightness(1.1); }
+    .btn-ghost  { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
+    .btn-ghost:hover { background: var(--surface-hover); color: #fff; }
+    .btn-danger { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+    .btn-danger:hover { background: #ef4444; color: #fff; border-color: transparent; }
+    .btn-icon { padding: 8px; border-radius: 8px; }
+    .btn-sm { padding: 7px 14px; font-size: 12px; border-radius: 8px; }
+    .btn-full { width: 100%; }
+
+    /* === SEARCH === */
+    .search-wrap { position: relative; }
+    .search-wrap .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted); pointer-events: none; }
+    .search-input {
+      width: 100%; padding: 10px 14px 10px 38px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; color: #f0f4ff; font-size: 13px;
+      font-family: 'Inter', sans-serif; outline: none; transition: all 0.2s;
+    }
+    .search-input:focus { border-color: var(--border-hover); background: var(--surface-hover); }
+
+    /* === TABLE === */
+    .data-table { width: 100%; border-collapse: collapse; }
+    .data-table thead tr { border-bottom: 1px solid var(--border); }
+    .data-table thead th {
+      padding: 10px 16px; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted);
+      text-align: left; white-space: nowrap;
+    }
+    .data-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+    .data-table tbody tr:hover { background: var(--surface-hover); }
+    .data-table td { padding: 14px 16px; vertical-align: middle; font-size: 13.5px; }
+    .data-table tr:last-child { border-bottom: none; }
+
+    /* === BADGE === */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 20px;
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge-violet { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+    .badge-blue   { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-pink   { background: rgba(236,72,153,0.15); color: #f472b6; border: 1px solid rgba(236,72,153,0.3); }
+    .badge-cyan   { background: rgba(6,182,212,0.15);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.3); }
+    .badge-green  { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-yellow { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-gray   { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border); }
+
+    /* === FORM CARD === */
+    .form-card { background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+    .form-card-title { font-weight: 800; font-size: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+    .form-divider { height: 1px; background: var(--border); margin: 20px 0; }
+    .form-row { display: grid; gap: 16px; }
+    .form-row-2 { grid-template-columns: 1fr 1fr; }
+    .form-row-3 { grid-template-columns: 1fr 1fr 1fr; }
+    @media (max-width: 640px) { .form-row-2, .form-row-3 { grid-template-columns: 1fr; } }
+
+    /* === MODAL === */
+    #modal-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    }
+    #modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: #0d1117; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px; width: 100%; max-height: 88vh; overflow-y: auto;
+      transform: scale(0.95) translateY(16px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    #modal-backdrop.open .modal { transform: scale(1) translateY(0); }
+    .modal-header {
+      padding: 24px 28px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px;
+    }
+    .modal-title { font-weight: 800; font-size: 18px; }
+    .modal-body  { padding: 0 28px 28px; }
+    .modal-footer {
+      padding: 20px 28px; border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px;
+    }
+
+    /* === SECTION HEADER === */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-bottom: 28px;
+    }
+    .section-title { font-weight: 800; font-size: 18px; display: flex; align-items: center; gap: 10px; }
+    .section-subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 3px; }
+
+    /* === IMAGE THUMB === */
+    .img-thumb { width: 48px; height: 48px; border-radius: 8px; object-fit: cover; background: rgba(255,255,255,0.05); border: 1px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .img-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* === SEPARATOR === */
+    .sep { display: flex; align-items: center; gap: 12px; margin: 14px 0; color: var(--text-muted); font-size: 12px; font-weight: 600; }
+    .sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* === MESSAGE CARD === */
+    .msg-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid #7c3aed; border-radius: 14px; padding: 20px 24px; }
+    .msg-card + .msg-card { margin-top: 12px; }
+
+    /* === MOBILE === */
+    #sidebar-overlay { display: none; position: fixed; inset: 0; z-index: 99; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+
+    /* SimpleMDE Dark Theme */
+    .editor-toolbar { background: rgba(0,0,0,0.4) !important; border-color: var(--border) !important; border-radius: 10px 10px 0 0 !important; }
+    .editor-toolbar a { color: #94a3b8 !important; }
+    .editor-toolbar a:hover, .editor-toolbar a.active { background: var(--surface-hover) !important; border-color: var(--border) !important; color: #fff !important; }
+    .CodeMirror { background: rgba(0,0,0,0.4) !important; color: #e2e8f0 !important; border-color: var(--border) !important; font-family: 'JetBrains Mono', monospace !important; font-size: 13px !important; border-radius: 0 0 10px 10px !important; }
+    .editor-preview { background: rgba(0,0,0,0.6) !important; color: #e2e8f0 !important; }
+
+    @media (max-width: 1024px) {
+      #sidebar { transform: translateX(-100%); }
+      #sidebar.open { transform: translateX(0); }
+      #sidebar-overlay { display: block; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+      #sidebar-overlay.open { opacity: 1; pointer-events: all; }
+      #main { margin-left: 0; }
+      #hamburger { display: flex; }
+      .tab-panel { padding: 20px 16px; }
+      #topbar { padding: 0 16px; }
+    }
+    @media (max-width: 640px) {
+      .topbar-actions .topbar-label { display: none; }
+      .stat-card { padding: 16px; gap: 14px; }
+      .stat-value { font-size: 26px; }
+      .form-card { padding: 20px; }
+      .modal-header, .modal-footer { padding-left: 20px; padding-right: 20px; }
+      .modal-body { padding-left: 20px; padding-right: 20px; }
+    }
   </style>
 </head>
-<body class="bg-grid min-h-screen relative overflow-x-hidden text-sm">
-  
-  <!-- Animated Aurora Background -->
-  <div class="fixed inset-0 pointer-events-none z-[-1] overflow-hidden">
-    <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/20 blur-[120px] animate-blob"></div>
-    <div class="absolute top-[20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-pink-600/20 blur-[120px] animate-blob" style="animation-delay: 2s"></div>
-    <div class="absolute bottom-[-10%] left-[20%] w-[60%] h-[60%] rounded-full bg-cyan-600/10 blur-[120px] animate-blob" style="animation-delay: 4s"></div>
+<body class="bg-grid">
+
+  <!-- Aurora -->
+  <div class="aurora">
+    <div class="aurora-orb"></div>
+    <div class="aurora-orb"></div>
+    <div class="aurora-orb"></div>
   </div>
 
-  <!-- Mobile Header -->
-  <div class="lg:hidden fixed top-0 left-0 w-full h-16 bg-bg/90 backdrop-blur-xl border-b border-stroke z-50 flex items-center justify-between px-4">
-    <div class="flex items-center gap-3">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center font-bold">A</div>
-      <span class="font-black text-lg">AdminPanel</span>
-    </div>
-    <button id="mobile-menu-btn" class="p-2 bg-white/5 rounded-lg border border-white/10 text-white"><i data-lucide="menu"></i></button>
-  </div>
+  <!-- Sidebar Overlay -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
 
-  <!-- Sidebar / Navigation -->
-  <nav id="sidebar" class="fixed top-0 left-0 h-full w-64 border-r border-stroke bg-bg/95 backdrop-blur-2xl z-50 flex flex-col transition-transform duration-300 transform -translate-x-full lg:translate-x-0">
-    <div class="h-16 lg:h-20 flex items-center justify-between lg:justify-start px-6 border-b border-stroke">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center font-bold text-lg shadow-lg shadow-violet-500/20">A</div>
-        <span class="font-black tracking-tight text-xl bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">AdminPanel</span>
+  <!-- ============================
+       SIDEBAR
+  ============================= -->
+  <nav id="sidebar">
+    <!-- Brand -->
+    <div class="sidebar-brand">
+      <div class="brand-icon">S</div>
+      <div>
+        <div class="brand-name">Suraj Tharu</div>
+        <div class="brand-sub">ADMIN PANEL</div>
       </div>
-      <button id="close-sidebar-btn" class="lg:hidden p-2 text-white/50 hover:text-white bg-white/5 rounded-lg"><i data-lucide="x" class="w-5 h-5"></i></button>
+      <button onclick="closeSidebar()" style="margin-left:auto;display:none;background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;" id="close-sb-btn">
+        <i data-lucide="x" style="width:18px;height:18px;"></i>
+      </button>
     </div>
-    
-    <div class="flex-1 py-6 px-4 flex flex-col gap-2 overflow-y-auto">
-      <a href="#overview" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="layout-dashboard" class="w-5 h-5 text-violet-400"></i> <span class="font-bold">Overview</span>
+
+    <!-- Nav -->
+    <div style="flex:1;overflow-y:auto;padding:12px 0;">
+      <div class="nav-section-label">Navigation</div>
+      <a class="nav-item active" data-tab="overview" onclick="switchTab('overview',this)">
+        <i data-lucide="layout-dashboard" class="nav-icon"></i> Overview
       </a>
-      <a href="#projects" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="briefcase" class="w-5 h-5 text-blue-400"></i> <span class="font-bold">Projects</span>
+      <a class="nav-item" data-tab="projects" onclick="switchTab('projects',this)">
+        <i data-lucide="folder-open" class="nav-icon"></i> Projects
+        <span class="nav-badge"><%= projects.length %></span>
       </a>
-      <a href="#blogs" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="file-text" class="w-5 h-5 text-pink-400"></i> <span class="font-bold">Blog Posts</span>
+      <a class="nav-item" data-tab="blogs" onclick="switchTab('blogs',this)">
+        <i data-lucide="file-text" class="nav-icon"></i> Blog Posts
+        <span class="nav-badge"><%= blogs.length %></span>
       </a>
-      <a href="#learning" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="book-open" class="w-5 h-5 text-cyan-400"></i> <span class="font-bold">Learning Hub</span>
+      <a class="nav-item" data-tab="learning" onclick="switchTab('learning',this)">
+        <i data-lucide="book-open" class="nav-icon"></i> Learning Hub
+        <span class="nav-badge"><%= learningMaterials.length %></span>
       </a>
-      <a href="#timeline" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="clock" class="w-5 h-5 text-emerald-400"></i> <span class="font-bold">Timeline</span>
+      <a class="nav-item" data-tab="timeline" onclick="switchTab('timeline',this)">
+        <i data-lucide="milestone" class="nav-icon"></i> Timeline
+        <span class="nav-badge"><%= timelineEvents.length %></span>
       </a>
-      <a href="#messages" class="nav-btn flex items-center gap-3 p-3 rounded-xl hover:bg-white/10 text-white/70 hover:text-white transition-colors">
-        <i data-lucide="inbox" class="w-5 h-5 text-indigo-400"></i> <span class="font-bold">Messages</span>
+      <a class="nav-item" data-tab="messages" onclick="switchTab('messages',this)">
+        <i data-lucide="inbox" class="nav-icon"></i> Messages
+        <% if(messages.length > 0){ %><span class="nav-badge" style="background:rgba(239,68,68,0.2);color:#f87171;"><%= messages.length %></span><% } %>
+      </a>
+
+      <div class="nav-section-label" style="margin-top:16px;">Site</div>
+      <a class="nav-item" href="/" target="_blank">
+        <i data-lucide="external-link" class="nav-icon"></i> View Portfolio
       </a>
     </div>
 
-    <div class="p-4 border-t border-stroke space-y-2">
-      <a href="/" target="_blank" class="flex items-center gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 text-white/80 transition-colors">
-        <i data-lucide="external-link" class="w-5 h-5"></i> <span class="font-bold">View Site</span>
-      </a>
-      <a href="/admin/logout" class="flex items-center gap-3 p-3 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
-        <i data-lucide="log-out" class="w-5 h-5"></i> <span class="font-bold">Logout</span>
+    <!-- Logout -->
+    <div style="padding:12px;border-top:1px solid var(--border);">
+      <a href="/admin/logout" class="nav-item" style="background:rgba(239,68,68,0.08);color:#f87171;border-color:rgba(239,68,68,0.15);" onmouseover="this.style.background='rgba(239,68,68,0.2)'" onmouseout="this.style.background='rgba(239,68,68,0.08)'">
+        <i data-lucide="log-out" class="nav-icon"></i> Logout
       </a>
     </div>
   </nav>
 
-  <!-- Sidebar Overlay -->
-  <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 hidden lg:hidden transition-opacity opacity-0 pointer-events-none"></div>
+  <!-- ============================
+       MAIN
+  ============================= -->
+  <div id="main">
 
-  <!-- Main Content -->
-  <main class="ml-0 lg:ml-64 pt-24 lg:pt-12 p-4 sm:p-8 lg:p-12 min-h-screen">
-    <div class="max-w-6xl mx-auto space-y-32 pb-32">
-
-      <!-- ==============================================
-           OVERVIEW
-      =============================================== -->
-      <section id="overview" class="motion-section scroll-mt-28 lg:scroll-mt-12">
-        <div class="flex items-center gap-4 mb-8">
-          <i data-lucide="bar-chart-2" class="text-violet-500"></i>
-          <h2 class="text-2xl font-black tracking-tight">Dashboard Overview</h2>
+    <!-- Topbar -->
+    <div id="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <button id="hamburger" onclick="openSidebar()">
+          <i data-lucide="menu" style="width:20px;height:20px;"></i>
+        </button>
+        <div>
+          <div class="topbar-title" id="topbar-title">Overview</div>
+          <div class="topbar-sub" id="topbar-sub">Welcome back, Suraj!</div>
         </div>
-        
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <div class="glass-card p-4 sm:p-6 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 hover:translate-y-[-4px] transition-transform">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.2)]">
-              <i data-lucide="folder"></i>
+      </div>
+      <div class="topbar-actions">
+        <a href="/" target="_blank" class="topbar-btn topbar-btn-ghost">
+          <i data-lucide="globe" style="width:14px;height:14px;"></i>
+          <span class="topbar-label">View Site</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ============================
+         TAB: OVERVIEW
+    ============================= -->
+    <div class="tab-panel active" id="tab-overview">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="bar-chart-3" style="width:22px;height:22px;color:#a78bfa;"></i> Dashboard Overview</div>
+          <div class="section-subtitle">Your portfolio at a glance</div>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;">
+        <div class="stat-card" onclick="switchTab('projects',document.querySelector('[data-tab=projects]'))" style="cursor:pointer;">
+          <div class="stat-icon" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2);">
+            <i data-lucide="folder-open" style="width:22px;height:22px;color:#60a5fa;"></i>
+          </div>
+          <div>
+            <div class="stat-value"><%= projects.length %></div>
+            <div class="stat-label">Projects</div>
+          </div>
+        </div>
+        <div class="stat-card" onclick="switchTab('blogs',document.querySelector('[data-tab=blogs]'))" style="cursor:pointer;">
+          <div class="stat-icon" style="background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.2);">
+            <i data-lucide="file-text" style="width:22px;height:22px;color:#f472b6;"></i>
+          </div>
+          <div>
+            <div class="stat-value"><%= blogs.length %></div>
+            <div class="stat-label">Articles</div>
+          </div>
+        </div>
+        <div class="stat-card" onclick="switchTab('learning',document.querySelector('[data-tab=learning]'))" style="cursor:pointer;">
+          <div class="stat-icon" style="background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.2);">
+            <i data-lucide="book-open" style="width:22px;height:22px;color:#22d3ee;"></i>
+          </div>
+          <div>
+            <div class="stat-value"><%= learningMaterials.length %></div>
+            <div class="stat-label">Resources</div>
+          </div>
+        </div>
+        <div class="stat-card" onclick="switchTab('messages',document.querySelector('[data-tab=messages]'))" style="cursor:pointer;">
+          <div class="stat-icon" style="background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.2);">
+            <i data-lucide="mail" style="width:22px;height:22px;color:#34d399;"></i>
+          </div>
+          <div>
+            <div class="stat-value"><%= messages.length %></div>
+            <div class="stat-label">Messages</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <!-- Recent Projects -->
+        <div class="card" style="padding:24px;">
+          <div style="font-weight:800;font-size:15px;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
+            <i data-lucide="folder-open" style="width:16px;height:16px;color:#60a5fa;"></i> Recent Projects
+          </div>
+          <% if(projects.length > 0) { projects.slice(0,4).forEach(p=> { %>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+            <div class="img-thumb" style="width:40px;height:40px;">
+              <% if(p.imageUrl){ %><img src="<%= p.imageUrl %>" alt=""><% } else { %><i data-lucide="image" style="width:16px;height:16px;color:var(--text-muted);"></i><% } %>
             </div>
-            <div class="text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl font-black"><%= projects.length %></p>
-              <p class="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-widest font-bold">Projects</p>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><%= p.title %></div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px;"><%= (p.tags||'').split(',').slice(0,2).map(t=>t.trim()).filter(Boolean).join(' · ') %></div>
             </div>
           </div>
-          <div class="glass-card p-4 sm:p-6 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 hover:translate-y-[-4px] transition-transform">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-pink-500/10 text-pink-400 flex items-center justify-center border border-pink-500/20 shadow-[0_0_15px_rgba(236,72,153,0.2)]">
-              <i data-lucide="file-text"></i>
+          <% }) } else { %><div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;">No projects yet</div><% } %>
+        </div>
+
+        <!-- Recent Messages -->
+        <div class="card" style="padding:24px;">
+          <div style="font-weight:800;font-size:15px;margin-bottom:18px;display:flex;align-items:center;gap:8px;">
+            <i data-lucide="mail" style="width:16px;height:16px;color:#34d399;"></i> Recent Messages
+          </div>
+          <% if(messages.length > 0) { messages.slice(0,4).forEach(m=> { %>
+          <div style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <span style="font-weight:700;font-size:13.5px;"><%= m.name %></span>
+              <span style="font-size:10px;color:var(--text-muted);white-space:nowrap;"><%= new Date(m.createdAt).toLocaleDateString() %></span>
             </div>
-            <div class="text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl font-black"><%= blogs.length %></p>
-              <p class="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-widest font-bold">Articles</p>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><%= (m.message||'').substring(0,60) %>...</div>
+          </div>
+          <% }) } else { %><div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;">No messages yet</div><% } %>
+        </div>
+      </div>
+
+      @media (max-width: 640px) { [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr; } }
+    </div>
+
+    <!-- ============================
+         TAB: PROJECTS
+    ============================= -->
+    <div class="tab-panel" id="tab-projects">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="folder-open" style="width:22px;height:22px;color:#60a5fa;"></i> Projects</div>
+          <div class="section-subtitle"><%= projects.length %> project<%= projects.length !== 1 ? 's' : '' %> published</div>
+        </div>
+        <div class="search-wrap" style="width:260px;">
+          <i data-lucide="search" class="search-icon"></i>
+          <input class="search-input" id="search-projects" placeholder="Search projects…" oninput="filterList(this,'projects-list')">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+        <!-- Add Form -->
+        <div class="form-card card-accent-blue" style="position:sticky;top:24px;z-index:5;">
+          <div class="form-card-title"><i data-lucide="plus-circle" style="width:18px;height:18px;color:#60a5fa;"></i> Add New Project</div>
+          <form action="/admin/api/projects" method="POST" enctype="multipart/form-data">
+            <div class="form-row" style="gap:14px;">
+              <div><label class="field-label">Title *</label><input type="text" name="title" required class="field-input" placeholder="Project name"></div>
+              <div><label class="field-label">Cover Image URL</label><input type="url" name="imageUrl" class="field-input" placeholder="https://…"></div>
+              <div><label class="field-label">Upload Cover Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
+              <div><label class="field-label">Description *</label><textarea name="description" required class="field-textarea" placeholder="Brief description…" rows="3"></textarea></div>
+              <div class="form-row form-row-2">
+                <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" class="field-input" placeholder="https://…"></div>
+                <div><label class="field-label">Tags (comma sep.)</label><input type="text" name="tags" class="field-input" placeholder="React, Node…"></div>
+              </div>
             </div>
-          </div>
-          <div class="glass-card p-4 sm:p-6 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 hover:translate-y-[-4px] transition-transform">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.2)]">
-              <i data-lucide="book"></i>
-            </div>
-            <div class="text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl font-black"><%= learningMaterials.length %></p>
-              <p class="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-widest font-bold">Resources</p>
-            </div>
-          </div>
-          <div class="glass-card p-4 sm:p-6 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 hover:translate-y-[-4px] transition-transform">
-            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-              <i data-lucide="mail"></i>
-            </div>
-            <div class="text-center lg:text-left">
-              <p class="text-2xl sm:text-3xl font-black"><%= messages.length %></p>
-              <p class="text-[9px] sm:text-[10px] text-white/40 uppercase tracking-widest font-bold">Messages</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           PROJECTS
-      =============================================== -->
-      <section id="projects" class="motion-section scroll-mt-28 lg:scroll-mt-12">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400"><i data-lucide="briefcase"></i></div>
-            <h2 class="text-2xl font-black tracking-tight">Manage Projects</h2>
-          </div>
-          <div class="relative w-full sm:w-64">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40"></i>
-            <input type="text" id="search-projects" placeholder="Search projects..." class="search-input">
-          </div>
+            <div style="margin-top:20px;"><button type="submit" class="btn btn-blue btn-full"><i data-lucide="send" style="width:15px;height:15px;"></i> Publish Project</button></div>
+          </form>
         </div>
 
-        <div class="grid lg:grid-cols-12 gap-8 items-start">
-          <!-- Create Form -->
-          <div class="lg:col-span-5 lg:sticky top-24 z-10">
-            <form action="/admin/api/projects" method="POST" enctype="multipart/form-data" class="glass-card p-6 sm:p-8 relative overflow-hidden">
-              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
-              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="plus-circle" class="w-5 h-5 text-blue-400"></i> New Project</h3>
-              <div class="space-y-4">
-                <div><label class="block text-xs text-white/50 mb-1">Title</label><input type="text" name="title" required class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Cover Image URL</label><input type="url" name="imageUrl" class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Upload Cover File</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Description</label><textarea name="description" required rows="3" class="glass-input"></textarea></div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div><label class="block text-xs text-white/50 mb-1">Live URL</label><input type="url" name="liveUrl" class="glass-input"></div>
-                  <div><label class="block text-xs text-white/50 mb-1">Tags (csv)</label><input type="text" name="tags" class="glass-input"></div>
-                </div>
+        <!-- Projects List -->
+        <div>
+          <div id="projects-list">
+            <% if(projects.length === 0) { %>
+              <div class="card" style="padding:40px;text-align:center;color:var(--text-muted);">
+                <i data-lucide="folder-x" style="width:40px;height:40px;margin:0 auto 12px;display:block;"></i>
+                <p>No projects yet. Add your first one!</p>
               </div>
-              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #3b82f6, #4f46e5)"><i data-lucide="send" class="w-4 h-4"></i> Publish Project</button>
-            </form>
-          </div>
-          <!-- List -->
-          <div class="lg:col-span-7 space-y-4" id="projects-list">
-            <% projects.forEach(p=> { %>
-              <div class="searchable-item glass-card p-4 flex flex-col sm:flex-row gap-4 items-center group" data-search="<%= (p.title || '').toLowerCase() %> <%= (p.tags || '').toLowerCase() %>">
-                <div class="w-full sm:w-32 h-40 sm:h-24 rounded-xl bg-black/50 overflow-hidden shrink-0 border border-white/5 relative flex items-center justify-center">
-                  <% if (p.imageUrl) { %>
-                    <img src="<%= p.imageUrl %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                  <% } else { %>
-                    <i data-lucide="image" class="text-white/20"></i>
-                  <% } %>
-                </div>
-                <div class="flex-1 text-center sm:text-left w-full">
-                  <h4 class="font-bold text-lg"><%= p.title %></h4>
-                  <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
-                    <% (p.tags || '').split(',').forEach(tag => { if(tag.trim()) { %>
-                      <span class="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-white/60 uppercase font-bold"><%= tag.trim() %></span>
-                    <% }}) %>
-                  </div>
-                </div>
-                <div class="flex sm:flex-col w-full sm:w-auto gap-2 shrink-0">
-                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(p)) %>" class="flex-1 sm:flex-none px-3 py-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors text-xs font-bold border border-blue-500/20 text-center"><i data-lucide="edit-2" class="w-3 h-3 inline"></i> Edit</button>
-                  <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');" class="flex-1 sm:flex-none">
-                    <button type="submit" class="w-full px-3 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors text-xs font-bold border border-red-500/20"><i data-lucide="trash" class="w-3 h-3 inline"></i> Del</button>
-                  </form>
-                </div>
+            <% } else { projects.forEach(p=> { %>
+            <div class="card searchable" data-search="<%= (p.title||'').toLowerCase() %> <%= (p.tags||'').toLowerCase() %>" style="padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:16px;">
+              <!-- Thumb -->
+              <div class="img-thumb" style="width:56px;height:56px;border-radius:10px;flex-shrink:0;">
+                <% if(p.imageUrl){ %><img src="<%= p.imageUrl %>" alt="<%= p.title %>"><% } else { %><i data-lucide="image" style="width:20px;height:20px;color:var(--text-muted);"></i><% } %>
               </div>
-            <% }) %>
-            <% if(projects.length === 0) { %><div class="text-white/30 text-center py-10 glass-card">No projects found.</div><% } %>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           BLOG POSTS
-      =============================================== -->
-      <section id="blogs" class="motion-section scroll-mt-28 lg:scroll-mt-12">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400"><i data-lucide="file-text"></i></div>
-            <h2 class="text-2xl font-black tracking-tight">Manage Articles</h2>
-          </div>
-          <div class="relative w-full sm:w-64">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40"></i>
-            <input type="text" id="search-blogs" placeholder="Search articles..." class="search-input">
-          </div>
-        </div>
-
-        <div class="grid lg:grid-cols-12 gap-8 items-start">
-          <div class="lg:col-span-5 lg:sticky top-24 z-10">
-            <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data" class="glass-card p-6 sm:p-8 relative overflow-hidden">
-              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-500 shadow-[0_0_10px_rgba(236,72,153,0.8)]"></div>
-              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="pen-tool" class="w-5 h-5 text-pink-400"></i> Write Article</h3>
-              <div class="space-y-4">
-                <div><label class="block text-xs text-white/50 mb-1">Title</label><input type="text" name="title" required class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Slug (URL)</label><input type="text" name="slug" required class="glass-input font-mono text-pink-300"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
-                <div class="flex items-center gap-3 bg-black/20 p-3 rounded-xl border border-white/5">
-                  <input type="checkbox" name="published" checked class="w-4 h-4 rounded bg-white/10 border-white/20 text-pink-500 focus:ring-pink-500/50">
-                  <label class="text-sm font-bold">Publish Immediately</label>
+              <!-- Info -->
+              <div style="flex:1;min-width:0;">
+                <div style="font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><%= p.title %></div>
+                <div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px;">
+                  <% (p.tags||'').split(',').forEach(tag=>{ if(tag.trim()){ %><span class="badge badge-blue"><%= tag.trim() %></span><% }}) %>
                 </div>
-                <div>
-                  <label class="block text-xs text-white/50 mb-1">Markdown Content</label>
-                  <textarea name="content" id="blog-add-editor" rows="5"></textarea>
-                </div>
+                <% if(p.liveUrl){ %><a href="<%= p.liveUrl %>" target="_blank" style="font-size:11px;color:#60a5fa;margin-top:4px;display:block;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;text-decoration:none;"><%= p.liveUrl %></a><% } %>
               </div>
-              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #ec4899, #f43f5e)"><i data-lucide="upload-cloud" class="w-4 h-4"></i> Publish Article</button>
-            </form>
-          </div>
-          <div class="lg:col-span-7 space-y-4" id="blogs-list">
-            <% blogs.forEach(b=> { %>
-              <div class="searchable-item glass-card p-4 flex flex-col sm:flex-row gap-4 items-center group" data-search="<%= (b.title || '').toLowerCase() %> <%= (b.slug || '').toLowerCase() %>">
-                <div class="w-full sm:w-20 h-32 sm:h-20 rounded-xl bg-black/50 overflow-hidden shrink-0 border border-white/5 flex items-center justify-center relative">
-                  <% if (b.imageUrl) { %>
-                    <img src="<%= b.imageUrl %>" class="w-full h-full object-cover transition duration-500 group-hover:scale-110">
-                  <% } else { %>
-                    <i data-lucide="type" class="text-white/20"></i>
-                  <% } %>
-                </div>
-                <div class="flex-1 text-center sm:text-left w-full">
-                  <div class="flex flex-col sm:flex-row items-center gap-2">
-                    <h4 class="font-bold text-lg"><%= b.title %></h4>
-                    <% if(!b.published) { %><span class="px-2 py-0.5 text-[9px] bg-yellow-500/20 text-yellow-500 border border-yellow-500/30 rounded uppercase font-bold">Draft</span><% } %>
-                  </div>
-                  <p class="text-xs text-white/40 font-mono mt-1">/<%= b.slug %></p>
-                </div>
-                <div class="flex w-full sm:w-auto gap-2 shrink-0 justify-center">
-                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(b)) %>" class="p-2 rounded-lg bg-white/5 hover:bg-white/20 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                  <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete article?');">
-                    <button type="submit" class="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><i data-lucide="trash" class="w-4 h-4"></i></button>
-                  </form>
-                </div>
-              </div>
-            <% }) %>
-            <% if(blogs.length === 0) { %><div class="text-white/30 text-center py-10 glass-card">No blogs found.</div><% } %>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           LEARNING HUB
-      =============================================== -->
-      <section id="learning" class="motion-section scroll-mt-28 lg:scroll-mt-12">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <div class="flex items-center gap-4">
-            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400"><i data-lucide="book-open"></i></div>
-            <h2 class="text-2xl font-black tracking-tight">Learning Hub</h2>
-          </div>
-          <div class="relative w-full sm:w-64">
-            <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40"></i>
-            <input type="text" id="search-learning" placeholder="Search resources..." class="search-input">
-          </div>
-        </div>
-
-        <div class="grid lg:grid-cols-12 gap-8 items-start">
-          <div class="lg:col-span-5 lg:sticky top-24 z-10">
-            <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data" class="glass-card p-6 sm:p-8 relative overflow-hidden">
-              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></div>
-              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="file-up" class="w-5 h-5 text-cyan-400"></i> Upload Resource</h3>
-              <div class="space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs text-white/50 mb-1">Grade</label>
-                    <select name="grade" class="glass-input"><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option><option>Teacher Training</option></select>
-                  </div>
-                  <div>
-                    <label class="block text-xs text-white/50 mb-1">Category</label>
-                    <select name="category" class="glass-input"><option>Course Notes</option><option>Question Banks</option><option>Syllabus</option><option>Lab Manuals</option><option>Reference Materials</option></select>
-                  </div>
-                </div>
-                <div><label class="block text-xs text-white/50 mb-1">Subject</label><input type="text" name="subject" required class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Description</label><input type="text" name="description" class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">PDF File</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="glass-input text-xs"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Or URL</label><input type="url" name="pdfUrl" class="glass-input"></div>
-              </div>
-              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #06b6d4, #3b82f6)"><i data-lucide="upload" class="w-4 h-4"></i> Upload Resource</button>
-            </form>
-          </div>
-          <div class="lg:col-span-7 grid sm:grid-cols-2 gap-4" id="learning-list">
-            <% learningMaterials.forEach(m=> { %>
-              <div class="searchable-item glass-card p-5 relative group overflow-hidden" data-search="<%= (m.subject || '').toLowerCase() %> <%= (m.grade || '').toLowerCase() %> <%= (m.category || '').toLowerCase() %>">
-                <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
-                <div class="absolute top-4 right-4 flex gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity lg:translate-y-2 lg:group-hover:translate-y-0 z-20">
-                  <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(m)) %>" class="p-1.5 rounded bg-white/10 hover:bg-white/20 border border-white/10"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
-                  <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
-                    <button type="submit" class="p-1.5 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20"><i data-lucide="trash" class="w-3 h-3"></i></button>
-                  </form>
-                </div>
-                <div class="mb-4 flex flex-wrap gap-2 pr-16">
-                  <span class="px-2 py-1 text-[9px] bg-cyan-500/20 text-cyan-400 rounded uppercase font-bold border border-cyan-500/30"><%= m.grade %></span>
-                  <span class="px-2 py-1 text-[9px] bg-white/5 text-white/50 rounded uppercase font-bold border border-white/10"><%= m.category %></span>
-                </div>
-                <h4 class="font-bold text-lg mb-1 relative z-10 pr-12"><%= m.subject %></h4>
-                <p class="text-xs text-white/50 line-clamp-2 relative z-10"><%= m.description %></p>
-              </div>
-            <% }) %>
-            <% if(learningMaterials.length === 0) { %><div class="col-span-full text-white/30 text-center py-10 glass-card">No learning materials.</div><% } %>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           TIMELINE
-      =============================================== -->
-      <section id="timeline" class="motion-section scroll-mt-28 lg:scroll-mt-12">
-        <div class="flex items-center gap-4 mb-8">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400"><i data-lucide="clock"></i></div>
-          <h2 class="text-2xl font-black tracking-tight">Timeline</h2>
-        </div>
-        <div class="grid lg:grid-cols-12 gap-8 items-start">
-          <div class="lg:col-span-5 lg:sticky top-24 z-10">
-            <form action="/admin/api/timeline" method="POST" class="glass-card p-6 sm:p-8 relative overflow-hidden">
-              <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></div>
-              <h3 class="text-lg font-bold mb-6 flex items-center gap-2"><i data-lucide="plus" class="w-5 h-5 text-emerald-400"></i> Add Event</h3>
-              <div class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                  <div><label class="block text-xs text-white/50 mb-1">Year(s)</label><input type="text" name="year" required class="glass-input"></div>
-                  <div><label class="block text-xs text-white/50 mb-1">Order Index</label><input type="number" name="orderIndex" value="0" required class="glass-input"></div>
-                </div>
-                <div><label class="block text-xs text-white/50 mb-1">Role / Title</label><input type="text" name="role" required class="glass-input"></div>
-                <div><label class="block text-xs text-white/50 mb-1">Location / Institution</label><input type="text" name="location" required class="glass-input"></div>
-              </div>
-              <button type="submit" class="btn-gradient w-full mt-6" style="background: linear-gradient(135deg, #10b981, #059669)"><i data-lucide="check" class="w-4 h-4"></i> Save Event</button>
-            </form>
-          </div>
-          <div class="lg:col-span-7 space-y-4">
-            <% timelineEvents.forEach(t=> { %>
-              <div class="glass-card p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 group hover:bg-white/[0.04]">
-                <div class="px-3 py-1.5 bg-emerald-500/10 text-emerald-400 font-mono text-sm rounded border border-emerald-500/20 font-bold shrink-0"><%= t.year %></div>
-                <div class="flex-1 w-full">
-                  <h4 class="font-bold text-lg"><%= t.role %></h4>
-                  <p class="text-sm text-white/50"><%= t.location %></p>
-                </div>
-                <div class="flex gap-2 w-full sm:w-auto justify-end mt-4 sm:mt-0 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(t)) %>" class="p-2 rounded bg-white/10 hover:bg-white/20 border border-white/10"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
-                  <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
-                    <button type="submit" class="p-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white border border-red-500/20"><i data-lucide="trash" class="w-4 h-4"></i></button>
-                  </form>
-                </div>
-              </div>
-            <% }) %>
-            <% if(timelineEvents.length === 0) { %><div class="text-white/30 text-center py-10 glass-card">No events found.</div><% } %>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           MESSAGES
-      =============================================== -->
-      <section id="messages" class="motion-section scroll-mt-28 lg:scroll-mt-12 max-w-4xl mx-auto">
-        <div class="flex items-center gap-4 mb-8">
-          <div class="w-12 h-12 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-violet-400"><i data-lucide="inbox"></i></div>
-          <h2 class="text-2xl font-black tracking-tight">Inbox</h2>
-        </div>
-        <div class="space-y-4">
-          <% messages.forEach(m=> { %>
-            <div class="glass-card p-6 border-t-[3px] border-t-violet-500/50 hover:border-t-violet-400">
-              <div class="flex flex-col sm:flex-row justify-between items-start mb-4 pb-4 border-b border-white/5">
-                <div class="flex gap-4 items-center">
-                  <div class="w-10 h-10 rounded-full bg-violet-500/20 text-violet-400 flex items-center justify-center font-bold font-mono border border-violet-500/30">
-                    <%= (m.name || 'U').charAt(0).toUpperCase() %>
-                  </div>
-                  <div>
-                    <h4 class="font-bold text-lg"><%= m.name %></h4>
-                    <a href="mailto:<%= m.email %>" class="text-violet-400 text-sm hover:underline"><%= m.email %></a>
-                  </div>
-                </div>
-                <span class="text-[10px] text-white/40 font-mono uppercase bg-white/5 px-2 py-1 rounded mt-4 sm:mt-0"><%= new Date(m.createdAt).toLocaleString() %></span>
-              </div>
-              <% if (m.subject) { %><h5 class="font-bold mb-2"><%= m.subject %></h5><% } %>
-              <p class="text-sm text-white/80 whitespace-pre-wrap bg-black/30 p-4 rounded-xl border border-white/5"><%= m.message %></p>
-              <div class="mt-4 pt-4 border-t border-white/5 flex justify-end">
-                <form action="/admin/api/messages/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete message?');">
-                  <button type="submit" class="text-xs font-bold px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors flex items-center gap-2 border border-red-500/20 hover:border-transparent"><i data-lucide="trash-2" class="w-3 h-3"></i> Delete</button>
+              <!-- Actions -->
+              <div style="display:flex;gap:6px;flex-shrink:0;">
+                <button onclick="openModal('project-modal',JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(p)) %>" class="btn btn-ghost btn-icon btn-sm" title="Edit">
+                  <i data-lucide="edit-2" style="width:14px;height:14px;"></i>
+                </button>
+                <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete «<%= p.title %>»?');">
+                  <button type="submit" class="btn btn-danger btn-icon btn-sm" title="Delete">
+                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                  </button>
                 </form>
               </div>
             </div>
-          <% }) %>
-          <% if (messages.length === 0) { %>
-            <div class="text-center py-20 text-white/30 glass-card"><i data-lucide="inbox" class="w-12 h-12 mx-auto mb-4 opacity-50"></i><p>Inbox is empty.</p></div>
+            <% }) } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================
+         TAB: BLOGS
+    ============================= -->
+    <div class="tab-panel" id="tab-blogs">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="file-text" style="width:22px;height:22px;color:#f472b6;"></i> Blog Posts</div>
+          <div class="section-subtitle"><%= blogs.length %> article<%= blogs.length !== 1 ? 's' : '' %> total</div>
+        </div>
+        <div class="search-wrap" style="width:260px;">
+          <i data-lucide="search" class="search-icon"></i>
+          <input class="search-input" id="search-blogs" placeholder="Search articles…" oninput="filterList(this,'blogs-list')">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+        <!-- Add Form -->
+        <div class="form-card card-accent-pink" style="position:sticky;top:24px;z-index:5;">
+          <div class="form-card-title"><i data-lucide="pen-line" style="width:18px;height:18px;color:#f472b6;"></i> Write New Article</div>
+          <form action="/admin/api/blogs" method="POST" enctype="multipart/form-data">
+            <div class="form-row" style="gap:14px;">
+              <div><label class="field-label">Title *</label><input type="text" name="title" required class="field-input" placeholder="Article title"></div>
+              <div><label class="field-label">Slug (URL path) *</label><input type="text" name="slug" required class="field-input mono" placeholder="my-article-slug"></div>
+              <div><label class="field-label">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
+              <label class="field-check"><input type="checkbox" name="published" checked><span>Publish Immediately</span></label>
+              <div><label class="field-label">Content (Markdown)</label><textarea name="content" id="blog-create-md" rows="5"></textarea></div>
+            </div>
+            <div style="margin-top:20px;"><button type="submit" class="btn btn-pink btn-full"><i data-lucide="upload-cloud" style="width:15px;height:15px;"></i> Publish Article</button></div>
+          </form>
+        </div>
+
+        <!-- Blogs List -->
+        <div id="blogs-list">
+          <% if(blogs.length === 0) { %>
+            <div class="card" style="padding:40px;text-align:center;color:var(--text-muted);">
+              <i data-lucide="file-x" style="width:40px;height:40px;margin:0 auto 12px;display:block;"></i>
+              <p>No articles yet. Write your first one!</p>
+            </div>
+          <% } else { blogs.forEach(b=> { %>
+          <div class="card searchable" data-search="<%= (b.title||'').toLowerCase() %> <%= (b.slug||'').toLowerCase() %>" style="padding:16px;margin-bottom:12px;display:flex;align-items:center;gap:16px;">
+            <div class="img-thumb" style="width:56px;height:56px;border-radius:10px;flex-shrink:0;">
+              <% if(b.imageUrl){ %><img src="<%= b.imageUrl %>" alt="<%= b.title %>"><% } else { %><i data-lucide="file-text" style="width:20px;height:20px;color:var(--text-muted);"></i><% } %>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <span style="font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px;"><%= b.title %></span>
+                <% if(b.published){ %><span class="badge badge-green">Published</span><% } else { %><span class="badge badge-yellow">Draft</span><% } %>
+              </div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-top:4px;">/<%= b.slug %></div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0;">
+              <button onclick="openModal('blog-modal',JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(b)) %>" class="btn btn-ghost btn-icon btn-sm" title="Edit">
+                <i data-lucide="edit-2" style="width:14px;height:14px;"></i>
+              </button>
+              <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete «<%= b.title %>»?');">
+                <button type="submit" class="btn btn-danger btn-icon btn-sm" title="Delete">
+                  <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <% }) } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================
+         TAB: LEARNING HUB
+    ============================= -->
+    <div class="tab-panel" id="tab-learning">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="book-open" style="width:22px;height:22px;color:#22d3ee;"></i> Learning Hub</div>
+          <div class="section-subtitle"><%= learningMaterials.length %> resource<%= learningMaterials.length !== 1 ? 's' : '' %> uploaded</div>
+        </div>
+        <div class="search-wrap" style="width:260px;">
+          <i data-lucide="search" class="search-icon"></i>
+          <input class="search-input" id="search-learning" placeholder="Search resources…" oninput="filterList(this,'learning-list')">
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+        <!-- Upload Form -->
+        <div class="form-card card-accent-cyan" style="position:sticky;top:24px;z-index:5;">
+          <div class="form-card-title"><i data-lucide="upload" style="width:18px;height:18px;color:#22d3ee;"></i> Upload Resource</div>
+          <form action="/admin/api/learning-materials" method="POST" enctype="multipart/form-data">
+            <div class="form-row" style="gap:14px;">
+              <div class="form-row form-row-2">
+                <div>
+                  <label class="field-label">Grade</label>
+                  <select name="grade" class="field-select">
+                    <option>Grade 10</option><option>Grade 11</option><option>Grade 12</option><option>Teacher Training</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label">Category</label>
+                  <select name="category" class="field-select">
+                    <option>Course Notes</option><option>Question Banks</option><option>Syllabus</option><option>Lab Manuals</option><option>Reference Materials</option>
+                  </select>
+                </div>
+              </div>
+              <div><label class="field-label">Subject *</label><input type="text" name="subject" required class="field-input" placeholder="e.g. Physics, Mathematics"></div>
+              <div><label class="field-label">Description</label><input type="text" name="description" class="field-input" placeholder="Brief note about this file"></div>
+              <div><label class="field-label">Upload PDF / Doc</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="field-file"></div>
+              <div class="sep">or paste URL</div>
+              <div><label class="field-label">Direct File URL</label><input type="url" name="pdfUrl" class="field-input" placeholder="https://…/file.pdf"></div>
+            </div>
+            <div style="margin-top:20px;"><button type="submit" class="btn btn-cyan btn-full"><i data-lucide="upload" style="width:15px;height:15px;"></i> Upload Resource</button></div>
+          </form>
+        </div>
+
+        <!-- Resources List -->
+        <div id="learning-list" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <% if(learningMaterials.length === 0) { %>
+            <div class="card" style="grid-column:1/-1;padding:40px;text-align:center;color:var(--text-muted);">
+              <i data-lucide="folder-x" style="width:40px;height:40px;margin:0 auto 12px;display:block;"></i>
+              <p>No resources yet. Upload the first one!</p>
+            </div>
+          <% } else { learningMaterials.forEach(m=> { %>
+          <div class="card searchable" data-search="<%= (m.subject||'').toLowerCase() %> <%= (m.grade||'').toLowerCase() %> <%= (m.category||'').toLowerCase() %>" style="padding:20px;position:relative;">
+            <!-- Action buttons -->
+            <div style="position:absolute;top:14px;right:14px;display:flex;gap:5px;">
+              <button onclick="openModal('learning-modal',JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(m)) %>" class="btn btn-ghost btn-icon btn-sm" title="Edit">
+                <i data-lucide="edit-2" style="width:13px;height:13px;"></i>
+              </button>
+              <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
+                <button type="submit" class="btn btn-danger btn-icon btn-sm" title="Delete">
+                  <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                </button>
+              </form>
+            </div>
+            <!-- Content -->
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;padding-right:60px;">
+              <span class="badge badge-cyan"><%= m.grade %></span>
+              <span class="badge badge-gray"><%= m.category %></span>
+            </div>
+            <div style="font-weight:700;font-size:14px;margin-bottom:5px;"><%= m.subject %></div>
+            <% if(m.description){ %><div style="font-size:12px;color:var(--text-muted);line-height:1.5;"><%= m.description %></div><% } %>
+            <% if(m.pdfUrl){ %>
+            <a href="<%= m.pdfUrl %>" target="_blank" style="margin-top:12px;display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#22d3ee;text-decoration:none;font-weight:600;">
+              <i data-lucide="file-down" style="width:12px;height:12px;"></i> View File
+            </a>
+            <% } %>
+          </div>
+          <% }) } %>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================
+         TAB: TIMELINE
+    ============================= -->
+    <div class="tab-panel" id="tab-timeline">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="milestone" style="width:22px;height:22px;color:#34d399;"></i> Timeline</div>
+          <div class="section-subtitle"><%= timelineEvents.length %> event<%= timelineEvents.length !== 1 ? 's' : '' %></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:380px 1fr;gap:24px;align-items:start;">
+        <!-- Add Form -->
+        <div class="form-card card-accent-green" style="position:sticky;top:24px;z-index:5;">
+          <div class="form-card-title"><i data-lucide="plus-circle" style="width:18px;height:18px;color:#34d399;"></i> Add Event</div>
+          <form action="/admin/api/timeline" method="POST">
+            <div class="form-row" style="gap:14px;">
+              <div class="form-row form-row-2">
+                <div><label class="field-label">Year(s) *</label><input type="text" name="year" required class="field-input" placeholder="2023 / 2022–2024"></div>
+                <div><label class="field-label">Order Index</label><input type="number" name="orderIndex" value="0" class="field-input"></div>
+              </div>
+              <div><label class="field-label">Role / Title *</label><input type="text" name="role" required class="field-input" placeholder="Software Engineer"></div>
+              <div><label class="field-label">Location / Institution *</label><input type="text" name="location" required class="field-input" placeholder="Company or University"></div>
+            </div>
+            <div style="margin-top:20px;"><button type="submit" class="btn btn-green btn-full"><i data-lucide="check-circle" style="width:15px;height:15px;"></i> Add Event</button></div>
+          </form>
+        </div>
+
+        <!-- Timeline List -->
+        <div>
+          <% if(timelineEvents.length === 0) { %>
+            <div class="card" style="padding:40px;text-align:center;color:var(--text-muted);">
+              <p>No timeline events yet.</p>
+            </div>
+          <% } else { %>
+          <!-- Timeline visual -->
+          <div style="position:relative;padding-left:32px;">
+            <div style="position:absolute;left:7px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,#7c3aed,#10b981);border-radius:4px;"></div>
+            <% timelineEvents.forEach(t=> { %>
+            <div class="card searchable" data-search="<%= (t.role||'').toLowerCase() %> <%= (t.location||'').toLowerCase() %>" style="padding:18px 20px;margin-bottom:14px;position:relative;">
+              <!-- Timeline dot -->
+              <div style="position:absolute;left:-29px;top:20px;width:12px;height:12px;border-radius:50%;background:#7c3aed;border:2px solid #060910;box-shadow:0 0 10px rgba(124,58,237,0.6);"></div>
+              <div style="display:flex;align-items:flex-start;gap:14px;">
+                <span class="badge badge-green" style="white-space:nowrap;margin-top:2px;font-family:'JetBrains Mono',monospace;"><%= t.year %></span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-weight:700;font-size:14.5px;"><%= t.role %></div>
+                  <div style="font-size:12.5px;color:var(--text-muted);margin-top:3px;"><i data-lucide="map-pin" style="width:11px;height:11px;display:inline;"></i> <%= t.location %></div>
+                </div>
+                <div style="display:flex;gap:5px;flex-shrink:0;">
+                  <button onclick="openModal('timeline-modal',JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(t)) %>" class="btn btn-ghost btn-icon btn-sm" title="Edit">
+                    <i data-lucide="edit-2" style="width:13px;height:13px;"></i>
+                  </button>
+                  <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
+                    <button type="submit" class="btn btn-danger btn-icon btn-sm">
+                      <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
           <% } %>
         </div>
-      </section>
-
+      </div>
     </div>
-  </main>
 
-  <!-- ==============================================
-       MODALS
-  =============================================== -->
-  <div id="modal-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-    
-    <!-- Edit Project Modal -->
-    <div id="project-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-blue-500">
-      <form id="project-form" method="POST" enctype="multipart/form-data" class="p-6 sm:p-8">
-        <h3 class="text-2xl font-black mb-6">Edit Project</h3>
-        <div class="space-y-4">
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Title</label><input type="text" name="title" id="p-title" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Image URL</label><input type="url" name="imageUrl" id="p-imageUrl" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Replace Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Description</label><textarea name="description" id="p-description" class="glass-input" rows="3"></textarea></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Tags</label><input type="text" name="tags" id="p-tags" class="glass-input"></div>
+    <!-- ============================
+         TAB: MESSAGES
+    ============================= -->
+    <div class="tab-panel" id="tab-messages">
+      <div class="section-header">
+        <div>
+          <div class="section-title"><i data-lucide="inbox" style="width:22px;height:22px;color:#a78bfa;"></i> Messages</div>
+          <div class="section-subtitle"><%= messages.length %> message<%= messages.length !== 1 ? 's' : '' %> received</div>
         </div>
-        <div class="mt-8 flex justify-end gap-3">
-          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors font-bold text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #3b82f6, #4f46e5)">Save Changes</button>
+      </div>
+
+      <div style="max-width:760px;">
+        <% if(messages.length === 0) { %>
+          <div class="card" style="padding:60px 40px;text-align:center;color:var(--text-muted);">
+            <i data-lucide="inbox" style="width:48px;height:48px;margin:0 auto 16px;display:block;opacity:0.4;"></i>
+            <p style="font-size:15px;font-weight:600;">Your inbox is empty</p>
+            <p style="font-size:13px;margin-top:6px;">Contact form submissions will appear here.</p>
+          </div>
+        <% } else { messages.forEach(m=> { %>
+        <div class="msg-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:40px;height:40px;border-radius:50%;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#a78bfa;flex-shrink:0;">
+                <%= (m.name||'U').charAt(0).toUpperCase() %>
+              </div>
+              <div>
+                <div style="font-weight:700;font-size:14.5px;"><%= m.name %></div>
+                <a href="mailto:<%= m.email %>" style="font-size:12px;color:#a78bfa;text-decoration:none;"><%= m.email %></a>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;"><%= new Date(m.createdAt).toLocaleString() %></span>
+              <form action="/admin/api/messages/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete this message?');">
+                <button type="submit" class="btn btn-danger btn-icon btn-sm">
+                  <i data-lucide="trash-2" style="width:13px;height:13px;"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <% if(m.subject){ %><div style="font-weight:700;margin-bottom:8px;font-size:14px;"><%= m.subject %></div><% } %>
+          <div style="font-size:13.5px;color:rgba(255,255,255,0.7);line-height:1.7;white-space:pre-wrap;background:rgba(0,0,0,0.25);padding:14px 16px;border-radius:10px;border:1px solid var(--border);"><%= m.message %></div>
+          <div style="margin-top:12px;">
+            <a href="mailto:<%= m.email %>?subject=Re: <%= m.subject || 'Your message' %>" class="btn btn-ghost btn-sm">
+              <i data-lucide="reply" style="width:13px;height:13px;"></i> Reply via Email
+            </a>
+          </div>
+        </div>
+        <% }) } %>
+      </div>
+    </div>
+
+  </div><!-- end #main -->
+
+  <!-- ============================
+       MODALS
+  ============================= -->
+  <div id="modal-backdrop" onclick="onBackdropClick(event)">
+
+    <!-- Edit Project Modal -->
+    <div class="modal" id="project-modal" style="max-width:520px;display:none;">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="edit-2" style="width:18px;height:18px;color:#60a5fa;display:inline-block;vertical-align:middle;margin-right:8px;"></i>Edit Project</div>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="closeModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+      </div>
+      <form id="project-form" method="POST" enctype="multipart/form-data" class="modal-body">
+        <div class="form-row" style="gap:14px;">
+          <div><label class="field-label">Title *</label><input type="text" name="title" id="p-title" class="field-input"></div>
+          <div><label class="field-label">Image URL</label><input type="url" name="imageUrl" id="p-imageUrl" class="field-input"></div>
+          <div><label class="field-label">Replace Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
+          <div><label class="field-label">Description</label><textarea name="description" id="p-description" class="field-textarea" rows="3"></textarea></div>
+          <div class="form-row form-row-2">
+            <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="field-input"></div>
+            <div><label class="field-label">Tags</label><input type="text" name="tags" id="p-tags" class="field-input"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-blue">Save Changes</button>
         </div>
       </form>
     </div>
 
     <!-- Edit Blog Modal -->
-    <div id="blog-modal" class="modal-content glass-card w-full max-w-4xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-pink-500">
-      <form id="blog-form" method="POST" enctype="multipart/form-data" class="p-6 sm:p-8">
-        <h3 class="text-2xl font-black mb-6">Edit Blog</h3>
-        <div class="space-y-4">
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Title</label><input type="text" name="title" id="b-title" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Slug</label><input type="text" name="slug" id="b-slug" class="glass-input font-mono"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="glass-input text-xs"></div>
-          <div class="bg-black/20 p-3 rounded-xl border border-white/5"><label class="flex items-center gap-2 font-bold"><input type="checkbox" name="published" id="b-published-edit" class="w-4 h-4 rounded bg-white/10 text-pink-500"> Published</label></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Content</label><textarea name="content" id="b-content" rows="6"></textarea></div>
+    <div class="modal" id="blog-modal" style="max-width:760px;display:none;">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="edit-2" style="width:18px;height:18px;color:#f472b6;display:inline-block;vertical-align:middle;margin-right:8px;"></i>Edit Article</div>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="closeModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+      </div>
+      <form id="blog-form" method="POST" enctype="multipart/form-data" class="modal-body">
+        <div class="form-row" style="gap:14px;">
+          <div><label class="field-label">Title *</label><input type="text" name="title" id="b-title" class="field-input"></div>
+          <div><label class="field-label">Slug</label><input type="text" name="slug" id="b-slug" class="field-input mono"></div>
+          <div><label class="field-label">Cover Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
+          <label class="field-check"><input type="checkbox" name="published" id="b-published-edit"><span>Published</span></label>
+          <div><label class="field-label">Content (Markdown)</label><textarea name="content" id="b-content" rows="6"></textarea></div>
         </div>
-        <div class="mt-8 flex justify-end gap-3">
-          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors font-bold text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #ec4899, #f43f5e)">Save Changes</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-pink">Save Changes</button>
         </div>
       </form>
     </div>
 
     <!-- Edit Learning Modal -->
-    <div id="learning-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-cyan-500">
-      <form id="learning-form" method="POST" enctype="multipart/form-data" class="p-6 sm:p-8">
-        <h3 class="text-2xl font-black mb-6">Edit Resource</h3>
-        <div class="space-y-4">
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Grade</label><input type="text" name="grade" id="l-grade" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Category</label><input type="text" name="category" id="l-category" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Subject</label><input type="text" name="subject" id="l-subject" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Description</label><input type="text" name="description" id="l-description" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Upload New PDF</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="glass-input text-xs"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Or PDF URL</label><input type="url" name="pdfUrl" id="l-pdfUrl" class="glass-input"></div>
+    <div class="modal" id="learning-modal" style="max-width:520px;display:none;">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="edit-2" style="width:18px;height:18px;color:#22d3ee;display:inline-block;vertical-align:middle;margin-right:8px;"></i>Edit Resource</div>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="closeModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+      </div>
+      <form id="learning-form" method="POST" enctype="multipart/form-data" class="modal-body">
+        <div class="form-row" style="gap:14px;">
+          <div class="form-row form-row-2">
+            <div><label class="field-label">Grade</label><input type="text" name="grade" id="l-grade" class="field-input"></div>
+            <div><label class="field-label">Category</label><input type="text" name="category" id="l-category" class="field-input"></div>
+          </div>
+          <div><label class="field-label">Subject *</label><input type="text" name="subject" id="l-subject" class="field-input"></div>
+          <div><label class="field-label">Description</label><input type="text" name="description" id="l-description" class="field-input"></div>
+          <div><label class="field-label">Upload New File</label><input type="file" name="pdfFile" accept=".pdf,.doc,.docx" class="field-file"></div>
+          <div><label class="field-label">PDF/File URL</label><input type="url" name="pdfUrl" id="l-pdfUrl" class="field-input"></div>
         </div>
-        <div class="mt-8 flex justify-end gap-3">
-          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors font-bold text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #06b6d4, #3b82f6)">Save Changes</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-cyan">Save Changes</button>
         </div>
       </form>
     </div>
 
     <!-- Edit Timeline Modal -->
-    <div id="timeline-modal" class="modal-content glass-card w-full max-w-xl max-h-[90vh] overflow-y-auto hidden transform scale-95 transition-transform duration-300 border-t-4 border-t-emerald-500">
-      <form id="timeline-form" method="POST" class="p-6 sm:p-8">
-        <h3 class="text-2xl font-black mb-6">Edit Event</h3>
-        <div class="space-y-4">
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Year</label><input type="text" name="year" id="t-year" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Order Index</label><input type="number" name="orderIndex" id="t-orderIndex" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Role / Title</label><input type="text" name="role" id="t-role" class="glass-input"></div>
-          <div><label class="block text-[10px] uppercase text-white/50 mb-1 font-bold">Location / Institution</label><input type="text" name="location" id="t-location" class="glass-input"></div>
+    <div class="modal" id="timeline-modal" style="max-width:480px;display:none;">
+      <div class="modal-header">
+        <div class="modal-title"><i data-lucide="edit-2" style="width:18px;height:18px;color:#34d399;display:inline-block;vertical-align:middle;margin-right:8px;"></i>Edit Event</div>
+        <button class="btn btn-ghost btn-icon btn-sm" onclick="closeModal()"><i data-lucide="x" style="width:16px;height:16px;"></i></button>
+      </div>
+      <form id="timeline-form" method="POST" class="modal-body">
+        <div class="form-row" style="gap:14px;">
+          <div class="form-row form-row-2">
+            <div><label class="field-label">Year(s)</label><input type="text" name="year" id="t-year" class="field-input"></div>
+            <div><label class="field-label">Order Index</label><input type="number" name="orderIndex" id="t-orderIndex" class="field-input"></div>
+          </div>
+          <div><label class="field-label">Role / Title</label><input type="text" name="role" id="t-role" class="field-input"></div>
+          <div><label class="field-label">Location / Institution</label><input type="text" name="location" id="t-location" class="field-input"></div>
         </div>
-        <div class="mt-8 flex justify-end gap-3">
-          <button type="button" onclick="closeModal()" class="px-5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors font-bold text-sm">Cancel</button>
-          <button type="submit" class="btn-gradient" style="background: linear-gradient(135deg, #10b981, #059669)">Save Changes</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-green">Save Changes</button>
         </div>
       </form>
     </div>
 
-  </div>
+  </div><!-- end modal-backdrop -->
 
   <script>
+    // === INIT ===
     lucide.createIcons();
 
     let mdeCreate = null;
-    let mdeEdit = null;
-    document.addEventListener("DOMContentLoaded", () => {
-      // Setup Markdown editor
-      if(document.getElementById("blog-add-editor")) {
-        mdeCreate = new SimpleMDE({ element: document.getElementById("blog-add-editor"), spellChecker: false });
+    let mdeEdit   = null;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize markdown editor for blog creation
+      const blogCreateEl = document.getElementById('blog-create-md');
+      if (blogCreateEl) {
+        mdeCreate = new SimpleMDE({ element: blogCreateEl, spellChecker: false, status: false });
       }
 
-      // Sidebar Mobile Toggle
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-      const mobileBtn = document.getElementById('mobile-menu-btn');
-      const closeBtn = document.getElementById('close-sidebar-btn');
-      const navBtns = document.querySelectorAll('.nav-btn');
-
-      function toggleSidebar() {
-        sidebar.classList.toggle('-translate-x-full');
-        if (sidebar.classList.contains('-translate-x-full')) {
-          overlay.classList.add('opacity-0', 'pointer-events-none');
-        } else {
-          overlay.classList.remove('opacity-0', 'pointer-events-none');
-        }
+      // Restore active tab from hash
+      const hash = location.hash.replace('#','');
+      const tabs = ['overview','projects','blogs','learning','timeline','messages'];
+      if (tabs.includes(hash)) {
+        const link = document.querySelector(`[data-tab="${hash}"]`);
+        if (link) switchTab(hash, link);
       }
 
-      mobileBtn.addEventListener('click', toggleSidebar);
-      closeBtn.addEventListener('click', toggleSidebar);
-      overlay.addEventListener('click', toggleSidebar);
-      
-      navBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (window.innerWidth < 1024 && !sidebar.classList.contains('-translate-x-full')) {
-            toggleSidebar();
-          }
-        });
-      });
+      // Mobile close button
+      document.getElementById('close-sb-btn').style.display = 'block';
 
-      // Search functionality
-      function setupSearch(inputId, listId) {
-        const input = document.getElementById(inputId);
-        const list = document.getElementById(listId);
-        if(!input || !list) return;
-        
-        input.addEventListener('input', (e) => {
-          const query = e.target.value.toLowerCase();
-          const items = list.querySelectorAll('.searchable-item');
-          items.forEach(item => {
-            const data = item.getAttribute('data-search') || '';
-            if (data.includes(query)) {
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-      }
-
-      setupSearch('search-projects', 'projects-list');
-      setupSearch('search-blogs', 'blogs-list');
-      setupSearch('search-learning', 'learning-list');
-
-      // Framer Motion (Motion One) animations
-      if (window.Motion) {
-        const { animate, inView, stagger } = window.Motion;
-        inView(".motion-section", (info) => {
-          animate(info.target, { opacity: [0, 1], y: [40, 0] }, { duration: 0.8, easing: "ease-out" });
-        });
-        const cards = document.querySelectorAll('.glass-card');
-        animate(cards, { opacity: [0, 1], scale: [0.95, 1] }, { duration: 0.5, delay: stagger(0.05) });
-      }
+      // Responsive: collapse learning list grid on small screens
+      const checkWidth = () => {
+        const ll = document.getElementById('learning-list');
+        if (ll && window.innerWidth < 640) ll.style.gridTemplateColumns = '1fr';
+        else if (ll) ll.style.gridTemplateColumns = '1fr 1fr';
+      };
+      checkWidth();
+      window.addEventListener('resize', checkWidth);
     });
 
+    // === TABS ===
+    const TAB_TITLES = {
+      overview:  { title: 'Overview',      sub: 'Welcome back, Suraj!' },
+      projects:  { title: 'Projects',      sub: 'Manage your portfolio projects' },
+      blogs:     { title: 'Blog Posts',    sub: 'Create and manage your articles' },
+      learning:  { title: 'Learning Hub',  sub: 'Upload and organise resources' },
+      timeline:  { title: 'Timeline',      sub: 'Your professional journey' },
+      messages:  { title: 'Messages',      sub: 'Contact form submissions' },
+    };
+
+    function switchTab(tabId, linkEl) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      const panel = document.getElementById('tab-' + tabId);
+      if (panel) panel.classList.add('active');
+      if (linkEl) linkEl.classList.add('active');
+      const meta = TAB_TITLES[tabId] || {};
+      document.getElementById('topbar-title').textContent = meta.title || tabId;
+      document.getElementById('topbar-sub').textContent   = meta.sub   || '';
+      location.hash = tabId;
+      if (window.innerWidth < 1024) closeSidebar();
+    }
+
+    // === SIDEBAR ===
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('sidebar-overlay').classList.add('open');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebar-overlay').classList.remove('open');
+    }
+
+    // === SEARCH ===
+    function filterList(input, listId) {
+      const q = input.value.toLowerCase();
+      const list = document.getElementById(listId);
+      if (!list) return;
+      list.querySelectorAll('.searchable').forEach(item => {
+        const data = (item.getAttribute('data-search') || '').toLowerCase();
+        item.style.display = data.includes(q) ? '' : 'none';
+      });
+    }
+
+    // === MODALS ===
     function openModal(modalId, data) {
       const backdrop = document.getElementById('modal-backdrop');
-      backdrop.classList.remove('opacity-0', 'pointer-events-none');
-      
-      document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
+      document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
       const modal = document.getElementById(modalId);
-      modal.classList.remove('hidden');
-      
-      if (window.Motion) {
-        window.Motion.animate(modal, { scale: [0.95, 1], opacity: [0, 1], y: [20, 0] }, { duration: 0.3, easing: "ease-out" });
-      }
+      if (!modal) return;
+      modal.style.display = 'block';
+      backdrop.classList.add('open');
 
       if (modalId === 'project-modal') {
         document.getElementById('project-form').action = `/admin/api/projects/${data.id}/update`;
-        document.getElementById('p-title').value = data.title;
-        document.getElementById('p-imageUrl').value = data.imageUrl || '';
+        document.getElementById('p-title').value       = data.title || '';
+        document.getElementById('p-imageUrl').value    = data.imageUrl || '';
         document.getElementById('p-description').value = data.description || '';
-        document.getElementById('p-liveUrl').value = data.liveUrl || '';
-        document.getElementById('p-tags').value = data.tags || '';
-      } else if (modalId === 'blog-modal') {
-        document.getElementById('blog-form').action = `/admin/api/blogs/${data.id}/update`;
-        document.getElementById('b-title').value = data.title;
-        document.getElementById('b-slug').value = data.slug;
-        document.getElementById('b-published-edit').checked = data.published;
-        if (!mdeEdit) { mdeEdit = new SimpleMDE({ element: document.getElementById("b-content"), spellChecker: false }); }
-        mdeEdit.value(data.content || '');
-      } else if (modalId === 'learning-modal') {
+        document.getElementById('p-liveUrl').value     = data.liveUrl || '';
+        document.getElementById('p-tags').value        = data.tags || '';
+      }
+      else if (modalId === 'blog-modal') {
+        document.getElementById('blog-form').action     = `/admin/api/blogs/${data.id}/update`;
+        document.getElementById('b-title').value        = data.title || '';
+        document.getElementById('b-slug').value         = data.slug  || '';
+        document.getElementById('b-published-edit').checked = !!data.published;
+        if (!mdeEdit) {
+          const el = document.getElementById('b-content');
+          if (el) mdeEdit = new SimpleMDE({ element: el, spellChecker: false, status: false });
+        }
+        if (mdeEdit) mdeEdit.value(data.content || '');
+      }
+      else if (modalId === 'learning-modal') {
         document.getElementById('learning-form').action = `/admin/api/learning-materials/${data.id}/update`;
-        document.getElementById('l-grade').value = data.grade;
-        document.getElementById('l-category').value = data.category || '';
-        document.getElementById('l-subject').value = data.subject;
-        document.getElementById('l-description').value = data.description || '';
-        document.getElementById('l-pdfUrl').value = data.pdfUrl || '';
-      } else if (modalId === 'timeline-modal') {
-        document.getElementById('timeline-form').action = `/admin/api/timeline/${data.id}/update`;
-        document.getElementById('t-year').value = data.year;
-        document.getElementById('t-orderIndex').value = data.orderIndex;
-        document.getElementById('t-role').value = data.role;
-        document.getElementById('t-location').value = data.location;
+        document.getElementById('l-grade').value        = data.grade    || '';
+        document.getElementById('l-category').value     = data.category || '';
+        document.getElementById('l-subject').value      = data.subject  || '';
+        document.getElementById('l-description').value  = data.description || '';
+        document.getElementById('l-pdfUrl').value       = data.pdfUrl   || '';
+      }
+      else if (modalId === 'timeline-modal') {
+        document.getElementById('timeline-form').action  = `/admin/api/timeline/${data.id}/update`;
+        document.getElementById('t-year').value          = data.year       || '';
+        document.getElementById('t-orderIndex').value    = data.orderIndex || 0;
+        document.getElementById('t-role').value          = data.role       || '';
+        document.getElementById('t-location').value      = data.location   || '';
       }
     }
 
     function closeModal() {
-      const backdrop = document.getElementById('modal-backdrop');
-      backdrop.classList.add('opacity-0', 'pointer-events-none');
-      if (window.Motion) {
-        document.querySelectorAll('.modal-content:not(.hidden)').forEach(m => {
-          window.Motion.animate(m, { scale: 0.95, opacity: 0, y: [0, 20] }, { duration: 0.2 });
-        });
-      }
+      document.getElementById('modal-backdrop').classList.remove('open');
       setTimeout(() => {
-        document.querySelectorAll('.modal-content').forEach(m => m.classList.add('hidden'));
-      }, 250);
+        document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+      }, 260);
     }
+
+    function onBackdropClick(e) {
+      if (e.target === document.getElementById('modal-backdrop')) closeModal();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
   </script>
 </body>
 </html>
