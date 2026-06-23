@@ -7,11 +7,6 @@ type Message = {
   content: string;
 };
 
-// Global event bus so FloatingActionButton can open the chat
-export const openChatWidget = () => {
-  window.dispatchEvent(new CustomEvent('chat-widget:open'));
-};
-
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([

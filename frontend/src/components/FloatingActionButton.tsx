@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Mail, Phone, X } from 'lucide-react';
-import { openChatWidget } from './ChatWidget';
+import { openChatWidget } from './chatWidgetEvents';
 
 /**
  * Floating Action Button Component
