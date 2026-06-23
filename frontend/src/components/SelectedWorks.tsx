@@ -4,8 +4,11 @@ import { GlowCard } from './premium/GlowCard';
 
 const defaultProjects = [
   { title: "LULC Analysis - Nawalparasi", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Remote Sensing Analysis", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Machine Learning Classification", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Remote Sensing Analysis", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Machine Learning Classification", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "WebGIS Interactive Dashboard", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Urban Sprawl Simulation", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  { title: "Hydrological Modeling", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1469122312224-c5846569feb1?auto=format&fit=crop&w=1200&q=80", url: "#" },
 ];
 
 type Project = {

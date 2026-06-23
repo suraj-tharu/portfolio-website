@@ -1,9 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion } from 'framer-motion';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 
 const panels = [
   {
@@ -37,78 +33,65 @@ const panels = [
 
 export default function TeachingExperience() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const scrollWrapperRef = useRef<HTMLDivElement>(null);
   const [activePanel, setActivePanel] = useState(0);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const panelEls = gsap.utils.toArray<HTMLElement>('.teach-panel');
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-      const tween = gsap.to(panelEls, {
-        xPercent: -100 * (panelEls.length - 1),
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,
-          scrub: 1.5,
-          snap: 1 / (panelEls.length - 1),
-          end: () => "+=" + (scrollWrapperRef.current?.offsetWidth || 2000),
-          onUpdate: (self) => {
-            // Update the active dot indicator
-            const index = Math.round(self.progress * (panelEls.length - 1));
-            setActivePanel(index);
-          }
-        }
-      });
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${100 * (panels.length - 1) / panels.length}%`]);
 
-      return () => {
-        tween.scrollTrigger?.kill();
-        tween.kill();
-      };
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const index = Math.round(latest * (panels.length - 1));
+    setActivePanel(index);
+  });
 
   return (
     <section
       ref={containerRef}
-      className="bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] relative z-20 overflow-hidden h-screen flex flex-col justify-center font-helvetica border-y border-stroke/30"
+      className="relative z-20 h-[300vh] bg-[var(--bg)]"
     >
-      <div className="absolute top-12 left-6 md:left-16 z-40 pointer-events-none">
-        <span className="text-xs dark:text-muted text-amber-600 uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
-        <h2 className="text-3xl md:text-5xl dark:text-text-primary text-amber-600 font-display italic">
-          5+ Years of Teaching
-        </h2>
-      </div>
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] border-y border-stroke/30 flex flex-col justify-center">
+        
+        <div className="absolute top-12 left-6 md:left-16 z-40 pointer-events-none">
+          <span className="text-xs dark:text-muted text-amber-600 uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
+          <h2 className="text-3xl md:text-5xl dark:text-text-primary text-amber-600 font-display italic">
+            5+ Years of Teaching
+          </h2>
+        </div>
 
-      {/* Panel dot indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3">
-        {panels.map((_, i) => (
-          <motion.div
-            key={i}
-            animate={{
-              width: activePanel === i ? 24 : 8,
-              backgroundColor: activePanel === i ? 'rgb(139, 92, 246)' : 'rgba(255,255,255,0.3)'
-            }}
-            transition={{ duration: 0.3 }}
-            className="h-2 rounded-full"
-          />
-        ))}
-        <span className="ml-2 text-xs text-muted dark:text-white/50">
-          {activePanel + 1} / {panels.length}
-        </span>
-      </div>
+        {/* Panel dot indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-3">
+          {panels.map((_, i) => (
+            <motion.div
+              key={i}
+              animate={{
+                width: activePanel === i ? 24 : 8,
+                backgroundColor: activePanel === i ? 'rgb(139, 92, 246)' : 'rgba(255,255,255,0.3)'
+              }}
+              transition={{ duration: 0.3 }}
+              className="h-2 rounded-full"
+            />
+          ))}
+          <span className="ml-2 text-xs text-muted dark:text-white/50">
+            {activePanel + 1} / {panels.length}
+          </span>
+        </div>
 
-      <div ref={scrollWrapperRef} className="flex h-[60vh] md:h-[50vh] mt-24 relative z-10">
-        {panels.map((panel, i) => (
-          <div key={i} className="teach-panel w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
-            <div className="max-w-2xl">
-              <h3 className="text-4xl md:text-6xl font-bold text-text-primary dark:text-white mb-6">{panel.title}</h3>
-              {panel.content}
+        <motion.div 
+          style={{ x, width: `${panels.length * 100}vw` }} 
+          className="flex h-[60vh] md:h-[50vh] mt-24 relative z-10"
+        >
+          {panels.map((panel, i) => (
+            <div key={i} className="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
+              <div className="max-w-2xl">
+                <h3 className="text-4xl md:text-6xl font-bold text-text-primary dark:text-white mb-6">{panel.title}</h3>
+                {panel.content}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </motion.div>
       </div>
     </section>
   );

@@ -1,11 +1,9 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 const AnimatedDecoration = () => (
   <motion.svg
-    className="absolute left-[5%] top-[10%] md:left-[10%] md:top-[15%] w-64 h-64 md:w-96 md:h-96 text-brand/30 pointer-events-none z-0"
+    className="absolute left-[5%] top-[10%] md:left-[10%] md:top-[15%] w-64 h-64 md:w-96 md:h-96 text-[var(--brand)]/30 pointer-events-none z-0"
     viewBox="0 0 200 200"
     initial="hidden"
     whileInView="visible"
@@ -43,8 +41,6 @@ const AnimatedDecoration = () => (
   </motion.svg>
 );
 
-gsap.registerPlugin(ScrollTrigger);
-
 const images = [
   "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
   "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=600&q=80",
@@ -56,37 +52,14 @@ const images = [
 
 export default function Explorations() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const col1Ref = useRef<HTMLDivElement>(null);
-  const col2Ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Parallax columns only — removed pinning to prevent overlap issues
-      gsap.to(col1Ref.current, {
-        yPercent: -30,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        }
-      });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
 
-      gsap.to(col2Ref.current, {
-        yPercent: -50,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        }
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
+  const y1 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+  const y2 = useTransform(scrollYProgress, [0, 1], ["0%", "-50%"]);
 
   return (
     <section ref={sectionRef} id="explorations" className="relative bg-bg py-24 md:py-36 overflow-hidden z-20">
@@ -126,7 +99,7 @@ export default function Explorations() {
         <div className="grid grid-cols-2 gap-6 md:gap-12">
           
           {/* Column 1 */}
-          <div ref={col1Ref} className="flex flex-col gap-6 md:gap-10 items-end">
+          <motion.div style={{ y: y1 }} className="flex flex-col gap-6 md:gap-10 items-end">
             {images.slice(0, 3).map((img, i) => (
               <motion.div 
                 key={`col1-${i}`} 
@@ -143,10 +116,10 @@ export default function Explorations() {
                 />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Column 2 (offset start) */}
-          <div ref={col2Ref} className="flex flex-col gap-6 md:gap-10 mt-[10vh] md:mt-[20vh] items-start">
+          <motion.div style={{ y: y2 }} className="flex flex-col gap-6 md:gap-10 mt-[10vh] md:mt-[20vh] items-start">
             {images.slice(3, 6).map((img, i) => (
               <motion.div 
                 key={`col2-${i}`} 
@@ -163,7 +136,7 @@ export default function Explorations() {
                 />
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
         </div>
       </div>
