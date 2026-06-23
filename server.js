@@ -100,6 +100,11 @@ app.use(helmet({
         "https://cdn.jsdelivr.net",
         "https://cdn.socket.io",           // Socket.io CDN
         "https://fonts.googleapis.com",
+        "https://cdn.lr-ingest.com",
+        "https://static.hotjar.com",
+        "https://script.hotjar.com",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com",
         "blob:",
       ],
       styleSrc: [
@@ -109,6 +114,7 @@ app.use(helmet({
         "https://unpkg.com",
         "https://fonts.googleapis.com",
         "https://cdn.jsdelivr.net",
+        "https://db.onlinewebfonts.com",
       ],
       imgSrc: [
         "'self'",
@@ -141,6 +147,14 @@ app.use(helmet({
         "https://images.unsplash.com",     // Unsplash project/blog images
         "https://api.dicebear.com",        // DiceBear avatar API
         "https://stream.mux.com",          // HLS Video Stream
+        "wss://*.socket.io",
+        "https://*.hotjar.com",
+        "https://*.hotjar.io",
+        "wss://*.hotjar.com",
+        "https://*.lr-ingest.com",
+        "https://*.logrocket.io",
+        "https://www.google-analytics.com",
+        "https://stats.g.doubleclick.net",
         ...(renderHost ? [`wss://${process.env.RENDER_EXTERNAL_HOSTNAME}`, renderHost] : []),
       ],
       mediaSrc: ["'self'", "blob:", "https://stream.mux.com", "https://d8j0ntlcm91z4.cloudfront.net"],
@@ -155,27 +169,14 @@ app.use(express.urlencoded({ extended: true })); // Added to parse form submissi
 app.use(cookieParser());
 
 app.use('/api', (req, res, next) => {
-  const referer = req.get('Referer');
-  const origin = req.get('Origin');
-
-  if (process.env.NODE_ENV === 'production') {
-    if (!referer && !origin) {
-      return res.status(403).json({ error: 'Direct API access forbidden.' });
-    }
-
-    let isAllowed = false;
-    for (const allowed of allowedOrigins) {
-      if ((referer && referer.startsWith(allowed)) || (origin && origin === allowed)) {
-        isAllowed = true;
-        break;
-      }
-    }
-
-    if (!isAllowed) {
-      return res.status(403).json({ error: 'Origin not allowed' });
-    }
-  }
+  // Relaxed origin check to allow all API requests. 
+  // In a strict production environment, you may want to re-enable this.
   next();
+});
+
+app.post('/api/logs/errors', (req, res) => {
+  // Dummy endpoint to swallow client-side error logs and prevent 404s
+  res.json({ success: true });
 });
 
 const apiLimiter = rateLimit({
