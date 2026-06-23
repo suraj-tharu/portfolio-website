@@ -583,8 +583,8 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
 
-    // Detect missing or placeholder/invalid keys
-    if (!apiKey || apiKey.trim() === '' || (!apiKey.trim().startsWith('AIza') && !apiKey.trim().startsWith('AQ.'))) {
+    // Detect missing keys
+    if (!apiKey || apiKey.trim() === '') {
       return res.json({
         reply: "The AI assistant needs a valid Gemini API key. Get a free one at aistudio.google.com/apikey and set GOOGLE_GENERATIVE_AI_API_KEY in your .env file."
       });
@@ -609,30 +609,44 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     }
     geminiMessages.push({ role: 'user', parts: [{ text: message }] });
 
-    // Try gemini-flash-lite-latest first (latest free model), fallback to gemini-flash-latest
-    const models = ['gemini-flash-lite-latest', 'gemini-flash-latest'];
+    // Determine auth method: AIza = API key in URL, AQ. = OAuth Bearer token in header
+    const isOAuthToken = apiKey.trim().startsWith('AQ.');
+
+    // Try multiple models in order of preference
+    const models = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-flash-lite-latest', 'gemini-flash-latest'];
     let lastError = null;
 
     for (const model of models) {
       try {
-        const fetchResponse = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: geminiMessages })
-          }
-        );
+        // Build URL and headers depending on auth type
+        const url = isOAuthToken
+          ? `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`
+          : `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (isOAuthToken) {
+          headers['Authorization'] = `Bearer ${apiKey.trim()}`;
+        }
+
+        const fetchResponse = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ contents: geminiMessages })
+        });
 
         if (fetchResponse.status === 400) {
           const errData = await fetchResponse.json().catch(() => ({}));
           const errMsg = (errData && errData.error && errData.error.message) || '';
-          if (errMsg.toLowerCase().includes('api key not valid') || errMsg.toLowerCase().includes('invalid')) {
-            return res.json({
-              reply: "Your Gemini API key is invalid. Get a new free key at aistudio.google.com/apikey and update GOOGLE_GENERATIVE_AI_API_KEY in your .env file."
-            });
-          }
+          console.error(`[CHAT] Gemini 400 error (${model}):`, errMsg);
           lastError = new Error('API error 400: ' + errMsg);
+          continue;
+        }
+
+        if (fetchResponse.status === 401 || fetchResponse.status === 403) {
+          const errData = await fetchResponse.json().catch(() => ({}));
+          const errMsg = (errData && errData.error && errData.error.message) || '';
+          console.error(`[CHAT] Gemini auth error ${fetchResponse.status} (${model}):`, errMsg);
+          lastError = new Error('Auth error ' + fetchResponse.status + ': ' + errMsg);
           continue;
         }
 
