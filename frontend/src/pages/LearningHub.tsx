@@ -284,16 +284,14 @@ function JournalCard({ entry, index }: { entry: (typeof journals)[0]; index: num
    MAIN PAGE
 ═══════════════════════════════════════════════════════════ */
 export default function LearningHub() {
-  const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get('category') || 'all';
-  const [activeCategory, setActiveCategory] = useState(initialCategory);
-  const [query, setQuery]                   = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = searchParams.get('category') || 'all';
+  const [query, setQuery] = useState('');
   const heroRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const cat = searchParams.get('category');
     if (cat && categories.some(c => c.id === cat)) {
-      setActiveCategory(cat);
       // Scroll smoothly to resources grid
       setTimeout(() => {
         const el = document.getElementById('resources-grid');
@@ -522,7 +520,7 @@ export default function LearningHub() {
                 key={cat.id}
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => setActiveCategory(cat.id)}
+                onClick={() => setSearchParams({ category: cat.id })}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs sm:text-sm font-bold
                   border transition-all duration-200
                   ${active
@@ -553,7 +551,7 @@ export default function LearningHub() {
                 <div className="col-span-full flex flex-col items-center gap-4 py-24 text-center">
                   <Search size={40} className="text-slate-300 dark:text-white/15" />
                   <p className="text-slate-500 dark:text-white/40 font-medium">No resources found for "{query}"</p>
-                  <button onClick={() => { setQuery(''); setActiveCategory('all'); }}
+                  <button onClick={() => { setQuery(''); setSearchParams({ category: 'all' }); }}
                     className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">
                     Clear filters
                   </button>
