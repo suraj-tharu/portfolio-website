@@ -49,7 +49,7 @@ function ScrollToTop() {
 }
 
 function AppContent() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
   const location = useLocation();

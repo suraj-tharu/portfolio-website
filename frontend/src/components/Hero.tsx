@@ -76,7 +76,7 @@ export default function Hero() {
   useEffect(() => {
     // GSAP Animations for elements not handled by framer-motion
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 3.2 });
+      const tl = gsap.timeline({ delay: 0.5 });
       tl.fromTo('.blur-in',
         { opacity: 0, y: 20, filter: "blur(10px)" },
         { opacity: 1, y: 0, filter: "blur(0px)", duration: 1, stagger: 0.1, ease: "power3.out" }
@@ -96,7 +96,7 @@ export default function Hero() {
       {/* Background Video with Premium Lighting & Fallback */}
       <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 overflow-hidden">
         {/* Premium Animated Gradient Background Base */}
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(10,10,26,1)_0%,rgba(28,10,46,1)_50%,rgba(0,0,0,1)_100%)] dark:bg-[linear-gradient(135deg,rgba(10,10,26,1)_0%,rgba(28,10,46,1)_50%,rgba(0,0,0,1)_100%)] light:bg-[linear-gradient(135deg,rgba(250,251,252,1)_0%,rgba(235,230,240,1)_50%,rgba(255,255,255,1)_100%)] transition-colors duration-500" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(250,251,252,1)_0%,rgba(235,230,240,1)_50%,rgba(255,255,255,1)_100%)] dark:bg-[linear-gradient(135deg,rgba(10,10,26,1)_0%,rgba(28,10,46,1)_50%,rgba(0,0,0,1)_100%)] transition-colors duration-500" />
         
         <video
           ref={videoRef}
@@ -142,14 +142,14 @@ export default function Hero() {
           </motion.div>
         )}
 
-        <h1 className="text-fluid-4xl md:text-fluid-7xl lg:text-fluid-8xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
+        <h1 className="text-fluid-4xl md:text-fluid-7xl lg:text-fluid-8xl font-display italic leading-[0.9] tracking-tight hero-heading mb-2 md:mb-3 flex flex-wrap justify-center gap-2 md:gap-3 drop-shadow-[0_8px_32px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_8px_32px_rgba(0,0,0,0.8)] px-2 w-full text-text-primary" style={{ animation: 'luxury-float 6s cubic-bezier(0.4, 0.0, 0.2, 1) infinite' }}>
           {name.map((word, i) => (
             <motion.span
               key={i}
               className="inline-block gradient-text-premium hover:text-brand-light transition-all duration-300"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
-              transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
+              transition={{ duration: 1.2, delay: 0.5 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
               whileHover={{ scale: 1.05 }}
             >
               {word}
@@ -157,18 +157,18 @@ export default function Hero() {
           ))}
         </h1>
 
-        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
+        <div className="blur-in text-fluid-lg md:text-fluid-2xl font-display italic text-[var(--text-secondary)] mb-4 md:mb-5 flex flex-col items-center gap-1 md:gap-2 px-4 text-center justify-center drop-shadow-[0_6px_24px_rgba(0,0,0,0.1)] dark:drop-shadow-[0_6px_24px_rgba(0,0,0,0.9)]">
           <motion.span
             key={roleIndex}
             className="animate-role-fade-in inline-block font-semibold bg-gradient-to-r from-violet-500 via-pink-500 to-orange-400 bg-clip-text text-transparent"
           >
             {roles[roleIndex]}
           </motion.span>
-          <span className="text-base md:text-lg bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold">{t('hero.location')}</span>
+          <span className="text-base md:text-lg bg-gradient-to-r from-slate-800 via-slate-600 to-slate-800 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold">{t('hero.location')}</span>
         </div>
 
-        <div className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-white via-slate-100 to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center">
-          <TextReveal text={t('hero.description')} delay={3.8} staggerDuration={0.03} splitBy="word" />
+        <div className="blur-in text-fluid-xs md:text-fluid-base bg-gradient-to-r from-slate-700 via-slate-500 to-slate-700 dark:from-white dark:via-slate-100 dark:to-slate-200 bg-clip-text text-transparent font-bold max-w-[90%] md:max-w-md mb-6 md:mb-8 px-4 drop-shadow-sm dark:drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] leading-relaxed text-center">
+          <TextReveal text={t('hero.description')} delay={1.2} staggerDuration={0.03} splitBy="word" />
         </div>
 
         <div className="blur-in flex flex-col sm:flex-row items-center gap-6">
