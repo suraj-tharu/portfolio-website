@@ -283,6 +283,16 @@ app.get('/api/portfolio-data', async (req, res) => {
   }
 });
 
+app.get('/api/learning-materials', async (req, res) => {
+  try {
+    const materials = await prisma.learningMaterial.findMany({ orderBy: { createdAt: 'desc' } });
+    res.json({ materials });
+  } catch (error) {
+    console.error('[DATABASE] Error fetching learning materials:', error);
+    res.status(500).json({ error: 'Failed to fetch learning materials' });
+  }
+});
+
 app.get('/api/timeline', async (req, res) => {
   try {
     const timeline = await prisma.timelineEvent.findMany({ orderBy: { orderIndex: 'asc' } });

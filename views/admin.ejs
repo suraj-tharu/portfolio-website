@@ -579,9 +579,10 @@
               <div><label class="field-label">Upload Cover Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
               <div><label class="field-label">Description *</label><textarea name="description" required class="field-textarea" placeholder="Brief description…" rows="3"></textarea></div>
               <div class="form-row form-row-2">
-                <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" class="field-input" placeholder="https://…"></div>
-                <div><label class="field-label">Tags (comma sep.)</label><input type="text" name="tags" class="field-input" placeholder="React, Node…"></div>
+                <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" class="field-input" placeholder="https://demo.example.com"></div>
+                <div><label class="field-label">GitHub URL</label><input type="url" name="githubUrl" class="field-input" placeholder="https://github.com/…"></div>
               </div>
+              <div><label class="field-label">Tags (comma separated)</label><input type="text" name="tags" class="field-input" placeholder="React, Node.js, Python…"></div>
             </div>
             <div style="margin-top:20px;"><button type="submit" class="btn btn-blue btn-full"><i data-lucide="send" style="width:15px;height:15px;"></i> Publish Project</button></div>
           </form>
@@ -914,9 +915,10 @@
           <div><label class="field-label">Replace Image</label><input type="file" name="imageFile" accept="image/*" class="field-file"></div>
           <div><label class="field-label">Description</label><textarea name="description" id="p-description" class="field-textarea" rows="3"></textarea></div>
           <div class="form-row form-row-2">
-            <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="field-input"></div>
-            <div><label class="field-label">Tags</label><input type="text" name="tags" id="p-tags" class="field-input"></div>
+            <div><label class="field-label">Live URL</label><input type="url" name="liveUrl" id="p-liveUrl" class="field-input" placeholder="https://demo.example.com"></div>
+            <div><label class="field-label">GitHub URL</label><input type="url" name="githubUrl" id="p-githubUrl" class="field-input" placeholder="https://github.com/…"></div>
           </div>
+          <div><label class="field-label">Tags (comma separated)</label><input type="text" name="tags" id="p-tags" class="field-input" placeholder="React, Node.js, Python…"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
@@ -1088,6 +1090,7 @@
         document.getElementById('p-imageUrl').value    = data.imageUrl || '';
         document.getElementById('p-description').value = data.description || '';
         document.getElementById('p-liveUrl').value     = data.liveUrl || '';
+        document.getElementById('p-githubUrl').value   = data.githubUrl || '';
         document.getElementById('p-tags').value        = data.tags || '';
       }
       else if (modalId === 'blog-modal') {

@@ -4,95 +4,48 @@ import { useSearchParams } from 'react-router-dom';
 import {
   BookOpen, Download, FileText, Archive, PenTool, Layers,
   Clock, ArrowRight, Search, Star, ExternalLink, ChevronRight,
-  Code2, Database, Globe, Cpu, Sparkles,
+  Code2, Database, Globe, Cpu, Sparkles, AlertCircle, Loader2,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════
-   DATA
+   TYPES
+═══════════════════════════════════════════════════════════ */
+interface LearningMaterial {
+  id: number;
+  grade: string;
+  category: string;
+  subject: string;
+  description: string | null;
+  pdfUrl: string | null;
+  createdAt: string;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CATEGORIES — map DB grades to UI tabs
 ═══════════════════════════════════════════════════════════ */
 const categories = [
-  { id: 'all',         label: 'All',              icon: Sparkles },
-  { id: 'class-10',    label: 'Class 10 (SEE)',   icon: BookOpen },
-  { id: 'class-11',    label: 'Class 11 (NEB)',   icon: FileText },
-  { id: 'class-12',    label: 'Class 12 (NEB)',   icon: Layers },
-  { id: 'diploma',     label: 'Diploma Level',    icon: Archive },
-  { id: 'bachelor',    label: 'Bachelor Level',   icon: Code2 },
+  { id: 'all',              label: 'All Resources',    icon: Sparkles },
+  { id: 'Grade 10',         label: 'Grade 10 (SEE)',   icon: BookOpen },
+  { id: 'Grade 11',         label: 'Grade 11 (NEB)',   icon: FileText },
+  { id: 'Grade 12',         label: 'Grade 12 (NEB)',   icon: Layers },
+  { id: 'Teacher Training', label: 'Teacher Training', icon: PenTool },
 ];
 
-const resources = [
-  {
-    id: 1, category: 'class-10',
-    title: 'Class 10 Computer Science Notes',
-    description: 'Complete SEE syllabus notes covering programming, database, and computer networking basics.',
-    icon: Cpu, color: 'from-violet-500 to-purple-600',
-    badge: 'Updated 2026', files: 1, downloads: 1204, stars: 4.8,
-    tags: ['SEE', 'Computer Science', 'QBasic'],
-    fileUrl: '/downloads/class-10-notes.txt'
-  },
-  {
-    id: 2, category: 'class-11',
-    title: 'Class 11 Computer Science',
-    description: 'NEB board notes including Number Systems, Boolean Logic, and C Programming fundamentals.',
-    icon: Code2, color: 'from-blue-500 to-cyan-600',
-    badge: 'Popular', files: 1, downloads: 856, stars: 4.9,
-    tags: ['NEB', 'C Programming', 'Logic Gates'],
-    fileUrl: '/downloads/class-11-notes.txt'
-  },
-  {
-    id: 3, category: 'class-12',
-    title: 'Class 12 CS & Physics Notes',
-    description: 'Complete NEB Class 12 notes covering Database Management, Networking, OOP in C++, and Physics core topics.',
-    icon: Database, color: 'from-emerald-500 to-teal-600',
-    badge: 'New', files: 1, downloads: 920, stars: 4.7,
-    tags: ['NEB', 'C++', 'Physics'],
-    fileUrl: '/downloads/class-12-notes.txt'
-  },
-  {
-    id: 4, category: 'bachelor',
-    title: 'Geographic Information Systems (GIS)',
-    description: 'Spatial data concepts, coordinate systems, map projections and GIS software workflows.',
-    icon: Globe, color: 'from-orange-500 to-amber-600',
-    badge: 'Updated 2026', files: 15, downloads: 410, stars: 4.9,
-    tags: ['QGIS', 'ArcGIS', 'Remote Sensing'],
-    fileUrl: '#'
-  },
-  {
-    id: 5, category: 'diploma',
-    title: 'Engineering Materials Q-Bank',
-    description: 'Previous year CTEVT exam papers with detailed solutions and model answers.',
-    icon: Archive, color: 'from-pink-500 to-rose-600',
-    badge: '2019–2024', files: 5, downloads: 620, stars: 5.0,
-    tags: ['Exam Prep', 'Past Papers'],
-    fileUrl: '#'
-  },
-  {
-    id: 6, category: 'bachelor',
-    title: 'DBMS Question Bank',
-    description: 'Chapter-wise questions with solutions for semester exams and competitive prep.',
-    icon: Archive, color: 'from-indigo-500 to-blue-600',
-    badge: '5 Years', files: 5, downloads: 450, stars: 4.8,
-    tags: ['Exam Prep', 'SQL Practice'],
-    fileUrl: '#'
-  },
-  {
-    id: 7, category: 'bachelor',
-    title: 'C++ Lab Manual (8 Exercises)',
-    description: 'Step-by-step lab exercises with code samples, expected output and viva questions.',
-    icon: PenTool, color: 'from-cyan-500 to-blue-500',
-    badge: '8 Labs', files: 8, downloads: 290, stars: 4.7,
-    tags: ['Practicals', 'Code Samples'],
-    fileUrl: '#'
-  },
-  {
-    id: 8, category: 'bachelor',
-    title: 'GIS Practical Manual',
-    description: 'Hands-on exercises in QGIS: digitizing, spatial analysis, web mapping.',
-    icon: Globe, color: 'from-green-500 to-emerald-600',
-    badge: '10 Practicals', files: 10, downloads: 310, stars: 4.9,
-    tags: ['QGIS', 'Spatial Analysis'],
-    fileUrl: '#'
-  },
-];
+/* Grade → gradient colour */
+const gradeColor: Record<string, string> = {
+  'Grade 10':         'from-violet-500 to-purple-600',
+  'Grade 11':         'from-blue-500 to-cyan-600',
+  'Grade 12':         'from-emerald-500 to-teal-600',
+  'Teacher Training': 'from-pink-500 to-rose-600',
+};
+
+/* Grade → icon */
+const gradeIcon: Record<string, typeof Cpu> = {
+  'Grade 10':         Cpu,
+  'Grade 11':         Code2,
+  'Grade 12':         Database,
+  'Teacher Training': Globe,
+};
 
 const journals = [
   {
@@ -117,18 +70,14 @@ const journals = [
   },
 ];
 
-const stats = [
-  { value: '40+', label: 'Resources' },
-  { value: '3.5k', label: 'Downloads' },
-  { value: '5',   label: 'Subjects' },
-  { value: '4.8', label: 'Avg Rating' },
-];
-
 /* ═══════════════════════════════════════════════════════════
    RESOURCE CARD
 ═══════════════════════════════════════════════════════════ */
-function ResourceCard({ res, index }: { res: (typeof resources)[0]; index: number }) {
-  const Icon = res.icon;
+function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) {
+  const color  = gradeColor[mat.grade]  || 'from-violet-500 to-indigo-600';
+  const Icon   = gradeIcon[mat.grade]   || Archive;
+  const hasFile = mat.pdfUrl && mat.pdfUrl.trim() !== '' && mat.pdfUrl !== '#';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -142,66 +91,57 @@ function ResourceCard({ res, index }: { res: (typeof resources)[0]; index: numbe
         hover:shadow-[0_8px_40px_rgba(124,58,237,0.12)] dark:hover:shadow-[0_8px_40px_rgba(124,58,237,0.2)]
         transition-all duration-300"
     >
-      {/* Top gradient strip */}
-      <div className={`h-1 w-full bg-gradient-to-r ${res.color}`} />
+      {/* Colour strip */}
+      <div className={`h-1 w-full bg-gradient-to-r ${color}`} />
 
       <div className="p-6 flex flex-col flex-1 gap-4">
-        {/* Icon + badge row */}
+        {/* Icon + category badge */}
         <div className="flex items-start justify-between gap-3">
-          <div className={`w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-br ${res.color} shadow-lg shrink-0`}>
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center bg-gradient-to-br ${color} shadow-lg shrink-0`}>
             <Icon size={20} className="text-white" />
           </div>
           <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full
             bg-violet-50 dark:bg-violet-950/50
             border border-violet-200 dark:border-violet-700/50
             text-violet-700 dark:text-violet-300">
-            {res.badge}
+            {mat.category}
           </span>
         </div>
 
-        {/* Title */}
+        {/* Title + description */}
         <div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1.5 leading-snug group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors">
-            {res.title}
+          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1.5 leading-snug
+            group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors">
+            {mat.subject}
           </h3>
-          <p className="text-sm text-slate-500 dark:text-white/45 leading-relaxed">
-            {res.description}
-          </p>
+          {mat.description && (
+            <p className="text-sm text-slate-500 dark:text-white/45 leading-relaxed line-clamp-3">
+              {mat.description}
+            </p>
+          )}
         </div>
 
-        {/* Tags */}
+        {/* Grade badge */}
         <div className="flex flex-wrap gap-1.5">
-          {res.tags.map(tag => (
-            <span key={tag}
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full
-                bg-slate-100 dark:bg-white/5
-                text-slate-600 dark:text-white/50 border border-slate-200 dark:border-white/8">
-              {tag}
-            </span>
-          ))}
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full
+            bg-slate-100 dark:bg-white/5
+            text-slate-600 dark:text-white/50 border border-slate-200 dark:border-white/8">
+            {mat.grade}
+          </span>
         </div>
 
-        {/* Stats row */}
+        {/* Download / unavailable CTA */}
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/6">
-          <div className="flex items-center gap-4 text-xs text-slate-400 dark:text-white/35">
-            {res.files > 0 && (
-              <div className="flex items-center gap-1">
-                <FileText size={11} />
-                {res.files} files
-              </div>
-            )}
-            <div className="flex items-center gap-1">
-              <Download size={11} />
-              {res.downloads}
-            </div>
-            <div className="flex items-center gap-1 text-amber-500">
-              <Star size={11} fill="currentColor" />
-              {res.stars}
-            </div>
+          <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-white/35">
+            <FileText size={11} />
+            {hasFile ? 'File available' : 'No file yet'}
           </div>
-          {res.fileUrl && res.fileUrl !== '#' ? (
+
+          {hasFile ? (
             <motion.a
-              href={res.fileUrl}
+              href={mat.pdfUrl!}
+              target="_blank"
+              rel="noopener noreferrer"
               download
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -209,20 +149,14 @@ function ResourceCard({ res, index }: { res: (typeof resources)[0]; index: numbe
                 text-violet-600 dark:text-violet-400
                 hover:text-violet-800 dark:hover:text-violet-200
                 transition-colors"
+              onClick={e => e.stopPropagation()}
             >
               <Download size={12} /> Download
             </motion.a>
           ) : (
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-xs font-bold
-                text-violet-600 dark:text-violet-400
-                hover:text-violet-800 dark:hover:text-violet-200
-                transition-colors"
-            >
-              <ExternalLink size={12} /> Explore
-            </motion.button>
+            <span className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 dark:text-white/25 cursor-not-allowed">
+              <ExternalLink size={12} /> Coming soon
+            </span>
           )}
         </div>
       </div>
@@ -237,7 +171,7 @@ function JournalCard({ entry, index }: { entry: (typeof journals)[0]; index: num
   const tagColor: Record<string, string> = {
     Research: 'bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-700/40',
     Tutorial: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700/40',
-    Essay: 'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700/40',
+    Essay:    'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700/40',
     Pedagogy: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700/40',
   };
 
@@ -289,10 +223,31 @@ export default function LearningHub() {
   const [query, setQuery] = useState('');
   const heroRef = useRef<HTMLDivElement>(null);
 
+  // === Fetch real data from backend ===
+  const [materials, setMaterials] = useState<LearningMaterial[]>([]);
+  const [loading, setLoading]     = useState(true);
+  const [error, setError]         = useState<string | null>(null);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('/api/learning-materials')
+      .then(r => {
+        if (!r.ok) throw new Error('Failed to fetch');
+        return r.json();
+      })
+      .then(data => {
+        setMaterials(data.materials || []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Could not load resources. Please try again later.');
+        setLoading(false);
+      });
+  }, []);
+
   useEffect(() => {
     const cat = searchParams.get('category');
-    if (cat && categories.some(c => c.id === cat)) {
-      // Scroll smoothly to resources grid
+    if (cat) {
       setTimeout(() => {
         const el = document.getElementById('resources-grid');
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -301,16 +256,20 @@ export default function LearningHub() {
   }, [searchParams]);
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
-  const heroY   = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
-  const heroOp  = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const heroY  = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const heroOp = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const filtered = resources.filter(r => {
-    const matchCat = activeCategory === 'all' || r.category === activeCategory;
-    const matchQ   = !query || r.title.toLowerCase().includes(query.toLowerCase())
-      || r.description.toLowerCase().includes(query.toLowerCase())
-      || r.tags.some(t => t.toLowerCase().includes(query.toLowerCase()));
+  const filtered = materials.filter(m => {
+    const matchCat = activeCategory === 'all' || m.grade === activeCategory;
+    const matchQ   = !query
+      || m.subject.toLowerCase().includes(query.toLowerCase())
+      || (m.description || '').toLowerCase().includes(query.toLowerCase())
+      || m.grade.toLowerCase().includes(query.toLowerCase())
+      || m.category.toLowerCase().includes(query.toLowerCase());
     return matchCat && matchQ;
   });
+
+  const totalFiles = materials.filter(m => m.pdfUrl && m.pdfUrl !== '#').length;
 
   return (
     <motion.main
@@ -320,16 +279,14 @@ export default function LearningHub() {
       transition={{ duration: 0.5 }}
       className="min-h-screen bg-white dark:bg-[#09090f] text-slate-900 dark:text-white"
     >
-      {/* ── HERO ──────────────────────────────────────── */}
+      {/* ── HERO ────────────────────────────────── */}
       <div ref={heroRef} className="relative min-h-[65vh] flex items-center overflow-hidden">
-        {/* Background */}
         <motion.div style={{ y: heroY }} className="absolute inset-0 z-0">
           <div className="absolute inset-0
             bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(139,92,246,0.10)_0%,transparent_70%)]
             dark:bg-[radial-gradient(ellipse_70%_60%_at_50%_-10%,rgba(139,92,246,0.22)_0%,transparent_70%)]" />
           <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full blur-[140px] bg-violet-200/40 dark:bg-violet-800/30 animate-blob" />
           <div className="absolute -bottom-32 -right-32 w-[400px] h-[400px] rounded-full blur-[130px] bg-pink-200/30 dark:bg-pink-800/25 animate-blob" style={{ animationDelay: '2s' }} />
-          {/* Dot grid */}
           <div className="absolute inset-0 opacity-[0.04] dark:opacity-[0.06]"
             style={{
               backgroundImage: 'radial-gradient(circle, rgba(124,58,237,0.8) 1px, transparent 1px)',
@@ -338,11 +295,8 @@ export default function LearningHub() {
         </motion.div>
 
         <motion.div style={{ opacity: heroOp }} className="relative z-10 w-full max-w-6xl mx-auto px-5 sm:px-8 pt-32 pb-20">
-          {/* Breadcrumb */}
           <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
             className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-8
               text-slate-400 dark:text-white/35"
           >
@@ -352,15 +306,11 @@ export default function LearningHub() {
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left text */}
             <div>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
                 className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6
-                  bg-violet-50 dark:bg-violet-950/60
-                  border border-violet-200 dark:border-violet-700/50"
+                  bg-violet-50 dark:bg-violet-950/60 border border-violet-200 dark:border-violet-700/50"
               >
                 <span className="h-2 w-2 rounded-full bg-violet-500 animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-widest text-violet-700 dark:text-violet-300">
@@ -369,8 +319,7 @@ export default function LearningHub() {
               </motion.div>
 
               <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="font-display italic font-black tracking-tight leading-[0.88]
                   text-[clamp(3rem,8vw,6rem)] mb-6"
@@ -386,29 +335,28 @@ export default function LearningHub() {
               </motion.h1>
 
               <motion.p
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.35 }}
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.35 }}
                 className="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-lg mb-8"
               >
                 Free, curated teaching materials, lab manuals, question banks and research guides
                 from 5+ years of engineering education in Nepal.
               </motion.p>
 
-              {/* Stats */}
+              {/* Live stats */}
               <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.5 }}
-                className="grid grid-cols-4 gap-3"
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.5 }}
+                className="grid grid-cols-3 gap-3"
               >
-                {stats.map(s => (
+                {[
+                  { value: materials.length.toString(), label: 'Resources' },
+                  { value: totalFiles.toString(),       label: 'Downloadable' },
+                  { value: [...new Set(materials.map(m => m.grade))].length.toString(), label: 'Grade Levels' },
+                ].map(s => (
                   <div key={s.label}
                     className="flex flex-col items-center gap-0.5 p-3 rounded-xl
-                      bg-white/70 dark:bg-white/[0.04]
-                      border border-slate-200 dark:border-white/8">
+                      bg-white/70 dark:bg-white/[0.04] border border-slate-200 dark:border-white/8">
                     <span className="text-xl font-black font-display italic text-violet-700 dark:text-violet-300">
-                      {s.value}
+                      {loading ? '—' : s.value}
                     </span>
                     <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-white/40 text-center leading-tight">
                       {s.label}
@@ -418,10 +366,9 @@ export default function LearningHub() {
               </motion.div>
             </div>
 
-            {/* Right — featured card preview */}
+            {/* Right — preview card */}
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               className="hidden lg:block"
             >
@@ -429,45 +376,48 @@ export default function LearningHub() {
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-200/40 to-pink-200/30 dark:from-violet-900/30 dark:to-pink-900/20 blur-xl" />
                 <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] p-6 space-y-4">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-content-center flex items-center justify-center">
                       <BookOpen size={15} className="text-white" />
                     </div>
                     <span className="text-sm font-bold text-slate-900 dark:text-white">Latest Resources</span>
                   </div>
-                  {resources.slice(0, 3).map((r, i) => {
-                    const Ic = r.icon;
+                  {loading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 size={24} className="text-violet-500 animate-spin" />
+                    </div>
+                  ) : materials.slice(0, 3).map((m, i) => {
+                    const Ic = gradeIcon[m.grade] || Archive;
+                    const col = gradeColor[m.grade] || 'from-violet-500 to-indigo-600';
                     return (
                       <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-100 dark:border-white/6">
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br ${r.color} shrink-0`}>
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br ${col} shrink-0`}>
                           <Ic size={14} className="text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">{r.title}</p>
-                          <p className="text-[10px] text-slate-400 dark:text-white/35">{r.downloads} downloads</p>
+                          <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">{m.subject}</p>
+                          <p className="text-[10px] text-slate-400 dark:text-white/35">{m.grade}</p>
                         </div>
-                        <Download size={13} className="text-violet-500 shrink-0" />
+                        {m.pdfUrl && m.pdfUrl !== '#' && <Download size={13} className="text-violet-500 shrink-0" />}
                       </div>
                     );
                   })}
+                  {!loading && materials.length === 0 && (
+                    <p className="text-xs text-center text-slate-400 dark:text-white/30 py-4">No resources uploaded yet.</p>
+                  )}
                 </div>
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Bottom wave fade */}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white dark:from-[#09090f] to-transparent z-10" />
       </div>
 
-      {/* ── RESOURCES SECTION ─────────────────────────── */}
+      {/* ── RESOURCES SECTION ─────────────────────── */}
       <section id="resources-grid" className="relative z-20 py-16 md:py-24 px-5 sm:px-8 max-w-7xl mx-auto">
 
-        {/* Section header */}
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10"
         >
           <div>
@@ -484,7 +434,6 @@ export default function LearningHub() {
             </h2>
           </div>
 
-          {/* Search */}
           <div className="relative w-full sm:w-80">
             <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30 pointer-events-none" />
             <input
@@ -506,14 +455,11 @@ export default function LearningHub() {
 
         {/* Category pills */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.1 }}
           className="flex flex-wrap gap-2 mb-10"
         >
           {categories.map(cat => {
-            const Icon = cat.icon;
+            const Icon   = cat.icon;
             const active = activeCategory === cat.id;
             return (
               <motion.button
@@ -530,45 +476,69 @@ export default function LearningHub() {
               >
                 <Icon size={13} />
                 {cat.label}
+                {!loading && cat.id !== 'all' && (
+                  <span className={`ml-1 text-[9px] font-black px-1.5 py-0.5 rounded-full ${active ? 'bg-white/20 text-white' : 'bg-violet-50 dark:bg-violet-950/50 text-violet-600 dark:text-violet-400'}`}>
+                    {materials.filter(m => m.grade === cat.id).length}
+                  </span>
+                )}
               </motion.button>
             );
           })}
         </motion.div>
 
-        {/* Resource grid */}
+        {/* Resource grid — loading / error / data states */}
         <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory + query}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-          >
-            {filtered.length > 0
-              ? filtered.map((res, i) => <ResourceCard key={res.id} res={res} index={i} />)
-              : (
-                <div className="col-span-full flex flex-col items-center gap-4 py-24 text-center">
-                  <Search size={40} className="text-slate-300 dark:text-white/15" />
-                  <p className="text-slate-500 dark:text-white/40 font-medium">No resources found for "{query}"</p>
-                  <button onClick={() => { setQuery(''); setSearchParams({ category: 'all' }); }}
-                    className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">
-                    Clear filters
-                  </button>
-                </div>
-              )
-            }
-          </motion.div>
+          {loading ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex flex-col items-center gap-4 py-32 text-center"
+            >
+              <Loader2 size={40} className="text-violet-500 animate-spin" />
+              <p className="text-slate-500 dark:text-white/40 font-medium">Loading resources…</p>
+            </motion.div>
+          ) : error ? (
+            <motion.div
+              key="error"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="flex flex-col items-center gap-4 py-32 text-center"
+            >
+              <AlertCircle size={40} className="text-rose-500" />
+              <p className="text-slate-500 dark:text-white/40 font-medium">{error}</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              key={activeCategory + query}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+            >
+              {filtered.length > 0
+                ? filtered.map((mat, i) => <ResourceCard key={mat.id} mat={mat} index={i} />)
+                : (
+                  <div className="col-span-full flex flex-col items-center gap-4 py-24 text-center">
+                    <Search size={40} className="text-slate-300 dark:text-white/15" />
+                    <p className="text-slate-500 dark:text-white/40 font-medium">
+                      {query ? `No resources found for "${query}"` : 'No resources in this category yet.'}
+                    </p>
+                    <button
+                      onClick={() => { setQuery(''); setSearchParams({ category: 'all' }); }}
+                      className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline"
+                    >
+                      Clear filters
+                    </button>
+                  </div>
+                )
+              }
+            </motion.div>
+          )}
         </AnimatePresence>
       </section>
 
-      {/* ── JOURNAL SECTION ───────────────────────────── */}
+      {/* ── JOURNAL SECTION ───────────────────────── */}
       <section className="py-16 md:py-24 px-5 sm:px-8 max-w-7xl mx-auto border-t border-slate-100 dark:border-white/5">
         <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10"
         >
           <div>
@@ -599,21 +569,16 @@ export default function LearningHub() {
         </div>
       </section>
 
-      {/* ── CTA BANNER ────────────────────────────────── */}
+      {/* ── CTA BANNER ────────────────────────────── */}
       <section className="py-16 md:py-20 px-5 sm:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}
           className="relative max-w-4xl mx-auto rounded-3xl overflow-hidden
             bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600
             p-10 sm:p-14 text-center text-white"
         >
-          {/* Noise */}
           <div className="absolute inset-0 opacity-[0.06]"
             style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")" }} />
-          {/* Orb */}
           <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10 blur-3xl" />
 
           <div className="relative z-10">
@@ -627,8 +592,7 @@ export default function LearningHub() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <motion.a
                 href="mailto:suraj.xaudhary@gmail.com"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-base
                   bg-white text-violet-700 shadow-xl hover:shadow-2xl hover:bg-violet-50 transition-all duration-300"
               >
@@ -636,8 +600,7 @@ export default function LearningHub() {
               </motion.a>
               <motion.a
                 href="/"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.97 }}
+                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full font-bold text-base
                   border-2 border-white/40 text-white hover:border-white hover:bg-white/10 transition-all duration-300"
               >
