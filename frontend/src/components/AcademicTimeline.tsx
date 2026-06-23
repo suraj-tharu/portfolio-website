@@ -15,7 +15,6 @@ const defaultTimeline: TimelineEvent[] = [
   { year: "2017 - 2021", role: "B.E. Computer Engineering", location: "Mid-West University (Himalaya College of Engineering)", type: 'education' },
   { year: "2021", role: "Nepal Telecom Internship", location: "Kathmandu", type: 'work' },
   { year: "2021 - 2023", role: "Instructor", location: "Buddhi Bikash Secondary School", type: 'work' },
-  { year: "2023 - 2024", role: "Instructor", location: "Additional Technical School", type: 'work' },
   { year: "2024 - 2026", role: "Senior Instructor", location: "Trishahid Namuna Ma. Vi.", type: 'work' },
   { year: "2024 - Present", role: "MSc Information System Engineering", location: "Purbanchal University", type: 'education' },
 ];

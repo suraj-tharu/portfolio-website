@@ -133,7 +133,7 @@ export default function Footer() {
           className="flex flex-col items-center gap-2.5 md:items-end"
         >
           <div className="text-xs font-semibold tracking-widest uppercase text-transparent bg-gradient-to-r from-brand-300 to-cyan-300 bg-clip-text">
-            © 2026{new Date().getFullYear() > 2026 ? ` - ${new Date().getFullYear()}` : ''} Er. Suraj Tharu Chaudhary
+            © 2026 Er. Suraj Tharu Chaudhary. All rights reserved.
           </div>
           <VisitorCounter />
         </motion.div>
