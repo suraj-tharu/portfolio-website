@@ -36,8 +36,7 @@ const resources = [
     tags: ['C++', 'STL', 'Patterns'],
   },
   {
-    id: 'notes',
-    id2: 3, category: 'notes',
+    id: 3, category: 'notes',
     title: 'Database Management Systems',
     description: 'ER diagrams, normalization, SQL, transactions, NoSQL & query optimization.',
     icon: Database, color: 'from-emerald-500 to-teal-600',

@@ -385,12 +385,12 @@ export default function Navbar() {
     return () => clearInterval(id);
   }, []);
 
-  const navLinks = [
+  const navLinks: { label: string; href: string; external?: boolean }[] = [
     { label: t('nav.home'),        href: '#' },
     { label: t('nav.expertise'),   href: '#skills' },
     { label: t('nav.work'),        href: '/#work' },
     { label: t('nav.academia'),    href: '/#research' },
-    { label: t('nav.learninghub'), href: '/learning-hub', external: true },
+    { label: t('nav.learninghub'), href: '/learning-hub' },
     { label: t('nav.contact'),     href: '#contact' },
   ];
 

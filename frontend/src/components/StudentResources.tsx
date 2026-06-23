@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Download, FileText, BookOpen, Layers, Archive, PenTool } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const resources = [
   { title: "Course Notes", count: "12 Files", icon: <FileText size={24} /> },
@@ -31,9 +32,9 @@ export default function StudentResources() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {resources.map((res, i) => (
-            <a
+            <Link
               key={i}
-              href="/learning-hub"
+              to="/learning-hub"
               className="group relative overflow-hidden bg-surface border border-stroke rounded-3xl p-8 hover:border-blue-500/50 transition-colors cursor-pointer block"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -50,7 +51,7 @@ export default function StudentResources() {
                   <Download size={16} /> Download
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

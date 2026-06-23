@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const defaultEntries = [
   { title: "The future of interactive web design", date: "Oct 12, 2026", read: "4 min read", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=100&q=80", url: "#" },
@@ -80,14 +81,14 @@ export default function Journal() {
             </h2>
           </div>
           
-          <a
-            href="/learning-hub"
+          <Link
+            to="/learning-hub"
             className="hidden md:inline-flex group relative items-center justify-center rounded-full px-6 py-3 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden"
           >
             <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
             <div className="absolute inset-[2px] bg-bg rounded-full" />
             <span className="relative z-10 flex items-center gap-2">View all &rarr;</span>
-          </a>
+          </Link>
         </motion.div>
 
         {/* Entries or Skeletons */}
