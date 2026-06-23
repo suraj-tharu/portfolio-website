@@ -77,18 +77,19 @@ export default function Navbar() {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-4 md:top-6 left-4 md:left-1/2 md:-translate-x-1/2 right-4 md:right-auto md:w-[90%] max-w-6xl z-[100] flex justify-between items-center py-3 px-6 rounded-2xl glass shadow-lg-premium" role="navigation" aria-label="Main navigation">
-
-        {/* Logo - SC on Left with proper spacing */}
-        <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
+        className="fixed top-4 md:top-6 left-0 right-0 z-[100] px-4 md:px-6 flex justify-between items-center"
+        role="navigation" aria-label="Main navigation"
+      >
+        {/* Left — Logo */}
+        <a href="#" className="pointer-events-auto group relative w-11 h-11 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 glass shadow-lg-premium border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
           <div className="absolute inset-0 bg-brand-500 opacity-20 group-hover:opacity-100 group-hover:rotate-180 transition-all duration-700" />
           <div className="absolute inset-[2px] bg-bg rounded-full flex items-center justify-center">
-            <span className="font-display italic text-lg text-text-primary">SC</span>
+            <span className="font-display italic text-base text-text-primary">SC</span>
           </div>
         </a>
 
-        {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-1 bg-surface/50 border border-stroke rounded-full px-2 py-1 backdrop-blur-md">
+        {/* Center — Desktop Navigation Pills */}
+        <div className="hidden lg:flex items-center gap-1 glass shadow-lg-premium border border-stroke rounded-full px-2 py-1 pointer-events-auto absolute left-1/2 -translate-x-1/2">
           {navLinks.map((link) => {
             const sectionId = link.href.startsWith('/#') ? link.href.replace('/#', '') : link.href.replace('#', '');
             const isActive = activeSection === sectionId;
@@ -96,16 +97,16 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="relative px-4 py-2 rounded-full text-sm font-medium transition-colors group"
+                className="relative px-3 py-1.5 rounded-full text-sm font-medium transition-colors group"
               >
                 {isActive && (
                   <motion.div
                     layoutId="nav-pill"
-                    className="absolute inset-0 bg-brand-500/10 border border-brand-500/20 rounded-full z-0 shadow-[0_0_15px_rgba(139,92,246,0.2)]"
+                    className="absolute inset-0 bg-brand-500/10 border border-brand-500/30 rounded-full z-0 shadow-[0_0_15px_rgba(139,92,246,0.25)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 30 }}
                   />
                 )}
-                <span className={`relative z-10 ${isActive ? 'text-brand-light' : 'text-text-secondary group-hover:text-text-primary'}`}>
+                <span className={`relative z-10 ${isActive ? 'text-brand-light font-semibold' : 'text-text-secondary group-hover:text-text-primary'}`}>
                   {link.label}
                 </span>
               </a>
@@ -113,65 +114,32 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Controls */}
-        <div className="pointer-events-auto flex items-center gap-4">
-
-          {/* Ultra Premium Time Display */}
+        {/* Right — Controls */}
+        <div className="pointer-events-auto flex items-center gap-2">
+          {/* Live Clock */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-brand-500/15 to-pink-500/15 border border-brand-500/30 backdrop-blur-md hover:border-brand-500/50 transition-all shadow-[0_0_15px_rgba(34,211,238,0.3)] hover:shadow-[0_0_25px_rgba(34,211,238,0.5)]"
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/40 transition-all"
           >
-            <div className="w-2 h-2 rounded-full bg-brand-300 animate-pulse shadow-[0_0_8px_rgba(139,92,246,0.6)]" />
-            <span className="text-xs md:text-sm font-bold text-white dark:text-cyan-200 dark:hover:text-brand-200 light:text-cyan-900 light:hover:text-brand-700 transition-colors drop-shadow-[0_0_4px_rgba(34,211,238,0.5)]">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
+            <span className="text-xs font-bold text-text-secondary">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </motion.div>
 
           <button
             onClick={toggleTheme}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
-            style={{
-              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
-              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
-              color: 'var(--brand-light, #a8c4e0)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
+            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
             title="Toggle Theme"
           >
-            <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-              {theme === 'dark' ? <Sun size={20} aria-hidden="true" /> : <Moon size={20} aria-hidden="true" />}
-            </span>
+            {theme === 'dark' ? <Sun size={16} aria-hidden="true" /> : <Moon size={16} aria-hidden="true" />}
           </button>
 
           <button
             onClick={toggleLanguage}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border font-semibold text-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
-            style={{
-              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
-              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
-              color: 'var(--brand-light, #a8c4e0)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
+            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 font-semibold text-xs text-text-secondary hover:text-brand-light transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={language === 'en' ? 'Switch to Nepali' : 'Switch to English'}
             title="Toggle Language"
           >
@@ -180,29 +148,12 @@ export default function Navbar() {
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md border transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
-            style={{
-              background: 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))',
-              borderColor: 'rgba(var(--brand-rgb, 137,170,204), 0.35)',
-              color: 'var(--brand-light, #a8c4e0)',
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.3), rgba(var(--accent-2-rgb, 168,130,200), 0.2))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.6)';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(var(--brand-rgb, 137,170,204), 0.25)';
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.background = 'linear-gradient(135deg, rgba(var(--brand-rgb, 137,170,204), 0.15), rgba(var(--accent-2-rgb, 168,130,200), 0.1))';
-              e.currentTarget.style.borderColor = 'rgba(var(--brand-rgb, 137,170,204), 0.35)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
+            className="w-10 h-10 flex items-center justify-center rounded-full glass shadow-lg-premium border border-stroke hover:border-brand-500/50 text-text-secondary hover:text-brand-light transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 focus:ring-offset-bg"
             aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
           >
-            <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)", display: "inline-flex" }}>
-              {isOpen ? <X size={24} className="group-hover:rotate-90 transition-transform duration-300" aria-hidden="true" /> : <Menu size={24} className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />}
-            </span>
+            {isOpen ? <X size={18} className="group-hover:rotate-90 transition-transform duration-300" aria-hidden="true" /> : <Menu size={18} className="group-hover:scale-110 transition-transform duration-300" aria-hidden="true" />}
           </button>
         </div>
       </motion.nav>

@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600;700;800;900&display=swap');
-@import url('https://db.onlinewebfonts.com/c/e66905e07608167a84e6ad52f638c3c6?family=Helvetica+Now+Var');
+/* Helvetica Now Var removed — CSP blocked external font provider. Falling back to system font stack. */
 
 @tailwind base;
 @tailwind components;

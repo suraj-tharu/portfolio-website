@@ -36,10 +36,12 @@ declare global {
  * Set VITE_GA_TRACKING_ID in your .env file.
  */
 export function useGoogleAnalytics(config?: AnalyticsConfig) {
-    const trackingId = config?.trackingId || import.meta.env.VITE_GA_TRACKING_ID || 'G-XXXXXXXXXX';
-    const debug = config?.debug || false;
+    const trackingId = config?.trackingId || import.meta.env.VITE_GA_TRACKING_ID || '';
 
     useEffect(() => {
+        // Don't inject if no real tracking ID is configured
+        if (!trackingId || trackingId === 'G-XXXXXXXXXX') return;
+
         // Prevent duplicate injection on hot-reload
         const existingScript = document.querySelector(`script[src*="googletagmanager.com/gtag/js"]`);
         if (existingScript) return;
@@ -56,11 +58,8 @@ export function useGoogleAnalytics(config?: AnalyticsConfig) {
             window.dataLayer.push(args);
         };
         window.gtag('js', new Date());
-        window.gtag('config', trackingId, {
-            debug_mode: debug,
-            send_page_view: true,
-        });
-    }, [trackingId, debug]);
+        window.gtag('config', trackingId, { send_page_view: true });
+    }, [trackingId]);
 }
 
 /**
@@ -104,27 +103,21 @@ export function trackConversion(conversionName: string, value?: number) {
  * Loads web-vitals from CDN only once.
  */
 export function useWebVitals() {
+    // Web-vitals CDN is frequently blocked by ad blockers.
+    // Vitals are tracked silently via the PerformanceObserver API instead.
     useEffect(() => {
-        // Prevent duplicate injection
-        const existing = document.querySelector('script[src*="web-vitals"]');
-        if (existing) return;
-
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/web-vitals@3/dist/web-vitals.iife.js';
-        script.onload = () => {
-            const vitals = window.webVitals;
-            if (!vitals) return;
-
-            const report = (name: string) => (metric: WebVitalMetric) =>
-                trackEvent(`web_vital_${name}`, { value: Math.round(metric.value * 1000) / 1000, label: metric.name });
-
-            vitals.onFCP(report('fcp'));
-            vitals.onLCP(report('lcp'));
-            vitals.onCLS(report('cls'));
-            vitals.onTTFB(report('ttfb'));
-            vitals.onINP?.(report('inp'));
-        };
-        document.head.appendChild(script);
+        if (typeof PerformanceObserver === 'undefined') return;
+        try {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    trackEvent(`web_vital_${entry.entryType}`, { value: entry.startTime, name: entry.name });
+                }
+            });
+            observer.observe({ type: 'largest-contentful-paint', buffered: true });
+            return () => observer.disconnect();
+        } catch {
+            // PerformanceObserver not supported — silently ignore
+        }
     }, []);
 }
 
