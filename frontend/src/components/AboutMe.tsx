@@ -41,7 +41,7 @@ export default function AboutMe() {
           </FadeIn>
 
           {/* Remaining Biography Paragraphs */}
-          <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 bg-[var(--surface)]/50 p-8 rounded-3xl border border-[var(--stroke)] shadow-xl backdrop-blur-sm">
+          <FadeIn delay={0.2} y={30} className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 premium-card luxury-glow glass rounded-3xl border border-stroke backdrop-blur-md">
             <p>
               I completed my <strong className="text-[var(--accent)]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[var(--accent-2)]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.
             </p>

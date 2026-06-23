@@ -22,30 +22,52 @@ export default function SkillsVisualization() {
           </h2>
         </motion.div>
 
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6 max-w-4xl mx-auto">
-          {skills.map((skill, i) => (
-            <motion.div
-              key={skill}
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ 
-                duration: 0.6, 
-                delay: i * 0.05, 
-                type: "spring", 
-                stiffness: 100 
-              }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="relative group cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-white/5 rounded-full blur-md transition-all group-hover:bg-blue-500/20" />
-              <div className="relative px-6 py-3 md:px-8 md:py-4 bg-surface border border-stroke rounded-full flex items-center justify-center backdrop-blur-sm group-hover:border-blue-500/50 transition-colors">
-                <span className="text-sm md:text-base font-medium text-text-primary/80 group-hover:text-white transition-colors">
-                  {skill}
-                </span>
-              </div>
-            </motion.div>
-          ))}
+        <div className="relative w-full max-w-3xl mx-auto aspect-square max-h-[600px] flex items-center justify-center mt-10">
+          {/* Center node */}
+          <motion.div 
+            initial={{ scale: 0 }}
+            whileInView={{ scale: 1 }}
+            transition={{ type: 'spring', damping: 15 }}
+            viewport={{ once: true }}
+            className="absolute z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-brand to-brand-dark flex flex-col items-center justify-center text-white font-bold luxury-glow shadow-2xl-premium"
+          >
+            <span className="text-xl md:text-2xl font-display italic">Core</span>
+            <span className="text-xs uppercase tracking-widest opacity-80 mt-1">Skills</span>
+          </motion.div>
+          
+          {/* Orbiting nodes */}
+          {skills.map((skill, i) => {
+            const radius = 100 + (i % 3) * 60; // Concentric circles
+            const duration = 25 + (i % 3) * 15; // Different speeds
+            const initialRotation = (360 / skills.length) * i; // Distribute evenly
+            
+            return (
+              <motion.div
+                key={skill}
+                className="absolute origin-center flex justify-center"
+                style={{ width: radius * 2, height: radius * 2 }}
+                initial={{ rotate: initialRotation, opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                animate={{ rotate: initialRotation + 360 }}
+                transition={{ 
+                  rotate: { duration, repeat: Infinity, ease: "linear" },
+                  opacity: { duration: 1, delay: i * 0.1 },
+                  scale: { duration: 1, delay: i * 0.1, type: "spring" }
+                }}
+              >
+                <motion.div
+                  className="absolute top-0 -translate-y-1/2 premium-card luxury-glow glass rounded-full px-4 py-2 md:px-5 md:py-2.5 whitespace-nowrap text-xs md:text-sm font-medium text-text-primary backdrop-blur-md cursor-pointer hover:border-brand-light transition-colors"
+                  style={{ padding: '0.5rem 1rem' }}
+                  animate={{ rotate: -(initialRotation + 360) }}
+                  transition={{ duration, repeat: Infinity, ease: "linear" }}
+                  whileHover={{ scale: 1.1, zIndex: 50 }}
+                >
+                  <span className="gradient-text-premium font-bold">{skill}</span>
+                </motion.div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

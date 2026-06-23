@@ -1,6 +1,47 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
+
+const AnimatedDecoration = () => (
+  <motion.svg
+    className="absolute left-[5%] top-[10%] md:left-[10%] md:top-[15%] w-64 h-64 md:w-96 md:h-96 text-brand/30 pointer-events-none z-0"
+    viewBox="0 0 200 200"
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: false, margin: "-100px" }}
+  >
+    <motion.path
+      d="M20,100 C20,50 80,20 100,50 C120,80 180,50 180,100 C180,150 120,180 100,150 C80,120 20,150 20,100 Z"
+      fill="transparent"
+      stroke="currentColor"
+      strokeWidth="2"
+      variants={{
+        hidden: { pathLength: 0, opacity: 0 },
+        visible: { 
+          pathLength: 1, 
+          opacity: 1, 
+          transition: { duration: 3, ease: "easeInOut" } 
+        }
+      }}
+    />
+    <motion.path
+      d="M50,100 L150,100 M100,50 L100,150"
+      fill="transparent"
+      stroke="currentColor"
+      strokeWidth="1"
+      strokeDasharray="4 4"
+      variants={{
+        hidden: { pathLength: 0, opacity: 0 },
+        visible: { 
+          pathLength: 1, 
+          opacity: 0.5, 
+          transition: { duration: 2, delay: 1, ease: "easeInOut" } 
+        }
+      }}
+    />
+  </motion.svg>
+);
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -60,6 +101,8 @@ export default function Explorations() {
   return (
     <section ref={sectionRef} className="relative bg-bg min-h-[300vh] overflow-hidden z-20">
       
+      <AnimatedDecoration />
+
       {/* Layer 1: Pinned Center */}
       <div ref={contentRef} className="absolute inset-0 h-screen w-full flex flex-col items-center justify-center pointer-events-none z-10 px-4">
         <div className="flex items-center gap-4 mb-6">

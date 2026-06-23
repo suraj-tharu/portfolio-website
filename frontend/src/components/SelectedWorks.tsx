@@ -82,7 +82,8 @@ export default function SelectedWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
-              className={`group relative overflow-hidden bg-surface border border-stroke rounded-3xl ${project.span} ${project.aspect} block`}
+              whileHover={{ scale: 1.02, y: -5 }}
+              className={`group relative overflow-hidden premium-card luxury-glow rounded-3xl ${project.span} ${project.aspect} block`}
             >
               {/* Background Image */}
               <img
@@ -102,7 +103,7 @@ export default function SelectedWorks() {
                 {/* Hover Label */}
                 <div className="relative inline-flex items-center justify-center p-[2px] rounded-full overflow-hidden transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100">
                   <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] animate-[spin_2s_linear_infinite]" />
-                  <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium">
+                  <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium shadow-lg-premium">
                     View — <span className="font-display italic text-base">{project.title}</span>
                   </div>
                 </div>

@@ -691,6 +691,16 @@ select:focus {
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 20%, transparent);
 }
 
+.premium-link {
+  @apply relative inline-block transition-all duration-300;
+  letter-spacing: normal;
+}
+
+.premium-link:hover {
+  letter-spacing: 0.05em;
+  color: var(--brand-light);
+}
+
 /* ════════════════════════════════════════════════════════════
    ULTRA-PREMIUM EFFECTS - WORLD-CLASS UI/UX
 ════════════════════════════════════════════════════════════ */

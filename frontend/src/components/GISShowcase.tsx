@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-// Access Leaflet from window global loaded via CDN
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const L = (window as any).L;
 
 const layers = [
@@ -10,17 +10,19 @@ const layers = [
   { id: 'hotspots', name: 'Urbanization Hotspots' }
 ];
 
+const tileLayerUrls: Record<string, string> = {
+  '2016': 'https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png',
+  '2026': 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+  'hotspots': 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
+};
+
 export default function GISShowcase() {
   const [activeLayer, setActiveLayer] = useState('2026');
   const [isZoomed, setIsZoomed] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const tileLayerRef = useRef<any>(null);
-
-  const tileLayerUrls: Record<string, string> = {
-    '2016': 'https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png',
-    '2026': 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-    'hotspots': 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_labels_under/{z}/{x}/{y}{r}.png'
-  };
 
   // Swaps tile layer URL dynamically when layer selection changes
   useEffect(() => {
@@ -85,6 +87,7 @@ export default function GISShowcase() {
       mapRef.current = null;
       tileLayerRef.current = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

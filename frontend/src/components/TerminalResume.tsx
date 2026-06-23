@@ -34,7 +34,7 @@ export default function TerminalResume() {
     const cmd = input.trim().toLowerCase();
     const newHistory = [...history, { type: 'input', text: `root@suraj:~$ ${input}` } as const];
 
-    let output: string | React.ReactNode = '';
+    let output: string | React.ReactNode;
 
     switch (cmd) {
       case 'help':

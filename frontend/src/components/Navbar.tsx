@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, type Variants } from 'framer-motion';
+import { motion, AnimatePresence, type Variants, useScroll, useMotionValueEvent } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, X, Menu } from 'lucide-react';
 import { useTheme } from '../hooks/useTheme';
@@ -18,6 +18,18 @@ export default function Navbar() {
       document.body.style.overflow = 'auto';
     }
   }, [isOpen]);
+
+  const { scrollY } = useScroll();
+  const [hidden, setHidden] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (latest > previous && latest > 150) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  });
 
   // Update time every minute
   useEffect(() => {
@@ -55,7 +67,14 @@ export default function Navbar() {
   return (
     <>
       {/* Floating Toggle Button */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex justify-between items-center pt-6 px-8 md:px-12" role="navigation" aria-label="Main navigation">
+      <motion.nav 
+        variants={{
+          visible: { y: 0, opacity: 1 },
+          hidden: { y: -100, opacity: 0 }
+        }}
+        animate={hidden ? "hidden" : "visible"}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="fixed top-4 md:top-6 left-4 md:left-1/2 md:-translate-x-1/2 right-4 md:right-auto md:w-[90%] max-w-6xl z-[100] flex justify-between items-center py-3 px-6 rounded-2xl glass shadow-lg-premium" role="navigation" aria-label="Main navigation">
 
         {/* Logo - SC on Left with proper spacing */}
         <a href="#" className="pointer-events-auto group relative w-12 h-12 flex items-center justify-center rounded-full overflow-hidden shrink-0 transition-transform hover:scale-110 bg-surface/80 backdrop-blur-md border border-stroke" aria-label="Suraj Chaudhary - Portfolio Home" title="Go to homepage">
@@ -157,7 +176,7 @@ export default function Navbar() {
             </span>
           </button>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Full Screen Overlay Menu */}
       <AnimatePresence>

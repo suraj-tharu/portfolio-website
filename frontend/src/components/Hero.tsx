@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Hls from 'hls.js';
 import { gsap } from 'gsap';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { MicroInteractionButton } from './premium/MicroInteractionButton';
 import { useLanguage } from '../context/LanguageContext';
 import { useGreeting } from './GreetingBanner';
@@ -83,10 +83,14 @@ export default function Hero() {
 
   const name = "Suraj Tharu Chaudhary".split(" ");
 
+  const { scrollY } = useScroll();
+  const yBg = useTransform(scrollY, [0, 1000], [0, 300]);
+  const sectionOpacity = useTransform(scrollY, [0, 800], [1, 0]);
+
   return (
-    <section ref={containerRef} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
+    <motion.section ref={containerRef} style={{ opacity: sectionOpacity }} className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background Video with Premium Lighting */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#06080F] via-[#1a0a2e] to-[#06080F]">
+      <motion.div style={{ y: yBg }} className="absolute inset-0 z-0 overflow-hidden bg-gradient-to-b from-[#06080F] via-[#1a0a2e] to-[#06080F]">
         <video
           ref={videoRef}
           autoPlay
@@ -105,7 +109,7 @@ export default function Hero() {
 
         {/* Additional glow overlay */}
         <div className="absolute inset-0 bg-radial-gradient pointer-events-none opacity-30" />
-      </div>
+      </motion.div>
 
       {/* Content with premium spacing and animations */}
       <div className="relative z-10 flex flex-col items-center text-center px-4 pt-12 pb-20 w-full max-w-[100vw] overflow-x-hidden">
@@ -134,7 +138,7 @@ export default function Hero() {
           {name.map((word, i) => (
             <motion.span
               key={i}
-              className="inline-block text-text-primary hover:text-brand-light transition-all duration-300"
+              className="inline-block gradient-text-premium hover:text-brand-light transition-all duration-300"
               initial={{ y: 100, opacity: 0, rotateZ: 5 }}
               animate={{ y: 0, opacity: 1, rotateZ: 0 }}
               transition={{ duration: 1.2, delay: 3.2 + i * 0.15, ease: [0.2, 0.65, 0.3, 0.9] }}
@@ -185,6 +189,6 @@ export default function Hero() {
           <div className="absolute top-0 left-0 w-full h-full bg-brand-light/50 animate-scroll-down" />
         </div>
       </div>
-    </section >
+    </motion.section >
   );
 }

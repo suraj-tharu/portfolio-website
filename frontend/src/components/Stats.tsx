@@ -1,4 +1,29 @@
-import { motion } from 'framer-motion';
+import { motion, useSpring, useTransform, useInView } from 'framer-motion';
+import { useRef, useEffect } from 'react';
+
+function AnimatedCounter({ value }: { value: string }) {
+  const numericValue = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
+  const suffix = value.replace(/[0-9]/g, '');
+  
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+  
+  const spring = useSpring(0, { stiffness: 40, damping: 20 });
+  const display = useTransform(spring, current => Math.floor(current));
+
+  useEffect(() => {
+    if (inView) {
+      spring.set(numericValue);
+    }
+  }, [inView, spring, numericValue]);
+
+  return (
+    <span ref={ref} className="inline-flex items-center">
+      {numericValue > 0 ? <motion.span>{display}</motion.span> : <span>{value}</span>}
+      {suffix && <span>{suffix}</span>}
+    </span>
+  );
+}
 
 export default function Stats() {
   const stats = [
@@ -20,8 +45,8 @@ export default function Stats() {
               transition={{ duration: 0.8, delay: i * 0.2, ease: "easeOut" }}
               className="flex flex-col items-center justify-center pt-8 md:pt-0"
             >
-              <div className="text-6xl md:text-7xl lg:text-8xl font-display text-text-primary mb-2">
-                {stat.value}
+              <div className="text-6xl md:text-7xl lg:text-8xl font-display text-text-primary mb-2 gradient-text-premium drop-shadow-md">
+                <AnimatedCounter value={stat.value} />
               </div>
               <div className="text-sm md:text-base text-muted uppercase tracking-[0.2em]">
                 {stat.label}

@@ -50,6 +50,7 @@ export default function ChatWidget() {
         content: data.reply || "Sorry, I couldn't process that right now."
       }]);
     } catch (error) {
+      console.error(error);
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: "Network error. I am currently offline."
@@ -115,17 +116,16 @@ export default function ChatWidget() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className="w-[92vw] max-w-[420px] h-[520px] max-h-[80vh] rounded-2xl shadow-2xl z-[97] flex flex-col overflow-hidden"
+            initial={{ opacity: 0, y: 40, scale: 0.9, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, y: 20, scale: 0.9, filter: 'blur(5px)' }}
+            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="w-[92vw] max-w-[420px] h-[520px] max-h-[80vh] rounded-2xl luxury-glow-strong glass z-[97] flex flex-col overflow-hidden backdrop-blur-xl bg-surface/80"
             style={{
               position: 'fixed',
               bottom: '2rem',
               right: '2rem',
               zIndex: 97,
-              background: 'var(--surface)',
               border: '1px solid var(--stroke)',
             }}
             role="dialog"
@@ -167,7 +167,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4" style={{ background: 'var(--bg)' }}>
+            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 bg-transparent">
               {messages.map((msg, i) => (
                 <motion.div
                   key={i}
@@ -223,7 +223,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4" style={{ background: 'var(--surface)', borderTop: '1px solid var(--stroke)' }}>
+            <form onSubmit={handleSubmit} className="p-4 bg-surface/50 backdrop-blur-md" style={{ borderTop: '1px solid var(--stroke)' }}>
               <div className="relative flex items-center">
                 <input
                   type="text"
