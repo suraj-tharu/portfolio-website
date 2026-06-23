@@ -242,7 +242,7 @@
                   </div>
                 </div>
                 <div class="flex sm:flex-col w-full sm:w-auto gap-2 shrink-0">
-                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(p)) %>')))" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors text-xs font-bold border border-blue-500/20"><i data-lucide="edit-2" class="w-3 h-3 inline"></i> Edit</button>
+                  <button onclick="openModal('project-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(p)) %>" class="flex-1 sm:flex-none px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500 hover:text-white transition-colors text-xs font-bold border border-blue-500/20"><i data-lucide="edit-2" class="w-3 h-3 inline"></i> Edit</button>
                   <form action="/admin/api/projects/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this project?');" class="flex-1 sm:flex-none">
                     <button type="submit" class="w-full px-3 py-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors text-xs font-bold border border-red-500/20"><i data-lucide="trash" class="w-3 h-3 inline"></i> Del</button>
                   </form>
@@ -302,7 +302,7 @@
                   <p class="text-xs text-white/40 font-mono mt-1">/<%= b.slug %></p>
                 </div>
                 <div class="flex w-full sm:w-auto gap-2 shrink-0 justify-center">
-                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(b)) %>')))" class="p-2 rounded-lg bg-white/5 hover:bg-white/20 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                  <button onclick="openModal('blog-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(b)) %>" class="p-2 rounded-lg bg-white/5 hover:bg-white/20 transition-colors"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
                   <form action="/admin/api/blogs/<%= b.id %>/delete" method="POST" onsubmit="return confirm('Delete article?');">
                     <button type="submit" class="p-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-colors"><i data-lucide="trash" class="w-4 h-4"></i></button>
                   </form>
@@ -351,7 +351,7 @@
               <div class="glass-card p-5 relative group overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"></div>
                 <div class="absolute top-4 right-4 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
-                  <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(m)) %>')))" class="p-1.5 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
+                  <button onclick="openModal('learning-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(m)) %>" class="p-1.5 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-3 h-3"></i></button>
                   <form action="/admin/api/learning-materials/<%= m.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
                     <button type="submit" class="p-1.5 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="trash" class="w-3 h-3"></i></button>
                   </form>
@@ -402,7 +402,7 @@
                   <p class="text-sm text-white/50"><%= t.location %></p>
                 </div>
                 <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent('<%= encodeURIComponent(JSON.stringify(t)) %>')))" class="p-2 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
+                  <button onclick="openModal('timeline-modal', JSON.parse(decodeURIComponent(this.dataset.json)))" data-json="<%= encodeURIComponent(JSON.stringify(t)) %>" class="p-2 rounded bg-white/10 hover:bg-white/20"><i data-lucide="edit-2" class="w-4 h-4"></i></button>
                   <form action="/admin/api/timeline/<%= t.id %>/delete" method="POST" onsubmit="return confirm('Delete?');">
                     <button type="submit" class="p-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white"><i data-lucide="trash" class="w-4 h-4"></i></button>
                   </form>
