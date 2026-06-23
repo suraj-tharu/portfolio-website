@@ -53,7 +53,7 @@ export const FloatingNav = ({
             transition={{ duration: 0.3 }}
         >
             {/* Desktop Menu */}
-            <div className="hidden sm:flex bg-[var(--bg)]/80 backdrop-blur-xl border border-white/10 rounded-full px-8 py-4 gap-6">
+            <div className="hidden sm:flex bg-[var(--bg)]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-full px-8 py-4 gap-6">
                 {links.map((link) => (
                     <motion.a
                         key={link.label}

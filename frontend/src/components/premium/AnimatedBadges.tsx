@@ -47,7 +47,7 @@ export const AnimatedBadge = ({
             </motion.div>
 
             <h3 className="font-bold text-lg text-center">{title}</h3>
-            {description && <p className="text-sm text-gray-300 mt-2 text-center">{description}</p>}
+            {description && <p className="text-sm text-text-secondary dark:text-gray-300 mt-2 text-center">{description}</p>}
 
             {progress > 0 && (
                 <div className="w-full mt-4 bg-gray-700/50 rounded-full h-2">

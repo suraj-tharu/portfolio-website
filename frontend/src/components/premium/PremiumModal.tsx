@@ -32,7 +32,7 @@ export const PremiumModal = ({
                 <>
                     {/* Backdrop */}
                     <motion.div
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+                        className="fixed inset-0 bg-black/10 dark:bg-black/50 backdrop-blur-sm z-40"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -48,11 +48,11 @@ export const PremiumModal = ({
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     >
                         <motion.div
-                            className={`bg-[var(--bg)] border border-white/10 rounded-2xl shadow-2xl w-full ${sizeClass[size]}`}
+                            className={`bg-[var(--bg)] border border-black/5 dark:border-white/10 rounded-2xl shadow-2xl w-full ${sizeClass[size]}`}
                             onClick={(e) => e.stopPropagation()}
                         >
                             {/* Header */}
-                            <div className="flex items-center justify-between p-6 border-b border-white/10">
+                            <div className="flex items-center justify-between p-6 border-b border-black/5 dark:border-white/10">
                                 <h2 className="text-xl font-semibold text-[var(--text)]">{title}</h2>
                                 <motion.button
                                     onClick={onClose}
@@ -71,7 +71,7 @@ export const PremiumModal = ({
 
                             {/* Footer */}
                             {footer && (
-                                <div className="p-6 border-t border-white/10 flex gap-3 justify-end">
+                                <div className="p-6 border-t border-black/5 dark:border-white/10 flex gap-3 justify-end">
                                     {footer}
                                 </div>
                             )}

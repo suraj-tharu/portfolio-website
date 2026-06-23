@@ -125,7 +125,7 @@ export default function CustomCursor() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
               transition={{ duration: 0.2 }}
-              className="text-[10px] font-bold text-white tracking-wider uppercase select-none"
+              className="text-[10px] font-bold text-text-primary dark:text-white tracking-wider uppercase select-none"
             >
               {cursorLabel}
             </motion.span>

@@ -301,7 +301,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-white font-medium py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:bg-[var(--brand)] relative overflow-hidden group"
+                    className="w-full bg-[var(--brand)] hover:bg-[var(--brand-dark)] text-text-primary dark:text-white font-medium py-4 px-6 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:hover:bg-[var(--brand)] relative overflow-hidden group"
                     aria-busy={isSubmitting}
                   >
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />

@@ -9,15 +9,15 @@ const panels = [
   {
     title: "Institutions",
     content: (
-      <p className="text-xl text-white/70 leading-relaxed">
-        I have shaped the minds of tomorrow at prestigious institutions including <span className="text-white">Buddhi Bikash Secondary School</span>, <span className="text-white">Trishahid Namuna Ma. Vi.</span>, and various other technical schools across Nepal.
+      <p className="text-xl text-text-secondary dark:text-white/70 leading-relaxed">
+        I have shaped the minds of tomorrow at prestigious institutions including <span className="text-text-primary dark:text-white">Buddhi Bikash Secondary School</span>, <span className="text-text-primary dark:text-white">Trishahid Namuna Ma. Vi.</span>, and various other technical schools across Nepal.
       </p>
     )
   },
   {
     title: "Courses Taught",
     content: (
-      <ul className="text-xl text-white/70 leading-relaxed space-y-4">
+      <ul className="text-xl text-text-secondary dark:text-white/70 leading-relaxed space-y-4">
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Digital Design &amp; Architecture</li>
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Object-Oriented Programming (C++)</li>
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Database Management Systems</li>
@@ -28,7 +28,7 @@ const panels = [
   {
     title: "Philosophy",
     content: (
-      <p className="text-xl text-white/70 leading-relaxed italic border-l-4 border-blue-500 pl-6">
+      <p className="text-xl text-text-secondary dark:text-white/70 leading-relaxed italic border-l-4 border-blue-500 pl-6">
         "Education is not just about transferring knowledge; it is about inspiring curiosity, fostering critical thinking, and empowering students to build solutions for real-world problems. I believe in a hands-on, practical approach to engineering."
       </p>
     )
@@ -95,7 +95,7 @@ export default function TeachingExperience() {
             className="h-2 rounded-full"
           />
         ))}
-        <span className="ml-2 text-xs text-white/50">
+        <span className="ml-2 text-xs text-muted dark:text-white/50">
           {activePanel + 1} / {panels.length}
         </span>
       </div>
@@ -104,7 +104,7 @@ export default function TeachingExperience() {
         {panels.map((panel, i) => (
           <div key={i} className="teach-panel w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
             <div className="max-w-2xl">
-              <h3 className="text-4xl md:text-6xl font-bold text-white mb-6">{panel.title}</h3>
+              <h3 className="text-4xl md:text-6xl font-bold text-text-primary dark:text-white mb-6">{panel.title}</h3>
               {panel.content}
             </div>
           </div>

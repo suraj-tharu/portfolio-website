@@ -18,7 +18,7 @@ export const SmoothProgressBar = ({
 }: SmoothProgressBarProps) => {
     return (
         <div
-            className={`w-full bg-white/10 rounded-full overflow-hidden ${className}`}
+            className={`w-full bg-black/5 dark:bg-white/10 rounded-full overflow-hidden ${className}`}
             style={{ height: `${height}px` }}
         >
             <motion.div

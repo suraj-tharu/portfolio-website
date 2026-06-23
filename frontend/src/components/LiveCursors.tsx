@@ -102,7 +102,7 @@ export default function LiveCursors() {
               />
             </svg>
             <div 
-              className="absolute left-6 top-6 px-2 py-1 rounded-full text-[10px] font-bold text-white whitespace-nowrap shadow-sm"
+              className="absolute left-6 top-6 px-2 py-1 rounded-full text-[10px] font-bold text-text-primary dark:text-white whitespace-nowrap shadow-sm"
               style={{ backgroundColor: cursor.color }}
             >
               Visitor

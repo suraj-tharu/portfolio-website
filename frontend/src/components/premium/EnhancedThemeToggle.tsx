@@ -30,7 +30,7 @@ export const EnhancedThemeToggle = ({ className = "" }: { className?: string }) 
         <div className={`relative ${className}`}>
             {/* Theme Toggle Button */}
             <motion.button
-                className="p-3 rounded-full bg-[var(--bg)]/50 backdrop-blur-xl border border-white/10 hover:border-[#D4AF37]/30 transition-all"
+                className="p-3 rounded-full bg-[var(--bg)]/50 backdrop-blur-xl border border-black/5 dark:border-white/10 hover:border-[#D4AF37]/30 transition-all"
                 onClick={() => setIsOpen(!isOpen)}
                 whileTap={{ scale: 0.9 }}
             >
@@ -51,7 +51,7 @@ export const EnhancedThemeToggle = ({ className = "" }: { className?: string }) 
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="absolute top-full mt-2 right-0 bg-[var(--bg)]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-4 shadow-2xl"
+                        className="absolute top-full mt-2 right-0 bg-[var(--bg)]/80 backdrop-blur-xl border border-black/5 dark:border-white/10 rounded-2xl p-4 shadow-2xl"
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}

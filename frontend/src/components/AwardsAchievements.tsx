@@ -91,7 +91,7 @@ export default function AwardsAchievements() {
 
                 <div className="relative z-10 flex items-start gap-5">
                   {/* Icon */}
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${award.iconColor} bg-white/5 border border-white/10 shrink-0`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${award.iconColor} bg-white/5 border border-black/5 dark:border-white/10 shrink-0`}>
                     <Icon size={22} />
                   </div>
 

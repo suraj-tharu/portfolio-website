@@ -134,7 +134,7 @@ export default function ChatWidget() {
           >
             {/* Header — premium gradient */}
             <div
-              className="text-white px-5 py-4 flex justify-between items-center relative overflow-hidden"
+              className="text-text-primary dark:text-white px-5 py-4 flex justify-between items-center relative overflow-hidden"
               id="chat-header"
               style={{
                 background: 'linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 100%)',
@@ -147,7 +147,7 @@ export default function ChatWidget() {
                 </div>
                 <div>
                   <h3 className="font-bold font-display tracking-wide">AI Assistant</h3>
-                  <p className="text-xs text-white/80 flex items-center gap-1">
+                  <p className="text-xs text-text-secondary dark:text-white/80 flex items-center gap-1">
                     <span className="relative flex h-1.5 w-1.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                       <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
@@ -240,7 +240,7 @@ export default function ChatWidget() {
                 <button
                   type="submit"
                   disabled={!input.trim() || isTyping}
-                  className="absolute right-2 p-2 text-white rounded-full disabled:opacity-50 transition-colors"
+                  className="absolute right-2 p-2 text-text-primary dark:text-white rounded-full disabled:opacity-50 transition-colors"
                   style={{
                     background: 'linear-gradient(135deg, var(--brand), var(--accent-2))',
                   }}

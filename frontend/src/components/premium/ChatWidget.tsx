@@ -55,9 +55,9 @@ export const ChatWidget = () => {
                     >
                         {/* Header */}
                         <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
-                            <h3 className="text-white font-bold">Suraj's AI Assistant</h3>
+                            <h3 className="text-text-primary dark:text-white font-bold">Suraj's AI Assistant</h3>
                             <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1 rounded">
-                                <X size={20} className="text-white" />
+                                <X size={20} className="text-text-primary dark:text-white" />
                             </button>
                         </div>
 
@@ -91,14 +91,14 @@ export const ChatWidget = () => {
                         </div>
 
                         {/* Input */}
-                        <div className="border-t border-white/10 p-4 flex gap-2">
+                        <div className="border-t border-black/5 dark:border-white/10 p-4 flex gap-2">
                             <input
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                                 placeholder="Ask me anything..."
-                                className="flex-1 bg-slate-700 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="flex-1 bg-slate-700 text-text-primary dark:text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             />
                             <button
                                 onClick={handleSendMessage}

@@ -43,7 +43,7 @@ export const Accordion = ({ items, allowMultiple = false, className = "" }: Acco
             {items.map((item, index) => (
                 <motion.div
                     key={index}
-                    className="border border-white/10 rounded-lg overflow-hidden"
+                    className="border border-black/5 dark:border-white/10 rounded-lg overflow-hidden"
                     animate={{
                         backgroundColor: isExpanded(index) ? 'rgba(255, 255, 255, 0.05)' : 'transparent'
                     }}
@@ -69,7 +69,7 @@ export const Accordion = ({ items, allowMultiple = false, className = "" }: Acco
                                 animate={{ opacity: 1, height: 'auto' }}
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.3 }}
-                                className="border-t border-white/10 px-4 py-3 text-sm text-[var(--text-secondary)]"
+                                className="border-t border-black/5 dark:border-white/10 px-4 py-3 text-sm text-[var(--text-secondary)]"
                             >
                                 {item.content}
                             </motion.div>

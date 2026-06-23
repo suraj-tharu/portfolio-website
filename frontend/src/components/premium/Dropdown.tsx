@@ -29,7 +29,7 @@ export const Dropdown = ({
         <div className={`relative inline-block ${className}`}>
             <motion.button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 transition-all"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-black/5 dark:border-white/10 bg-white/5 hover:bg-white/10 transition-all"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
             >
@@ -45,7 +45,7 @@ export const Dropdown = ({
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        className="absolute top-full mt-2 left-0 bg-[var(--bg)] border border-white/10 rounded-lg shadow-xl overflow-hidden z-50 min-w-[200px]"
+                        className="absolute top-full mt-2 left-0 bg-[var(--bg)] border border-black/5 dark:border-white/10 rounded-lg shadow-xl overflow-hidden z-50 min-w-[200px]"
                         initial={{ opacity: 0, y: -10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -10, scale: 0.95 }}

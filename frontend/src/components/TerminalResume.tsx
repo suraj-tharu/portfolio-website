@@ -39,7 +39,7 @@ export default function TerminalResume() {
     switch (cmd) {
       case 'help':
         output = (
-          <div className="flex flex-col gap-1 mt-2 text-gray-300">
+          <div className="flex flex-col gap-1 mt-2 text-text-secondary dark:text-gray-300">
             <div><span className="text-brand-light">whoami</span>     - Display biography</div>
             <div><span className="text-brand-light">skills --all</span> - List all technical skills</div>
             <div><span className="text-brand-light">contact</span>    - Show contact information</div>
@@ -108,7 +108,7 @@ export default function TerminalResume() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 bg-transparent outline-none border-none text-white focus:ring-0 p-0"
+                className="flex-1 bg-transparent outline-none border-none text-text-primary dark:text-white focus:ring-0 p-0"
                 autoComplete="off"
                 spellCheck="false"
               />

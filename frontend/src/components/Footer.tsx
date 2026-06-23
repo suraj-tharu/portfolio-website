@@ -66,7 +66,7 @@ export default function Footer() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-5xl md:text-7xl lg:text-[7rem] font-display tracking-tight leading-none mb-12 text-white dark:text-white light:text-slate-900 drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)] dark:drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)]"
+          className="text-5xl md:text-7xl lg:text-[7rem] font-display tracking-tight leading-none mb-12 text-text-primary dark:text-white light:text-slate-900 drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)] dark:drop-shadow-[0_8px_16px_rgba(139,92,246,0.3)]"
         >
           Ready to create <br className="hidden md:block" />
           <span className="italic bg-gradient-to-r from-brand-200 via-pink-200 to-cyan-200 dark:from-brand-300 dark:via-pink-300 dark:to-cyan-300 bg-clip-text text-transparent">something special?</span>
@@ -90,7 +90,7 @@ export default function Footer() {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-white/10 backdrop-blur-sm"
+        className="relative z-10 mt-auto px-6 md:px-12 flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-black/5 dark:border-white/10 backdrop-blur-sm"
       >
         {/* Availability Status */}
         <motion.div

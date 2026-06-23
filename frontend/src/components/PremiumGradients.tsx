@@ -203,7 +203,7 @@ export const PaletteExample = () => (
                         'flex items-end justify-end p-3'
                     )}
                 >
-                    <span className="text-xs font-semibold text-white drop-shadow">{name}</span>
+                    <span className="text-xs font-semibold text-text-primary dark:text-white drop-shadow">{name}</span>
                 </div>
             </div>
         ))}

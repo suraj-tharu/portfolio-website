@@ -105,7 +105,7 @@ export default function AboutMe() {
           </FadeIn>
 
           {/* Section Summary */}
-          <FadeIn delay={0.1} y={30} className="text-white font-medium text-center leading-relaxed max-w-[700px] text-[clamp(1rem,2vw,1.3rem)]">
+          <FadeIn delay={0.1} y={30} className="text-text-primary dark:text-white font-medium text-center leading-relaxed max-w-[700px] text-[clamp(1rem,2vw,1.3rem)]">
             <p>
               Computer Engineering professional with expertise in <strong className="text-[var(--brand-light)]">GIS, Remote Sensing,</strong> and <strong className="text-[var(--brand-light)]">Machine Learning</strong>. Passionate about leveraging technology for sustainable development and innovation.
             </p>
@@ -120,7 +120,7 @@ export default function AboutMe() {
               visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
               hidden: { opacity: 0 }
             }}
-            className="flex flex-col gap-6 text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 premium-card luxury-glow glass rounded-3xl border border-stroke backdrop-blur-md"
+            className="flex flex-col gap-6 text-text-primary dark:text-white text-[clamp(0.9rem,1.5vw,1.1rem)] max-w-[700px] text-center md:text-left mt-8 premium-card luxury-glow glass rounded-3xl border border-stroke backdrop-blur-md"
           >
             {[
               <>I completed my <strong className="text-[var(--accent)]">Bachelor of Engineering (B.E.) in Computer Engineering</strong> from Mid-West University and earned a <strong className="text-[var(--accent-2)]">Master of Science (M.Sc.) in Information System Engineering</strong> from Purbanchal University.</>,

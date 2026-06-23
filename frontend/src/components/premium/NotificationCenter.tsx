@@ -61,7 +61,7 @@ export const NotificationCenter = ({ notifications, onRemove }: NotificationCent
                             initial={{ opacity: 0, x: 400, scale: 0.9 }}
                             animate={{ opacity: 1, x: 0, scale: 1 }}
                             exit={{ opacity: 0, x: 400, scale: 0.9 }}
-                            className={`flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 ${config.bg} pointer-events-auto`}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg border border-black/5 dark:border-white/10 ${config.bg} pointer-events-auto`}
                         >
                             <Icon size={20} style={{ color: config.color }} />
                             <span className="text-sm font-medium text-[var(--text)]">{notif.message}</span>
