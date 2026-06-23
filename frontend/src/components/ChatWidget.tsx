@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Bot, User, Sparkles } from 'lucide-react';
 
@@ -7,255 +7,491 @@ type Message = {
   content: string;
 };
 
+// Global event bus so FloatingActionButton can open the chat
+export const openChatWidget = () => {
+  window.dispatchEvent(new CustomEvent('chat-widget:open'));
+};
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: "Hi! I'm Suraj's AI assistant. Feel free to ask me anything about his skills, experience, or projects." }
+    {
+      role: 'assistant',
+      content: "Hi! I'm Suraj's AI assistant. Ask me anything about his skills, projects, or experience! 😊",
+    },
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+  // Scroll to bottom whenever messages change
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isTyping) return;
+  // Listen for global open event (from FloatingActionButton or anywhere)
+  useEffect(() => {
+    const handleGlobalOpen = () => setIsOpen(true);
+    window.addEventListener('chat-widget:open', handleGlobalOpen);
+    return () => window.removeEventListener('chat-widget:open', handleGlobalOpen);
+  }, []);
 
-    const userMsg = input.trim();
-    setInput('');
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }]);
-    setIsTyping(true);
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      const userMsg = input.trim();
+      if (!userMsg || isTyping) return;
 
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: userMsg,
-          history: messages.slice(1) // exclude initial greeting
-        })
-      });
+      setInput('');
+      setMessages((prev) => [...prev, { role: 'user', content: userMsg }]);
+      setIsTyping(true);
 
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status}`);
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: userMsg,
+            history: messages.filter((m) => m.role !== 'assistant' || messages.indexOf(m) > 0),
+          }),
+        });
+
+        const data = await res.json();
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: data.reply || "Sorry, I couldn't process that right now.",
+          },
+        ]);
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content:
+              "I'm having trouble connecting right now. Please try again in a moment!",
+          },
+        ]);
+      } finally {
+        setIsTyping(false);
       }
-
-      const data = await response.json();
-
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: data.reply || "Sorry, I couldn't process that right now."
-      }]);
-    } catch (error) {
-      console.error(error);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: "Network error or API is unavailable. Please check your connection and try again."
-      }]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
+    },
+    [input, isTyping, messages]
+  );
 
   return (
     <>
-      {/* Chat Toggle Button - Bottom Right with "Chat with AI Assistant" label */}
-      <AnimatePresence>
-        {!isOpen && (
-          <motion.button
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="fixed z-[97] flex items-center gap-3 shadow-2xl hover:scale-105 transition-all group"
-            onClick={() => setIsOpen(true)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+      {/* ── TOGGLE BUTTON (always rendered, never unmounted) ─────────────── */}
+      {!isOpen && (
+        <button
+          id="chat-widget-toggle"
+          onClick={() => setIsOpen(true)}
+          aria-label="Chat with AI Assistant"
+          title="Chat with AI Assistant"
+          style={{
+            position: 'fixed',
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 200,          // highest z-index so nothing covers it
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '13px 22px 13px 16px',
+            borderRadius: '9999px',
+            border: '1px solid rgba(255,255,255,0.2)',
+            background: 'linear-gradient(135deg, #6d28d9 0%, #2563eb 100%)',
+            color: '#fff',
+            cursor: 'pointer',
+            boxShadow: '0 8px 32px rgba(109,40,217,0.45)',
+            fontFamily: 'inherit',
+            userSelect: 'none',
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.06)';
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1)';
+          }}
+        >
+          {/* Animated sparkle */}
+          <span
             style={{
-              bottom: '2rem',
-              right: '2rem',
-              background: 'linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 50%, var(--brand-dark) 100%)',
-              backgroundSize: '200% 200%',
-              animation: 'gradient-shift 4s ease infinite',
-              padding: '14px 24px 14px 18px',
-              borderRadius: '9999px',
-              border: '1px solid rgba(255,255,255,0.15)',
-              color: '#fff',
-              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              animation: 'spin-slow 4s linear infinite',
             }}
-            aria-label="Chat with AI Assistant"
-            title="Chat with AI Assistant"
           >
-            {/* Animated sparkle icon */}
-            <motion.span
-              animate={{ rotate: [0, 15, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-              className="flex-shrink-0"
-            >
-              <Sparkles size={20} />
-            </motion.span>
-            <span className="font-semibold text-sm tracking-wide whitespace-nowrap hidden sm:inline">
-              Chat with AI Assistant
-            </span>
-            <span className="font-semibold text-sm tracking-wide whitespace-nowrap sm:hidden">
-              AI Chat
-            </span>
-            {/* Pulsing dot indicator */}
-            <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400"></span>
-            </span>
-          </motion.button>
-        )}
-      </AnimatePresence>
+            <Sparkles size={20} />
+          </span>
 
-      {/* Chat Window - Bottom Right */}
+          <span
+            style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              letterSpacing: '0.02em',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Chat with AI
+          </span>
+
+          {/* Online pulse indicator */}
+          <span
+            style={{ position: 'relative', display: 'flex', width: '10px', height: '10px' }}
+          >
+            <span
+              style={{
+                position: 'absolute',
+                display: 'inline-flex',
+                borderRadius: '50%',
+                width: '100%',
+                height: '100%',
+                backgroundColor: '#34d399',
+                opacity: 0.75,
+                animation: 'ping 1s cubic-bezier(0,0,0.2,1) infinite',
+              }}
+            />
+            <span
+              style={{
+                position: 'relative',
+                display: 'inline-flex',
+                borderRadius: '50%',
+                width: '10px',
+                height: '10px',
+                backgroundColor: '#34d399',
+              }}
+            />
+          </span>
+        </button>
+      )}
+
+      {/* ── CHAT WINDOW ───────────────────────────────────────────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.9, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: 20, scale: 0.9, filter: 'blur(5px)' }}
-            transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="w-[92vw] max-w-[420px] h-[520px] max-h-[80vh] rounded-2xl luxury-glow-strong glass z-[97] flex flex-col overflow-hidden backdrop-blur-xl bg-surface/80"
+            key="chat-panel"
+            initial={{ opacity: 0, y: 30, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.92 }}
+            transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
             style={{
               position: 'fixed',
               bottom: '2rem',
               right: '2rem',
-              zIndex: 97,
-              border: '1px solid var(--stroke)',
+              zIndex: 200,
+              width: 'min(92vw, 420px)',
+              height: 'min(80vh, 540px)',
+              display: 'flex',
+              flexDirection: 'column',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              border: '1px solid rgba(255,255,255,0.12)',
+              boxShadow:
+                '0 25px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(109,40,217,0.2)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              background: 'var(--surface, #1e1b4b)',
             }}
             role="dialog"
-            aria-labelledby="chat-header"
             aria-modal="true"
+            aria-labelledby="chat-header-title"
           >
-            {/* Header — premium gradient */}
+            {/* Header */}
             <div
-              className="text-text-primary dark:text-white px-5 py-4 flex justify-between items-center relative overflow-hidden"
-              id="chat-header"
               style={{
-                background: 'linear-gradient(135deg, var(--brand) 0%, var(--accent-2) 100%)',
+                background: 'linear-gradient(135deg, #6d28d9 0%, #2563eb 100%)',
+                padding: '14px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexShrink: 0,
               }}
             >
-              <div className="absolute inset-0 bg-black/10"></div>
-              <div className="relative z-10 flex items-center gap-3">
-                <div className="bg-white/20 p-2 rounded-full backdrop-blur-sm">
-                  <Bot size={20} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    background: 'rgba(255,255,255,0.2)',
+                    borderRadius: '50%',
+                    padding: '7px',
+                    display: 'flex',
+                  }}
+                >
+                  <Bot size={18} color="#fff" />
                 </div>
                 <div>
-                  <h3 className="font-bold font-display tracking-wide">AI Assistant</h3>
-                  <p className="text-xs text-text-secondary dark:text-white/80 flex items-center gap-1">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
-                    </span>
-                    Powered by Gemini
-                  </p>
+                  <h3
+                    id="chat-header-title"
+                    style={{
+                      margin: 0,
+                      fontSize: '15px',
+                      fontWeight: 700,
+                      color: '#fff',
+                    }}
+                  >
+                    AI Assistant
+                  </h3>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      fontSize: '11px',
+                      color: 'rgba(255,255,255,0.8)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: '#34d399',
+                        display: 'inline-block',
+                        boxShadow: '0 0 0 2px rgba(52,211,153,0.3)',
+                      }}
+                    />
+                    Online · Powered by Gemini
+                  </div>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="relative z-10 p-2 hover:bg-white/20 rounded-full transition-colors"
                 aria-label="Close chat"
-                title="Close chat"
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  border: 'none',
+                  borderRadius: '50%',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: '#fff',
+                  transition: 'background 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    'rgba(255,255,255,0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLButtonElement).style.background =
+                    'rgba(255,255,255,0.15)';
+                }}
               >
-                <X size={20} aria-hidden="true" />
+                <X size={16} />
               </button>
             </div>
 
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 bg-transparent">
+            {/* Messages */}
+            <div
+              style={{
+                flex: 1,
+                overflowY: 'auto',
+                padding: '16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+              }}
+            >
               {messages.map((msg, i) => (
-                <motion.div
+                <div
                   key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={`flex gap-3 max-w-[85%] ${msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'}`}
+                  style={{
+                    display: 'flex',
+                    gap: '8px',
+                    alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
+                    flexDirection: msg.role === 'user' ? 'row-reverse' : 'row',
+                    maxWidth: '85%',
+                  }}
                 >
-                  <div className={`w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${msg.role === 'user' ? 'text-white' : 'border text-brand-400'}`}
+                  <div
                     style={{
-                      background: msg.role === 'user'
-                        ? 'linear-gradient(135deg, var(--brand), var(--accent-2))'
-                        : 'var(--surface)',
-                      borderColor: msg.role === 'user' ? 'transparent' : 'var(--stroke)',
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      flexShrink: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background:
+                        msg.role === 'user'
+                          ? 'linear-gradient(135deg, #6d28d9, #2563eb)'
+                          : 'rgba(255,255,255,0.08)',
+                      border:
+                        msg.role === 'user'
+                          ? 'none'
+                          : '1px solid rgba(255,255,255,0.15)',
+                      color: '#fff',
                     }}
                   >
-                    {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
+                    {msg.role === 'user' ? (
+                      <User size={14} />
+                    ) : (
+                      <Bot size={14} />
+                    )}
                   </div>
-                  <div className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                    ? 'text-white rounded-tr-sm'
-                    : 'rounded-tl-sm'
-                    }`}
+                  <div
                     style={{
-                      background: msg.role === 'user'
-                        ? 'linear-gradient(135deg, var(--brand), var(--brand-dark))'
-                        : 'var(--surface)',
-                      color: msg.role === 'user' ? '#fff' : 'var(--text)',
-                      border: msg.role === 'user' ? 'none' : '1px solid var(--stroke)',
+                      padding: '10px 14px',
+                      borderRadius: msg.role === 'user' ? '18px 4px 18px 18px' : '4px 18px 18px 18px',
+                      fontSize: '13.5px',
+                      lineHeight: 1.5,
+                      background:
+                        msg.role === 'user'
+                          ? 'linear-gradient(135deg, #6d28d9, #1d4ed8)'
+                          : 'rgba(255,255,255,0.07)',
+                      color: '#fff',
+                      border:
+                        msg.role === 'user'
+                          ? 'none'
+                          : '1px solid rgba(255,255,255,0.1)',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
                     }}
                   >
                     {msg.content}
                   </div>
-                </motion.div>
+                </div>
               ))}
 
+              {/* Typing indicator */}
               {isTyping && (
-                <div className="flex gap-3 max-w-[85%] self-start">
-                  <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center border text-brand-400"
-                    style={{ background: 'var(--surface)', borderColor: 'var(--stroke)' }}
+                <div style={{ display: 'flex', gap: '8px', alignSelf: 'flex-start' }}>
+                  <div
+                    style={{
+                      width: '30px',
+                      height: '30px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      background: 'rgba(255,255,255,0.08)',
+                      border: '1px solid rgba(255,255,255,0.15)',
+                      color: '#fff',
+                    }}
                   >
-                    <Bot size={16} />
+                    <Bot size={14} />
                   </div>
-                  <div className="px-4 py-3 rounded-2xl rounded-tl-sm flex items-center gap-1.5"
-                    style={{ background: 'var(--surface)', border: '1px solid var(--stroke)' }}
+                  <div
+                    style={{
+                      padding: '12px 16px',
+                      borderRadius: '4px 18px 18px 18px',
+                      background: 'rgba(255,255,255,0.07)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      gap: '4px',
+                      alignItems: 'center',
+                    }}
                   >
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
-                    <motion.div animate={{ y: [0, -5, 0] }} transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }} className="w-2 h-2 rounded-full" style={{ background: 'var(--brand)', opacity: 0.5 }} />
+                    {[0, 0.2, 0.4].map((delay, k) => (
+                      <motion.span
+                        key={k}
+                        style={{
+                          display: 'block',
+                          width: '7px',
+                          height: '7px',
+                          borderRadius: '50%',
+                          background: '#818cf8',
+                        }}
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.7, delay }}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Input Area */}
-            <form onSubmit={handleSubmit} className="p-4 bg-surface/50 backdrop-blur-md" style={{ borderTop: '1px solid var(--stroke)' }}>
-              <div className="relative flex items-center">
+            {/* Input */}
+            <form
+              onSubmit={handleSubmit}
+              style={{
+                padding: '12px 14px',
+                borderTop: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(0,0,0,0.15)',
+                flexShrink: 0,
+              }}
+            >
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                 <input
                   type="text"
                   value={input}
-                  onChange={e => setInput(e.target.value)}
+                  onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask me anything..."
-                  className="w-full rounded-full pl-5 pr-12 py-3 text-sm focus:outline-none transition-colors"
+                  disabled={isTyping}
+                  autoFocus
                   style={{
-                    background: 'var(--bg)',
-                    border: '1px solid var(--stroke)',
-                    color: 'var(--text)',
+                    width: '100%',
+                    padding: '11px 48px 11px 16px',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'rgba(255,255,255,0.07)',
+                    color: '#fff',
+                    fontSize: '13.5px',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    boxSizing: 'border-box',
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(109,40,217,0.6)';
+                    e.currentTarget.style.boxShadow = '0 0 0 3px rgba(109,40,217,0.15)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)';
+                    e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
                 <button
                   type="submit"
                   disabled={!input.trim() || isTyping}
-                  className="absolute right-2 p-2 text-text-primary dark:text-white rounded-full disabled:opacity-50 transition-colors"
+                  aria-label="Send message"
                   style={{
-                    background: 'linear-gradient(135deg, var(--brand), var(--accent-2))',
+                    position: 'absolute',
+                    right: '6px',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '50%',
+                    border: 'none',
+                    background:
+                      !input.trim() || isTyping
+                        ? 'rgba(255,255,255,0.15)'
+                        : 'linear-gradient(135deg, #6d28d9, #2563eb)',
+                    color: '#fff',
+                    cursor: !input.trim() || isTyping ? 'default' : 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'background 0.2s',
                   }}
                 >
-                  <Send size={16} />
+                  <Send size={15} />
                 </button>
               </div>
             </form>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Inline keyframes for ping + slow-spin animations */}
+      <style>{`
+        @keyframes ping {
+          75%, 100% { transform: scale(2); opacity: 0; }
+        }
+        @keyframes spin-slow {
+          0%   { transform: rotate(0deg); }
+          25%  { transform: rotate(15deg); }
+          75%  { transform: rotate(-15deg); }
+          100% { transform: rotate(0deg); }
+        }
+        #chat-widget-toggle {
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        #chat-widget-toggle:hover {
+          box-shadow: 0 12px 40px rgba(109,40,217,0.6) !important;
+        }
+      `}</style>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, Mail, Phone, X } from 'lucide-react';
+import { openChatWidget } from './ChatWidget';
 
 /**
  * Floating Action Button Component
@@ -16,8 +17,7 @@ export default function FloatingActionButton() {
             color: 'bg-blue-500',
             href: '#chat',
             action: () => {
-                const chatWidget = document.querySelector('[data-chat-widget]');
-                if (chatWidget) chatWidget.dispatchEvent(new CustomEvent('open'));
+                openChatWidget();
             }
         },
         {
@@ -36,12 +36,12 @@ export default function FloatingActionButton() {
 
     return (
         <div
-            className="z-[99] pointer-events-none"
+            className="pointer-events-none"
             style={{
                 position: 'fixed',
                 bottom: '6rem',
                 right: '2rem',
-                zIndex: 99
+                zIndex: 198
             }}
             role="region"
             aria-label="Quick contact actions menu"
