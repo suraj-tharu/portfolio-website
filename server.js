@@ -581,9 +581,12 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     message = xss(message);
     if (context) context = xss(context);
 
-    if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
+
+    // Detect missing or placeholder/invalid keys
+    if (!apiKey || apiKey.trim() === '' || (!apiKey.trim().startsWith('AIza') && !apiKey.trim().startsWith('AQ.'))) {
       return res.json({
-        reply: "Error: The Google AI API key has not been configured on the server yet."
+        reply: "The AI assistant needs a valid Gemini API key. Get a free one at aistudio.google.com/apikey and set GOOGLE_GENERATIVE_AI_API_KEY in your .env file."
       });
     }
 
@@ -594,7 +597,7 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
 
     const geminiMessages = [];
     geminiMessages.push({ role: 'user', parts: [{ text: dynamicSystemPrompt }] });
-    geminiMessages.push({ role: 'model', parts: [{ text: 'Understood.' }] });
+    geminiMessages.push({ role: 'model', parts: [{ text: 'Understood. I am ready to assist visitors with questions about Suraj Tharu Chaudhary.' }] });
 
     if (history && history.length > 0) {
       history.forEach(turn => {
@@ -606,27 +609,76 @@ app.post('/api/chat', apiLimiter, async (req, res) => {
     }
     geminiMessages.push({ role: 'user', parts: [{ text: message }] });
 
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    const fetchResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents: geminiMessages })
-    });
+    // Try gemini-flash-lite-latest first (latest free model), fallback to gemini-flash-latest
+    const models = ['gemini-flash-lite-latest', 'gemini-flash-latest'];
+    let lastError = null;
 
-    if (!fetchResponse.ok) {
-      const errData = await fetchResponse.text();
-      console.error('Gemini API Error:', errData);
-      throw new Error(`Gemini API returned ${fetchResponse.status}`);
+    for (const model of models) {
+      try {
+        const fetchResponse = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: geminiMessages })
+          }
+        );
+
+        if (fetchResponse.status === 400) {
+          const errData = await fetchResponse.json().catch(() => ({}));
+          const errMsg = (errData && errData.error && errData.error.message) || '';
+          if (errMsg.toLowerCase().includes('api key not valid') || errMsg.toLowerCase().includes('invalid')) {
+            return res.json({
+              reply: "Your Gemini API key is invalid. Get a new free key at aistudio.google.com/apikey and update GOOGLE_GENERATIVE_AI_API_KEY in your .env file."
+            });
+          }
+          lastError = new Error('API error 400: ' + errMsg);
+          continue;
+        }
+
+        if (fetchResponse.status === 429) {
+          lastError = new Error('Rate limit exceeded');
+          continue;
+        }
+
+        if (!fetchResponse.ok) {
+          const errText = await fetchResponse.text().catch(() => '');
+          console.error('Gemini API Error:', fetchResponse.status, errText.slice(0, 200));
+          lastError = new Error('API returned ' + fetchResponse.status);
+          continue;
+        }
+
+        const data = await fetchResponse.json();
+        const replyText = data.candidates &&
+          data.candidates[0] &&
+          data.candidates[0].content &&
+          data.candidates[0].content.parts &&
+          data.candidates[0].content.parts[0] &&
+          data.candidates[0].content.parts[0].text;
+
+        if (!replyText) {
+          lastError = new Error('Empty response from API');
+          continue;
+        }
+
+        return res.json({ reply: replyText });
+
+      } catch (fetchErr) {
+        lastError = fetchErr;
+        continue;
+      }
     }
 
-    const data = await fetchResponse.json();
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't process that.";
+    // All models failed
+    console.error('AI API Error (all models failed):', lastError && (lastError.message || lastError));
+    res.json({
+      reply: "I am temporarily unavailable. Please try again in a moment, or contact Suraj directly at suraj.xaudhary@gmail.com"
+    });
 
-    res.json({ reply: replyText });
   } catch (error) {
     console.error('AI API Error:', error.message || error);
     res.json({
-      reply: "I'm currently offline. Suraj is a talented Computer Engineer specializing in GIS and full-stack!"
+      reply: "I am temporarily unavailable. Please try again in a moment, or contact Suraj directly at suraj.xaudhary@gmail.com"
     });
   }
 });

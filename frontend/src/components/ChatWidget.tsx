@@ -43,6 +43,10 @@ export default function ChatWidget() {
         })
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP Error ${response.status}`);
+      }
+
       const data = await response.json();
 
       setMessages(prev => [...prev, {
@@ -53,7 +57,7 @@ export default function ChatWidget() {
       console.error(error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Network error. I am currently offline."
+        content: "Network error or API is unavailable. Please check your connection and try again."
       }]);
     } finally {
       setIsTyping(false);

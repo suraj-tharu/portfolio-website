@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import { useSearchParams } from 'react-router-dom';
 import {
   BookOpen, Download, FileText, Archive, PenTool, Layers,
-  Clock, ArrowRight, Search, ExternalLink, ChevronRight,
+  ArrowRight, Search, ExternalLink, ChevronRight,
   Code2, Database, Globe, Cpu, Sparkles, AlertCircle, Loader2,
 } from 'lucide-react';
 
@@ -47,28 +47,6 @@ const gradeIcon: Record<string, typeof Cpu> = {
   'Teacher Training': Globe,
 };
 
-const journals = [
-  {
-    title: 'Machine Learning in Land Use Classification',
-    date: 'Jun 12, 2026', read: '7 min read', tag: 'Research',
-    img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    title: 'Building Interactive Web GIS with Leaflet.js',
-    date: 'May 28, 2026', read: '5 min read', tag: 'Tutorial',
-    img: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    title: 'Why Spatial Analysis Matters for Urban Planning',
-    date: 'Apr 15, 2026', read: '4 min read', tag: 'Essay',
-    img: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    title: 'Teaching Digital Circuits: Lessons from 5 Years',
-    date: 'Mar 30, 2026', read: '6 min read', tag: 'Pedagogy',
-    img: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80',
-  },
-];
 
 /* ═══════════════════════════════════════════════════════════
    RESOURCE CARD
@@ -164,55 +142,6 @@ function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) 
   );
 }
 
-/* ═══════════════════════════════════════════════════════════
-   JOURNAL CARD
-═══════════════════════════════════════════════════════════ */
-function JournalCard({ entry, index }: { entry: (typeof journals)[0]; index: number }) {
-  const tagColor: Record<string, string> = {
-    Research: 'bg-violet-100 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 border-violet-200 dark:border-violet-700/40',
-    Tutorial: 'bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700/40',
-    Essay:    'bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-700/40',
-    Pedagogy: 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-700/40',
-  };
-
-  return (
-    <motion.a
-      href="#"
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.55, delay: index * 0.09, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className="group flex gap-4 sm:gap-5 p-4 rounded-2xl
-        border border-slate-200 dark:border-white/8
-        bg-white dark:bg-white/[0.03]
-        hover:border-violet-300 dark:hover:border-violet-500/40
-        hover:shadow-[0_4px_24px_rgba(124,58,237,0.08)] dark:hover:shadow-[0_4px_24px_rgba(124,58,237,0.18)]
-        transition-all duration-300"
-    >
-      <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden shrink-0">
-        <img src={entry.img} alt={entry.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-      </div>
-      <div className="flex flex-col justify-between flex-1 min-w-0 py-0.5">
-        <div>
-          <span className={`inline-block text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border mb-2 ${tagColor[entry.tag] || tagColor.Tutorial}`}>
-            {entry.tag}
-          </span>
-          <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-snug
-            group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors line-clamp-2">
-            {entry.title}
-          </h3>
-        </div>
-        <div className="flex items-center gap-3 text-xs text-slate-400 dark:text-white/35 mt-2">
-          <div className="flex items-center gap-1"><Clock size={10} />{entry.read}</div>
-          <span>·</span>
-          <span>{entry.date}</span>
-          <ChevronRight size={13} className="ml-auto text-violet-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300" />
-        </div>
-      </div>
-    </motion.a>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════
    MAIN PAGE
@@ -534,39 +463,6 @@ export default function LearningHub() {
         </AnimatePresence>
       </section>
 
-      {/* ── JOURNAL SECTION ───────────────────────── */}
-      <section className="py-16 md:py-24 px-5 sm:px-8 max-w-7xl mx-auto border-t border-slate-100 dark:border-white/5">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10"
-        >
-          <div>
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-8 h-px bg-violet-500" />
-              <span className="text-xs font-bold uppercase tracking-[0.3em] text-violet-600 dark:text-violet-400">Journal</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-display italic font-black tracking-tight
-              text-slate-900 dark:text-white">
-              Latest <span style={{
-                background: 'linear-gradient(135deg, #7c3aed 0%, #0ea5e9 100%)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>Thoughts</span>
-            </h2>
-          </div>
-          <motion.a
-            href="#"
-            whileHover={{ scale: 1.04, x: 4 }}
-            className="flex items-center gap-2 text-sm font-bold text-violet-600 dark:text-violet-400
-              hover:text-violet-800 dark:hover:text-violet-200 transition-colors"
-          >
-            View all articles <ArrowRight size={15} />
-          </motion.a>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {journals.map((entry, i) => <JournalCard key={i} entry={entry} index={i} />)}
-        </div>
-      </section>
 
       {/* ── CTA BANNER ────────────────────────────── */}
       <section className="py-16 md:py-20 px-5 sm:px-8">
