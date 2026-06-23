@@ -27,7 +27,7 @@ const resources = [
     icon: Cpu, color: 'from-violet-500 to-purple-600',
     badge: 'Updated 2026', files: 1, downloads: 1204, stars: 4.8,
     tags: ['SEE', 'Computer Science', 'QBasic'],
-    fileUrl: '/downloads/class-10-notes.pdf'
+    fileUrl: '/downloads/class-10-notes.txt'
   },
   {
     id: 2, category: 'class-11',
@@ -36,7 +36,7 @@ const resources = [
     icon: Code2, color: 'from-blue-500 to-cyan-600',
     badge: 'Popular', files: 1, downloads: 856, stars: 4.9,
     tags: ['NEB', 'C Programming', 'Logic Gates'],
-    fileUrl: '/downloads/class-11-notes.pdf'
+    fileUrl: '/downloads/class-11-notes.txt'
   },
   {
     id: 3, category: 'class-12',
@@ -45,7 +45,7 @@ const resources = [
     icon: Database, color: 'from-emerald-500 to-teal-600',
     badge: 'New', files: 1, downloads: 920, stars: 4.7,
     tags: ['NEB', 'C++', 'Physics'],
-    fileUrl: '/downloads/class-12-notes.pdf'
+    fileUrl: '/downloads/class-12-notes.txt'
   },
   {
     id: 4, category: 'bachelor',
