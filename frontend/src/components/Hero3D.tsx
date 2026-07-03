@@ -1,7 +1,7 @@
 import { useRef, useState, Suspense, Component } from 'react';
 import type { ReactNode } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { MeshDistortMaterial, Float, Environment } from '@react-three/drei';
+import { MeshDistortMaterial, Float } from '@react-three/drei';
 import * as THREE from 'three';
 import { useTheme } from '../hooks/useTheme';
 
@@ -114,7 +114,7 @@ export default function Hero3D() {
             <directionalLight position={[8, 8, 4]} intensity={isDark ? 1.8 : 3.5} color="#f472b6" />
             <directionalLight position={[-8, -8, -4]} intensity={isDark ? 1.5 : 3} color="#38bdf8" />
             <LiquidCrystal />
-            <Environment preset={isDark ? 'night' : 'city'} />
+            {/* Environment preset removed — was fetching HDR from external CDN causing production crash */}
           </Suspense>
         </Canvas>
       </div>
