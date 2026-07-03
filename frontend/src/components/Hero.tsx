@@ -103,6 +103,24 @@ const globalStyles = `
     50%     { opacity: 0.14; }
   }
 
+  :root {
+    --name-grad-1: linear-gradient(135deg,#ddd6fe 0%,#c4b5fd 25%,#a78bfa 50%,#f472b6 80%,#fb7185 100%);
+    --name-grad-2: linear-gradient(135deg,#f9a8d4 0%,#f472b6 25%,#ec4899 50%,#f97316 80%,#fbbf24 100%);
+    --name-grad-3: linear-gradient(135deg,#bae6fd 0%,#7dd3fc 25%,#38bdf8 50%,#818cf8 75%,#a78bfa 100%);
+    --role-grad: linear-gradient(135deg,#c4b5fd,#a78bfa 30%,#f472b6 70%,#fb7185);
+    --desc-color: rgba(203,213,225,0.65);
+    --loc-color: rgba(148,163,184,0.55);
+  }
+
+  .light {
+    --name-grad-1: linear-gradient(135deg,#4c1d95 0%,#7c3aed 25%,#db2777 50%,#e11d48 80%,#be123c 100%);
+    --name-grad-2: linear-gradient(135deg,#db2777 0%,#be185d 25%,#9d174d 50%,#b45309 80%,#b45309 100%);
+    --name-grad-3: linear-gradient(135deg,#0284c7 0%,#0369a1 25%,#1d4ed8 50%,#4338ca 75%,#4c1d95 100%);
+    --role-grad: linear-gradient(135deg,#4c1d95,#7c3aed 30%,#db2777 70%,#be185d);
+    --desc-color: rgba(30,27,75,0.78);
+    --loc-color: rgba(79,70,229,0.75);
+  }
+
   .hero-section {
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   }
@@ -919,17 +937,17 @@ export default function Hero() {
   const nameConfig = [
     {
       word: 'Suraj',
-      gradient: 'linear-gradient(135deg,#ddd6fe 0%,#c4b5fd 25%,#a78bfa 50%,#f472b6 80%,#fb7185 100%)',
+      gradient: 'var(--name-grad-1)',
       delay: 0.2,
     },
     {
       word: 'Tharu',
-      gradient: 'linear-gradient(135deg,#f9a8d4 0%,#f472b6 25%,#ec4899 50%,#f97316 80%,#fbbf24 100%)',
+      gradient: 'var(--name-grad-2)',
       delay: 0.55,
     },
     {
       word: 'Chaudhary',
-      gradient: 'linear-gradient(135deg,#bae6fd 0%,#7dd3fc 25%,#38bdf8 50%,#818cf8 75%,#a78bfa 100%)',
+      gradient: 'var(--name-grad-3)',
       delay: 0.9,
     },
   ];
@@ -1124,7 +1142,7 @@ export default function Hero() {
                 fontStyle: 'italic',
                 fontWeight: 600,
                 minHeight: '2.5rem',
-                background: 'linear-gradient(135deg,#c4b5fd,#a78bfa 30%,#f472b6 70%,#fb7185)',
+                background: 'var(--role-grad)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -1142,7 +1160,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 1.25 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8, marginBottom: 36,
-                fontSize: '0.83rem', fontWeight: 500, color: 'rgba(148,163,184,0.55)',
+                fontSize: '0.83rem', fontWeight: 500, color: 'var(--loc-color)',
                 letterSpacing: '0.04em',
               }}
             >
@@ -1164,7 +1182,7 @@ export default function Hero() {
                 marginBottom: 46,
                 fontSize: 'clamp(0.92rem,1.4vw,1.08rem)',
                 lineHeight: 1.85,
-                color: 'rgba(203,213,225,0.65)',
+                color: 'var(--desc-color)',
                 fontWeight: 400,
                 letterSpacing: '0.01em',
               }}
