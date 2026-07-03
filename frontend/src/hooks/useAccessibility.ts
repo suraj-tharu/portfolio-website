@@ -97,12 +97,15 @@ export function useKeyboardShortcut(key: string, callback: () => void, modifier:
  * Hook for reduced motion preference
  */
 export function usePrefersReducedMotion(): boolean {
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+    const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
+        return false;
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        setPrefersReducedMotion(mediaQuery.matches);
-
         const listener = (e: MediaQueryListEvent) => {
             setPrefersReducedMotion(e.matches);
         };
@@ -118,12 +121,15 @@ export function usePrefersReducedMotion(): boolean {
  * Hook for color scheme preference
  */
 export function usePrefersColorScheme(): 'light' | 'dark' {
-    const [scheme, setScheme] = useState<'light' | 'dark'>('dark');
+    const [scheme, setScheme] = useState<'light' | 'dark'>(() => {
+        if (typeof window !== 'undefined') {
+            return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        return 'dark';
+    });
 
     useEffect(() => {
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        setScheme(mediaQuery.matches ? 'dark' : 'light');
-
         const listener = (e: MediaQueryListEvent) => {
             setScheme(e.matches ? 'dark' : 'light');
         };
@@ -139,13 +145,8 @@ export function usePrefersColorScheme(): 'light' | 'dark' {
  * Generate unique ID for accessibility attributes
  */
 export function useId(prefix = 'id'): string {
-    const idRef = useRef<string | null>(null);
-
-    if (idRef.current === null) {
-        idRef.current = `${prefix}-${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    return idRef.current;
+    const [id] = useState(() => `${prefix}-${Math.random().toString(36).substr(2, 9)}`);
+    return id;
 }
 
 /**

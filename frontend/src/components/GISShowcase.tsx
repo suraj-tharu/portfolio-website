@@ -51,9 +51,6 @@ export default function GISShowcase() {
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
     });
 
-    const currentYear = new Date().getFullYear();
-    const dynamicCopyright = `&copy; 2026${currentYear > 2026 ? ' - ' + currentYear : ''} Er. Suraj Tharu Chaudhary`;
-
     const map = L.map('react-gis-map', {
       zoomControl: false,
       attributionControl: false

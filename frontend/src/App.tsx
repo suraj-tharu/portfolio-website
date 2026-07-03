@@ -19,6 +19,9 @@ import { setMetaTags, defaultMetaTags } from './utils/metaTags';
 import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
 import { FluidBackground } from './components/premium';
 import { DeveloperMode } from './components/DeveloperMode';
+import NoiseTexture from './components/NoiseTexture';
+import ScrollProgress from './components/ScrollProgress';
+import AmbientSoundToggle from './components/AmbientSoundToggle';
 
 import Home from './pages/Home';
 
@@ -86,6 +89,9 @@ function AppContent() {
           {isLoading && <CinematicIntro onComplete={() => setIsLoading(false)} />}
 
           <CustomCursor />
+          <NoiseTexture />
+          <ScrollProgress />
+          <AmbientSoundToggle />
           <motion.div
             className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 via-pink-500 to-amber-500 origin-left z-[110]"
             style={{ scaleX: scrollYProgress }}

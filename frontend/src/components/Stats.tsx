@@ -1,10 +1,11 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
 import { Sparkles, Globe2, Rocket, Users2, Trophy, Star } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 /* ── Animated Odometer Counter ───────────────────────────── */
-function OdometerCounter({ to, prefix = '', suffix = '', duration = 2.2, delay = 0 }: {
-  to: number; prefix?: string; suffix?: string; duration?: number; delay?: number;
+function OdometerCounter({ to, prefix = '', suffix = '', duration = 2.2, delay = 0, color = '#a78bfa' }: {
+  to: number; prefix?: string; suffix?: string; duration?: number; delay?: number; color?: string;
 }) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (v) => {
@@ -14,12 +15,35 @@ function OdometerCounter({ to, prefix = '', suffix = '', duration = 2.2, delay =
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
 
+  const fireConfetti = useCallback(() => {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const x = (rect.left + rect.width / 2) / window.innerWidth;
+    const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+    confetti({
+      particleCount: 22,
+      spread: 55,
+      startVelocity: 22,
+      gravity: 1.2,
+      origin: { x, y },
+      colors: [color, '#ffffff', color + 'aa'],
+      scalar: 0.8,
+      ticks: 80,
+    });
+  }, [color]);
+
   useEffect(() => {
     if (inView) {
-      const controls = animate(count, to, { duration, ease: 'easeOut', delay });
+      const controls = animate(count, to, { 
+        duration, 
+        ease: 'easeOut', 
+        delay,
+        onComplete: fireConfetti,
+      });
       return controls.stop;
     }
-  }, [inView, count, to, duration, delay]);
+  }, [inView, count, to, duration, delay, fireConfetti]);
 
   return (
     <span ref={ref} className="tabular-nums">
@@ -200,6 +224,7 @@ export default function Stats() {
                       to={stat.value}
                       suffix={stat.suffix}
                       delay={idx * 0.1 + 0.3}
+                      color={stat.color}
                     />
                   </div>
                   <p className="font-syne font-bold text-white/80" style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)', letterSpacing: '-0.01em' }}>

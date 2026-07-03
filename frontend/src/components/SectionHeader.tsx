@@ -1,5 +1,5 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
+import { useRef, useState } from 'react';
 
 interface SectionHeaderProps {
   eyebrow?: string;
@@ -14,10 +14,11 @@ interface SectionHeaderProps {
 }
 
 /* Split words into animated spans */
-function WordReveal({ text, highlightWord, delay }: {
+function WordReveal({ text, highlightWord, delay, onHighlightVisible }: {
   text: string;
   highlightWord?: string;
   delay: number;
+  onHighlightVisible?: () => void;
 }) {
   const words = text.split(' ');
   return (
@@ -30,6 +31,7 @@ function WordReveal({ text, highlightWord, delay }: {
               initial={{ y: '110%', opacity: 0 }}
               whileInView={{ y: '0%', opacity: 1 }}
               viewport={{ once: true, margin: '-60px' }}
+              onAnimationComplete={isHighlight ? onHighlightVisible : undefined}
               transition={{
                 delay: delay + i * 0.06,
                 duration: 0.85,
@@ -67,7 +69,7 @@ export default function SectionHeader({
   sectionNumber,
 }: SectionHeaderProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const [underlineVisible, setUnderlineVisible] = useState(false);
 
   const isCenter = align === 'center';
   const displayEyebrow = eyebrow || badge;
@@ -150,8 +152,60 @@ export default function SectionHeader({
           lineHeight: 0.95,
           color: 'var(--text)',
         }}>
-          <WordReveal text={title} highlightWord={highlightWord} delay={0.2} />
+          <WordReveal
+            text={title}
+            highlightWord={highlightWord}
+            delay={0.2}
+            onHighlightVisible={highlightWord ? () => setUnderlineVisible(true) : undefined}
+          />
         </h2>
+
+        {/* Animated SVG underline beneath highlight word */}
+        {highlightWord && (
+          <svg
+            viewBox="0 0 240 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="mt-2 overflow-visible"
+            style={{ width: 'clamp(120px, 20vw, 240px)', height: 12 }}
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="underline-grad" x1="0" y1="0" x2="240" y2="0" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#7c3aed" />
+                <stop offset="50%" stopColor="#f472b6" />
+                <stop offset="100%" stopColor="#38bdf8" />
+              </linearGradient>
+            </defs>
+            {/* Base faint track */}
+            <path
+              d="M4 7 Q60 3 120 7 Q180 11 236 7"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            {/* Animated stroke */}
+            <motion.path
+              d="M4 7 Q60 3 120 7 Q180 11 236 7"
+              stroke="url(#underline-grad)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={underlineVisible ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            />
+            {/* Leading glow dot */}
+            <motion.circle
+              cx="0" cy="7" r="3"
+              fill="#a78bfa"
+              initial={{ opacity: 0 }}
+              animate={underlineVisible ? { opacity: [0, 1, 0], offsetDistance: ['0%', '100%'] } : { opacity: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              style={{ filter: 'blur(1px)', boxShadow: '0 0 8px #a78bfa' }}
+            />
+          </svg>
+        )}
 
         {/* Subtitle / Description */}
         {displaySubtitle && (

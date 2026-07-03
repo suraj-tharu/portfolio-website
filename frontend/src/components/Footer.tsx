@@ -1,5 +1,4 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import { gsap } from 'gsap';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import VisitorCounter from './VisitorCounter';
 import { Briefcase, Terminal, GraduationCap, Microscope, MapPin, Mail, ArrowRight, Clock } from 'lucide-react';
@@ -108,24 +107,13 @@ function MagneticEmailButton({ email }: { email: string }) {
 
 /* ── Main Footer ─────────────────────────────────────────────── */
 export default function Footer() {
-  const marqueeRef = useRef<HTMLDivElement>(null);
+  /* dual marquee refs — no longer used (pure CSS) */
+
+
   const containerRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start end', 'end end'] });
   const orbY = useTransform(scrollYProgress, [0, 1], ['-18%', '0%']);
-
-  /* GSAP infinite marquee */
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(marqueeRef.current, {
-        xPercent: -50,
-        duration: 30,
-        ease: 'none',
-        repeat: -1,
-      });
-    });
-    return () => ctx.revert();
-  }, []);
 
   return (
     <footer
@@ -135,6 +123,8 @@ export default function Footer() {
       <style>{`
         @keyframes footer-shimmer { 0%{left:-100%} 100%{left:200%} }
         @keyframes footer-glow { 0%,100%{opacity:0.6} 50%{opacity:1} }
+        @keyframes marquee-left  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+        @keyframes marquee-right { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }
       `}</style>
 
       {/* Ghost watermark */}
@@ -151,40 +141,41 @@ export default function Footer() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full blur-[130px] bg-cyan-600/14" />
       </motion.div>
 
-      {/* ── Marquee strip ──────────────────────────────────── */}
-      <div className="relative z-10 w-full overflow-hidden py-10 md:py-16 border-b border-white/5">
-        <div ref={marqueeRef} className="flex whitespace-nowrap">
-          {Array.from({ length: 24 }).map((_, i) => (
-            <span
-              key={i}
-              className="px-6 cursor-default select-none text-6xl md:text-8xl lg:text-9xl font-display italic tracking-tight text-white/[0.06] hover:text-violet-300 transition-colors duration-500"
-              style={{
-                display: 'inline-block',
-                transitionDelay: `${(i % 6) * 0.05}s`,
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.color = '#a78bfa';
-                el.style.textShadow = '0 0 20px rgba(167,139,250,0.5)';
-                const prev = el.previousElementSibling as HTMLElement | null;
-                const next = el.nextElementSibling as HTMLElement | null;
-                if (prev) { prev.style.color = 'rgba(167,139,250,0.5)'; }
-                if (next) { next.style.color = 'rgba(167,139,250,0.5)'; }
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.color = '';
-                el.style.textShadow = '';
-                const prev = el.previousElementSibling as HTMLElement | null;
-                const next = el.nextElementSibling as HTMLElement | null;
-                if (prev) { prev.style.color = ''; }
-                if (next) { next.style.color = ''; }
-              }}
-            >
-              {marqueeItems[i % marqueeItems.length]}
-              <span style={{ color: 'rgba(167,139,250,0.3)', margin: '0 8px', fontSize: '0.6em' }}>✦</span>
-            </span>
-          ))}
+      {/* ── Dual-row Marquee strip ──────────────────────── */}
+      <div className="relative z-10 w-full overflow-hidden py-8 md:py-12 border-b border-white/5 flex flex-col gap-3">
+        {/* Row 1 — scrolls LEFT */}
+        <div className="flex whitespace-nowrap" style={{ animation: 'marquee-left 28s linear infinite' }}>
+          {Array.from({ length: 2 }).map((_, rep) =>
+            [...marqueeItems, ...marqueeItems, ...marqueeItems].map((item, i) => (
+              <span
+                key={`r1-${rep}-${i}`}
+                className="inline-flex items-center gap-3 px-4 cursor-default select-none"
+                style={{ fontSize: 'clamp(1.8rem,5vw,4rem)', fontFamily: 'Syne, sans-serif', fontWeight: 800, fontStyle: 'italic', color: 'rgba(240,242,248,0.05)', letterSpacing: '-0.02em' }}
+              >
+                {item}
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2 L13.5 10.5 L22 12 L13.5 13.5 L12 22 L10.5 13.5 L2 12 L10.5 10.5 Z"
+                    fill="rgba(167,139,250,0.35)" />
+                </svg>
+              </span>
+            ))
+          )}
+        </div>
+
+        {/* Row 2 — scrolls RIGHT */}
+        <div className="flex whitespace-nowrap" style={{ animation: 'marquee-right 22s linear infinite' }}>
+          {Array.from({ length: 2 }).map((_, rep) =>
+            [...marqueeItems].reverse().concat([...marqueeItems].reverse()).concat([...marqueeItems].reverse()).map((item, i) => (
+              <span
+                key={`r2-${rep}-${i}`}
+                className="inline-flex items-center gap-3 px-4 cursor-default select-none"
+                style={{ fontSize: 'clamp(1rem,2.5vw,2rem)', fontFamily: 'Syne, sans-serif', fontWeight: 400, fontStyle: 'normal', color: 'rgba(240,242,248,0.025)', letterSpacing: '0.18em', textTransform: 'uppercase' }}
+              >
+                {item}
+                <span style={{ color: 'rgba(244,114,182,0.3)', fontSize: '0.6em' }}>◈</span>
+              </span>
+            ))
+          )}
         </div>
       </div>
 

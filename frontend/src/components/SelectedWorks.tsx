@@ -2,6 +2,60 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { ArrowUpRight, ExternalLink, Link2 } from 'lucide-react';
 
+/* ── Floating cursor preview window ────────────────── */
+function FloatingPreview({
+  src, title, color, visible, cursorX, cursorY,
+}: {
+  src: string; title: string; color: string;
+  visible: boolean; cursorX: number; cursorY: number;
+}) {
+  const px = useMotionValue(cursorX);
+  const py = useMotionValue(cursorY);
+  const springX = useSpring(px, { stiffness: 200, damping: 22 });
+  const springY = useSpring(py, { stiffness: 200, damping: 22 });
+
+  useEffect(() => { px.set(cursorX); }, [cursorX, px]);
+  useEffect(() => { py.set(cursorY); }, [cursorY, py]);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.88, y: 10 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            position: 'fixed',
+            left: springX,
+            top: springY,
+            zIndex: 9999,
+            pointerEvents: 'none',
+            translateX: '-50%',
+            translateY: '-110%',
+            width: 260,
+          }}
+        >
+          <div
+            className="rounded-2xl overflow-hidden"
+            style={{
+              border: `1.5px solid ${color}40`,
+              boxShadow: `0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px ${color}20, 0 0 40px ${color}15`,
+              backdropFilter: 'blur(12px)',
+            }}
+          >
+            <img src={src} alt={title} className="w-full aspect-video object-cover block" />
+            <div className="px-3 py-2" style={{ background: 'rgba(10,8,20,0.85)' }}>
+              <p className="font-syne font-bold text-white text-xs tracking-wide truncate">{title}</p>
+              <div className="w-8 h-0.5 mt-1 rounded-full" style={{ background: `linear-gradient(90deg, ${color}, transparent)` }} />
+            </div>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 const defaultProjects = [
   {
     title: 'LULC Analysis — Nawalparasi',
@@ -71,6 +125,7 @@ type DisplayProject = typeof defaultProjects[number];
 function ProjectCard({ project, index }: { project: DisplayProject; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [hovered, setHovered] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -94,6 +149,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
     y.set(ny);
     setSpotX(((e.clientX - r.left) / r.width) * 100);
     setSpotY(((e.clientY - r.top) / r.height) * 100);
+    setCursorPos({ x: e.clientX, y: e.clientY });
   }, [x, y]);
 
   const handleLeave = useCallback(() => {
@@ -116,6 +172,16 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
       className={`relative overflow-hidden rounded-3xl ${project.span} cursor-pointer group`}
       data-cursor-text="View"
     >
+      {/* Floating cursor preview */}
+      <FloatingPreview
+        src={project.img}
+        title={project.title}
+        color={project.color}
+        visible={hovered}
+        cursorX={cursorPos.x}
+        cursorY={cursorPos.y}
+      />
+
       {/* Card base */}
       <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] lg:h-[420px] overflow-hidden rounded-3xl">
 
@@ -322,6 +388,8 @@ export default function SelectedWorks() {
             <ProjectCard key={project.title + i} project={project} index={i} />
           ))}
         </div>
+
+        {/* Note: FloatingPreview is now rendered globally on each card */}
 
         {/* Bottom CTA */}
         <motion.div
