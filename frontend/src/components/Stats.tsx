@@ -1,79 +1,233 @@
-import { motion, useSpring, useTransform, useInView } from 'framer-motion';
 import { useRef, useEffect } from 'react';
+import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
+import { Sparkles, Globe2, Rocket, Users2, Trophy, Star } from 'lucide-react';
 
-function AnimatedCounter({ value }: { value: string }) {
-  const numericValue = parseInt(value.replace(/[^0-9]/g, ''), 10) || 0;
-  const suffix = value.replace(/[0-9]/g, '');
-  
+/* ── Animated Odometer Counter ───────────────────────────── */
+function OdometerCounter({ to, prefix = '', suffix = '', duration = 2.2, delay = 0 }: {
+  to: number; prefix?: string; suffix?: string; duration?: number; delay?: number;
+}) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (v) => {
+    const n = Math.round(v);
+    return n >= 1000 ? (n / 1000).toFixed(1).replace('.0', '') + 'K' : String(n);
+  });
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  
-  const spring = useSpring(0, { stiffness: 40, damping: 20 });
-  const display = useTransform(spring, current => Math.floor(current));
+  const inView = useInView(ref, { once: true, margin: '-60px' });
 
   useEffect(() => {
     if (inView) {
-      spring.set(numericValue);
+      const controls = animate(count, to, { duration, ease: 'easeOut', delay });
+      return controls.stop;
     }
-  }, [inView, spring, numericValue]);
+  }, [inView, count, to, duration, delay]);
 
   return (
-    <span ref={ref} className="inline-flex items-center">
-      {numericValue > 0 ? <motion.span>{display}</motion.span> : <span>{value}</span>}
-      {suffix && <span>{suffix}</span>}
+    <span ref={ref} className="tabular-nums">
+      {prefix}<motion.span>{rounded}</motion.span>{suffix}
     </span>
   );
 }
 
-export default function Stats() {
-  const stats = [
-    { label: "Years Teaching", value: "05+", icon: "🎓", color: "from-violet-500 to-purple-600" },
-    { label: "Students Taught", value: "500+", icon: "👥", color: "from-pink-500 to-rose-600" },
-    { label: "Research Papers", value: "02", icon: "📄", color: "from-cyan-500 to-blue-600" },
-    { label: "Projects Delivered", value: "10+", icon: "🚀", color: "from-amber-500 to-orange-600" },
-  ];
+/* ── Single stat definition ──────────────────────────────── */
+const STATS = [
+  {
+    icon: Globe2,
+    value: 8,
+    suffix: '+',
+    label: 'Years of Experience',
+    desc: 'In GIS, research & education',
+    color: '#a78bfa',
+    bg: 'rgba(124,58,237,0.06)',
+    size: 'large',
+  },
+  {
+    icon: Rocket,
+    value: 40,
+    suffix: '+',
+    label: 'Projects Delivered',
+    desc: 'Across GIS, web & mobile',
+    color: '#38bdf8',
+    bg: 'rgba(6,182,212,0.06)',
+    size: 'normal',
+  },
+  {
+    icon: Users2,
+    value: 500,
+    suffix: '+',
+    label: 'Students Taught',
+    desc: 'Technical & vocational education',
+    color: '#34d399',
+    bg: 'rgba(52,211,153,0.06)',
+    size: 'normal',
+  },
+  {
+    icon: Trophy,
+    value: 5,
+    suffix: '+',
+    label: 'Research Publications',
+    desc: 'Peer-reviewed articles',
+    color: '#f472b6',
+    bg: 'rgba(244,114,182,0.06)',
+    size: 'normal',
+  },
+  {
+    icon: Star,
+    value: 12,
+    suffix: '+',
+    label: 'Certifications',
+    desc: 'Professional & technical',
+    color: '#fbbf24',
+    bg: 'rgba(251,191,36,0.06)',
+    size: 'normal',
+  },
+  {
+    icon: Sparkles,
+    value: 2847,
+    suffix: '',
+    label: 'Cups of Tea',
+    desc: 'Fueling innovation',
+    color: '#fb923c',
+    bg: 'rgba(251,146,60,0.06)',
+    size: 'wide',
+  },
+] as const;
 
+export default function Stats() {
   return (
-    <section className="bg-bg py-20 md:py-28 border-t border-stroke relative z-20 overflow-hidden">
-      {/* Ambient background glows */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-64 h-64 bg-violet-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl" />
+    <section id="stats" className="section-py relative z-20 overflow-hidden bg-[var(--bg)]">
+      {/* Background ambient */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        <div style={{
+          position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)',
+          width:'70vw', height:'60vw', borderRadius:'50%',
+          background:'radial-gradient(ellipse,rgba(124,58,237,0.05) 0%,transparent 65%)',
+          filter:'blur(60px)',
+        }} />
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 relative">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.15, ease: "easeOut" }}
-              className={`flex flex-col items-center justify-center py-10 px-4 relative ${
-                i < stats.length - 1 ? 'border-r border-stroke/50' : ''
-              } ${i >= 2 ? 'border-t border-stroke/50 md:border-t-0' : ''}`}
-            >
-              {/* Animated gradient top accent */}
+      <div className="section-container">
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center text-center mb-16 md:mb-20 gap-4"
+        >
+          <span className="float-badge">
+            <Sparkles size={10} />
+            By The Numbers
+          </span>
+
+          <h2
+            className="font-syne font-black text-white/95 tracking-tight"
+            style={{ fontSize: 'clamp(2.5rem, 5.5vw, 5rem)', lineHeight: 0.95, letterSpacing: '-0.035em' }}
+          >
+            Impact in{' '}
+            <span style={{
+              background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 60%,#38bdf8 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              fontStyle: 'italic',
+            }}>Numbers</span>
+          </h2>
+
+          <motion.p
+            className="font-jakarta text-white/40 max-w-md"
+            style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)', lineHeight: 1.75 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            A decade of engineering, research, and education — measured in milestones.
+          </motion.p>
+        </motion.div>
+
+        {/* Asymmetric Bento Grid */}
+        <div
+          className="grid gap-4 md:gap-5"
+          style={{
+            gridTemplateColumns: 'repeat(12, 1fr)',
+            gridAutoRows: 'minmax(160px, auto)',
+          }}
+        >
+          {STATS.map((stat, idx) => {
+            const Icon = stat.icon;
+
+            // Grid placement for asymmetric bento layout
+            const placements = [
+              'col-span-12 md:col-span-5 row-span-2', // large — years
+              'col-span-6 md:col-span-4',             // normal — projects
+              'col-span-6 md:col-span-3',             // normal — students
+              'col-span-6 md:col-span-3',             // normal — pubs
+              'col-span-6 md:col-span-4',             // normal — certs
+              'col-span-12 md:col-span-5',            // wide — tea
+            ];
+
+            return (
               <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: i * 0.15 + 0.3 }}
-                className={`absolute top-0 left-[10%] right-[10%] h-[2px] rounded-full bg-gradient-to-r ${stat.color} origin-left`}
-              />
+                key={stat.label}
+                initial={{ opacity: 0, y: 24, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.7, delay: idx * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                className={`bento-card group flex flex-col justify-between holographic-card ${placements[idx]}`}
+                onMouseMove={(e) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty('--bx', `${((e.clientX - r.left) / r.width) * 100}%`);
+                  e.currentTarget.style.setProperty('--by', `${((e.clientY - r.top) / r.height) * 100}%`);
+                }}
+              >
+                {/* Icon */}
+                <div className="flex items-start justify-between">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    style={{ background: stat.bg, border: `1px solid ${stat.color}25` }}
+                  >
+                    <Icon size={20} style={{ color: stat.color }} />
+                  </div>
+                </div>
 
-              <div className="text-3xl mb-3">{stat.icon}</div>
+                {/* Value */}
+                <div>
+                  <div
+                    className="stat-number leading-none mb-1"
+                    style={{
+                      fontSize: stat.size === 'large' ? 'clamp(3.5rem, 6vw, 5.5rem)' : 'clamp(2.5rem, 4vw, 3.8rem)',
+                    }}
+                  >
+                    <OdometerCounter
+                      to={stat.value}
+                      suffix={stat.suffix}
+                      delay={idx * 0.1 + 0.3}
+                    />
+                  </div>
+                  <p className="font-syne font-bold text-white/80" style={{ fontSize: 'clamp(0.9rem, 1.3vw, 1.05rem)', letterSpacing: '-0.01em' }}>
+                    {stat.label}
+                  </p>
+                  <p className="font-jakarta text-white/30 text-xs mt-0.5 leading-relaxed">{stat.desc}</p>
+                </div>
 
-              <div className={`text-5xl md:text-6xl lg:text-7xl font-display text-text-primary mb-2 bg-gradient-to-br ${stat.color} bg-clip-text text-transparent drop-shadow-md`}>
-                <AnimatedCounter value={stat.value} />
-              </div>
-              <div className="text-xs md:text-sm text-muted uppercase tracking-[0.2em] text-center">
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
+                {/* Accent line */}
+                <div
+                  className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-700 ease-out rounded-b-[1.5rem]"
+                  style={{ background: `linear-gradient(90deg, ${stat.color}80, ${stat.color}, ${stat.color}80)` }}
+                />
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* Bottom tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6 }}
+          className="text-center mt-12 text-white/20 text-xs font-jakarta tracking-widest uppercase"
+        >
+          ✦ &nbsp; Growing Every Day &nbsp; ✦
+        </motion.p>
       </div>
     </section>
   );

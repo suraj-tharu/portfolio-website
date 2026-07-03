@@ -1,174 +1,332 @@
-import { useState, useEffect, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
-import { GlowCard } from './premium/GlowCard';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import { ArrowUpRight, ExternalLink, Link2 } from 'lucide-react';
 
 const defaultProjects = [
-  { title: "LULC Analysis - Nawalparasi", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Remote Sensing Analysis", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Machine Learning Classification", span: "md:col-span-7", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "WebGIS Interactive Dashboard", span: "md:col-span-5", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Urban Sprawl Simulation", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80", url: "#" },
-  { title: "Hydrological Modeling", span: "md:col-span-6", aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]", img: "https://images.unsplash.com/photo-1469122312224-c5846569feb1?auto=format&fit=crop&w=1200&q=80", url: "#" },
+  {
+    title: 'LULC Analysis — Nawalparasi',
+    category: 'GIS Research',
+    year: '2024',
+    tags: ['GIS', 'Remote Sensing', 'Python'],
+    span: 'md:col-span-7',
+    img: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#a78bfa',
+  },
+  {
+    title: 'Remote Sensing Analysis',
+    category: 'Satellite Imagery',
+    year: '2024',
+    tags: ['Satellite', 'ML', 'NDVI'],
+    span: 'md:col-span-5',
+    img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#38bdf8',
+  },
+  {
+    title: 'Machine Learning Classification',
+    category: 'Deep Learning',
+    year: '2023',
+    tags: ['TensorFlow', 'CNN', 'Accuracy 94%'],
+    span: 'md:col-span-5',
+    img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#f472b6',
+  },
+  {
+    title: 'WebGIS Interactive Dashboard',
+    category: 'Full-Stack Dev',
+    year: '2023',
+    tags: ['React', 'Leaflet', 'Node.js'],
+    span: 'md:col-span-7',
+    img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#34d399',
+  },
+  {
+    title: 'Urban Sprawl Simulation',
+    category: 'Urban Analysis',
+    year: '2023',
+    tags: ['QGIS', 'Python', 'CA Model'],
+    span: 'md:col-span-6',
+    img: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#fbbf24',
+  },
+  {
+    title: 'Hydrological Modeling',
+    category: 'Environmental GIS',
+    year: '2022',
+    tags: ['HEC-HMS', 'DEM', 'Watershed'],
+    span: 'md:col-span-6',
+    img: 'https://images.unsplash.com/photo-1469122312224-c5846569feb1?auto=format&fit=crop&w=1200&q=80',
+    url: '#',
+    color: '#fb923c',
+  },
 ];
 
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  imageUrl: string | null;
-  githubUrl: string | null;
-  liveUrl: string | null;
-};
+type DisplayProject = typeof defaultProjects[number];
 
-type DisplayProject = {
-  title: string;
-  span: string;
-  aspect: string;
-  img: string;
-  url: string;
-};
+/* ── 3D Tilt Card with Spotlight ─────────────────────────── */
+function ProjectCard({ project, index }: { project: DisplayProject; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [hovered, setHovered] = useState(false);
 
-const ProjectCard = ({ project, index }: { project: DisplayProject, index: number }) => {
-  const ref = useRef<HTMLAnchorElement>(null);
-  
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15, mass: 0.1 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15, mass: 0.1 });
+  const springX = useSpring(x, { stiffness: 120, damping: 18, mass: 0.1 });
+  const springY = useSpring(y, { stiffness: 120, damping: 18, mass: 0.1 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+  const rotateX = useTransform(springY, [-0.5, 0.5], ['8deg', '-8deg']);
+  const rotateY = useTransform(springX, [-0.5, 0.5], ['-8deg', '8deg']);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  // Spotlight position
+  const [spotX, setSpotX] = useState(50);
+  const [spotY, setSpotY] = useState(50);
+
+  const handleMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    
-    x.set(xPct);
-    y.set(yPct);
-  };
+    const r = ref.current.getBoundingClientRect();
+    const nx = (e.clientX - r.left) / r.width - 0.5;
+    const ny = (e.clientY - r.top) / r.height - 0.5;
+    x.set(nx);
+    y.set(ny);
+    setSpotX(((e.clientX - r.left) / r.width) * 100);
+    setSpotY(((e.clientY - r.top) / r.height) * 100);
+  }, [x, y]);
 
-  const handleMouseLeave = () => {
+  const handleLeave = useCallback(() => {
     x.set(0);
     y.set(0);
-  };
+    setHovered(false);
+  }, [x, y]);
 
   return (
-    <motion.a
+    <motion.div
       ref={ref}
-      href={project.url}
-      target={project.url !== "#" ? "_blank" : undefined}
-      rel={project.url !== "#" ? "noopener noreferrer" : undefined}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 1000,
-        transformStyle: "preserve-3d"
-      }}
-      className={`group relative overflow-hidden premium-card luxury-glow rounded-3xl ${project.span} ${project.aspect} block`}
+      initial={{ opacity: 0, y: 40, scale: 0.97 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      onMouseMove={handleMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={handleLeave}
+      style={{ rotateX, rotateY, transformPerspective: 1200, transformStyle: 'preserve-3d' }}
+      className={`relative overflow-hidden rounded-3xl ${project.span} cursor-pointer group`}
+      data-cursor-text="View"
     >
-      <GlowCard className="w-full h-full rounded-3xl overflow-hidden p-0 border-0" glowColor="rgba(219,39,119,0.25)">
-        {/* Background Image */}
-        <img
+      {/* Card base */}
+      <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] lg:h-[420px] overflow-hidden rounded-3xl">
+
+        {/* Background image with parallax */}
+        <motion.img
           src={project.img}
           alt={project.title}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover"
+          animate={{ scale: hovered ? 1.07 : 1 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         />
 
-        {/* Halftone Overlay */}
+        {/* Gradient overlay — always present */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+
+        {/* Spotlight effect */}
         <div
-          className="absolute inset-0 opacity-20 mix-blend-multiply pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)', backgroundSize: '4px 4px' }}
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(circle 200px at ${spotX}% ${spotY}%, rgba(255,255,255,0.08), transparent 70%)`,
+            opacity: hovered ? 1 : 0,
+          }}
         />
 
-        {/* Hover Dark Overlay & Blur */}
-        <div className="absolute inset-0 bg-bg/70 opacity-0 group-hover:opacity-100 backdrop-blur-lg transition-all duration-500 flex items-center justify-center">
-          {/* Hover Label */}
-          <div className="relative inline-flex items-center justify-center p-[2px] rounded-full overflow-hidden transform translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 delay-100" style={{ transform: "translateZ(50px)" }}>
-            <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] animate-[spin_2s_linear_infinite]" />
-            <div className="relative bg-white text-black px-6 py-2.5 rounded-full text-sm font-medium shadow-lg-premium">
-              View — <span className="font-display italic text-base">{project.title}</span>
+        {/* Holographic border on hover */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 rounded-3xl pointer-events-none"
+              style={{
+                background: `linear-gradient(135deg, ${project.color}25 0%, transparent 60%, ${project.color}15 100%)`,
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Content — bottom */}
+        <div className="absolute inset-0 flex flex-col justify-between p-6 sm:p-7">
+          {/* Top row */}
+          <div className="flex items-start justify-between">
+            <motion.span
+              animate={{ y: hovered ? 0 : -4, opacity: hovered ? 1 : 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="float-badge"
+              style={{ borderColor: `${project.color}40`, color: project.color, background: `${project.color}15` }}
+            >
+              {project.category}
+            </motion.span>
+
+            <motion.div
+              animate={{ scale: hovered ? 1 : 0.8, opacity: hovered ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+            >
+              <ArrowUpRight size={15} className="text-white" />
+            </motion.div>
+          </div>
+
+          {/* Bottom content */}
+          <div>
+            {/* Tags */}
+            <motion.div
+              animate={{ y: hovered ? 0 : 8, opacity: hovered ? 1 : 0 }}
+              transition={{ duration: 0.4, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap gap-1.5 mb-3"
+            >
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-white/70 font-jakarta backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </motion.div>
+
+            {/* Title */}
+            <h3
+              className="font-syne font-black text-white leading-tight tracking-tight"
+              style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', transform: 'translateZ(20px)' }}
+            >
+              {project.title}
+            </h3>
+
+            {/* Year + link */}
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-white/35 text-xs font-mono font-bold">{project.year}</span>
+              {project.url !== '#' && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-xs text-white/50 hover:text-white transition-colors font-jakarta"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <ExternalLink size={11} />
+                  Visit
+                </a>
+              )}
             </div>
           </div>
         </div>
-      </GlowCard>
-    </motion.a>
+      </div>
+    </motion.div>
   );
-};
+}
 
 export default function SelectedWorks() {
-  const [dbProjects, setDbProjects] = useState<Project[]>([]);
+  const [dbProjects, setDbProjects] = useState<{ title: string; description: string; imageUrl: string | null; githubUrl: string | null; liveUrl: string | null; id: number }[]>([]);
 
   useEffect(() => {
     fetch('/api/portfolio-data')
-      .then(res => res.json())
-      .then(data => {
-        if (data.projects && data.projects.length > 0) {
-          setDbProjects(data.projects.slice(0, 4));
-        }
-      })
-      .catch(console.error);
+      .then((r) => r.json())
+      .then((data) => { if (data.projects?.length > 0) setDbProjects(data.projects.slice(0, 6)); })
+      .catch(() => {/* use defaults */});
   }, []);
 
-  const displayProjects = dbProjects.length > 0 ? dbProjects.map((p, i) => ({
-    title: p.title,
-    span: i === 0 || i === 3 ? "md:col-span-7" : "md:col-span-5",
-    aspect: "aspect-[4/3] md:aspect-auto md:h-[400px]",
-    img: p.imageUrl || defaultProjects[i]?.img || defaultProjects[0].img,
-    url: p.liveUrl || p.githubUrl || "#"
-  })) : defaultProjects;
+  const displayProjects: DisplayProject[] = dbProjects.length > 0
+    ? dbProjects.map((p, i) => ({
+        ...defaultProjects[i % defaultProjects.length],
+        title: p.title,
+        img: p.imageUrl || defaultProjects[i % defaultProjects.length].img,
+        url: p.liveUrl || p.githubUrl || '#',
+      }))
+    : defaultProjects;
 
   return (
-    <section id="work" className="bg-bg py-12 md:py-16 relative z-20">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+    <section id="work" className="section-py relative z-20 bg-[var(--bg)] overflow-hidden">
+      {/* Ambient */}
+      <div aria-hidden className="absolute inset-0 pointer-events-none">
+        <div style={{
+          position: 'absolute', top: '30%', left: '-5%',
+          width: '40vw', height: '40vw', borderRadius: '50%',
+          background: 'radial-gradient(circle,rgba(124,58,237,0.05),transparent 70%)',
+          filter: 'blur(60px)',
+        }} />
+      </div>
 
+      <div className="section-container">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-14 md:mb-18"
         >
-          <div>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-8 h-px bg-stroke" />
-              <span className="text-xs text-muted uppercase tracking-[0.3em]">Selected Work</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl text-text-primary tracking-tight mb-4">
-              Highlighted <span className="font-display italic">works</span>
+          <div className="flex flex-col gap-4">
+            <span className="float-badge self-start">Selected Work</span>
+            <h2
+              className="font-syne font-black text-white/95 tracking-tight"
+              style={{ fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', lineHeight: 0.92, letterSpacing: '-0.035em' }}
+            >
+              Highlighted{' '}
+              <span
+                className="italic"
+                style={{
+                  background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}
+              >
+                Works
+              </span>
             </h2>
-            <p className="text-sm text-muted max-w-sm">
-              A selection of projects I've worked on, from concept to launch.
+            <p className="font-jakarta text-white/35 max-w-sm" style={{ fontSize: 'clamp(0.87rem, 1.2vw, 1rem)', lineHeight: 1.75 }}>
+              A curated selection of research, engineering, and innovation — from concept to impact.
             </p>
           </div>
 
-          <button className="hidden md:inline-flex group relative items-center justify-center rounded-full px-6 py-3 text-sm bg-surface border border-stroke hover:border-transparent transition-colors overflow-hidden">
-            <span className="absolute inset-[-200%] bg-[conic-gradient(from_90deg_at_50%_50%,transparent_0%,transparent_50%,rgba(137,170,204,1)_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2s_linear_infinite] transition-opacity duration-300" />
-            <div className="absolute inset-[2px] bg-bg rounded-full" />
-            <span className="relative z-10 flex items-center gap-2">View all work &rarr;</span>
-          </button>
+          <motion.a
+            href="#"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="btn-outline-luxury self-start md:self-end font-jakarta text-sm shrink-0"
+          >
+            View All Projects
+            <ArrowUpRight size={15} />
+          </motion.a>
         </motion.div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6" style={{ perspective: "1500px" }}>
+        {/* 3D Tilt Card Grid */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5"
+          style={{ perspective: '1800px' }}
+        >
           {displayProjects.map((project, i) => (
             <ProjectCard key={project.title + i} project={project} index={i} />
           ))}
         </div>
 
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="flex justify-center mt-14"
+        >
+          <a
+            href="https://github.com/suraj-tharu"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-gradient font-jakarta text-sm"
+          >
+            <Link2 size={16} />
+            View All on GitHub
+          </a>
+        </motion.div>
       </div>
     </section>
   );

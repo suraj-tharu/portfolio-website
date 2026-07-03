@@ -21,9 +21,13 @@ export default {
         }
       },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        display: ['"Playfair Display"', 'serif'],
+        body: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        display: ['Syne', '"Playfair Display"', 'serif'],
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
         kanit: ['Kanit', 'sans-serif'],
+        syne: ['Syne', 'sans-serif'],
+        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+        dm: ['DM Sans', 'sans-serif'],
         helvetica: ['"Helvetica Now Var"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif']
       },
       fontSize: {
