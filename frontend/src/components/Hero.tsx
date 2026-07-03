@@ -990,24 +990,6 @@ export default function Hero() {
               </motion.div>
             )}
 
-            {/* ── OVERLINE LABEL ── */}
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.8 }}
-              style={{ marginBottom: 20 }}
-            >
-              <span className="hero-overline" style={{
-                fontSize: '0.65rem',
-                fontWeight: 800,
-                letterSpacing: '0.35em',
-                textTransform: 'uppercase',
-                color: 'rgba(167,139,250,0.5)',
-                fontFamily: 'Plus Jakarta Sans, sans-serif',
-              }}>
-                ✦ Portfolio · 2026 ✦
-              </span>
-            </motion.div>
 
             {/* ── 3D TILT NAME ── */}
             <motion.h1
