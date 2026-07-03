@@ -21,7 +21,13 @@ function ScrollProgress() {
       style={{ scaleX, transformOrigin: '0%' }}
       className="fixed top-0 left-0 right-0 h-[2px] z-[200]
         bg-gradient-to-r from-violet-500 via-pink-500 to-cyan-500"
-    />
+    >
+      {/* Glow layer */}
+      <div style={{
+        position: 'absolute', inset: 0, height: 6, top: -2,
+        background: 'inherit', filter: 'blur(6px)', opacity: 0.6,
+      }} />
+    </motion.div>
   );
 }
 
@@ -65,9 +71,11 @@ function NavLink({
           className="absolute inset-0 -z-10 rounded-full
             bg-gradient-to-r from-violet-100 to-purple-100
             dark:from-violet-500/20 dark:to-purple-500/20
-            border border-violet-200/80 dark:border-violet-500/30
-            shadow-[0_0_16px_rgba(124,58,237,0.15)] dark:shadow-[0_0_24px_rgba(124,58,237,0.3)]"
-          transition={{ type: 'spring', stiffness: 380, damping: 36 }}
+            border border-violet-200/80 dark:border-violet-500/30"
+          style={{
+            boxShadow: '0 0 20px rgba(124,58,237,0.2), 0 0 40px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.15)',
+          }}
+          transition={{ type: 'spring', stiffness: 320, damping: 32, mass: 0.8 }}
         />
       )}
       {label}
@@ -109,7 +117,7 @@ function FullscreenMenu({
       initial={{ clipPath: 'circle(0% at calc(100% - 2.5rem) 2.5rem)' }}
       animate={{ clipPath: 'circle(150% at calc(100% - 2.5rem) 2.5rem)' }}
       exit={{ clipPath: 'circle(0% at calc(100% - 2.5rem) 2.5rem)' }}
-      transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+      transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}
       className="fixed inset-0 z-[98] flex flex-col overflow-hidden
         bg-white dark:bg-[#06060e]"
       aria-modal="true" role="dialog" aria-label="Navigation menu"
@@ -426,30 +434,48 @@ export default function Navbar() {
           px-4 sm:px-5 py-2.5
           transition-all duration-500 ease-out
           ${scrolled
-            ? 'top-2 mx-3 sm:mx-5 lg:mx-8 rounded-2xl shadow-2xl shadow-slate-200/60 dark:shadow-black/50 border'
+            ? 'top-2 mx-3 sm:mx-5 lg:mx-8 rounded-2xl border'
             : 'mx-0 rounded-none border-b shadow-none'
           }
           ${scrolled
-            ? 'bg-white/90 dark:bg-[#0b0b14]/90 border-slate-200/90 dark:border-white/8 backdrop-blur-3xl'
-            : 'bg-white/60 dark:bg-transparent border-slate-100 dark:border-white/5 backdrop-blur-xl'
+            ? 'bg-white/85 dark:bg-[#0b0b14]/85 border-slate-200/90 dark:border-white/8'
+            : 'bg-white/60 dark:bg-transparent border-slate-100 dark:border-white/5'
           }
         `}
+        style={{
+          backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'blur(12px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'blur(12px) saturate(120%)',
+          boxShadow: scrolled
+            ? '0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(124,58,237,0.04), inset 0 1px 0 rgba(255,255,255,0.08)'
+            : 'none',
+        }}
       >
         {/* ── LOGO ─────────────────────────────────────── */}
         <a href="#" aria-label="Home"
           onMouseEnter={() => playHover()} onClick={() => playClick()}
           className="group flex items-center gap-2.5 shrink-0"
         >
-          {/* Badge */}
-          <div className="relative w-9 h-9 rounded-[10px] overflow-hidden shrink-0 shadow-[0_2px_12px_rgba(124,58,237,0.35)]">
+          {/* Badge with SVG animated border */}
+          <div className="relative w-9 h-9 rounded-[10px] overflow-hidden shrink-0" style={{
+            boxShadow: '0 2px 14px rgba(124,58,237,0.4), 0 0 0 1px rgba(124,58,237,0.15)',
+          }}>
             <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600
               group-hover:from-violet-500 group-hover:to-pink-500 transition-all duration-300" />
-            {/* Shine */}
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.25)_0%,transparent_60%)]" />
+            {/* Shine sweep */}
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.3)_0%,transparent_55%)]" />
             <span className="absolute inset-0 flex items-center justify-center
               font-display italic font-black text-[13px] text-white leading-none z-10">
               SC
             </span>
+            {/* Animated border glow */}
+            <motion.div
+              className="absolute inset-0 rounded-[10px]"
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{
+                boxShadow: 'inset 0 0 8px rgba(255,255,255,0.15)',
+              }}
+            />
           </div>
           {/* Name – visible on md+ */}
           <div className="hidden md:flex flex-col leading-none gap-0.5">

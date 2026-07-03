@@ -1093,3 +1093,395 @@ html {
   border-color: rgba(109, 40, 217, 0.2);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(109, 40, 217, 0.1);
 }
+
+/* ════════════════════════════════════════════════════════════
+   WORLD #1 ULTRA-PREMIUM ANIMATION SYSTEM
+   Aurora · Neon · 3D Tilt · Magnetic · Cinematic
+════════════════════════════════════════════════════════════ */
+
+/* ── Aurora Flow Background ─────────────────────────────── */
+@keyframes aurora-flow {
+  0% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  33% {
+    background-position: 100% 50%;
+    filter: hue-rotate(30deg);
+  }
+  66% {
+    background-position: 50% 100%;
+    filter: hue-rotate(-20deg);
+  }
+  100% {
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+}
+
+.aurora-bg {
+  background: linear-gradient(
+    125deg,
+    rgba(124,58,237,0.4) 0%,
+    rgba(219,39,119,0.3) 25%,
+    rgba(6,182,212,0.3) 50%,
+    rgba(52,211,153,0.2) 75%,
+    rgba(124,58,237,0.4) 100%
+  );
+  background-size: 400% 400%;
+  animation: aurora-flow 12s ease infinite;
+}
+
+/* ── Animated Gradient Border ────────────────────────────── */
+@keyframes border-dance {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+.border-dance {
+  position: relative;
+  border-radius: inherit;
+}
+
+.border-dance::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    var(--border-angle, 0deg),
+    #7c3aed, #db2777, #06b6d4, #34d399, #7c3aed
+  );
+  background-size: 300% 300%;
+  animation: border-dance 4s linear infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Text Shimmer Effect ─────────────────────────────────── */
+@keyframes text-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #a78bfa 0%,
+    #f472b6 20%,
+    #ffffff 40%,
+    #38bdf8 60%,
+    #f472b6 80%,
+    #a78bfa 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* ── Neon Glow System ────────────────────────────────────── */
+@keyframes neon-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 5px currentColor,
+      0 0 15px currentColor,
+      0 0 30px currentColor;
+    opacity: 1;
+  }
+  50% {
+    box-shadow:
+      0 0 10px currentColor,
+      0 0 25px currentColor,
+      0 0 50px currentColor,
+      0 0 80px currentColor;
+    opacity: 0.9;
+  }
+}
+
+.neon-violet {
+  color: #a78bfa;
+  text-shadow:
+    0 0 7px rgba(167,139,250,0.8),
+    0 0 15px rgba(167,139,250,0.6),
+    0 0 30px rgba(167,139,250,0.4);
+}
+
+.neon-pink {
+  color: #f472b6;
+  text-shadow:
+    0 0 7px rgba(244,114,182,0.8),
+    0 0 15px rgba(244,114,182,0.6),
+    0 0 30px rgba(244,114,182,0.4);
+}
+
+.neon-cyan {
+  color: #22d3ee;
+  text-shadow:
+    0 0 7px rgba(34,211,238,0.8),
+    0 0 15px rgba(34,211,238,0.6),
+    0 0 30px rgba(34,211,238,0.4);
+}
+
+.neon-border-violet {
+  box-shadow:
+    0 0 8px rgba(167,139,250,0.6),
+    0 0 20px rgba(167,139,250,0.3),
+    inset 0 0 8px rgba(167,139,250,0.1);
+  animation: neon-pulse 3s ease-in-out infinite;
+}
+
+/* ── 3D Magnetic Tilt System ─────────────────────────────── */
+.magnetic-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.1s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+.magnetic-card-inner {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.magnetic-card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(167,139,250,0.15) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.magnetic-card:hover .magnetic-card-glow {
+  opacity: 1;
+}
+
+/* ── Cursor Ring Pulse ────────────────────────────────────── */
+@keyframes cursor-ring-pulse {
+  0%   { transform: translate(-50%, -50%) scale(1);   opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; }
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(167,139,250,0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: width 0.2s, height 0.2s, border-color 0.2s;
+}
+
+.cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: #a78bfa;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  mix-blend-mode: difference;
+  transition: transform 0.1s, background 0.2s;
+}
+
+/* ── Click Ripple ─────────────────────────────────────────── */
+@keyframes click-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+  }
+}
+
+.click-ripple {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(167,139,250,0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  animation: click-ripple 0.5s ease-out forwards;
+}
+
+/* ── Cinematic Reveal ─────────────────────────────────────── */
+@keyframes cinematic-reveal-up {
+  0%   { transform: translateY(100%); opacity: 0; filter: blur(4px); }
+  100% { transform: translateY(0);    opacity: 1; filter: blur(0);   }
+}
+
+@keyframes cinematic-reveal-down {
+  0%   { transform: translateY(-100%); opacity: 0; filter: blur(4px); }
+  100% { transform: translateY(0);     opacity: 1; filter: blur(0);   }
+}
+
+@keyframes cinematic-reveal-left {
+  0%   { transform: translateX(-60px); opacity: 0; filter: blur(4px); }
+  100% { transform: translateX(0);     opacity: 1; filter: blur(0);   }
+}
+
+.reveal-up    { animation: cinematic-reveal-up   0.9s cubic-bezier(0.16,1,0.3,1) both; }
+.reveal-down  { animation: cinematic-reveal-down 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+.reveal-left  { animation: cinematic-reveal-left 0.9s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* ── SVG Orbit Trail ──────────────────────────────────────── */
+@keyframes orbit-glow {
+  0%, 100% { stroke-opacity: 0.3; filter: drop-shadow(0 0 3px rgba(167,139,250,0.5)); }
+  50%       { stroke-opacity: 0.7; filter: drop-shadow(0 0 8px rgba(167,139,250,0.9)); }
+}
+
+.orbit-path {
+  animation: orbit-glow 3s ease-in-out infinite;
+}
+
+/* ── Floating Particle Drift ─────────────────────────────── */
+@keyframes particle-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% {
+    transform: translate(var(--drift-x, 40px), var(--drift-y, -80px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.particle-drift {
+  animation: particle-drift var(--duration, 4s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* ── Liquid Morph ─────────────────────────────────────────── */
+@keyframes liquid-morph {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%       { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+  50%       { border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%; }
+  75%       { border-radius: 60% 40% 60% 30% / 70% 30% 60% 50%; }
+}
+
+.liquid-morph {
+  animation: liquid-morph 8s ease-in-out infinite;
+}
+
+/* ── Stagger Children ─────────────────────────────────────── */
+.stagger-children > * {
+  opacity: 0;
+  animation: cinematic-reveal-up 0.6s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.stagger-children > *:nth-child(1)  { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2)  { animation-delay: 0.10s; }
+.stagger-children > *:nth-child(3)  { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4)  { animation-delay: 0.20s; }
+.stagger-children > *:nth-child(5)  { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6)  { animation-delay: 0.30s; }
+
+/* ── Progress Ring ─────────────────────────────────────────── */
+@keyframes progress-ring-fill {
+  from { stroke-dashoffset: var(--circumference, 283); }
+  to   { stroke-dashoffset: var(--offset, 0); }
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.15s linear;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  filter: drop-shadow(0 0 6px rgba(167,139,250,0.8));
+}
+
+/* ── Magnetic Button ─────────────────────────────────────── */
+.magnetic-btn {
+  transition: transform 0.3s cubic-bezier(0.23,1,0.32,1),
+              box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.magnetic-btn:hover {
+  box-shadow: 0 20px 40px rgba(124,58,237,0.4),
+              0 0 0 1px rgba(167,139,250,0.3);
+}
+
+/* ── Glass Card Ultra ─────────────────────────────────────── */
+.glass-ultra {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.glass-ultra:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(167, 139, 250, 0.2);
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(167, 139, 250, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ── Section Reveal Clip ──────────────────────────────────── */
+@keyframes section-clip-reveal {
+  0%   { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+.section-clip-reveal {
+  animation: section-clip-reveal 1s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+/* ── Scanline Overlay ──────────────────────────────────────── */
+.scanline-overlay {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Word Overflow Clip (for word reveals) ────────────────── */
+.overflow-clip-y {
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* ── Reduced Motion Overrides ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .aurora-bg,
+  .border-dance::before,
+  .text-shimmer,
+  .neon-border-violet,
+  .liquid-morph,
+  .particle-drift,
+  .reveal-up,
+  .reveal-down,
+  .reveal-left,
+  .stagger-children > *,
+  .section-clip-reveal {
+    animation: none !important;
+    transition: none !important;
+  }
+}
