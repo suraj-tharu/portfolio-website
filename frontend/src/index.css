@@ -1617,6 +1617,29 @@ html {
   box-shadow: 0 20px 50px rgba(0,0,0,0.1), 0 0 30px rgba(109,40,217,0.07);
 }
 
+/* ── About Me — Light/Dark adaptive text classes ─────────── */
+/* Dark mode defaults (white-on-dark) */
+.about-heading-primary { color: rgba(255,255,255,0.95); }
+.about-bio-text        { color: rgba(255,255,255,0.60); }
+.about-muted-text      { color: rgba(255,255,255,0.40); }
+.about-overline        { color: rgba(255,255,255,0.25); }
+.about-stat-label      { color: rgba(255,255,255,0.20); }
+.about-dot-divider     { background: rgba(255,255,255,0.15); }
+.about-edu-border      { border-bottom: 1px solid rgba(255,255,255,0.04); }
+.about-edu-degree      { color: rgba(255,255,255,0.85); }
+.about-edu-uni         { color: rgba(255,255,255,0.35); }
+
+/* Light mode overrides — dark-on-light for readability */
+.light .about-heading-primary { color: #0f172a !important; }
+.light .about-bio-text        { color: rgba(15,23,42,0.72) !important; }
+.light .about-muted-text      { color: rgba(71,85,105,0.85) !important; }
+.light .about-overline        { color: rgba(109,40,217,0.55) !important; }
+.light .about-stat-label      { color: rgba(30,27,75,0.50) !important; }
+.light .about-dot-divider     { background: rgba(0,0,0,0.12) !important; }
+.light .about-edu-border      { border-bottom-color: rgba(0,0,0,0.07) !important; }
+.light .about-edu-degree      { color: rgba(15,23,42,0.90) !important; }
+.light .about-edu-uni         { color: rgba(71,85,105,0.75) !important; }
+
 /* ── Holographic Card ─────────────────────────────────────── */
 @keyframes holographic-shift {
   0%   { background-position: 0% 50%; filter: hue-rotate(0deg); }

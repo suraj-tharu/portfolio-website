@@ -1004,8 +1004,7 @@ export default function Hero() {
           <HolographicRings />
         </div>
 
-        {/* ── FLOATING SKILL TAGS ── */}
-        <LuxuryFloatingTags />
+        {/* Floating skill tags removed */}
 
         {/* ── CORNER ACCENTS ── */}
         <CornerAccents />
@@ -1112,7 +1111,7 @@ export default function Hero() {
                 fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif',
                 fontStyle: 'italic',
                 fontWeight: 700,
-                fontSize: 'clamp(2.8rem,11vw,9.5rem)',
+                fontSize: 'clamp(2rem,7vw,6rem)',
                 lineHeight: 0.88,
               }}>
                 {nameConfig.map(({ word, gradient, delay }) => (

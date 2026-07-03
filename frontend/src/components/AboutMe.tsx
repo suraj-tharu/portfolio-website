@@ -63,7 +63,7 @@ function StatCard({
         >
           <Icon size={18} style={{ color }} />
         </div>
-        <span className="text-[0.65rem] uppercase tracking-[0.18em] text-white/20 font-bold font-syne">{label}</span>
+        <span className="about-stat-label text-[0.65rem] uppercase tracking-[0.18em] font-bold font-syne">{label}</span>
       </div>
 
       {/* Value */}
@@ -84,9 +84,9 @@ function StatCard({
 }
 
 const stats = [
-  { icon: GraduationCap, label: 'Years Experience', value: 8,  suffix: '+', color: '#a78bfa', delay: 0 },
+  { icon: GraduationCap, label: 'Years Experience', value: 5,  suffix: '+', color: '#a78bfa', delay: 0 },
   { icon: Code2,         label: 'Projects Completed', value: 40, suffix: '+', color: '#38bdf8', delay: 0.08 },
-  { icon: BookOpen,      label: 'Publications',       value: 5,  suffix: '+', color: '#f472b6', delay: 0.16 },
+  { icon: BookOpen,      label: 'Publications',       value: 2,  suffix: '+', color: '#f472b6', delay: 0.16 },
   { icon: Users,         label: 'Students Taught',    value: 500, suffix: '+', color: '#34d399', delay: 0.24 },
   { icon: Award,         label: 'Certifications',     value: 12, suffix: '+', color: '#fbbf24', delay: 0.32 },
   { icon: Coffee,        label: 'Cups of Tea',        value: 2847, suffix: '', color: '#fb923c', delay: 0.4  },
@@ -100,7 +100,7 @@ function BioParagraph({ children, delay }: { children: React.ReactNode; delay: n
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: '-30px' }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="text-fluid-body text-white/60 dark:text-white/60 leading-[1.85] font-jakarta"
+      className="text-fluid-body about-bio-text leading-[1.85] font-jakarta"
     >
       {children}
     </motion.p>
@@ -176,7 +176,7 @@ export default function AboutMe() {
                   whileInView={{ y: '0%' }}
                   viewport={{ once: true }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="font-syne font-black leading-[0.88] tracking-tight text-white/95"
+                  className="font-syne font-black leading-[0.88] tracking-tight about-heading-primary"
                   style={{ fontSize: 'clamp(3.2rem, 7vw, 7rem)' }}
                 >
                   Er. Suraj
@@ -224,11 +224,11 @@ export default function AboutMe() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="flex flex-wrap items-center gap-3"
             >
-              <span className="flex items-center gap-1.5 text-sm text-white/40 font-jakarta">
+              <span className="flex items-center gap-1.5 text-sm about-muted-text font-jakarta">
                 <MapPin size={13} className="text-violet-400" />
                 Nawalparasi West, Nepal
               </span>
-              <span className="w-1 h-1 rounded-full bg-white/15" />
+              <span className="w-1 h-1 rounded-full about-dot-divider" />
               <span className="flex items-center gap-2 text-sm text-emerald-400 font-jakarta font-semibold">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -236,8 +236,8 @@ export default function AboutMe() {
                 </span>
                 Open to Collaboration
               </span>
-              <span className="w-1 h-1 rounded-full bg-white/15" />
-              <span className="flex items-center gap-1.5 text-sm text-white/40 font-jakarta">
+              <span className="w-1 h-1 rounded-full about-dot-divider" />
+              <span className="flex items-center gap-1.5 text-sm about-muted-text font-jakarta">
                 <Briefcase size={13} className="text-pink-400" />
                 GIS & Research Specialist
               </span>
@@ -309,17 +309,17 @@ export default function AboutMe() {
                 <div className="w-9 h-9 rounded-lg bg-violet-500/15 border border-violet-500/25 flex items-center justify-center">
                   <GraduationCap size={16} className="text-violet-400" />
                 </div>
-                <span className="text-[0.68rem] font-bold uppercase tracking-[0.2em] text-white/25 font-syne">Education</span>
+                <span className="text-[0.68rem] font-bold uppercase tracking-[0.2em] about-overline font-syne">Education</span>
               </div>
               <div className="flex flex-col gap-2">
                 {[
                   { degree: 'M.Sc. Information System Engineering', uni: 'Purbanchal University', year: '2020' },
                   { degree: 'B.E. Computer Engineering', uni: 'Mid-West University', year: '2017' },
                 ].map((e) => (
-                  <div key={e.degree} className="flex items-start justify-between gap-2 py-1.5 border-b border-white/[0.04] last:border-0">
+                  <div key={e.degree} className="flex items-start justify-between gap-2 py-1.5 about-edu-border last:border-0">
                     <div>
-                      <p className="text-sm font-semibold text-white/85 font-jakarta leading-tight">{e.degree}</p>
-                      <p className="text-xs text-white/35 font-jakarta mt-0.5">{e.uni}</p>
+                      <p className="text-sm font-semibold about-edu-degree font-jakarta leading-tight">{e.degree}</p>
+                      <p className="text-xs about-edu-uni font-jakarta mt-0.5">{e.uni}</p>
                     </div>
                     <span className="text-xs text-violet-400/70 font-mono font-bold shrink-0">{e.year}</span>
                   </div>
@@ -342,7 +342,7 @@ export default function AboutMe() {
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="bento-card"
             >
-              <p className="text-[0.65rem] uppercase tracking-[0.2em] text-white/25 font-bold font-syne mb-3">Core Expertise</p>
+              <p className="text-[0.65rem] uppercase tracking-[0.2em] about-overline font-bold font-syne mb-3">Core Expertise</p>
               <div className="flex flex-wrap gap-2">
                 {[
                   'GIS & Remote Sensing','Machine Learning','Python','React','Node.js',
