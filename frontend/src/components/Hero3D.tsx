@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { MeshDistortMaterial, Float, Environment, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
@@ -61,12 +61,14 @@ export default function Hero3D() {
   return (
     <div className="absolute inset-0 z-0 pointer-events-auto mix-blend-screen opacity-60">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <ambientLight intensity={isDark ? 0.2 : 0.8} />
-        <directionalLight position={[10, 10, 5]} intensity={isDark ? 2 : 4} color="#f472b6" />
-        <directionalLight position={[-10, -10, -5]} intensity={isDark ? 2 : 4} color="#38bdf8" />
-        <LiquidCrystal />
-        <Environment preset={isDark ? 'night' : 'city'} />
-        <ContactShadows position={[0, -2, 0]} opacity={0.5} scale={10} blur={2} far={4} />
+        <Suspense fallback={null}>
+          <ambientLight intensity={isDark ? 0.2 : 0.8} />
+          <directionalLight position={[10, 10, 5]} intensity={isDark ? 2 : 4} color="#f472b6" />
+          <directionalLight position={[-10, -10, -5]} intensity={isDark ? 2 : 4} color="#38bdf8" />
+          <LiquidCrystal />
+          <Environment preset={isDark ? 'night' : 'city'} />
+          <ContactShadows position={[0, -2, 0]} opacity={0.5} scale={10} blur={2} far={4} />
+        </Suspense>
       </Canvas>
     </div>
   );
