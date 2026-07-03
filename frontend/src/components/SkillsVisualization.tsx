@@ -1,361 +1,251 @@
-import { motion, useInView, useMotionValue, useTransform, animate, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { motion } from 'framer-motion';
+import * as d3 from 'd3-force';
 import SectionHeader from './SectionHeader';
 
-const skills = [
-  { name: 'GIS',            percent: 96, color: '#22D3EE', ring: 1 },
-  { name: 'Python',         percent: 92, color: '#FFD43B', ring: 1 },
-  { name: 'React',          percent: 95, color: '#61DAFB', ring: 1 },
-  { name: 'Research',       percent: 98, color: '#F59E0B', ring: 2 },
-  { name: 'Earth Engine',   percent: 90, color: '#34D399', ring: 2 },
-  { name: 'Node.js',        percent: 88, color: '#68A063', ring: 2 },
-  { name: 'AI & Automation',percent: 85, color: '#EC4899', ring: 3 },
-  { name: 'Next.js',        percent: 90, color: '#8B5CF6', ring: 3 },
-  { name: 'Flutter',        percent: 85, color: '#54C5F8', ring: 3 },
-];
+interface Node extends d3.SimulationNodeDatum {
+  id: string;
+  group: number;
+  radius: number;
+  color: string;
+}
 
-/* Ring config: radius, speed, direction */
-const RINGS = [
-  { radius: 110, duration: 22, dir: 1  },
-  { radius: 180, duration: 34, dir: -1 },
-  { radius: 250, duration: 48, dir: 1  },
-];
+interface Link extends d3.SimulationLinkDatum<Node> {
+  source: string | Node;
+  target: string | Node;
+}
 
-/* ── Animated Counter ──────────────────────────────────────  */
-function AnimatedCounter({ from = 0, to, duration = 1.8 }: { from?: number; to: number; duration?: number }) {
-  const count = useMotionValue(from);
-  const rounded = useTransform(count, (v) => Math.round(v));
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-50px' });
+const skillsData = {
+  nodes: [
+    { id: 'GIS & RS', group: 1, radius: 24, color: '#22D3EE' },
+    { id: 'QGIS', group: 1, radius: 14, color: '#22D3EE' },
+    { id: 'ArcGIS', group: 1, radius: 14, color: '#22D3EE' },
+    { id: 'Earth Engine', group: 1, radius: 16, color: '#22D3EE' },
+    
+    { id: 'Machine Learning', group: 2, radius: 24, color: '#F472B6' },
+    { id: 'Python', group: 2, radius: 18, color: '#F472B6' },
+    { id: 'TensorFlow', group: 2, radius: 14, color: '#F472B6' },
+    { id: 'Computer Vision', group: 2, radius: 16, color: '#F472B6' },
+
+    { id: 'Web Dev', group: 3, radius: 24, color: '#A78BFA' },
+    { id: 'React', group: 3, radius: 18, color: '#A78BFA' },
+    { id: 'Next.js', group: 3, radius: 16, color: '#A78BFA' },
+    { id: 'Node.js', group: 3, radius: 16, color: '#A78BFA' },
+    { id: 'TypeScript', group: 3, radius: 14, color: '#A78BFA' },
+  ] as Node[],
+  links: [
+    { source: 'GIS & RS', target: 'QGIS' },
+    { source: 'GIS & RS', target: 'ArcGIS' },
+    { source: 'GIS & RS', target: 'Earth Engine' },
+    
+    { source: 'Machine Learning', target: 'Python' },
+    { source: 'Machine Learning', target: 'TensorFlow' },
+    { source: 'Machine Learning', target: 'Computer Vision' },
+    { source: 'Python', target: 'Earth Engine' }, // Cross-domain link
+
+    { source: 'Web Dev', target: 'React' },
+    { source: 'Web Dev', target: 'Next.js' },
+    { source: 'Web Dev', target: 'Node.js' },
+    { source: 'Web Dev', target: 'TypeScript' },
+    { source: 'TypeScript', target: 'React' },
+  ] as Link[]
+};
+
+function ConstellationGraph() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
   useEffect(() => {
-    if (inView) animate(count, to, { duration, ease: 'easeOut' });
-  }, [inView, count, to, duration]);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  return <motion.span ref={ref}>{rounded}</motion.span>;
-}
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-/* ── Mobile Bar Skill ──────────────────────────────────────── */
-function MobileSkillBar({ skill, i }: { skill: typeof skills[0]; i: number }) {
+    let width = canvas.parentElement?.clientWidth || 800;
+    let height = window.innerWidth < 768 ? 400 : 600;
+    
+    // Support high DPI displays
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    ctx.scale(dpr, dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+
+
+    const nodes = skillsData.nodes.map(d => ({ ...d }));
+    const links = skillsData.links.map(d => ({ ...d }));
+
+    const simulation = d3.forceSimulation<Node>(nodes)
+      .force('link', d3.forceLink<Node, Link>(links).id(d => d.id).distance(80))
+      .force('charge', d3.forceManyBody().strength(-300))
+      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('collision', d3.forceCollide<Node>().radius((d: Node) => d.radius + 10))
+      .alphaDecay(0.01);
+
+    let animationFrameId: number;
+    let mouseX = 0;
+    let mouseY = 0;
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw links
+      ctx.lineWidth = 1.5;
+      links.forEach(link => {
+        const source = link.source as Node;
+        const target = link.target as Node;
+        
+        // Gradient for link
+        const grad = ctx.createLinearGradient(source.x || 0, source.y || 0, target.x || 0, target.y || 0);
+        grad.addColorStop(0, `${source.color}40`); // 40 is opacity in hex
+        grad.addColorStop(1, `${target.color}40`);
+        
+        ctx.beginPath();
+        ctx.strokeStyle = grad;
+        ctx.moveTo(source.x || 0, source.y || 0);
+        ctx.lineTo(target.x || 0, target.y || 0);
+        ctx.stroke();
+      });
+
+      let currentHover: Node | null = null;
+
+      // Draw nodes
+      nodes.forEach(node => {
+        const x = node.x || 0;
+        const y = node.y || 0;
+        
+        // Check hover
+        const dx = mouseX - x;
+        const dy = mouseY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const isHovered = dist < node.radius + 5;
+        
+        if (isHovered) currentHover = node;
+
+        // Node glow
+        ctx.beginPath();
+        ctx.arc(x, y, node.radius + (isHovered ? 8 : 4), 0, 2 * Math.PI);
+        ctx.fillStyle = `${node.color}20`;
+        ctx.fill();
+
+        // Node center
+        ctx.beginPath();
+        ctx.arc(x, y, node.radius, 0, 2 * Math.PI);
+        ctx.fillStyle = isHovered ? '#fff' : '#0a051e';
+        ctx.strokeStyle = node.color;
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+
+        // Node text
+        ctx.font = `600 ${isHovered ? 12 : 10}px 'Plus Jakarta Sans', sans-serif`;
+        ctx.fillStyle = isHovered ? '#000' : '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Only draw text if it fits in the radius or if it's a main node, or if hovered
+        if (node.radius > 16 || isHovered) {
+            ctx.fillText(isHovered ? node.id : node.id.substring(0, 3) + (node.id.length > 3 ? '..' : ''), x, y);
+        }
+      });
+
+      setHoveredNode(currentHover);
+
+      animationFrameId = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    // Mouse interaction
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      
+      // Light repulsion from mouse
+      simulation.force('mouse', d3.forceRadial(100, mouseX, mouseY).strength(-0.1));
+      simulation.alpha(0.1).restart();
+    };
+    
+    const handleMouseLeave = () => {
+      mouseX = -1000;
+      mouseY = -1000;
+      simulation.force('mouse', null);
+    };
+
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
+
+    const handleResize = () => {
+        width = canvas.parentElement?.clientWidth || 800;
+        height = window.innerWidth < 768 ? 400 : 600;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+
+        simulation.force('center', d3.forceCenter(width / 2, height / 2));
+        simulation.alpha(0.3).restart();
+    };
+    
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      simulation.stop();
+      canvas.removeEventListener('mousemove', handleMouseMove);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -24 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-20px' }}
-      transition={{ duration: 0.55, delay: i * 0.07 }}
-      className="flex items-center gap-4"
-    >
-      <div style={{ width: 120, fontSize: '0.82rem', fontWeight: 700, color: skill.color, flexShrink: 0, letterSpacing: '0.02em' }}>
-        {skill.name}
-      </div>
-      <div style={{ flex: 1, height: 6, background: 'var(--surface)', borderRadius: 999, overflow: 'hidden', position: 'relative' }}>
-        <motion.div
-          style={{ height: '100%', borderRadius: 999, background: `linear-gradient(90deg,${skill.color}60,${skill.color})` }}
-          initial={{ width: 0 }}
-          whileInView={{ width: `${skill.percent}%` }}
-          viewport={{ once: true, margin: '-20px' }}
-          transition={{ duration: 1.2, delay: i * 0.07 + 0.2, ease: 'easeOut' }}
-        />
-        {/* Shimmer */}
-        <motion.div
-          style={{
-            position: 'absolute', top: 0, left: 0, height: '100%',
-            background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.35),transparent)',
-            width: '40%',
-          }}
-          animate={{ x: ['-40%', '300%'] }}
-          transition={{ duration: 2, repeat: Infinity, delay: i * 0.15, ease: 'linear' }}
-        />
-      </div>
-      <div style={{ width: 40, fontSize: '0.78rem', color: 'var(--muted)', textAlign: 'right', flexShrink: 0, fontWeight: 700 }}>
-        <AnimatedCounter to={skill.percent} duration={1.4} />%
-      </div>
-    </motion.div>
-  );
-}
-
-/* ── Desktop Neon Orbit ────────────────────────────────────── */
-function NeonOrbit({
-  hoveredSkill, setHoveredSkill,
-}: {
-  hoveredSkill: string | null;
-  setHoveredSkill: (s: string | null) => void;
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <div
-      ref={containerRef}
-      className="relative mx-auto"
-      style={{ width: 560, height: 560, maxWidth: '100%' }}
-    >
-      {/* SVG orbital tracks + neon glow */}
-      <svg
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', overflow: 'visible' }}
-        viewBox="0 0 560 560"
-      >
-        {RINGS.map((ring, i) => (
-          <g key={i}>
-            {/* Outer glow */}
-            <circle
-              cx="280" cy="280"
-              r={ring.radius}
-              fill="none"
-              stroke={`rgba(167,139,250,${0.06 - i * 0.015})`}
-              strokeWidth={12 - i * 2}
-            />
-            {/* Main track */}
-            <circle
-              cx="280" cy="280"
-              r={ring.radius}
-              fill="none"
-              stroke={`rgba(167,139,250,${0.18 - i * 0.04})`}
-              strokeWidth={1}
-              strokeDasharray="6 8"
-              className="orbit-path"
-              style={{ animationDelay: `${i * 0.8}s` }}
-            />
-          </g>
-        ))}
-      </svg>
-
-      {/* Center node — pulsing aura */}
-      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 10 }}>
-        {/* Expanding rings */}
-        {[1, 2, 3].map(n => (
-          <motion.div
-            key={n}
-            style={{
-              position: 'absolute', top: '50%', left: '50%',
-              width: 160, height: 160, borderRadius: '50%',
-              border: '1px solid rgba(167,139,250,0.2)',
-              transform: 'translate(-50%,-50%)',
-            }}
-            animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
-            transition={{ duration: 3, repeat: Infinity, delay: n * 0.8, ease: 'easeOut' }}
-          />
-        ))}
-
-        {/* Center card */}
-        <motion.div
-          whileHover={{ scale: 1.06 }}
-          style={{
-            width: 140, height: 140, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#7c3aed,#6d28d9)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 40px rgba(124,58,237,0.5), 0 0 80px rgba(124,58,237,0.25), inset 0 1px 0 rgba(255,255,255,0.15)',
-            border: '1px solid rgba(167,139,250,0.3)',
-            position: 'relative',
-            cursor: 'default',
-          }}
+    <div className="relative w-full rounded-3xl border border-white/10 bg-black/40 backdrop-blur-xl overflow-hidden shadow-2xl">
+      <canvas ref={canvasRef} className="block w-full cursor-crosshair" />
+      
+      {/* Floating tooltip overlay */}
+      {hoveredNode && (
+        <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute top-6 left-6 p-4 rounded-xl border border-white/20 backdrop-blur-md bg-white/5 pointer-events-none"
         >
-          <AnimatePresence mode="wait">
-            {hoveredSkill ? (
-              <motion.div
-                key="skill"
-                initial={{ opacity: 0, scale: 0.7, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0)' }}
-                exit={{ opacity: 0, scale: 0.7, filter: 'blur(4px)' }}
-                transition={{ duration: 0.3 }}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}
-              >
-                <span style={{
-                  fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.15em',
-                  color: 'rgba(255,255,255,0.65)', fontWeight: 700,
-                }}>
-                  {hoveredSkill}
-                </span>
-                <span style={{
-                  fontSize: '2.2rem', fontWeight: 900, fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                  background: 'linear-gradient(135deg,#a78bfa,#f472b6)',
-                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                  lineHeight: 1,
-                }}>
-                  <AnimatedCounter
-                    to={skills.find(s => s.name === hoveredSkill)?.percent || 100}
-                    duration={0.8}
-                  />
-                  <span style={{ fontSize: '1rem' }}>%</span>
-                </span>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="core"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3 }}
-                style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}
-              >
-                <span style={{
-                  fontSize: '1.75rem', fontFamily: 'Georgia, serif', fontStyle: 'italic',
-                  fontWeight: 900, color: 'rgba(255,255,255,0.95)',
-                }}>Core</span>
-                <span style={{
-                  fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.2em',
-                  color: 'rgba(255,255,255,0.5)', fontWeight: 700,
-                }}>Skills</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <div className="flex items-center gap-3">
+                <div className="w-3 h-3 rounded-full shadow-[0_0_10px_currentColor]" style={{ backgroundColor: hoveredNode.color, color: hoveredNode.color }} />
+                <span className="font-syne font-bold text-lg text-white tracking-wide">{hoveredNode.id}</span>
+            </div>
+            <p className="text-white/50 text-xs mt-2 font-jakarta uppercase tracking-widest">
+                {hoveredNode.group === 1 ? 'GIS & Remote Sensing' : hoveredNode.group === 2 ? 'AI & Machine Learning' : 'Web Engineering'}
+            </p>
         </motion.div>
-      </div>
-
-      {/* Orbiting skill pills — grouped by ring */}
-      {skills.map((skill) => {
-        const ring = RINGS[(skill.ring - 1) % RINGS.length];
-        const skillsInRing = skills.filter(s => s.ring === skill.ring);
-        const posInRing = skillsInRing.findIndex(s => s.name === skill.name);
-        const angleStep = (Math.PI * 2) / skillsInRing.length;
-        const initialAngle = posInRing * angleStep;
-        const isHovered = hoveredSkill === skill.name;
-
-        return (
-          <motion.div
-            key={skill.name}
-            style={{
-              position: 'absolute',
-              top: '50%', left: '50%',
-              width: ring.radius * 2,
-              height: ring.radius * 2,
-              marginTop: -ring.radius,
-              marginLeft: -ring.radius,
-              zIndex: isHovered ? 20 : 5,
-            }}
-            animate={{ rotate: ring.dir > 0 ? [initialAngle * (180 / Math.PI), initialAngle * (180 / Math.PI) + 360] : [initialAngle * (180 / Math.PI), initialAngle * (180 / Math.PI) - 360] }}
-            transition={{ duration: ring.duration, repeat: Infinity, ease: 'linear' }}
-          >
-            {/* Counter-rotate pill so text stays upright */}
-            <motion.div
-              style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%) translateY(-50%)' }}
-              animate={{ rotate: ring.dir > 0 ? [0, -360] : [0, 360] }}
-              transition={{ duration: ring.duration, repeat: Infinity, ease: 'linear' }}
-            >
-              <motion.div
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
-                whileHover={{ scale: 1.2 }}
-                animate={isHovered ? { scale: 1.15 } : { scale: 1 }}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '6px 14px', borderRadius: 999, whiteSpace: 'nowrap',
-                  background: isHovered
-                    ? `rgba(${skill.color},0.15)`
-                    : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${isHovered ? skill.color : 'rgba(255,255,255,0.08)'}`,
-                  backdropFilter: 'blur(14px)',
-                  cursor: 'pointer',
-                  transition: 'background 0.2s, border-color 0.2s',
-                  boxShadow: isHovered
-                    ? `0 0 20px ${skill.color}55, 0 0 40px ${skill.color}22`
-                    : 'none',
-                }}
-              >
-                {/* Color dot */}
-                <span style={{
-                  width: 6, height: 6, borderRadius: '50%',
-                  background: skill.color,
-                  boxShadow: `0 0 6px ${skill.color}`,
-                  flexShrink: 0,
-                }} />
-                <span style={{
-                  fontSize: '0.72rem', fontWeight: 800,
-                  color: isHovered ? skill.color : 'rgba(255,255,255,0.7)',
-                  letterSpacing: '0.04em',
-                  transition: 'color 0.2s',
-                }}>
-                  {skill.name}
-                </span>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        );
-      })}
+      )}
     </div>
   );
 }
 
-/* ── Main Export ───────────────────────────────────────────── */
 export default function SkillsVisualization() {
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
   return (
-    <section id="skills" className="bg-bg py-24 md:py-36 relative z-20 overflow-hidden">
-      {/* Ambient glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-          width: '60vw', height: '60vw', borderRadius: '50%',
-          background: 'radial-gradient(circle,rgba(124,58,237,0.06),transparent 65%)',
-          filter: 'blur(40px)',
-        }} />
-      </div>
-
-      <div className="max-w-[1200px] mx-auto px-6 md:px-10">
-        <SectionHeader
-          eyebrow="Expertise"
-          title="Skills Arsenal"
-          highlightWord="Arsenal"
-          subtitle={isMobile ? 'Proficiency across all core technologies' : undefined}
+    <section id="skills" className="section-py relative z-20 bg-[var(--bg)]">
+      <div className="section-container">
+        <SectionHeader 
+          badge="Expertise" 
+          title="Skill Constellation" 
+          description="An interactive map of my technical proficiencies across GIS, ML, and Web Development. Hover to explore the nodes." 
         />
-
-        {isMobile
-          ? (
-            <div className="flex flex-col gap-5 w-full">
-              {skills.map((skill, i) => <MobileSkillBar key={skill.name} skill={skill} i={i} />)}
-            </div>
-          )
-          : (
-            <div className="flex items-center justify-center mt-8">
-              <NeonOrbit hoveredSkill={hoveredSkill} setHoveredSkill={setHoveredSkill} />
-            </div>
-          )
-        }
-
-        {/* Skill legend on desktop */}
-        {!isMobile && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="flex flex-wrap gap-3 justify-center mt-10"
-          >
-            {skills.map(skill => (
-              <motion.div
-                key={skill.name}
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
-                whileHover={{ scale: 1.07, y: -2 }}
-                style={{
-                  display: 'flex', alignItems: 'center', gap: 6,
-                  padding: '5px 12px', borderRadius: 999,
-                  border: `1px solid ${hoveredSkill === skill.name ? skill.color : 'rgba(255,255,255,0.06)'}`,
-                  background: hoveredSkill === skill.name ? `${skill.color}15` : 'rgba(255,255,255,0.03)',
-                  cursor: 'default',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: skill.color, boxShadow: `0 0 5px ${skill.color}` }} />
-                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: hoveredSkill === skill.name ? skill.color : 'rgba(255,255,255,0.5)', letterSpacing: '0.05em' }}>
-                  {skill.name}
-                </span>
-                <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
-                  {skill.percent}%
-                </span>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-16 relative"
+        >
+            <ConstellationGraph />
+        </motion.div>
       </div>
     </section>
   );

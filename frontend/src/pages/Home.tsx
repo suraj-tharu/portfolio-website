@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import Hero from '../components/Hero';
+import CredentialsStrip from '../components/CredentialsStrip';
+import Testimonials from '../components/Testimonials';
 import AboutMe from '../components/AboutMe';
 import SelectedWorks from '../components/SelectedWorks';
 import Explorations from '../components/Explorations';
@@ -27,6 +29,7 @@ export default function Home() {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
       <Hero />
+      <CredentialsStrip />
       <div className="section-divider" />
       <AcademicTimeline />
       <div className="section-divider" />
@@ -53,6 +56,8 @@ export default function Home() {
       <AwardsAchievements />
       <div className="section-divider" />
       <Journal />
+      <div className="section-divider" />
+      <Testimonials />
       <div className="section-divider" />
       <Stats />
       <div className="section-divider" />

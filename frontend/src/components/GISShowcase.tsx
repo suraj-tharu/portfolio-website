@@ -54,31 +54,40 @@ export default function GISShowcase() {
     const currentYear = new Date().getFullYear();
     const dynamicCopyright = `&copy; 2026${currentYear > 2026 ? ' - ' + currentYear : ''} Er. Suraj Tharu Chaudhary`;
 
-    const map = L.map('react-gis-map').setView([27.5319, 83.6922], 9);
+    const map = L.map('react-gis-map', {
+      zoomControl: false,
+      attributionControl: false
+    }).setView([27.5319, 83.6922], 9);
     mapRef.current = map;
 
+    // Custom dark luxury tiles
     const tileLayer = L.tileLayer(tileLayerUrls[activeLayer], {
-      attribution: `${dynamicCopyright} &copy; OpenStreetMap &copy; CARTO`,
       subdomains: 'abcd',
       maxZoom: 20
     }).addTo(map);
     tileLayerRef.current = tileLayer;
 
-    // Add Surkhet marker
-    const surkhetMarker = L.marker([28.6015, 81.6322]).addTo(map);
+    // Add luxury glowing markers
+    const createGlowingMarker = (color: string) => L.divIcon({
+      className: 'custom-div-icon',
+      html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 15px ${color}; border: 2px solid white;"></div>`,
+      iconSize: [12, 12],
+      iconAnchor: [6, 6]
+    });
+
+    const surkhetMarker = L.marker([28.6015, 81.6322], { icon: createGlowingMarker('#f472b6') }).addTo(map);
     surkhetMarker.bindPopup(`
-      <div style="color: #0f172a; font-family: 'Space Mono', monospace; min-width: 150px;">
-        <h4 style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">Birendranagar, Surkhet</h4>
-        <p style="font-size: 11px; margin: 0; color: #475569;">LULC Analysis using Random Forest</p>
+      <div style="background: rgba(15,8,35,0.9); border: 1px solid rgba(244,114,182,0.3); padding: 12px; border-radius: 12px; backdrop-filter: blur(10px); color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-width: 180px;">
+        <h4 style="font-weight: 700; margin-bottom: 6px; font-size: 14px; color: #f472b6;">Birendranagar, Surkhet</h4>
+        <p style="font-size: 11px; margin: 0; color: rgba(255,255,255,0.7);">LULC Analysis using Random Forest</p>
       </div>
     `);
 
-    // Add Nawalparasi marker
-    const nawalparasiMarker = L.marker([27.5319, 83.6922]).addTo(map);
+    const nawalparasiMarker = L.marker([27.5319, 83.6922], { icon: createGlowingMarker('#38bdf8') }).addTo(map);
     nawalparasiMarker.bindPopup(`
-      <div style="color: #0f172a; font-family: 'Space Mono', monospace; min-width: 150px;">
-        <h4 style="font-weight: bold; margin-bottom: 4px; font-size: 13px;">Nawalparasi West</h4>
-        <p style="font-size: 11px; margin: 0; color: #475569;">Decadal LULC Dynamics (2016-2026)</p>
+      <div style="background: rgba(15,8,35,0.9); border: 1px solid rgba(56,189,248,0.3); padding: 12px; border-radius: 12px; backdrop-filter: blur(10px); color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-width: 180px;">
+        <h4 style="font-weight: 700; margin-bottom: 6px; font-size: 14px; color: #38bdf8;">Nawalparasi West</h4>
+        <p style="font-size: 11px; margin: 0; color: rgba(255,255,255,0.7);">Decadal LULC Dynamics (2016-2026)</p>
       </div>
     `).openPopup();
 
@@ -89,6 +98,15 @@ export default function GISShowcase() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Handle Layer change with FlyTo animation
+  useEffect(() => {
+    if (mapRef.current && L) {
+      if (activeLayer === '2016') mapRef.current.flyTo([27.5319, 83.6922], 10, { duration: 2.5, easeLinearity: 0.1 });
+      if (activeLayer === '2026') mapRef.current.flyTo([28.6015, 81.6322], 11, { duration: 2.5, easeLinearity: 0.1 });
+      if (activeLayer === 'hotspots') mapRef.current.flyTo([27.9, 82.5], 8, { duration: 2.5, easeLinearity: 0.1 });
+    }
+  }, [activeLayer]);
 
   return (
     <section id="gis-showcase" className="py-24 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">

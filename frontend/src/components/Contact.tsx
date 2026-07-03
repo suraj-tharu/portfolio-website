@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, Mail, MapPin, Clock, ExternalLink, Link2, Code } from 'lucide-react';
 import { useToast } from './Toast';
 import { useFormValidation, FormValidator } from '../utils/formValidation';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import type { ValidationRule } from '../utils/formValidation';
 
 interface ContactFormData {
@@ -117,6 +118,8 @@ export default function Contact() {
     honeypot: [],
   };
 
+  const resetFormRef = useRef<() => void>(() => {});
+
   const handleSubmit = async (values: ContactFormData) => {
     if (values.honeypot) return;
     try {
@@ -133,7 +136,13 @@ export default function Contact() {
       if (res.ok) {
         setSubmittedName(values.name.split(' ')[0]);
         setSubmitted(true);
-        resetForm();
+        resetFormRef.current();
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#a78bfa', '#f472b6', '#38bdf8']
+        });
       } else {
         const error = await res.json();
         addToast(error.message || 'Failed to send. Please try again.', 'error');
@@ -145,6 +154,10 @@ export default function Contact() {
 
   const { values, errors, touched, isSubmitting, handleChange, handleBlur, handleSubmit: formSubmit, resetForm } =
     useFormValidation<ContactFormData>({ name: '', email: '', subject: '', message: '', honeypot: '' }, validationSchema, handleSubmit);
+
+  useEffect(() => {
+    resetFormRef.current = resetForm;
+  }, [resetForm]);
 
   return (
     <section id="contact" className="section-py relative z-20 bg-[var(--bg)] overflow-hidden">

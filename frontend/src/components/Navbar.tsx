@@ -363,6 +363,62 @@ function HamburgerIcon({ open }: { open: boolean }) {
 }
 
 /* ══════════════════════════════════════════════════════════
+   RIPPLE THEME BUTTON
+══════════════════════════════════════════════════════════ */
+function RippleThemeButton({
+  theme, toggleTheme, pillBtn, playHover, playClick,
+}: {
+  theme: string; toggleTheme: () => void;
+  pillBtn: string; playHover: () => void; playClick: () => void;
+}) {
+  const [ripples, setRipples] = useState<{ id: number; x: number; y: number }[]>([]);
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const id = Date.now();
+    setRipples(r => [...r, { id, x: e.clientX - rect.left, y: e.clientY - rect.top }]);
+    setTimeout(() => setRipples(r => r.filter(rp => rp.id !== id)), 600);
+    playClick();
+    toggleTheme();
+  };
+
+  return (
+    <button
+      onClick={handleClick}
+      onMouseEnter={playHover}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      className={`w-9 h-9 relative overflow-hidden ${pillBtn}`}
+    >
+      {ripples.map(rp => (
+        <motion.span
+          key={rp.id}
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            left: rp.x, top: rp.y, x: '-50%', y: '-50%',
+            background: 'radial-gradient(circle, rgba(167,139,250,0.55) 0%, transparent 70%)',
+          }}
+          initial={{ width: 0, height: 0, opacity: 0.9 }}
+          animate={{ width: 90, height: 90, opacity: 0 }}
+          transition={{ duration: 0.55, ease: 'easeOut' }}
+        />
+      ))}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={theme}
+          className="relative z-10 flex"
+          initial={{ rotate: -30, opacity: 0, scale: 0.6 }}
+          animate={{ rotate: 0, opacity: 1, scale: 1 }}
+          exit={{ rotate: 30, opacity: 0, scale: 0.6 }}
+          transition={{ duration: 0.18 }}
+        >
+          {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+        </motion.span>
+      </AnimatePresence>
+    </button>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════
    MAIN NAVBAR
 ══════════════════════════════════════════════════════════ */
 export default function Navbar() {
@@ -536,24 +592,15 @@ export default function Navbar() {
             </span>
           </motion.div>
 
-          {/* Theme */}
-          <button
-            onClick={() => { playClick(); toggleTheme(); }}
-            onMouseEnter={() => playHover()}
-            aria-label={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-            className={`w-9 h-9 ${pillBtn}`}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.span key={theme}
-                initial={{ rotate: -30, opacity: 0, scale: 0.6 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                exit={{ rotate: 30, opacity: 0, scale: 0.6 }}
-                transition={{ duration: 0.18 }}
-              >
-                {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
-              </motion.span>
-            </AnimatePresence>
-          </button>
+          {/* Theme with radial ripple */}
+          <RippleThemeButton
+            theme={theme}
+            toggleTheme={toggleTheme}
+            pillBtn={pillBtn}
+            playHover={playHover}
+            playClick={playClick}
+          />
+
 
           {/* Language – hidden on xs */}
           <button

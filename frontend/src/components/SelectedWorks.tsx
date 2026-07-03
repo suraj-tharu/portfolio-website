@@ -257,7 +257,21 @@ export default function SelectedWorks() {
         }} />
       </div>
 
-      <div className="section-container">
+      <div className="section-container relative">
+        {/* Editorial Section Number */}
+        <div className="absolute top-0 right-0 -translate-y-1/4 select-none pointer-events-none overflow-hidden z-0">
+          <motion.span
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 0.03, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="font-syne font-black text-white inline-block"
+            style={{ fontSize: 'clamp(8rem, 15vw, 15rem)', lineHeight: 0.8 }}
+          >
+            01
+          </motion.span>
+        </div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -640,6 +640,7 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
   return (
     <motion.a
       href={href}
+      data-magnetic="true"
       whileHover={{ scale: 1.06, y: -5 }}
       whileTap={{ scale: 0.97 }}
       style={{
@@ -678,6 +679,7 @@ function SecondaryCTA({ href, children }: { href: string; children: React.ReactN
   return (
     <motion.a
       href={href}
+      data-magnetic="true"
       whileHover={{ scale: 1.06, y: -5 }}
       whileTap={{ scale: 0.97 }}
       onMouseEnter={() => setHovered(true)}

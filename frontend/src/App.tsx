@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
 import CustomCursor from './components/CustomCursor';
-import LoadingScreen from './components/LoadingScreen';
+import CinematicIntro from './components/CinematicIntro';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
@@ -83,7 +83,7 @@ function AppContent() {
       <ScrollToTop />
       <SmoothScroll>
         <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] transition-colors duration-300">
-          {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+          {isLoading && <CinematicIntro onComplete={() => setIsLoading(false)} />}
 
           <CustomCursor />
           <motion.div

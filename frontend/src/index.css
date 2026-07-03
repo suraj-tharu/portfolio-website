@@ -2029,6 +2029,31 @@ html {
   color: rgba(167,139,250,0.8);
   background: rgba(124,58,237,0.06);
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tag-luxury::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: tag-shimmer 4s infinite linear;
+}
+
+@keyframes tag-shimmer {
+  0% { left: -100%; }
+  20% { left: 200%; }
+  100% { left: 200%; }
 }
 
 .tag-luxury:hover {
@@ -2040,7 +2065,6 @@ html {
 /* ── Input Underline Style ─────────────────────────────────── */
 .input-underline {
   background: transparent;
-  border: none;
   border-bottom: 1.5px solid rgba(167,139,250,0.2);
   border-radius: 0;
   color: var(--text);
