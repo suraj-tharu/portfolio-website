@@ -155,11 +155,12 @@ const globalStyles = `
     filter: none !important;
   }
   /* Role badge text */
-  .light .hero-role {
+  .light .hero-role span {
     background: linear-gradient(135deg, #5b21b6, #7c3aed 35%, #db2777 70%, #e11d48) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
+    color: transparent !important;
   }
   /* Description text */
   .light .hero-description {
@@ -503,6 +504,13 @@ function RoleBadge({ role }: { role: string }) {
         exit={{ opacity: 0, y: -14, filter: 'blur(8px)', scale: 1.02 }}
         transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
         className="inline-block"
+        style={{
+          background: 'var(--role-grad)',
+          WebkitBackgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          color: 'transparent',
+        }}
       >
         {role}
       </motion.span>
@@ -1047,10 +1055,6 @@ export default function Hero() {
                 fontStyle: 'italic',
                 fontWeight: 600,
                 minHeight: '2.5rem',
-                background: 'var(--role-grad)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
                 letterSpacing: '0.01em',
               }}
             >

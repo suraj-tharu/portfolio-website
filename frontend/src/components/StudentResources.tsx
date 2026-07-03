@@ -23,7 +23,10 @@ export default function StudentResources() {
 
   useEffect(() => {
     fetch('/api/learning-materials')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error('API not available');
+        return r.json();
+      })
       .then(data => setMaterials(data.materials || []))
       .catch(() => {});
   }, []);

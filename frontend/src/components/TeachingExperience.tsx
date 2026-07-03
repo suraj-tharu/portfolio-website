@@ -5,15 +5,15 @@ const panels = [
   {
     title: "Institutions",
     content: (
-      <p className="text-xl text-text-secondary dark:text-white/70 leading-relaxed">
-        I have shaped the minds of tomorrow at prestigious institutions including <span className="text-text-primary dark:text-white">Buddhi Bikash Secondary School</span>, <span className="text-text-primary dark:text-white">Trishahid Namuna Ma. Vi.</span>, and various other technical schools across Nepal.
+      <p className="text-xl text-text-secondary leading-relaxed">
+        I have shaped the minds of tomorrow at prestigious institutions including <span className="text-text-primary font-bold">Buddhi Bikash Secondary School</span>, <span className="text-text-primary font-bold">Trishahid Namuna Ma. Vi.</span>, and various other technical schools across Nepal.
       </p>
     )
   },
   {
     title: "Courses Taught",
     content: (
-      <ul className="text-xl text-text-secondary dark:text-white/70 leading-relaxed space-y-4">
+      <ul className="text-xl text-text-secondary leading-relaxed space-y-4">
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Digital Design &amp; Architecture</li>
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Object-Oriented Programming (C++)</li>
         <li className="flex items-center gap-4"><div className="w-2 h-2 rounded-full bg-blue-500 shrink-0" /> Database Management Systems</li>
@@ -24,7 +24,7 @@ const panels = [
   {
     title: "Philosophy",
     content: (
-      <p className="text-xl text-text-secondary dark:text-white/70 leading-relaxed italic border-l-4 border-blue-500 pl-6">
+      <p className="text-xl text-text-secondary leading-relaxed italic border-l-4 border-blue-500 pl-6">
         "Education is not just about transferring knowledge; it is about inspiring curiosity, fostering critical thinking, and empowering students to build solutions for real-world problems. I believe in a hands-on, practical approach to engineering."
       </p>
     )
@@ -52,11 +52,11 @@ export default function TeachingExperience() {
       ref={containerRef}
       className="relative z-20 h-[300vh] bg-[var(--bg)]"
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-gradient-to-br from-[#0a0f1d] via-[#1c0a2e] to-[#000000] border-y border-stroke/30 flex flex-col justify-center">
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[var(--surface)] border-y border-stroke/30 flex flex-col justify-center">
         
         <div className="absolute top-12 left-6 md:left-16 z-40 pointer-events-none">
-          <span className="text-xs dark:text-muted text-amber-600 uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
-          <h2 className="text-3xl md:text-5xl dark:text-text-primary text-amber-600 font-display italic">
+          <span className="text-xs text-muted uppercase tracking-[0.3em] mb-2 block">Pedagogy</span>
+          <h2 className="text-3xl md:text-5xl text-text-primary font-display italic">
             5+ Years of Teaching
           </h2>
         </div>
@@ -68,13 +68,13 @@ export default function TeachingExperience() {
               key={i}
               animate={{
                 width: activePanel === i ? 24 : 8,
-                backgroundColor: activePanel === i ? 'rgb(139, 92, 246)' : 'rgba(255,255,255,0.3)'
+                backgroundColor: activePanel === i ? 'rgb(139, 92, 246)' : 'rgba(107,114,128,0.5)'
               }}
               transition={{ duration: 0.3 }}
               className="h-2 rounded-full"
             />
           ))}
-          <span className="ml-2 text-xs text-muted dark:text-white/50">
+          <span className="ml-2 text-xs text-muted">
             {activePanel + 1} / {panels.length}
           </span>
         </div>
@@ -86,7 +86,7 @@ export default function TeachingExperience() {
           {panels.map((panel, i) => (
             <div key={i} className="w-screen h-full flex-shrink-0 flex items-center px-6 md:px-16">
               <div className="max-w-2xl">
-                <h3 className="text-4xl md:text-6xl font-bold text-text-primary dark:text-white mb-6">{panel.title}</h3>
+                <h3 className="text-4xl md:text-6xl font-bold text-text-primary mb-6">{panel.title}</h3>
                 {panel.content}
               </div>
             </div>

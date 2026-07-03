@@ -176,7 +176,7 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
               fontFamily: 'Syne, sans-serif',
               fontWeight: 900,
               fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
-              color: 'rgba(255,255,255,0.2)',
+              color: 'var(--muted)',
               letterSpacing: '0.08em',
               textAlign: 'right',
               paddingTop: 34,
@@ -215,7 +215,7 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
               fontFamily: 'Syne, sans-serif',
               fontWeight: 900,
               fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
-              color: 'rgba(255,255,255,0.2)',
+              color: 'var(--muted)',
               letterSpacing: '0.08em',
               paddingTop: 34,
             }}
@@ -237,8 +237,8 @@ function CardInner({ item, color, glow, hovered, isEdu }: {
       borderRadius: 20,
       background: hovered
         ? `linear-gradient(135deg, ${glow}, rgba(0,0,0,0) 80%)`
-        : 'rgba(255,255,255,0.025)',
-      border: `1px solid ${hovered ? color + '40' : 'rgba(255,255,255,0.07)'}`,
+        : 'var(--surface)',
+      border: `1px solid ${hovered ? color + '40' : 'var(--stroke)'}`,
       boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.3), 0 0 30px ${glow}` : '0 4px 20px rgba(0,0,0,0.15)',
       backdropFilter: 'blur(16px)',
       transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
@@ -290,7 +290,7 @@ function CardInner({ item, color, glow, hovered, isEdu }: {
             fontSize: 'clamp(1rem,1.8vw,1.3rem)',
             fontWeight: 700,
             fontStyle: 'italic',
-            color: 'rgba(255,255,255,0.92)',
+            color: 'var(--text)',
             lineHeight: 1.25,
             letterSpacing: '-0.01em',
           }}>
@@ -304,7 +304,7 @@ function CardInner({ item, color, glow, hovered, isEdu }: {
         <p style={{
           fontFamily: 'Plus Jakarta Sans, sans-serif',
           fontSize: '0.8rem',
-          color: 'rgba(255,255,255,0.38)',
+          color: 'var(--text-secondary)',
           lineHeight: 1.7,
           marginBottom: 14,
         }}>
@@ -314,9 +314,8 @@ function CardInner({ item, color, glow, hovered, isEdu }: {
 
       {/* Footer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: 5,
-          fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)',
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5,
+          fontSize: '0.72rem', color: 'var(--muted)',
           fontFamily: 'Plus Jakarta Sans, sans-serif',
         }}>
           <MapPin size={11} style={{ color, flexShrink: 0 }} />
@@ -387,7 +386,10 @@ export default function AcademicTimeline() {
 
   useEffect(() => {
     fetch('/api/timeline')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) throw new Error('API not available');
+        return r.json();
+      })
       .then(data => {
         if (data.timeline?.length > 0) {
           setTimeline(data.timeline.map((item: TimelineEvent) => ({
@@ -455,7 +457,7 @@ export default function AcademicTimeline() {
             fontFamily: 'Syne, sans-serif', fontWeight: 900,
             fontSize: 'clamp(2.4rem,5.5vw,5rem)',
             lineHeight: 0.95, letterSpacing: '-0.035em',
-            color: 'rgba(255,255,255,0.95)',
+            color: 'var(--text)',
             marginBottom: 20,
           }}>
             Experience &{' '}
@@ -471,7 +473,7 @@ export default function AcademicTimeline() {
           <p style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif',
             fontSize: 'clamp(0.88rem,1.3vw,1.05rem)',
-            color: 'rgba(255,255,255,0.35)',
+            color: 'var(--text-secondary)',
             lineHeight: 1.8, maxWidth: 520, margin: '0 auto',
           }}>
             A continuous path of growth through engineering, teaching, and research —
@@ -504,7 +506,7 @@ export default function AcademicTimeline() {
         </div>
 
         {/* ── MOBILE SINGLE-COLUMN ── */}
-        <div className="md:hidden" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="md:hidden" style={{ flexDirection: 'column' }}>
           {items.map((item, i) => (
             <MobileTimelineCard key={i} item={item} index={i} />
           ))}

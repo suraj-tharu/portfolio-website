@@ -34,7 +34,10 @@ export default function Journal() {
 
   useEffect(() => {
     fetch('/api/portfolio-data')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('API not available');
+        return res.json();
+      })
       .then(data => {
         if (data.blogs && data.blogs.length > 0) {
           setDbBlogs(data.blogs.slice(0, 4));

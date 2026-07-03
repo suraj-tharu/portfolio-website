@@ -297,7 +297,10 @@ export default function SelectedWorks() {
 
   useEffect(() => {
     fetch('/api/portfolio-data')
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error('API not available');
+        return r.json();
+      })
       .then((data) => { if (data.projects?.length > 0) setDbProjects(data.projects.slice(0, 6)); })
       .catch(() => {/* use defaults */});
   }, []);
