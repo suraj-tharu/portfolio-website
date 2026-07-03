@@ -28,7 +28,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     return () => {
       cancelAnimationFrame(rafId);
-      try { lenis?.destroy(); } catch (_) { /* ignore */ }
+      try { lenis?.destroy(); } catch { /* ignore */ }
     };
   }, []);
 
