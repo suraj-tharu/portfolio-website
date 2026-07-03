@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Hls from 'hls.js';
 import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
 import { TextReveal } from './premium/TextReveal';
+import Hero3D from './Hero3D';
 import { useLanguage } from '../context/LanguageContext';
 import { useGreeting } from './GreetingBanner';
 import { Sparkles, ArrowRight, MapPin, Star, Zap } from 'lucide-react';
@@ -915,6 +916,9 @@ export default function Hero() {
             }}
           />
         </motion.div>
+
+        {/* ── 3D HERO CANVAS ── */}
+        <Hero3D />
 
         {/* ── PARTICLES ── */}
         <ParticleField />

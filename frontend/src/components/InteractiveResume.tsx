@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
-import { FileText, Download } from 'lucide-react';
+import { FileText, Eye } from 'lucide-react';
+import { useState } from 'react';
+import ResumeModal from './ResumeModal';
 
 export default function InteractiveResume() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
     <section id="resume" className="bg-bg py-24 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 flex flex-col items-center">
@@ -36,10 +39,8 @@ export default function InteractiveResume() {
           Get a detailed overview of my academic background, technical skills, teaching experience, and professional references in a neatly formatted document.
         </motion.p>
 
-        <motion.a
-          href="/Suraj_Tharu_CV.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
+        <motion.button
+          onClick={() => setIsModalOpen(true)}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -50,11 +51,13 @@ export default function InteractiveResume() {
           <span className="absolute inset-[2px] bg-bg rounded-full opacity-0 group-hover:opacity-100 z-0 transition-opacity" />
           <span className="relative z-10 flex items-center gap-3">
             <span style={{ transform: "perspective(1000px) rotateX(20deg) rotateY(-20deg)" }}>
-              <Download size={20} />
+              <Eye size={20} />
             </span>
-            Download Full Resume
+            View Boarding Pass
           </span>
-        </motion.a>
+        </motion.button>
+
+        <ResumeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       </div>
     </section>

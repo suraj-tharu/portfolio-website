@@ -1,21 +1,27 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useProgress } from '@react-three/drei';
 
 export default function CinematicIntro({ onComplete }: { onComplete: () => void }) {
   const [stage, setStage] = useState<'logo' | 'wipe' | 'done'>('logo');
+  const { progress, active } = useProgress();
 
   useEffect(() => {
-    const t1 = setTimeout(() => setStage('wipe'), 2200);
-    const t2 = setTimeout(() => {
-      setStage('done');
-      onComplete();
-    }, 3400); // 1.2s wipe duration
+    // Only proceed to wipe when 3D assets are fully loaded and a minimum of 2 seconds have passed.
+    // Progress starts at 0 and goes to 100.
+    if (progress === 100 || (!active && progress === 0)) {
+      const t1 = setTimeout(() => setStage('wipe'), 1000); // Small delay after hitting 100%
+      const t2 = setTimeout(() => {
+        setStage('done');
+        onComplete();
+      }, 2200); // 1.2s wipe duration
 
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-    };
-  }, [onComplete]);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+      };
+    }
+  }, [progress, active, onComplete]);
 
   if (stage === 'done') return null;
 
@@ -70,13 +76,28 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1, duration: 0.6 }}
-                className="mt-6 text-center"
+                className="mt-6 flex flex-col items-center text-center w-full max-w-xs"
               >
                 <div className="text-white/80 font-syne font-bold tracking-[0.3em] uppercase text-sm md:text-base">
                   Suraj Tharu Chaudhary
                 </div>
                 <div className="text-white/40 font-jakarta text-[0.65rem] tracking-[0.4em] uppercase mt-2">
                   Portfolio · 2026
+                </div>
+
+                {/* Progress Bar & Percentage */}
+                <div className="mt-8 w-48 flex flex-col items-center gap-3">
+                  <div className="w-full h-[2px] bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-gradient-to-r from-[#a78bfa] to-[#38bdf8] rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${Math.max(progress, 15)}%` }}
+                      transition={{ ease: "easeOut", duration: 0.5 }}
+                    />
+                  </div>
+                  <div className="text-white/30 text-[0.6rem] font-mono tracking-widest">
+                    {Math.round(Math.max(progress, 15))}%
+                  </div>
                 </div>
               </motion.div>
             </motion.div>

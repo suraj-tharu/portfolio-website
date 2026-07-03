@@ -22,6 +22,7 @@ import { DeveloperMode } from './components/DeveloperMode';
 import NoiseTexture from './components/NoiseTexture';
 import ScrollProgress from './components/ScrollProgress';
 import AmbientSoundToggle from './components/AmbientSoundToggle';
+import PageWrapper from './components/PageWrapper';
 
 import Home from './pages/Home';
 
@@ -113,10 +114,10 @@ function AppContent() {
             <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-brand">Loading...</div>}>
               <AnimatePresence mode="wait">
                 <Routes location={location} key={location.pathname}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/research" element={<ResearchDashboard />} />
-                  <Route path="/learning-hub" element={<LearningHub />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+                  <Route path="/research" element={<PageWrapper><ResearchDashboard /></PageWrapper>} />
+                  <Route path="/learning-hub" element={<PageWrapper><LearningHub /></PageWrapper>} />
+                  <Route path="*" element={<PageWrapper><NotFound /></PageWrapper>} />
                 </Routes>
               </AnimatePresence>
             </Suspense>
