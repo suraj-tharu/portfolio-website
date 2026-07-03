@@ -90,6 +90,7 @@ export default function CommandPalette() {
             cmd.label.toLowerCase().includes(query.toLowerCase()) ||
             cmd.description?.toLowerCase().includes(query.toLowerCase())
         );
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setFiltered(filtered);
         setSelectedIndex(0);
     }, [query]);

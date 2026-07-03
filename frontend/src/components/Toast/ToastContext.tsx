@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useCallback, useState } from 'react';
 import Toast from './Toast';
 
@@ -18,6 +19,10 @@ export const ToastContext = createContext<ToastContextType | undefined>(undefine
 export function ToastProvider({ children }: { children: React.ReactNode }) {
     const [toasts, setToasts] = useState<ToastMessage[]>([]);
 
+    const removeToast = useCallback((id: string) => {
+        setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, []);
+
     const addToast = useCallback((
         message: string,
         type: 'success' | 'error' | 'info' | 'warning' = 'info',
@@ -33,11 +38,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
         }
 
         return id;
-    }, []);
-
-    const removeToast = useCallback((id: string) => {
-        setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, []);
+    }, [removeToast]);
 
     return (
         <ToastContext.Provider value={{ addToast, removeToast }}>

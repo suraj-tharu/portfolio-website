@@ -21,7 +21,6 @@ export default function OptimizedImage({
     placeholder,
     width,
     height,
-    quality = 75,
     srcSet,
     sizes,
     className = '',

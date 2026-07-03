@@ -13,7 +13,7 @@ interface LogRocketInstance {
 }
 
 // Stub — disabled to prevent CSP violations
-export const initLogRocket = (_userId?: string) => {
+export const initLogRocket = () => {
     // LogRocket is disabled — configure a valid app ID and CSP nonce to re-enable.
 };
 
@@ -80,11 +80,7 @@ export const trackFormInteraction = (formName: string, action: string) => {
 };
 
 // Setup analytics on app initialization — LogRocket/Hotjar are disabled
-export const initializeAnalytics = (_options?: {
-    enableLogRocket?: boolean;
-    enableHotjar?: boolean;
-    userId?: string;
-}) => {
+export const initializeAnalytics = () => {
     trackScrollDepth();
     trackTimeOnPage();
 

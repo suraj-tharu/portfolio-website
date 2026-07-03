@@ -28,7 +28,7 @@ export const TypeWriter = ({
         });
 
         return () => controls.stop();
-    }, [text, speed, onComplete]);
+    }, [text, speed, onComplete, count]);
 
     return (
         <div className={className}>

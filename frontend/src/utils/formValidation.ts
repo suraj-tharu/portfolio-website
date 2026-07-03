@@ -4,7 +4,7 @@
 
 export interface ValidationRule {
     type: 'required' | 'email' | 'url' | 'phone' | 'minLength' | 'maxLength' | 'pattern' | 'custom';
-    value?: any;
+    value?: unknown;
     message: string;
 }
 
@@ -38,7 +38,7 @@ export class FormValidator {
      * Validate phone number (basic)
      */
     static isValidPhone(phone: string): boolean {
-        const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+        const phoneRegex = /^[\d\s+()-]{10,}$/;
         return phoneRegex.test(phone.replace(/\s/g, ''));
     }
 
@@ -52,7 +52,7 @@ export class FormValidator {
     /**
      * Validate field against rules
      */
-    static validateField(value: any, rules: ValidationRule[]): ValidationResult {
+    static validateField(value: unknown, rules: ValidationRule[]): ValidationResult {
         const errors: string[] = [];
 
         for (const rule of rules) {

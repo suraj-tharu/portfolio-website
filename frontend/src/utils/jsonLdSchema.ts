@@ -3,7 +3,7 @@
  * Suggestion #12: Structured Data (JSON-LD)
  */
 
-export const addJsonLdSchema = (schema: Record<string, any>) => {
+export const addJsonLdSchema = (schema: Record<string, unknown>) => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.textContent = JSON.stringify(schema);

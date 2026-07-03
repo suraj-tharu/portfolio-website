@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const secretCode = ['s', 'u', 'r', 'a', 'j'];
+
 export function DeveloperMode() {
   const [isActive, setIsActive] = useState(false);
-  const secretCode = ['s', 'u', 'r', 'a', 'j'];
   
   useEffect(() => {
     let input = '';

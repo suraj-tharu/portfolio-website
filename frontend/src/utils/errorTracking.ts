@@ -104,7 +104,6 @@ export class PerformanceMonitor {
         const duration = performance.now() - startTime;
         if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
             // Only log performance measurements in development
-            // eslint-disable-next-line no-console
             console.debug(`[Performance] ${label}: ${duration.toFixed(2)}ms`);
         }
         this.marks.delete(label);

@@ -36,10 +36,7 @@ initErrorTracking(); // Add your Sentry DSN here if available
 enableConsoleSpy();
 
 // Initialize analytics (LogRocket & Hotjar)
-initializeAnalytics({
-  enableLogRocket: true,
-  enableHotjar: true
-});
+initializeAnalytics();
 
 // Set default meta tags and JSON-LD schema
 setMetaTags(defaultMetaTags);

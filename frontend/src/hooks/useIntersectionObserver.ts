@@ -36,11 +36,12 @@ export function useIntersectionObserver(options: IntersectionOptions = {}) {
             }
         );
 
-        observer.observe(ref.current);
+        const currentRef = ref.current;
+        observer.observe(currentRef);
 
         return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, [threshold, margin, triggerOnce]);
@@ -117,7 +118,6 @@ export function usePerformanceMonitor(componentName: string) {
             for (const entry of list.getEntries()) {
                 if (entry.name.includes(componentName)) {
                     if (typeof process !== 'undefined' && process.env.NODE_ENV === 'development') {
-                        // eslint-disable-next-line no-console
                         console.debug(`[Performance] ${componentName}:`, {
                             duration: entry.duration,
                             startTime: entry.startTime,
@@ -130,7 +130,7 @@ export function usePerformanceMonitor(componentName: string) {
 
         try {
             perfObserver.observe({ entryTypes: ['measure', 'navigation'] });
-        } catch (e) {
+        } catch {
             // Fallback for browsers that don't support PerformanceObserver
         }
 

@@ -36,12 +36,13 @@ export interface ResumeData {
 export const exportToPDF = async (resumeData: ResumeData) => {
     try {
         // Using a library like jsPDF - optional dependency
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let jsPDF: any;
         try {
-            // @ts-ignore - jsPDF is optional dependency
+            // @ts-expect-error - jsPDF is optional dependency
             const module = await import('jspdf');
             jsPDF = module.jsPDF;
-        } catch (e) {
+        } catch {
             alert('jsPDF library not installed. Install with: npm install jspdf');
             return;
         }
@@ -53,6 +54,7 @@ export const exportToPDF = async (resumeData: ResumeData) => {
         const pageHeight = doc.internal.pageSize.getHeight();
 
         // Helper to add text with page break
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const addTextWithPageBreak = (text: string, options: any = {}) => {
             if (yPosition > pageHeight - 20) {
                 doc.addPage();
@@ -155,11 +157,12 @@ export const exportToPDF = async (resumeData: ResumeData) => {
 export const exportToWord = async (resumeData: ResumeData) => {
     try {
         // Using a library like docx - optional dependency
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let docxModules: any;
         try {
-            // @ts-ignore - docx is optional dependency
+            // @ts-expect-error - docx is optional dependency
             docxModules = await import('docx');
-        } catch (e) {
+        } catch {
             alert('docx library not installed. Install with: npm install docx');
             return;
         }

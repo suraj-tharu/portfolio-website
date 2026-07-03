@@ -16,7 +16,6 @@ export function FadeUp({
   children, delay = 0, duration = 0.7, y = 24,
   className, style, as = 'div', once = true,
 }: FadeUpProps) {
-  // @ts-ignore
   const Tag = motion[as] || motion.div;
   return (
     <Tag

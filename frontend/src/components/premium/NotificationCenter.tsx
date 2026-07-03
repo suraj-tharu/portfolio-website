@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 // NotificationCenter - Premium notification system with toast notifications
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useCallback } from 'react';

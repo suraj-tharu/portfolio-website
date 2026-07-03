@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
@@ -40,6 +41,7 @@ export const PerformanceMonitor: React.FC = () => {
         // Memory usage (Chrome only — non-standard API)
         if ('memory' in performance) {
             const memMetrics = (performance as Performance & { memory: { usedJSHeapSize: number } }).memory;
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setMetrics(prev => ({
                 ...prev,
                 memory: Math.round(memMetrics.usedJSHeapSize / 1048576),
@@ -131,6 +133,24 @@ interface AnalyticsData {
     trafficSources: Record<string, number>;
 }
 
+const StatCard: React.FC<{ label: string; value: number | string; unit?: string }> = ({
+    label,
+    value,
+    unit = '',
+}) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg"
+    >
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{label}</p>
+        <motion.p className="text-2xl font-bold text-violet-600">
+            {value}
+            {unit}
+        </motion.p>
+    </motion.div>
+);
+
 export const AnalyticsDashboard: React.FC = () => {
     const [analyticsData, setAnalyticsData] = useState<AnalyticsData>({
         pageViews: 0,
@@ -147,30 +167,13 @@ export const AnalyticsDashboard: React.FC = () => {
         try {
             const storedAnalytics = localStorage.getItem('siteAnalytics');
             if (storedAnalytics) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setAnalyticsData(JSON.parse(storedAnalytics) as AnalyticsData);
             }
         } catch {
             // Ignore malformed or tampered localStorage data
         }
     }, []);
-
-    const StatCard: React.FC<{ label: string; value: number | string; unit?: string }> = ({
-        label,
-        value,
-        unit = '',
-    }) => (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg"
-        >
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{label}</p>
-            <motion.p className="text-2xl font-bold text-violet-600">
-                {value}
-                {unit}
-            </motion.p>
-        </motion.div>
-    );
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

@@ -21,6 +21,7 @@ export const AnimatedCodeBlock = ({
 
     useEffect(() => {
         if (!animated) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDisplayedCode(code);
             return;
         }
