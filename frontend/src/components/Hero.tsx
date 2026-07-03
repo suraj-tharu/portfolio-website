@@ -257,54 +257,42 @@ function UltraAuroraBg() {
         backgroundRepeat: 'repeat', backgroundSize: '128px 128px',
       }} />
 
-      {/* ORBS — layered depth */}
+      {/* ORBS — 4 layers (reduced from 6 for performance), GPU-composited */}
       {/* Violet primary */}
       <div className="hero-orb" style={{
         position: 'absolute', top: '-30%', left: '-25%',
-        width: '90vw', height: '90vw', borderRadius: '50%',
-        background: 'radial-gradient(circle at 35% 35%,rgba(124,58,237,0.62),rgba(219,39,119,0.3) 40%,rgba(56,189,248,0.08) 65%,transparent 75%)',
+        width: '85vw', height: '85vw', borderRadius: '50%',
+        background: 'radial-gradient(circle at 35% 35%,rgba(124,58,237,0.55),rgba(219,39,119,0.25) 40%,rgba(56,189,248,0.06) 65%,transparent 75%)',
         filter: 'blur(100px)',
-        animation: 'aurora-drift-1 18s ease-in-out infinite',
+        animation: 'aurora-drift-1 20s ease-in-out infinite',
+        willChange: 'transform',
       }} />
       {/* Cyan-teal */}
       <div className="hero-orb" style={{
         position: 'absolute', bottom: '-25%', right: '-22%',
-        width: '80vw', height: '80vw', borderRadius: '50%',
-        background: 'radial-gradient(circle at 65% 65%,rgba(6,182,212,0.45),rgba(59,130,246,0.28) 40%,rgba(124,58,237,0.12) 65%,transparent 78%)',
+        width: '75vw', height: '75vw', borderRadius: '50%',
+        background: 'radial-gradient(circle at 65% 65%,rgba(6,182,212,0.4),rgba(59,130,246,0.22) 40%,rgba(124,58,237,0.08) 65%,transparent 78%)',
         filter: 'blur(110px)',
-        animation: 'aurora-drift-2 22s ease-in-out infinite',
+        animation: 'aurora-drift-2 25s ease-in-out infinite',
+        willChange: 'transform',
       }} />
       {/* Pink midfield */}
       <div className="hero-orb" style={{
         position: 'absolute', top: '28%', left: '42%', transform: 'translateX(-50%)',
-        width: '65vw', height: '65vw', borderRadius: '50%',
-        background: 'radial-gradient(circle,rgba(244,114,182,0.28),rgba(167,139,250,0.22) 40%,transparent 68%)',
+        width: '60vw', height: '60vw', borderRadius: '50%',
+        background: 'radial-gradient(circle,rgba(244,114,182,0.22),rgba(167,139,250,0.18) 40%,transparent 68%)',
         filter: 'blur(90px)',
-        animation: 'aurora-drift-3 14s ease-in-out infinite 1.5s',
-      }} />
-      {/* Emerald accent */}
-      <div className="hero-orb" style={{
-        position: 'absolute', top: '55%', right: '10%',
-        width: '40vw', height: '40vw', borderRadius: '50%',
-        background: 'radial-gradient(circle,rgba(52,211,153,0.22),rgba(16,185,129,0.1) 50%,transparent 72%)',
-        filter: 'blur(70px)',
-        animation: 'aurora-drift-4 12s ease-in-out infinite 2s',
-      }} />
-      {/* Royal gold accent */}
-      <div className="hero-orb" style={{
-        position: 'absolute', top: '15%', right: '5%',
-        width: '30vw', height: '30vw', borderRadius: '50%',
-        background: 'radial-gradient(circle,rgba(245,158,11,0.14),rgba(251,191,36,0.08) 50%,transparent 70%)',
-        filter: 'blur(60px)',
-        animation: 'aurora-drift-5 17s ease-in-out infinite 3s',
+        animation: 'aurora-drift-3 16s ease-in-out infinite 1.5s',
+        willChange: 'transform',
       }} />
       {/* Deep indigo upper-right */}
       <div className="hero-orb" style={{
         position: 'absolute', top: '-10%', right: '-10%',
-        width: '55vw', height: '55vw', borderRadius: '50%',
-        background: 'radial-gradient(circle,rgba(79,70,229,0.3),rgba(99,102,241,0.14) 50%,transparent 70%)',
+        width: '50vw', height: '50vw', borderRadius: '50%',
+        background: 'radial-gradient(circle,rgba(79,70,229,0.25),rgba(99,102,241,0.1) 50%,transparent 70%)',
         filter: 'blur(85px)',
-        animation: 'aurora-drift-1 20s ease-in-out infinite 4s',
+        animation: 'aurora-drift-1 22s ease-in-out infinite 4s',
+        willChange: 'transform',
       }} />
 
       {/* Luxury dot grid */}
@@ -354,7 +342,8 @@ const PARTICLE_COLORS = [
 ];
 
 // Seeded deterministic values — generated once at module load, never on re-render
-const PARTICLES = Array.from({ length: 28 }, (_, i) => {
+// Reduced from 28 to 16 particles for performance
+const PARTICLES = Array.from({ length: 16 }, (_, i) => {
   // Simple LCG-like deterministic spread based on index
   const t = (i * 137.508 + 42) % 100;
   const u = (i * 97.321 + 17) % 100;

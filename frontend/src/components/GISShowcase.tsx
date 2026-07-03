@@ -53,7 +53,9 @@ export default function GISShowcase() {
 
     const map = L.map('react-gis-map', {
       zoomControl: false,
-      attributionControl: false
+      attributionControl: false,
+      scrollWheelZoom: false,   // FIX: prevent scroll-jacking on page scroll
+      tap: false,               // FIX: prevent tap events capturing touch scroll
     }).setView([27.5319, 83.6922], 9);
     mapRef.current = map;
 
@@ -150,6 +152,23 @@ export default function GISShowcase() {
         >
           {/* Actual Leaflet Map Element */}
           <div id="react-gis-map" className="w-full h-full min-h-[450px]" style={{ height: '100%' }} />
+
+          {/* Scroll hint — appears briefly on hover */}
+          <div className="pointer-events-none absolute inset-0 z-[999] flex items-center justify-center opacity-0 transition-opacity duration-300"
+            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
+            id="gis-scroll-hint"
+          >
+            <div style={{
+              padding: '10px 20px', borderRadius: 12,
+              background: 'rgba(167,139,250,0.15)',
+              border: '1px solid rgba(167,139,250,0.3)',
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: '0.78rem', fontWeight: 600,
+              letterSpacing: '0.05em',
+            }}>
+              🖱 Use Ctrl + Scroll to zoom map
+            </div>
+          </div>
 
           {/* Dynamic Layer Info Overlay */}
           <div className="absolute bottom-6 left-6 z-[1000] right-6 md:right-auto md:w-[300px] pointer-events-auto">

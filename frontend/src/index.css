@@ -377,6 +377,190 @@ section {
   position: relative;
 }
 
+/* ════════════════════════════════════════════════════════════
+   ULTRA-PREMIUM GLOBAL COMPONENT STYLES
+════════════════════════════════════════════════════════════ */
+
+/* Premium glassmorphism card */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-card:hover {
+  background: linear-gradient(135deg, rgba(167,139,250,0.08) 0%, rgba(244,114,182,0.04) 100%);
+  border-color: rgba(167,139,250,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(167,139,250,0.1), inset 0 1px 0 rgba(255,255,255,0.07);
+  transform: translateY(-2px);
+}
+.light .glass-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 100%);
+  border-color: rgba(109,40,217,0.12);
+}
+.light .glass-card:hover {
+  background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(245,243,255,0.8) 100%);
+  border-color: rgba(109,40,217,0.2);
+  box-shadow: 0 12px 40px rgba(109,40,217,0.1), 0 0 0 1px rgba(109,40,217,0.08);
+}
+
+/* Premium scroll-reveal animation */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.reveal-up {
+  animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Luxury gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #f472b6 50%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.light .gradient-text {
+  background: linear-gradient(135deg, #6d28d9 0%, #db2777 50%, #0369a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Section spacing consistency */
+.section-padding {
+  padding-top: clamp(64px, 10vw, 120px);
+  padding-bottom: clamp(64px, 10vw, 120px);
+}
+
+/* Premium inset card glow on hover */
+@keyframes card-glow-enter {
+  from { box-shadow: 0 0 0 0 rgba(124,58,237,0); }
+  to   { box-shadow: 0 0 40px rgba(124,58,237,0.25), 0 20px 60px rgba(0,0,0,0.3); }
+}
+
+/* Tag/badge shimmer */
+@keyframes badge-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.badge-shimmer {
+  background: linear-gradient(90deg, rgba(167,139,250,0.08) 0%, rgba(244,114,182,0.15) 50%, rgba(167,139,250,0.08) 100%);
+  background-size: 200% auto;
+  animation: badge-shimmer 3s linear infinite;
+}
+
+/* Ultra premium horizontal rule / section divider */
+.premium-hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(124,58,237,0.15) 20%,
+    rgba(244,114,182,0.25) 50%,
+    rgba(56,189,248,0.15) 80%,
+    transparent 100%
+  );
+  position: relative;
+  margin: 4px 0;
+}
+.premium-hr::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #7c3aed, #ec4899, #38bdf8);
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.7;
+}
+
+/* Magnetic hover effect (JS handles the translate) */
+.magnetic-hover {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* Premium input focus glow for Contact form */
+input:focus, textarea:focus {
+  caret-color: #a78bfa;
+}
+input::placeholder, textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+/* Scrollbar — ultra-thin premium */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #7c3aed, #ec4899);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #a78bfa, #f472b6);
+}
+
+/* Light mode scrollbar */
+.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #6d28d9, #db2777);
+}
+
+/* Section card glass override for light mode */
+.light .section-card {
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(109,40,217,0.1);
+  box-shadow: 0 4px 24px rgba(109,40,217,0.06);
+}
+
+/* Timeline card special styles */
+.timeline-card {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.timeline-card:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Smooth image loading */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* GPU-layer optimization for animated elements */
+.gpu-layer {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-glow-pulse,
+  .badge-shimmer,
+  .reveal-up {
+    animation: none !important;
+  }
+  .glass-card:hover,
+  .timeline-card:hover {
+    transform: none !important;
+  }
+}
+
+
 
 
 /* ════════════════════════════════════════════════════════════

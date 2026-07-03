@@ -43,7 +43,7 @@ export default function Journal() {
           setDbBlogs(data.blogs.slice(0, 4));
         }
       })
-      .catch(console.error)
+      .catch(() => {})
       .finally(() => {
         // Short delay so skeleton is visible even on fast connections
         setTimeout(() => setIsLoading(false), 600);

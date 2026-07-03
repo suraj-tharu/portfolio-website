@@ -31,16 +31,16 @@ function LuxuryInput({
   const [focused, setFocused] = useState(false);
   const hasValue = value.length > 0;
 
-  const borderColor = error ? '#f87171' : focused ? '#a78bfa' : 'rgba(255,255,255,0.08)';
+  const borderColor = error ? '#f87171' : focused ? '#a78bfa' : 'var(--stroke)';
   const shadow = focused ? '0 0 0 1px rgba(167,139,250,0.3), 0 4px 20px rgba(167,139,250,0.05)' : 'none';
 
   const sharedStyle = {
     width: '100%',
-    background: focused ? 'rgba(167,139,250,0.04)' : 'rgba(255,255,255,0.025)',
+    background: focused ? 'rgba(167,139,250,0.06)' : 'var(--surface)',
     borderRadius: 14,
     border: `1px solid ${borderColor}`,
     padding: '14px 16px',
-    color: 'rgba(255,255,255,0.88)',
+    color: 'var(--text)',
     outline: 'none',
     fontFamily: 'Plus Jakarta Sans, sans-serif',
     fontSize: '0.9rem',
@@ -56,7 +56,7 @@ function LuxuryInput({
           display: 'block', marginBottom: 8,
           fontFamily: 'Syne, sans-serif', fontWeight: 700,
           fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase',
-          color: focused ? '#a78bfa' : 'rgba(255,255,255,0.25)',
+          color: focused ? '#a78bfa' : 'var(--text-secondary)',
           transition: 'color 0.2s ease',
         }}
       >

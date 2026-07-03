@@ -78,6 +78,14 @@ function AppContent() {
     }
   }, [systemColorScheme, setTheme]);
 
+  // Hard safety timeout — content ALWAYS renders after 5s max
+  useEffect(() => {
+    const safetyTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+    return () => clearTimeout(safetyTimer);
+  }, []);
+
 
   return (
     <>

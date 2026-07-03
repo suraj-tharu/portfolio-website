@@ -118,8 +118,8 @@ function FullscreenMenu({
       animate={{ clipPath: 'circle(150% at calc(100% - 2.5rem) 2.5rem)' }}
       exit={{ clipPath: 'circle(0% at calc(100% - 2.5rem) 2.5rem)' }}
       transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}
-      className="fixed inset-0 z-[98] flex flex-col overflow-hidden
-        bg-white dark:bg-[#06060e]"
+      className="fixed inset-0 z-[9998] flex flex-col overflow-hidden
+        bg-white/95 dark:bg-[#06060e]/95 backdrop-blur-2xl"
       aria-modal="true" role="dialog" aria-label="Navigation menu"
     >
       {/* ── Decorative background ── */}
@@ -485,7 +485,7 @@ export default function Navbar() {
         transition={{ duration: 0.32, ease: [0.4, 0, 0.2, 1] }}
         role="navigation" aria-label="Main navigation"
         className={`
-          fixed z-[100] left-0 right-0 top-0
+          fixed z-[9999] left-0 right-0 top-0
           flex items-center justify-between
           px-4 sm:px-5 py-2.5
           transition-all duration-500 ease-out

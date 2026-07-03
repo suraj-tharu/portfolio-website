@@ -139,7 +139,6 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
   const isLeft = index % 2 === 0;
   const isEdu = item.type === 'education';
   const color = isEdu ? '#a78bfa' : '#34d399';
-  const glow = isEdu ? 'rgba(167,139,250,0.12)' : 'rgba(52,211,153,0.1)';
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -162,7 +161,7 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
             onMouseLeave={() => setHovered(false)}
             style={{ width: '100%', maxWidth: 460 }}
           >
-            <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+            <CardInner item={item} color={color} hovered={hovered} isEdu={isEdu} />
             <NodeDot color={color} side="left" />
           </motion.div>
         ) : (
@@ -202,7 +201,7 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
             onMouseLeave={() => setHovered(false)}
             style={{ width: '100%', maxWidth: 460, position: 'relative' }}
           >
-            <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+            <CardInner item={item} color={color} hovered={hovered} isEdu={isEdu} />
             <NodeDot color={color} side="right" />
           </motion.div>
         ) : (
@@ -228,20 +227,12 @@ function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
   );
 }
 
-function CardInner({ item, color, glow, hovered, isEdu }: {
-  item: TimelineEvent; color: string; glow: string; hovered: boolean; isEdu: boolean;
+function CardInner({ item, color, hovered, isEdu }: {
+  item: TimelineEvent; color: string; hovered: boolean; isEdu: boolean;
 }) {
   return (
-    <div style={{
+    <div className={`glass-card timeline-card ${hovered ? 'hovered' : ''}`} style={{
       padding: '22px 24px',
-      borderRadius: 20,
-      background: hovered
-        ? `linear-gradient(135deg, ${glow}, rgba(0,0,0,0) 80%)`
-        : 'var(--surface)',
-      border: `1px solid ${hovered ? color + '40' : 'var(--stroke)'}`,
-      boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.3), 0 0 30px ${glow}` : '0 4px 20px rgba(0,0,0,0.15)',
-      backdropFilter: 'blur(16px)',
-      transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -341,7 +332,6 @@ function CardInner({ item, color, glow, hovered, isEdu }: {
 function MobileTimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
   const isEdu = item.type === 'education';
   const color = isEdu ? '#a78bfa' : '#34d399';
-  const glow = isEdu ? 'rgba(167,139,250,0.12)' : 'rgba(52,211,153,0.1)';
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -371,7 +361,7 @@ function MobileTimelineCard({ item, index }: { item: TimelineEvent; index: numbe
       </div>
       {/* Card */}
       <div style={{ flex: 1, paddingBottom: 24 }}>
-        <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+        <CardInner item={item} color={color} hovered={hovered} isEdu={isEdu} />
       </div>
     </motion.div>
   );
@@ -506,7 +496,7 @@ export default function AcademicTimeline() {
         </div>
 
         {/* ── MOBILE SINGLE-COLUMN ── */}
-        <div className="md:hidden" style={{ flexDirection: 'column' }}>
+        <div className="md:hidden flex flex-col gap-6 relative">
           {items.map((item, i) => (
             <MobileTimelineCard key={i} item={item} index={i} />
           ))}

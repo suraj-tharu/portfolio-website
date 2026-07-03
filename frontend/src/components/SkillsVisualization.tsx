@@ -121,7 +121,22 @@ function ConstellationGraph() {
       .force('charge', d3.forceManyBody().strength(-300))
       .force('center', d3.forceCenter(width / 2, height / 2))
       .force('collision', d3.forceCollide<D3Node>().radius((d: D3Node) => d.radius + 10))
-      .alphaDecay(0.01);
+      .alphaDecay(0.01)
+      .stop(); // Stop internal D3 timer to manually tick in idle time
+
+    const reqIdle = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
+    const cancelIdle = window.cancelIdleCallback || clearTimeout;
+    let idleId: number;
+
+    const tickSim = () => {
+      idleId = reqIdle(() => {
+        sim.tick();
+        if (sim.alpha() > sim.alphaMin()) {
+          tickSim();
+        }
+      });
+    };
+    tickSim();
     let raf: number; let mx = -1000; let my = -1000;
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
@@ -155,7 +170,8 @@ function ConstellationGraph() {
     const onMove = (e: MouseEvent) => {
       const r = canvas.getBoundingClientRect();
       mx = e.clientX - r.left; my = e.clientY - r.top;
-      sim.force('mouse', d3.forceRadial(100, mx, my).strength(-0.1)).alpha(0.1).restart();
+      sim.force('mouse', d3.forceRadial(100, mx, my).strength(-0.1)).alpha(0.1);
+      cancelIdle(idleId as any); tickSim();
     };
     const onLeave = () => { mx = -1000; my = -1000; sim.force('mouse', null); };
     canvas.addEventListener('mousemove', onMove); canvas.addEventListener('mouseleave', onLeave);
@@ -163,11 +179,12 @@ function ConstellationGraph() {
       width = canvas.parentElement?.clientWidth || 800; height = window.innerWidth < 768 ? 400 : 520;
       canvas.width = width * dpr; canvas.height = height * dpr; ctx.scale(dpr, dpr);
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
-      sim.force('center', d3.forceCenter(width / 2, height / 2)).alpha(0.3).restart();
+      sim.force('center', d3.forceCenter(width / 2, height / 2)).alpha(0.3);
+      cancelIdle(idleId as any); tickSim();
     };
     window.addEventListener('resize', onResize);
     return () => {
-      cancelAnimationFrame(raf); sim.stop();
+      cancelAnimationFrame(raf); sim.stop(); cancelIdle(idleId as any);
       canvas.removeEventListener('mousemove', onMove); canvas.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('resize', onResize);
     };
