@@ -48,7 +48,7 @@ export default function CustomCursor() {
   }, []);
 
   /* Trail animation loop */
-  const animateTrail = useCallback(() => {
+  const animateTrail = useCallback(function loop() {
     const newTrail = [...trailRef.current];
     for (let i = TRAIL_COUNT - 1; i > 0; i--) {
       const prev = newTrail[i - 1];
@@ -61,7 +61,7 @@ export default function CustomCursor() {
     newTrail[0] = { ...posRef.current };
     trailRef.current = newTrail;
     setTrail([...newTrail]);
-    rafRef.current = requestAnimationFrame(animateTrail);
+    rafRef.current = requestAnimationFrame(loop);
   }, []);
 
   /* Mouse tracking + magnetic snap */
