@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 const pageVariants = {
   initial: { opacity: 0, y: 15, scale: 0.98, filter: 'blur(10px)' },
@@ -8,8 +8,8 @@ const pageVariants = {
 };
 
 const pageTransition = {
-  type: 'tween',
-  ease: [0.16, 1, 0.3, 1],
+  type: 'tween' as const,
+  ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
   duration: 0.8,
 };
 

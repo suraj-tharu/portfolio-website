@@ -1,243 +1,322 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import SectionHeader from './SectionHeader';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Star, Quote } from 'lucide-react';
 
-const globalStyles = `
-  @keyframes testimonial-shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
-  }
-`;
-
-const testimonials = [
+/* ═══════════════════════════════════════════════════════
+   DATA — expanded for a fuller marquee
+═══════════════════════════════════════════════════════ */
+const TESTIMONIALS = [
   {
-    id: 1,
     quote: "Suraj has a unique ability to bridge complex engineering concepts with real-world applications. His work in GIS and ML is truly outstanding.",
     name: "Dr. Anil Kumar",
     role: "Professor of Computer Engineering",
     company: "Tribhuvan University",
     initial: "A",
     color: '#a78bfa',
+    stars: 5,
   },
   {
-    id: 2,
     quote: "Working with Suraj was a game-changer. He completely transformed our data pipeline, bringing efficiency and clarity to our research projects.",
     name: "Priya Sharma",
     role: "Lead Researcher",
     company: "Nepal Tech Innovation",
     initial: "P",
     color: '#f472b6',
+    stars: 5,
   },
   {
-    id: 3,
     quote: "An exceptional educator and a brilliant mind. Suraj doesn't just teach — he inspires the next generation of engineers to think bigger and bolder.",
     name: "Ramesh Thapa",
     role: "Former Student",
     company: "Now Software Engineer at Google",
     initial: "R",
     color: '#38bdf8',
+    stars: 5,
+  },
+  {
+    quote: "Suraj's spatial analysis skills are world-class. The GIS dashboard he built for our environmental project saved weeks of manual analysis.",
+    name: "Dr. Meena Rai",
+    role: "Environmental Researcher",
+    company: "Nepal Academy of Science",
+    initial: "M",
+    color: '#34d399',
+    stars: 5,
+  },
+  {
+    quote: "The machine learning model Suraj developed achieved 94% accuracy on a notoriously difficult dataset. Truly impressive technical depth.",
+    name: "Bikash Gurung",
+    role: "Data Science Lead",
+    company: "Leapfrog Technology",
+    initial: "B",
+    color: '#fbbf24',
+    stars: 5,
+  },
+  {
+    quote: "Suraj's teaching style makes complex concepts accessible. My students consistently perform better after his workshops.",
+    name: "Sujata Pokharel",
+    role: "School Principal",
+    company: "Trishahid Namuna Ma. Vi.",
+    initial: "S",
+    color: '#fb923c',
+    stars: 5,
   },
 ];
 
-export default function Testimonials() {
-  const [active, setActive] = useState(0);
-  const [direction, setDirection] = useState(1);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+/* ═══════════════════════════════════════════════════════
+   GLOBAL MARQUEE STYLES
+═══════════════════════════════════════════════════════ */
+const MARQUEE_STYLE = `
+  @keyframes marquee-left {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes marquee-right {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+  .marquee-left  { animation: marquee-left  32s linear infinite; }
+  .marquee-right { animation: marquee-right 28s linear infinite; }
+  .marquee-track:hover .marquee-left,
+  .marquee-track:hover .marquee-right { animation-play-state: paused; }
+`;
 
-  // Inject styles
-  useEffect(() => {
-    const id = 'testimonial-styles';
-    if (!document.getElementById(id)) {
-      const style = document.createElement('style');
-      style.id = id;
-      style.textContent = globalStyles;
-      document.head.appendChild(style);
-    }
-  }, []);
-
-  const goTo = useCallback((idx: number) => {
-    setDirection(idx > active ? 1 : -1);
-    setActive(idx);
-  }, [active]);
-
-  const next = useCallback(() => {
-    goTo((active + 1) % testimonials.length);
-  }, [active, goTo]);
-
-  // Auto-advance every 5 seconds
-  useEffect(() => {
-    timerRef.current = setInterval(next, 5000);
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [next]);
-
-  const t = testimonials[active];
-
-  const variants = {
-    enter: (d: number) => ({ opacity: 0, x: d * 60, filter: 'blur(12px)' }),
-    center: { opacity: 1, x: 0, filter: 'blur(0px)' },
-    exit:  (d: number) => ({ opacity: 0, x: d * -60, filter: 'blur(12px)' }),
-  };
-
+/* ═══════════════════════════════════════════════════════
+   TESTIMONIAL CARD
+═══════════════════════════════════════════════════════ */
+function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <section id="testimonials" className="section-py relative z-20 bg-[var(--bg)] overflow-hidden">
-      {/* Background glow */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        width: 340,
+        flexShrink: 0,
+        padding: '24px 26px',
+        borderRadius: 20,
+        background: hovered
+          ? `linear-gradient(135deg, ${t.color}12, rgba(0,0,0,0))` 
+          : 'rgba(255,255,255,0.025)',
+        border: `1px solid ${hovered ? t.color + '35' : 'rgba(255,255,255,0.07)'}`,
+        boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.3), 0 0 24px ${t.color}18` : '0 4px 20px rgba(0,0,0,0.12)',
+        backdropFilter: 'blur(16px)',
+        transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+        userSelect: 'none',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Decorative quote mark */}
+      <Quote
+        size={32}
         style={{
-          width: '60vw', height: '40vw', borderRadius: '50%',
-          background: `radial-gradient(ellipse, ${t.color}12 0%, transparent 65%)`,
-          filter: 'blur(80px)',
-          transition: 'background 0.8s ease',
+          position: 'absolute', top: 16, right: 18,
+          color: t.color, opacity: 0.12,
+          transform: 'rotate(180deg)',
         }}
       />
 
-      {/* Ornamental quote marks */}
-      <div
-        className="absolute top-12 left-[8%] select-none pointer-events-none font-[Cormorant_Garamond,serif]"
-        style={{ fontSize: 'clamp(8rem,15vw,14rem)', lineHeight: 1, color: t.color, opacity: 0.06, transition: 'color 0.8s ease' }}
-        aria-hidden="true"
-      >
-        "
+      {/* Stars */}
+      <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
+        {Array.from({ length: t.stars }).map((_, i) => (
+          <Star key={i} size={12} style={{ color: '#fbbf24', fill: '#fbbf24' }} />
+        ))}
       </div>
+
+      {/* Quote */}
+      <p style={{
+        fontFamily: 'Cormorant Garamond, Georgia, serif',
+        fontSize: 'clamp(0.95rem,1.4vw,1.1rem)',
+        fontStyle: 'italic',
+        fontWeight: 500,
+        color: 'rgba(240,242,248,0.85)',
+        lineHeight: 1.65,
+        marginBottom: 20,
+      }}>
+        "{t.quote}"
+      </p>
+
+      {/* Divider */}
+      <div style={{
+        height: 1, marginBottom: 18,
+        background: `linear-gradient(90deg, transparent, ${t.color}40, transparent)`,
+      }} />
+
+      {/* Author */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        {/* Avatar */}
+        <div style={{
+          width: 42, height: 42, borderRadius: '50%', flexShrink: 0,
+          background: `linear-gradient(135deg, ${t.color}50, ${t.color}20)`,
+          border: `2px solid ${t.color}40`,
+          boxShadow: `0 0 16px ${t.color}25`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontFamily: 'Syne, sans-serif', fontWeight: 900,
+          fontSize: '1rem', color: t.color,
+        }}>
+          {t.initial}
+        </div>
+        <div>
+          <p style={{
+            fontFamily: 'Syne, sans-serif', fontWeight: 700,
+            fontSize: '0.85rem', color: 'rgba(255,255,255,0.88)',
+            letterSpacing: '-0.01em',
+          }}>
+            {t.name}
+          </p>
+          <p style={{
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: '0.7rem', color: 'rgba(255,255,255,0.38)',
+            marginTop: 2,
+          }}>
+            {t.role}
+          </p>
+          <p style={{
+            fontFamily: 'Syne, sans-serif', fontWeight: 700,
+            fontSize: '0.62rem', color: t.color,
+            letterSpacing: '0.08em', textTransform: 'uppercase',
+            marginTop: 2,
+          }}>
+            {t.company}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   MARQUEE ROW
+═══════════════════════════════════════════════════════ */
+function MarqueeRow({ items, direction }: { items: typeof TESTIMONIALS; direction: 'left' | 'right' }) {
+  // Duplicate for seamless loop
+  const doubled = [...items, ...items];
+  return (
+    <div className="marquee-track" style={{ overflow: 'hidden', width: '100%' }}>
       <div
-        className="absolute bottom-12 right-[8%] select-none pointer-events-none font-[Cormorant_Garamond,serif] rotate-180"
-        style={{ fontSize: 'clamp(8rem,15vw,14rem)', lineHeight: 1, color: t.color, opacity: 0.06, transition: 'color 0.8s ease' }}
-        aria-hidden="true"
+        className={direction === 'left' ? 'marquee-left' : 'marquee-right'}
+        style={{ display: 'flex', gap: 16, width: 'max-content' }}
       >
-        "
+        {doubled.map((t, i) => (
+          <TestimonialCard key={i} t={t} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN EXPORT
+═══════════════════════════════════════════════════════ */
+export default function Testimonials() {
+  const row1 = TESTIMONIALS;
+  const row2 = [...TESTIMONIALS].reverse();
+
+  return (
+    <section id="testimonials" style={{ position: 'relative', zIndex: 20, background: 'var(--bg)', overflow: 'hidden' }} className="section-py">
+      <style>{MARQUEE_STYLE}</style>
+
+      {/* Ambient glow */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <div style={{
+          position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%,-50%)',
+          width: '60vw', height: '40vw', borderRadius: '50%',
+          background: 'radial-gradient(ellipse,rgba(167,139,250,0.06) 0%,transparent 65%)',
+          filter: 'blur(80px)',
+        }} />
+        <div style={{
+          position: 'absolute', bottom: '20%', right: '-5%',
+          width: '30vw', height: '30vw', borderRadius: '50%',
+          background: 'radial-gradient(circle,rgba(244,114,182,0.05),transparent 65%)',
+          filter: 'blur(60px)',
+        }} />
       </div>
 
       <div className="section-container relative">
-        <SectionHeader
-          badge="Endorsements"
-          title="What People Say"
-          highlightWord="People"
-          description="Reflections from colleagues, mentors, and students on our shared journey."
-        />
+        {/* ── HEADER ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          style={{ textAlign: 'center', marginBottom: 'clamp(40px,6vw,72px)' }}
+        >
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 7,
+            padding: '6px 18px', borderRadius: 999, marginBottom: 20,
+            fontFamily: 'Syne, sans-serif', fontWeight: 700,
+            fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase',
+            background: 'rgba(167,139,250,0.08)',
+            border: '1px solid rgba(167,139,250,0.2)',
+            color: 'rgba(167,139,250,0.75)',
+          }}>
+            <Star size={10} />
+            Endorsements
+          </span>
 
-        {/* Carousel */}
-        <div className="relative max-w-3xl mx-auto mt-4">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={active}
-              custom={direction}
-              variants={variants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col items-center text-center gap-8"
-            >
-              {/* The quote itself */}
-              <blockquote>
-                <p
-                  style={{
-                    fontFamily: 'Cormorant Garamond, Georgia, serif',
-                    fontSize: 'clamp(1.6rem, 3.5vw, 2.8rem)',
-                    fontWeight: 400,
-                    fontStyle: 'italic',
-                    lineHeight: 1.3,
-                    letterSpacing: '-0.01em',
-                    color: 'rgba(240,242,248,0.92)',
-                  }}
-                >
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-              </blockquote>
+          <h2 style={{
+            fontFamily: 'Syne, sans-serif', fontWeight: 900,
+            fontSize: 'clamp(2.4rem,5.5vw,5rem)',
+            lineHeight: 0.95, letterSpacing: '-0.035em',
+            color: 'rgba(255,255,255,0.95)',
+            marginBottom: 18,
+          }}>
+            What{' '}
+            <span style={{
+              background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              fontStyle: 'italic',
+            }}>
+              People
+            </span>{' '}
+            Say
+          </h2>
 
-              {/* Divider */}
-              <motion.div
-                className="w-12 h-px"
-                style={{ background: `linear-gradient(90deg, transparent, ${t.color}, transparent)` }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-              />
+          <p style={{
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: 'clamp(0.88rem,1.3vw,1.05rem)',
+            color: 'rgba(255,255,255,0.35)',
+            lineHeight: 1.8, maxWidth: 480, margin: '0 auto',
+          }}>
+            Reflections from colleagues, mentors, and students on our shared journey.
+          </p>
+        </motion.div>
+      </div>
 
-              {/* Author */}
-              <div className="flex items-center gap-4">
-                {/* Avatar */}
-                <div
-                  className="relative w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0 text-white font-syne font-black text-xl"
-                  style={{
-                    background: `linear-gradient(135deg, ${t.color}60, ${t.color}20)`,
-                    border: `2px solid ${t.color}50`,
-                    boxShadow: `0 0 20px ${t.color}30, 0 0 40px ${t.color}15`,
-                  }}
-                >
-                  {/* Rotating ring */}
-                  <div
-                    className="absolute inset-[-4px] rounded-full border border-dashed"
-                    style={{
-                      borderColor: `${t.color}30`,
-                      animation: 'ring-rotate 8s linear infinite',
-                    }}
-                  />
-                  {t.initial}
-                </div>
+      {/* ── MARQUEE ROWS (full-bleed) ── */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        style={{ display: 'flex', flexDirection: 'column', gap: 16, position: 'relative' }}
+      >
+        {/* Gradient fade masks */}
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none',
+          background: 'linear-gradient(90deg, var(--bg) 0%, transparent 8%, transparent 92%, var(--bg) 100%)',
+        }} />
 
-                <div className="text-left">
-                  <p className="font-syne font-bold text-white text-base tracking-tight">{t.name}</p>
-                  <p className="font-jakarta text-white/50 text-sm mt-0.5">{t.role}</p>
-                  <p
-                    className="font-jakarta text-[0.65rem] uppercase tracking-wider mt-1 font-bold"
-                    style={{ color: t.color }}
-                  >
-                    {t.company}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        <MarqueeRow items={row1} direction="left" />
+        <MarqueeRow items={row2} direction="right" />
+      </motion.div>
 
-        {/* Navigation dots */}
-        <div className="flex items-center justify-center gap-3 mt-12">
-          {testimonials.map((test, idx) => (
-            <button
-              key={test.id}
-              onClick={() => {
-                if (timerRef.current) clearInterval(timerRef.current);
-                goTo(idx);
-                timerRef.current = setInterval(next, 5000);
-              }}
-              aria-label={`Go to testimonial ${idx + 1}`}
-              className="transition-all duration-400 focus:outline-none rounded-full"
-            >
-              <motion.div
-                animate={{
-                  width: idx === active ? 28 : 8,
-                  height: 8,
-                  opacity: idx === active ? 1 : 0.3,
-                }}
-                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                style={{
-                  borderRadius: 999,
-                  background: idx === active
-                    ? `linear-gradient(90deg, ${test.color}, #f472b6)`
-                    : 'rgba(255,255,255,0.3)',
-                  boxShadow: idx === active ? `0 0 12px ${test.color}70` : 'none',
-                }}
-              />
-            </button>
-          ))}
-        </div>
-
-        {/* Timer bar */}
-        <div className="max-w-3xl mx-auto mt-4">
-          <div className="h-px bg-white/5 rounded-full overflow-hidden">
-            <motion.div
-              key={`timer-${active}`}
-              className="h-full rounded-full"
-              initial={{ width: '0%' }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 5, ease: 'linear' }}
-              style={{
-                background: `linear-gradient(90deg, ${t.color}, #f472b6)`,
-              }}
-            />
-          </div>
-        </div>
+      {/* ── BOTTOM TAGLINE ── */}
+      <div className="section-container">
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          style={{
+            textAlign: 'center', marginTop: 'clamp(28px,4vw,48px)',
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: '0.7rem', letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: 'rgba(255,255,255,0.15)',
+          }}
+        >
+          ✦ &nbsp; Hover to pause &nbsp; ✦
+        </motion.p>
       </div>
     </section>
   );

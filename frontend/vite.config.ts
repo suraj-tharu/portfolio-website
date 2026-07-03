@@ -4,6 +4,24 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: (id: string) => {
+          // Framer-motion gets its own chunk (it's large)
+          if (id.includes('framer-motion')) return 'framer-motion';
+          // Lucide icons
+          if (id.includes('lucide-react')) return 'lucide';
+          // D3 force simulation
+          if (id.includes('d3-force') || id.includes('d3-')) return 'd3';
+          // React + ReactDOM vendor chunk
+          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) return 'react-vendor';
+          // Other large node_modules
+          if (id.includes('node_modules')) return 'vendor';
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
@@ -31,6 +49,7 @@ export default defineConfig({
         ]
       },
       workbox: {
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB — allows the large JS bundle
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
         runtimeCaching: [
           {

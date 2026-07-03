@@ -1,7 +1,6 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useInView, useMotionValue, useTransform, animate } from 'framer-motion';
-import { useEffect } from 'react';
-import { MapPin, GraduationCap, Briefcase, Users, BookOpen, Code2, Coffee, Award } from 'lucide-react';
+import { MapPin, GraduationCap, Briefcase, Users, BookOpen, Code2, Coffee, Award, type LucideIcon } from 'lucide-react';
 
 /* ── Animated Counter ────────────────────────────────────── */
 function AnimatedCounter({ to, suffix = '', duration = 2, delay = 0 }: {
@@ -30,7 +29,7 @@ function AnimatedCounter({ to, suffix = '', duration = 2, delay = 0 }: {
 function StatCard({
   icon: Icon, label, value, suffix, color, delay, colSpan = false,
 }: {
-  icon: React.ElementType; label: string; value: number; suffix?: string;
+  icon: LucideIcon; label: string; value: number; suffix?: string;
   color: string; delay: number; colSpan?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);

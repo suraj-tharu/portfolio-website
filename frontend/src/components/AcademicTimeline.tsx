@@ -1,324 +1,393 @@
 import {
-  motion, useScroll, useTransform, useSpring,
-  useMotionValue, useMotionTemplate, type MotionValue
+  motion, useScroll, useSpring,
 } from 'framer-motion';
-import { useRef, useState, useEffect, useCallback } from 'react';
-import { GraduationCap, Briefcase, MapPin, Calendar } from 'lucide-react';
-import { useSoundEffects } from '../hooks/useSoundEffects';
-import SectionHeader from './SectionHeader';
+import { useRef, useState, useEffect } from 'react';
+import { GraduationCap, Briefcase, MapPin, Calendar, ArrowRight } from 'lucide-react';
 
+/* ═══════════════════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════════════════ */
 type TimelineEvent = {
   id?: number;
   year: string;
   role: string;
   location: string;
   type?: 'education' | 'work';
+  desc?: string;
 };
 
 const defaultTimeline: TimelineEvent[] = [
-  { year: '2017 - 2021', role: 'B.E. Computer Engineering',   location: 'Mid-West University (Himalaya College of Engineering)', type: 'education' },
-  { year: '2021',        role: 'Nepal Telecom Internship',     location: 'Kathmandu', type: 'work' },
-  { year: '2021 - 2023', role: 'Instructor',                   location: 'Buddhi Bikash Secondary School', type: 'work' },
-  { year: '2024 - 2026', role: 'Senior Instructor',            location: 'Trishahid Namuna Ma. Vi.', type: 'work' },
-  { year: '2024 - Present', role: 'MSc Information System Engineering', location: 'Purbanchal University', type: 'education' },
+  {
+    year: '2017 – 2021',
+    role: 'B.E. Computer Engineering',
+    location: 'Mid-West University · Himalaya College of Engineering',
+    type: 'education',
+    desc: 'Foundation in computer science, algorithms, and systems engineering with a focus on emerging technologies.',
+  },
+  {
+    year: '2021',
+    role: 'Nepal Telecom Internship',
+    location: 'Kathmandu, Nepal',
+    type: 'work',
+    desc: 'Hands-on experience with national-scale telecommunications infrastructure and network operations.',
+  },
+  {
+    year: '2021 – 2023',
+    role: 'Instructor',
+    location: 'Buddhi Bikash Secondary School',
+    type: 'work',
+    desc: 'Taught computer science and mathematics, mentoring over 200 students in technical fundamentals.',
+  },
+  {
+    year: '2024 – 2026',
+    role: 'Senior Instructor',
+    location: 'Trishahid Namuna Ma. Vi.',
+    type: 'work',
+    desc: 'Led advanced computer science curriculum design and delivery for senior secondary students.',
+  },
+  {
+    year: '2024 – Present',
+    role: 'MSc Information System Engineering',
+    location: 'Purbanchal University',
+    type: 'education',
+    desc: 'Graduate research in GIS, remote sensing, and machine learning applications for spatial data analysis.',
+  },
 ];
 
-/* ── 3D Tilt Card ────────────────────────────────────────── */
-function TimelineCard({
-  item, index, mouseX, mouseY,
-}: {
-  item: TimelineEvent;
-  index: number;
-  mouseX: MotionValue<number>;
-  mouseY: MotionValue<number>;
-}) {
-  const { playHover } = useSoundEffects();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [rect, setRect] = useState<DOMRect | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
-
-  /* Local tilt springs */
-  const tiltX = useSpring(0, { stiffness: 300, damping: 30 });
-  const tiltY = useSpring(0, { stiffness: 300, damping: 30 });
-
-  const updateRect = useCallback(() => {
-    if (cardRef.current) setRect(cardRef.current.getBoundingClientRect());
-  }, []);
-
-  useEffect(() => {
-    updateRect();
-    window.addEventListener('scroll', updateRect, { passive: true });
-    window.addEventListener('resize', updateRect, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', updateRect);
-      window.removeEventListener('resize', updateRect);
-    };
-  }, [updateRect]);
-
-  /* Track mouse for spotlight */
-  const x = useTransform(mouseX, (val: number) => rect ? val - rect.left : 0);
-  const y = useTransform(mouseY, (val: number) => rect ? val - rect.top : 0);
-  const maskImage = useMotionTemplate`radial-gradient(450px circle at ${x}px ${y}px, black, transparent)`;
-
-  /* 3D tilt on hover */
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const r = cardRef.current.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = (e.clientX - cx) / (r.width / 2);
-    const dy = (e.clientY - cy) / (r.height / 2);
-    tiltX.set(-dy * 6);
-    tiltY.set(dx * 6);
-  }, [tiltX, tiltY]);
-
-  const handleMouseLeave = useCallback(() => {
-    tiltX.set(0);
-    tiltY.set(0);
-    setIsHovered(false);
-  }, [tiltX, tiltY]);
-
-  const isEducation = item.type === 'education';
-  const accentColor = isEducation
-    ? 'rgba(139,92,246,0.7)'
-    : 'rgba(52,211,153,0.7)';
-  const glowColor = isEducation
-    ? 'rgba(139,92,246,0.12)'
-    : 'rgba(52,211,153,0.08)';
+/* ═══════════════════════════════════════════════════════
+   GLOWING SPINE
+═══════════════════════════════════════════════════════ */
+function GlowingSpine({ sectionRef }: { sectionRef: React.RefObject<HTMLElement | null> }) {
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 80%', 'end 20%'],
+  });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
 
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 60, scale: 0.95 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 0.85, delay: index * 0.12, type: 'spring', bounce: 0.35 }}
-      onMouseEnter={() => { setIsHovered(true); playHover(); updateRect(); }}
-      onMouseLeave={handleMouseLeave}
-      onMouseMove={handleMouseMove}
-      style={{
-        position: 'relative',
-        width: '100%',
-        perspective: 1000,
-        rotateX: tiltX,
-        rotateY: tiltY,
-        transformStyle: 'preserve-3d',
-      }}
-    >
-      {/* Background layer */}
-      <div
-        className="absolute inset-0 rounded-3xl transition-all duration-500"
-        style={{
-          background: isHovered
-            ? `linear-gradient(135deg, var(--surface-2), var(--surface))`
-            : 'var(--surface)',
-          border: `1px solid ${isHovered ? accentColor : 'var(--stroke)'}`,
-          boxShadow: isHovered
-            ? `0 20px 48px rgba(0,0,0,0.25), 0 0 40px ${glowColor}`
-            : '0 4px 20px rgba(0,0,0,0.12)',
-          borderRadius: 24,
-        }}
-      />
-
-      {/* Spotlight glow layer */}
+    <div style={{
+      position: 'absolute',
+      left: '50%',
+      top: 0,
+      bottom: 0,
+      width: 2,
+      transform: 'translateX(-50%)',
+      pointerEvents: 'none',
+    }}>
+      {/* Track */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'rgba(167,139,250,0.08)',
+        borderRadius: 999,
+      }} />
+      {/* Fill */}
       <motion.div
-        className="absolute inset-0 rounded-3xl pointer-events-none z-0"
         style={{
-          WebkitMaskImage: maskImage,
-          maskImage,
-          opacity: isHovered ? 0.18 : 0,
-          background: `radial-gradient(circle at center, ${accentColor}, transparent 80%)`,
-          transition: 'opacity 0.35s ease',
-          borderRadius: 24,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          scaleY,
+          originY: 0,
+          background: 'linear-gradient(to bottom, #7c3aed 0%, #db2777 50%, #34d399 100%)',
+          borderRadius: 999,
+          boxShadow: '0 0 16px rgba(124,58,237,0.7)',
         }}
       />
-
-      {/* Pulsing left border accent */}
-      <motion.div
-        animate={isHovered ? { opacity: [0.6, 1, 0.6], scaleY: [0.8, 1, 0.8] } : { opacity: 0.3 }}
-        transition={{ duration: 2, repeat: isHovered ? Infinity : 0 }}
-        style={{
-          position: 'absolute', left: 0, top: '15%', bottom: '15%',
-          width: 3, borderRadius: 999,
-          background: isEducation
-            ? 'linear-gradient(to bottom,#7c3aed,#a78bfa)'
-            : 'linear-gradient(to bottom,#34d399,#06b6d4)',
-          boxShadow: `0 0 12px ${accentColor}`,
-          zIndex: 2,
-        }}
-      />
-
-      {/* Content */}
-      <div className="relative z-10 p-6 md:p-8 flex flex-col sm:flex-row gap-6 md:gap-8 items-start sm:items-center" style={{ borderRadius: 24 }}>
-
-        {/* Left: Icon + Year */}
-        <div className="flex flex-col items-start gap-4 min-w-[140px]">
-          <motion.div
-            whileHover={{ scale: 1.12, rotate: 5 }}
-            style={{
-              padding: 16, borderRadius: 18,
-              background: isEducation
-                ? 'linear-gradient(135deg,rgba(124,58,237,0.2),rgba(167,139,250,0.1))'
-                : 'linear-gradient(135deg,rgba(52,211,153,0.2),rgba(6,182,212,0.1))',
-              border: `1px solid ${isEducation ? 'rgba(139,92,246,0.3)' : 'rgba(52,211,153,0.3)'}`,
-              color: isEducation ? '#a78bfa' : '#34d399',
-              boxShadow: `0 0 20px ${isEducation ? 'rgba(139,92,246,0.2)' : 'rgba(52,211,153,0.2)'}`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}
-          >
-            {isEducation ? <GraduationCap size={28} /> : <Briefcase size={28} />}
-          </motion.div>
-
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            fontSize: '0.68rem', fontWeight: 800,
-            textTransform: 'uppercase', letterSpacing: '0.12em',
-            color: isEducation ? '#a78bfa' : '#34d399',
-            background: isEducation ? 'rgba(139,92,246,0.1)' : 'rgba(52,211,153,0.1)',
-            padding: '6px 12px', borderRadius: 999,
-            border: `1px solid ${isEducation ? 'rgba(139,92,246,0.2)' : 'rgba(52,211,153,0.2)'}`,
-          }}>
-            <Calendar size={11} />
-            {item.year}
-          </div>
-        </div>
-
-        {/* Right: Role + Location */}
-        <div className="flex-1 flex flex-col gap-2">
-          <h3 style={{
-            fontSize: 'clamp(1.2rem,2.5vw,1.65rem)',
-            fontFamily: 'Georgia, serif',
-            fontStyle: 'italic',
-            fontWeight: 900,
-            color: 'var(--text)',
-            lineHeight: 1.2,
-            letterSpacing: '-0.01em',
-          }}>
-            {item.role}
-          </h3>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 6,
-            fontSize: '0.875rem', color: 'var(--muted)',
-          }}>
-            <MapPin size={14} style={{ color: 'var(--brand)', flexShrink: 0 }} />
-            <p>{item.location}</p>
-          </div>
-          {/* Type badge */}
-          <div style={{
-            display: 'inline-flex', alignItems: 'center',
-            marginTop: 8, padding: '3px 10px', borderRadius: 999,
-            fontSize: '0.62rem', fontWeight: 700, letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            background: isEducation ? 'rgba(139,92,246,0.08)' : 'rgba(52,211,153,0.08)',
-            color: isEducation ? 'rgba(139,92,246,0.7)' : 'rgba(52,211,153,0.7)',
-            width: 'fit-content',
-          }}>
-            {isEducation ? '📚 Education' : '💼 Work'}
-          </div>
-        </div>
-      </div>
-    </motion.div>
+    </div>
   );
 }
 
-/* ── SVG Animated Path Draw ──────────────────────────────── */
-function AnimatedTimelinePath({ count }: { count: number }) {
-  const ref = useRef<SVGSVGElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start center', 'end center'],
-  });
-  const pathLength = useSpring(scrollYProgress, { stiffness: 80, damping: 20 });
+/* ═══════════════════════════════════════════════════════
+   NODE DOT
+═══════════════════════════════════════════════════════ */
+function NodeDot({ color, side }: { color: string; side: 'left' | 'right' }) {
+  return (
+    <div style={{
+      position: 'absolute',
+      top: 32,
+      [side === 'left' ? 'right' : 'left']: -26,
+      width: 14,
+      height: 14,
+      zIndex: 10,
+    }}>
+      {/* Pulse ring */}
+      <motion.div
+        animate={{ scale: [1, 2.2], opacity: [0.5, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut' }}
+        style={{
+          position: 'absolute', inset: 0, borderRadius: '50%',
+          border: `1.5px solid ${color}`,
+        }}
+      />
+      {/* Core */}
+      <div style={{
+        position: 'absolute', inset: 2,
+        borderRadius: '50%',
+        background: `linear-gradient(135deg, ${color}, ${color}80)`,
+        boxShadow: `0 0 12px ${color}`,
+      }} />
+    </div>
+  );
+}
 
-  const nodePositions = Array.from({ length: count }, (_, i) => ({
-    y: (i / (count - 1)) * 100,
-  }));
+/* ═══════════════════════════════════════════════════════
+   TIMELINE CARD
+═══════════════════════════════════════════════════════ */
+function TimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
+  const isLeft = index % 2 === 0;
+  const isEdu = item.type === 'education';
+  const color = isEdu ? '#a78bfa' : '#34d399';
+  const glow = isEdu ? 'rgba(167,139,250,0.12)' : 'rgba(52,211,153,0.1)';
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <div ref={containerRef} className="relative hidden md:flex flex-col items-center w-6 mt-8 self-stretch">
-      <svg
-        ref={ref}
-        className="absolute top-0 left-1/2 -translate-x-1/2"
-        style={{ width: 3, height: '100%', overflow: 'visible' }}
-        preserveAspectRatio="none"
-      >
-        {/* Background track */}
-        <line
-          x1="1.5" y1="0%" x2="1.5" y2="100%"
-          stroke="rgba(167,139,250,0.12)"
-          strokeWidth="2"
-        />
-        {/* Animated fill */}
-        <motion.line
-          x1="1.5" y1="0%" x2="1.5" y2="100%"
-          stroke="url(#timeline-gradient)"
-          strokeWidth="3"
-          strokeLinecap="round"
-          style={{
-            pathLength,
-            filter: 'drop-shadow(0 0 4px rgba(139,92,246,0.8))',
-          }}
-        />
-        <defs>
-          <linearGradient id="timeline-gradient" x1="0" y1="0" x2="0" y2="1" gradientUnits="objectBoundingBox">
-            <stop offset="0%"   stopColor="#7c3aed" />
-            <stop offset="50%"  stopColor="#db2777" />
-            <stop offset="100%" stopColor="#34d399" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      {/* Node dots */}
-      <div className="absolute top-0 bottom-0 flex flex-col justify-between w-full" style={{ zIndex: 2 }}>
-        {nodePositions.map((_, i) => (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 52px 1fr',
+      gap: 0,
+      alignItems: 'start',
+      position: 'relative',
+    }}>
+      {/* Left slot */}
+      <div style={{ paddingRight: 32, display: 'flex', justifyContent: 'flex-end' }}>
+        {isLeft ? (
           <motion.div
-            key={i}
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.15, duration: 0.5, type: 'spring', bounce: 0.5 }}
-            style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{ width: '100%', maxWidth: 460 }}
           >
-            {/* Pulse ring */}
-            <motion.div
-              animate={{ scale: [1, 2], opacity: [0.4, 0] }}
-              transition={{ duration: 2, repeat: Infinity, delay: i * 0.4, ease: 'easeOut' }}
-              style={{
-                position: 'absolute',
-                width: 16, height: 16, borderRadius: '50%',
-                border: '1px solid rgba(139,92,246,0.5)',
-              }}
-            />
-            {/* Core dot */}
-            <div style={{
-              width: 10, height: 10, borderRadius: '50%',
-              background: 'linear-gradient(135deg,#7c3aed,#db2777)',
-              border: '2px solid var(--bg)',
-              boxShadow: '0 0 10px rgba(124,58,237,0.6)',
-              zIndex: 1,
-            }} />
+            <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+            <NodeDot color={color} side="left" />
           </motion.div>
-        ))}
+        ) : (
+          /* Year stamp on right side of left col */
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+            style={{
+              fontFamily: 'Syne, sans-serif',
+              fontWeight: 900,
+              fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
+              color: 'rgba(255,255,255,0.2)',
+              letterSpacing: '0.08em',
+              textAlign: 'right',
+              paddingTop: 34,
+            }}
+          >
+            {item.year}
+          </motion.div>
+        )}
+      </div>
+
+      {/* Center spine space */}
+      <div style={{ position: 'relative' }} />
+
+      {/* Right slot */}
+      <div style={{ paddingLeft: 32 }}>
+        {!isLeft ? (
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{ width: '100%', maxWidth: 460, position: 'relative' }}
+          >
+            <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+            <NodeDot color={color} side="right" />
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+            style={{
+              fontFamily: 'Syne, sans-serif',
+              fontWeight: 900,
+              fontSize: 'clamp(0.75rem,1.2vw,0.9rem)',
+              color: 'rgba(255,255,255,0.2)',
+              letterSpacing: '0.08em',
+              paddingTop: 34,
+            }}
+          >
+            {item.year}
+          </motion.div>
+        )}
       </div>
     </div>
   );
 }
 
-/* ── Main Component ──────────────────────────────────────── */
+function CardInner({ item, color, glow, hovered, isEdu }: {
+  item: TimelineEvent; color: string; glow: string; hovered: boolean; isEdu: boolean;
+}) {
+  return (
+    <div style={{
+      padding: '22px 24px',
+      borderRadius: 20,
+      background: hovered
+        ? `linear-gradient(135deg, ${glow}, rgba(0,0,0,0) 80%)`
+        : 'rgba(255,255,255,0.025)',
+      border: `1px solid ${hovered ? color + '40' : 'rgba(255,255,255,0.07)'}`,
+      boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.3), 0 0 30px ${glow}` : '0 4px 20px rgba(0,0,0,0.15)',
+      backdropFilter: 'blur(16px)',
+      transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Accent left border */}
+      <div style={{
+        position: 'absolute', left: 0, top: '10%', bottom: '10%',
+        width: 3, borderRadius: 999,
+        background: `linear-gradient(to bottom, ${color}, ${color}40)`,
+        boxShadow: `0 0 10px ${color}`,
+        opacity: hovered ? 1 : 0.4,
+        transition: 'opacity 0.3s ease',
+      }} />
+
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 12 }}>
+        <div style={{
+          width: 40, height: 40, borderRadius: 12, flexShrink: 0,
+          background: `${color}18`,
+          border: `1px solid ${color}30`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 0 16px ${color}20`,
+        }}>
+          {isEdu
+            ? <GraduationCap size={18} style={{ color }} />
+            : <Briefcase size={18} style={{ color }} />
+          }
+        </div>
+        <div style={{ flex: 1 }}>
+          {/* Type badge */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '3px 10px', borderRadius: 999, marginBottom: 6,
+            fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.14em',
+            textTransform: 'uppercase' as const,
+            background: `${color}12`,
+            border: `1px solid ${color}25`,
+            color: color,
+            fontFamily: 'Syne, sans-serif',
+          }}>
+            {isEdu ? '📚 Education' : '💼 Experience'}
+          </div>
+
+          {/* Role */}
+          <h3 style={{
+            fontFamily: 'Cormorant Garamond, Georgia, serif',
+            fontSize: 'clamp(1rem,1.8vw,1.3rem)',
+            fontWeight: 700,
+            fontStyle: 'italic',
+            color: 'rgba(255,255,255,0.92)',
+            lineHeight: 1.25,
+            letterSpacing: '-0.01em',
+          }}>
+            {item.role}
+          </h3>
+        </div>
+      </div>
+
+      {/* Description */}
+      {item.desc && (
+        <p style={{
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          fontSize: '0.8rem',
+          color: 'rgba(255,255,255,0.38)',
+          lineHeight: 1.7,
+          marginBottom: 14,
+        }}>
+          {item.desc}
+        </p>
+      )}
+
+      {/* Footer */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' as const }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)',
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+        }}>
+          <MapPin size={11} style={{ color, flexShrink: 0 }} />
+          {item.location}
+        </div>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          fontSize: '0.68rem', fontWeight: 600,
+          color: color, marginLeft: 'auto',
+          fontFamily: 'Syne, sans-serif', letterSpacing: '0.06em',
+        }}>
+          <Calendar size={10} />
+          {item.year}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE TIMELINE (single column)
+═══════════════════════════════════════════════════════ */
+function MobileTimelineCard({ item, index }: { item: TimelineEvent; index: number }) {
+  const isEdu = item.type === 'education';
+  const color = isEdu ? '#a78bfa' : '#34d399';
+  const glow = isEdu ? 'rgba(167,139,250,0.12)' : 'rgba(52,211,153,0.1)';
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-40px' }}
+      transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ display: 'flex', gap: 16 }}
+    >
+      {/* Left spine + dot */}
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
+        <div style={{
+          width: 12, height: 12, borderRadius: '50%', flexShrink: 0,
+          background: `linear-gradient(135deg, ${color}, ${color}80)`,
+          boxShadow: `0 0 10px ${color}`,
+          marginTop: 26,
+        }} />
+        {index < defaultTimeline.length - 1 && (
+          <div style={{
+            width: 2, flex: 1, marginTop: 6,
+            background: 'linear-gradient(to bottom, rgba(167,139,250,0.3), rgba(167,139,250,0.05))',
+          }} />
+        )}
+      </div>
+      {/* Card */}
+      <div style={{ flex: 1, paddingBottom: 24 }}>
+        <CardInner item={item} color={color} glow={glow} hovered={hovered} isEdu={isEdu} />
+      </div>
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAIN EXPORT
+═══════════════════════════════════════════════════════ */
 export default function AcademicTimeline() {
   const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    mouseX.set(e.clientX);
-    mouseY.set(e.clientY);
-  };
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     fetch('/api/timeline')
-      .then(res => res.json())
+      .then(r => r.json())
       .then(data => {
         if (data.timeline?.length > 0) {
           setTimeline(data.timeline.map((item: TimelineEvent) => ({
@@ -335,53 +404,146 @@ export default function AcademicTimeline() {
       .catch(() => setTimeline(defaultTimeline));
   }, []);
 
+  const items = timeline.length > 0 ? timeline : defaultTimeline;
+
   return (
     <section
+      ref={sectionRef}
       id="timeline"
-      className="py-24 md:py-36 relative z-20 bg-[var(--bg)] overflow-hidden"
-      onMouseMove={handleMouseMove}
+      style={{ position: 'relative', zIndex: 20, background: 'var(--bg)', overflow: 'hidden' }}
+      className="section-py"
     >
-      {/* Ambient orbs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Aurora ambient */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         <div style={{
-          position: 'absolute', top: '10%', right: '-10%',
-          width: '40vw', height: '40vw', borderRadius: '50%',
+          position: 'absolute', top: '10%', right: '-12%',
+          width: '45vw', height: '45vw', borderRadius: '50%',
           background: 'radial-gradient(circle,rgba(124,58,237,0.06),transparent 70%)',
-          filter: 'blur(60px)',
+          filter: 'blur(70px)',
         }} />
         <div style={{
-          position: 'absolute', bottom: '10%', left: '-10%',
-          width: '35vw', height: '35vw', borderRadius: '50%',
+          position: 'absolute', bottom: '10%', left: '-12%',
+          width: '40vw', height: '40vw', borderRadius: '50%',
           background: 'radial-gradient(circle,rgba(52,211,153,0.05),transparent 70%)',
-          filter: 'blur(50px)',
+          filter: 'blur(60px)',
         }} />
       </div>
 
-      <div className="max-w-[1000px] mx-auto px-6 md:px-10 relative z-10">
-        <SectionHeader
-          eyebrow="Professional Journey"
-          title="Experience & Education"
-          highlightWord="Education"
-          subtitle="A path of continuous growth through engineering, teaching, and research."
-        />
+      <div className="section-container relative">
+        {/* ── HEADER ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          style={{ textAlign: 'center', marginBottom: 'clamp(56px,8vw,96px)' }}
+        >
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 7,
+            padding: '6px 18px', borderRadius: 999, marginBottom: 20,
+            fontFamily: 'Syne, sans-serif', fontWeight: 700,
+            fontSize: '0.7rem', letterSpacing: '0.2em', textTransform: 'uppercase',
+            background: 'rgba(167,139,250,0.08)',
+            border: '1px solid rgba(167,139,250,0.2)',
+            color: 'rgba(167,139,250,0.75)',
+          }}>
+            <Calendar size={10} />
+            Professional Journey
+          </span>
 
-        <div className="relative flex gap-8 md:gap-16">
-          {/* Animated SVG timeline track */}
-          {timeline.length > 0 && <AnimatedTimelinePath count={timeline.length} />}
+          <h2 style={{
+            fontFamily: 'Syne, sans-serif', fontWeight: 900,
+            fontSize: 'clamp(2.4rem,5.5vw,5rem)',
+            lineHeight: 0.95, letterSpacing: '-0.035em',
+            color: 'rgba(255,255,255,0.95)',
+            marginBottom: 20,
+          }}>
+            Experience &{' '}
+            <span style={{
+              background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+              fontStyle: 'italic',
+            }}>
+              Education
+            </span>
+          </h2>
 
-          {/* Cards */}
-          <div className="flex flex-col gap-10 md:gap-14 w-full pb-10">
-            {timeline.map((item, i) => (
-              <TimelineCard
-                key={i}
-                item={item}
-                index={i}
-                mouseX={mouseX}
-                mouseY={mouseY}
-              />
-            ))}
+          <p style={{
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: 'clamp(0.88rem,1.3vw,1.05rem)',
+            color: 'rgba(255,255,255,0.35)',
+            lineHeight: 1.8, maxWidth: 520, margin: '0 auto',
+          }}>
+            A continuous path of growth through engineering, teaching, and research —
+            each step building on the last.
+          </p>
+
+          {/* Divider line */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              height: 1, maxWidth: 320, margin: '28px auto 0',
+              background: 'linear-gradient(90deg,transparent,rgba(167,139,250,0.5),rgba(244,114,182,0.4),transparent)',
+            }}
+          />
+        </motion.div>
+
+        {/* ── DESKTOP ALTERNATING TIMELINE ── */}
+        <div className="hidden md:block">
+          <div style={{ position: 'relative', paddingTop: 16, paddingBottom: 16 }}>
+            <GlowingSpine sectionRef={sectionRef} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(24px,4vw,48px)' }}>
+              {items.map((item, i) => (
+                <TimelineCard key={i} item={item} index={i} />
+              ))}
+            </div>
           </div>
         </div>
+
+        {/* ── MOBILE SINGLE-COLUMN ── */}
+        <div className="md:hidden" style={{ display: 'flex', flexDirection: 'column' }}>
+          {items.map((item, i) => (
+            <MobileTimelineCard key={i} item={item} index={i} />
+          ))}
+        </div>
+
+        {/* ── BOTTOM CTA ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 'clamp(40px,6vw,72px)' }}
+        >
+          <a
+            href="#contact"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 10,
+              padding: '13px 28px', borderRadius: 999,
+              fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.85rem',
+              letterSpacing: '0.04em',
+              background: 'rgba(167,139,250,0.08)',
+              border: '1px solid rgba(167,139,250,0.25)',
+              color: 'rgba(167,139,250,0.8)',
+              textDecoration: 'none',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(167,139,250,0.15)';
+              (e.currentTarget as HTMLElement).style.color = '#a78bfa';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget as HTMLElement).style.background = 'rgba(167,139,250,0.08)';
+              (e.currentTarget as HTMLElement).style.color = 'rgba(167,139,250,0.8)';
+            }}
+          >
+            Open to Opportunities
+            <ArrowRight size={15} />
+          </a>
+        </motion.div>
       </div>
     </section>
   );
