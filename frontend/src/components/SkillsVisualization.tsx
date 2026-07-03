@@ -203,7 +203,7 @@ function NeonOrbit({
       </div>
 
       {/* Orbiting skill pills — grouped by ring */}
-      {skills.map((skill, i) => {
+      {skills.map((skill) => {
         const ring = RINGS[(skill.ring - 1) % RINGS.length];
         const skillsInRing = skills.filter(s => s.ring === skill.ring);
         const posInRing = skillsInRing.findIndex(s => s.name === skill.name);

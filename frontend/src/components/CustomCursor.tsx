@@ -36,7 +36,7 @@ export default function CustomCursor() {
 
   const posRef = useRef({ x: -100, y: -100 });
   const trailRef = useRef<TrailDot[]>(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }));
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
   const rippleId = useRef(0);
 
   /* Mobile detection */
