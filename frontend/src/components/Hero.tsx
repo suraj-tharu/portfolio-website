@@ -109,8 +109,8 @@ const globalStyles = `
     --name-grad-2: linear-gradient(135deg,#f9a8d4 0%,#f472b6 25%,#ec4899 50%,#f97316 80%,#fbbf24 100%);
     --name-grad-3: linear-gradient(135deg,#bae6fd 0%,#7dd3fc 25%,#38bdf8 50%,#818cf8 75%,#a78bfa 100%);
     --role-grad: linear-gradient(135deg,#c4b5fd,#a78bfa 30%,#f472b6 70%,#fb7185);
-    --desc-color: rgba(203,213,225,0.65);
-    --loc-color: rgba(148,163,184,0.55);
+    --desc-color: #ffffff;
+    --loc-color: #ffffff;
   }
 
   .light {
@@ -1066,7 +1066,7 @@ export default function Hero() {
               {t('hero.location')}
               <span style={{ color: 'rgba(167,139,250,0.25)', margin: '0 4px' }}>·</span>
               <Zap size={10} style={{ color: '#34d399' }} />
-              <span style={{ color: 'rgba(52,211,153,0.6)', fontSize: '0.75rem', fontWeight: 600 }}>Available</span>
+              <span style={{ color: '#ffffff', fontSize: '0.75rem', fontWeight: 600 }}>Available</span>
             </motion.div>
 
             {/* ── DESCRIPTION ── */}
