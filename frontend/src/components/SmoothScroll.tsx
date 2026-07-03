@@ -15,7 +15,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
         wheelMultiplier: 1,
         touchMultiplier: 1.8,
         infinite: false,
-        syncToNative: false,
       });
 
       function raf(time: number) {
