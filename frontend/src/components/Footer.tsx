@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import VisitorCounter from './VisitorCounter';
