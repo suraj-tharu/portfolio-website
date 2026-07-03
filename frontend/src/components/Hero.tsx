@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'fra
 import { TextReveal } from './premium/TextReveal';
 import { useLanguage } from '../context/LanguageContext';
 import { useGreeting } from './GreetingBanner';
-import { Sparkles, ArrowRight, MapPin, Code2, Globe2, BrainCircuit, GraduationCap, Star, Zap } from 'lucide-react';
+import { Sparkles, ArrowRight, MapPin, Star, Zap } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════════════
    ULTRA-LUXURY KEYFRAMES & GLOBAL ANIMATIONS
@@ -487,89 +487,7 @@ function HolographicRings() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   LUXURY FLOATING SKILL TAGS
-═══════════════════════════════════════════════════════════════════════ */
-const LUXURY_TAGS = [
-  {
-    label: 'GIS & Remote Sensing',
-    icon: <Globe2 size={12} />,
-    delay: 0, x: '-68%', y: '-148%',
-    color: 'rgba(56,189,248,', accent: '#38bdf8',
-    floatDuration: 4.2,
-  },
-  {
-    label: 'Machine Learning',
-    icon: <BrainCircuit size={12} />,
-    delay: 0.35, x: '62%', y: '-130%',
-    color: 'rgba(244,114,182,', accent: '#f472b6',
-    floatDuration: 3.8,
-  },
-  {
-    label: 'Computer Engineering',
-    icon: <Code2 size={12} />,
-    delay: 0.7, x: '-65%', y: '145%',
-    color: 'rgba(52,211,153,', accent: '#34d399',
-    floatDuration: 4.6,
-  },
-  {
-    label: 'MSc Info Systems',
-    icon: <GraduationCap size={12} />,
-    delay: 1.05, x: '58%', y: '138%',
-    color: 'rgba(167,139,250,', accent: '#a78bfa',
-    floatDuration: 3.6,
-  },
-];
 
-function LuxuryFloatingTags() {
-  return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 6 }}>
-      {LUXURY_TAGS.map((t, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, scale: 0.5, filter: 'blur(12px)' }}
-          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-          transition={{ delay: 2.2 + t.delay, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-          style={{
-            position: 'absolute', top: '50%', left: '50%',
-            transform: `translate(${t.x}, ${t.y})`,
-            animation: `float-skill ${t.floatDuration}s ease-in-out ${t.delay + 2.2}s infinite`,
-          }}
-        >
-          {/* Outer glow ring */}
-          <div style={{
-            position: 'absolute', inset: -4,
-            borderRadius: 999,
-            background: `radial-gradient(ellipse,${t.color}0.12) 0%,transparent 70%)`,
-            filter: 'blur(6px)',
-          }} />
-          <div style={{
-            position: 'relative',
-            display: 'flex', alignItems: 'center', gap: 8,
-            padding: '8px 18px', borderRadius: 999,
-            background: `linear-gradient(135deg,rgba(10,5,30,0.9),rgba(15,8,35,0.85))`,
-            border: `1px solid ${t.color}0.3)`,
-            backdropFilter: 'blur(20px)',
-            color: t.accent,
-            fontSize: '0.69rem', fontWeight: 700,
-            letterSpacing: '0.1em', whiteSpace: 'nowrap',
-            boxShadow: `0 4px 24px ${t.color}0.2), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px ${t.color}0.12)`,
-          }}>
-            {/* Left accent dot */}
-            <span style={{
-              width: 5, height: 5, borderRadius: '50%',
-              background: t.accent,
-              boxShadow: `0 0 8px ${t.accent}`,
-              flexShrink: 0,
-            }} />
-            {t.icon}
-            {t.label}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════════════════
    ROLE BADGE — cinematic blur swap
