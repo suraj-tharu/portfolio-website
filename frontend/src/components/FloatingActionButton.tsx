@@ -39,8 +39,8 @@ export default function FloatingActionButton() {
             className="pointer-events-none"
             style={{
                 position: 'fixed',
-                bottom: '6rem',
-                right: '2rem',
+                bottom: '6.5rem',
+                left: '1.5rem',
                 zIndex: 198
             }}
             role="region"
@@ -53,7 +53,7 @@ export default function FloatingActionButton() {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute bottom-24 right-0 flex flex-col gap-4 pointer-events-auto"
+                        className="absolute bottom-24 left-0 flex flex-col gap-4 pointer-events-auto"
                         role="menu"
                         aria-label="Contact options menu"
                     >
@@ -80,9 +80,9 @@ export default function FloatingActionButton() {
                             >
                                 <item.icon size={24} />
                                 <motion.span
-                                    className="absolute right-full mr-3 bg-surface dark:bg-gray-900 text-text-primary dark:text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
-                                    initial={{ opacity: 0, x: 10 }}
-                                    animate={{ opacity: 0, x: 10 }}
+                                    className="absolute left-full ml-3 bg-surface dark:bg-gray-900 text-text-primary dark:text-white px-3 py-1 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 0, x: -10 }}
                                     whileHover={{ opacity: 1, x: 0 }}
                                 >
                                     {item.label}

@@ -141,7 +141,7 @@ export default function AmbientSoundToggle() {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -20, scale: 0.9 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-20 left-4 z-[200] md:bottom-8 md:left-6"
+          className="fixed bottom-8 left-6 z-[200]"
         >
           <motion.button
             onClick={toggle}
