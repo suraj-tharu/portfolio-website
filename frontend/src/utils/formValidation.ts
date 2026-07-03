@@ -4,7 +4,8 @@
 
 export interface ValidationRule {
     type: 'required' | 'email' | 'url' | 'phone' | 'minLength' | 'maxLength' | 'pattern' | 'custom';
-    value?: unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    value?: any;
     message: string;
 }
 
@@ -64,37 +65,37 @@ export class FormValidator {
                     break;
 
                 case 'email':
-                    if (value && !this.isValidEmail(value)) {
+                    if (typeof value === 'string' && !this.isValidEmail(value)) {
                         errors.push(rule.message);
                     }
                     break;
 
                 case 'url':
-                    if (value && !this.isValidUrl(value)) {
+                    if (typeof value === 'string' && !this.isValidUrl(value)) {
                         errors.push(rule.message);
                     }
                     break;
 
                 case 'phone':
-                    if (value && !this.isValidPhone(value)) {
+                    if (typeof value === 'string' && !this.isValidPhone(value)) {
                         errors.push(rule.message);
                     }
                     break;
 
                 case 'minLength':
-                    if (value && value.length < rule.value) {
+                    if (typeof value === 'string' && value.length < rule.value) {
                         errors.push(rule.message);
                     }
                     break;
 
                 case 'maxLength':
-                    if (value && value.length > rule.value) {
+                    if (typeof value === 'string' && value.length > rule.value) {
                         errors.push(rule.message);
                     }
                     break;
 
                 case 'pattern':
-                    if (value && !this.isValidPattern(value, rule.value)) {
+                    if (typeof value === 'string' && !this.isValidPattern(value, rule.value)) {
                         errors.push(rule.message);
                     }
                     break;
