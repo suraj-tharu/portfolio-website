@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Mail, Phone, X } from 'lucide-react';
+import { MessageCircle, Mail, Phone, X, Plus } from 'lucide-react';
 import { openChatWidget } from './chatWidgetEvents';
 
 /**
@@ -112,7 +112,7 @@ export default function FloatingActionButton() {
                     animate={isOpen ? { rotate: 45 } : { rotate: 0 }}
                     transition={{ duration: 0.4, type: 'spring', stiffness: 200, damping: 15 }}
                 >
-                    {isOpen ? <X size={24} /> : <MessageCircle size={24} />}
+                    {isOpen ? <X size={24} /> : <Plus size={24} />}
                 </motion.div>
             </motion.button>
 

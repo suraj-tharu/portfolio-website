@@ -55,6 +55,25 @@ const CSS = `
   .skill-card-inner {
     transition: transform 0.3s ease;
   }
+  @media (max-width: 640px) {
+    .skills-category-hero {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 16px !important;
+      padding: 16px 20px !important;
+    }
+    .skills-category-hero-avg {
+      text-align: left !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      width: 100% !important;
+      padding: 10px 14px !important;
+    }
+    .skills-category-hero-avg > div:last-child {
+      margin-top: 0 !important;
+    }
+  }
 `;
 
 /* ═══════════════════════════════════════════════════════════════
@@ -427,16 +446,18 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
               >
                 <Icon size={18} style={{ color }} />
               </motion.div>
-              <div>
+              <div style={{ minWidth: 0, flex: 1 }}>
                 <p style={{
                   fontFamily: 'Syne, sans-serif', fontWeight: 800,
                   fontSize: '0.92rem', color: 'rgba(255,255,255,0.92)', lineHeight: 1.2,
                   letterSpacing: '-0.01em',
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 }}>{name}</p>
                 <p style={{
                   fontFamily: 'Plus Jakarta Sans, sans-serif',
                   fontSize: '0.62rem', color: 'rgba(255,255,255,0.28)', marginTop: 3,
                   letterSpacing: '0.04em',
+                  whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 }}>{desc}</p>
               </div>
             </div>
@@ -608,6 +629,7 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -12 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="skills-category-hero"
       style={{
         marginBottom: 32, padding: '24px 28px', borderRadius: 24,
         background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.1) 0%, rgba(${cat.colorRgb},0.03) 60%, rgba(0,0,0,0) 100%)`,
@@ -660,7 +682,7 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
       </div>
 
       {/* Avg badge */}
-      <div style={{
+      <div className="skills-category-hero-avg" style={{
         textAlign: 'right', flexShrink: 0,
         background: `linear-gradient(145deg, rgba(${cat.colorRgb},0.12), rgba(${cat.colorRgb},0.04))`,
         border: `1px solid rgba(${cat.colorRgb},0.2)`,
