@@ -298,7 +298,7 @@ export default function LearningHub() {
                 <span className="text-slate-900 dark:text-white">Learning</span>
                 <br />
                 <span style={{
-                  background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 50%, #0ea5e9 100%)',
+                  backgroundImage:  #7c3aed 0%, #db2777 50%, #0ea5e9 100%)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}>
                   Hub
@@ -399,7 +399,7 @@ export default function LearningHub() {
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display italic font-black tracking-tight
               text-slate-900 dark:text-white leading-tight">
               Study <span style={{
-                background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)',
+                backgroundImage:  #7c3aed 0%, #db2777 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>Materials</span>
             </h2>

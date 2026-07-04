@@ -40,7 +40,7 @@ function WordReveal({ text, highlightWord, delay, onHighlightVisible }: {
               style={{
                 display: 'inline-block',
                 ...(isHighlight ? {
-                  background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                  backgroundImage: #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -114,7 +114,7 @@ export default function SectionHeader({
               transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 width: 32, height: 1.5, originX: 0,
-                background: 'linear-gradient(90deg,#7c3aed,#f472b6)',
+                backgroundImage: #7c3aed,#f472b6)',
                 borderRadius: 999,
                 boxShadow: '0 0 8px rgba(124,58,237,0.5)',
               }}
@@ -122,7 +122,7 @@ export default function SectionHeader({
             <span style={{
               fontSize: '0.7rem', fontWeight: 800,
               letterSpacing: '0.28em', textTransform: 'uppercase',
-              background: 'linear-gradient(135deg,#a78bfa,#f472b6)',
+              backgroundImage: #a78bfa,#f472b6)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>
               {displayEyebrow}
@@ -134,7 +134,7 @@ export default function SectionHeader({
               transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 width: 32, height: 1.5, originX: 1,
-                background: 'linear-gradient(270deg,#7c3aed,#f472b6)',
+                backgroundImage: #7c3aed,#f472b6)',
                 borderRadius: 999,
                 boxShadow: '0 0 8px rgba(124,58,237,0.5)',
               }}

@@ -119,7 +119,7 @@ function ExplorationCard({ img, index }: { img: typeof images[0]; index: number 
           animate={{ opacity: hovered ? 1 : 0 }}
           transition={{ duration: 0.3 }}
           style={{
-            background: 'linear-gradient(135deg, rgba(167,139,250,0.12) 0%, transparent 50%, rgba(244,114,182,0.08) 100%)',
+            backgroundImage:  rgba(167,139,250,0.12) 0%, transparent 50%, rgba(244,114,182,0.08) 100%)',
             boxShadow: 'inset 0 0 0 1.5px rgba(167,139,250,0.3)',
           }}
         />
@@ -158,7 +158,7 @@ export default function Explorations() {
           className="absolute top-1/2 left-1/3 -translate-y-1/2 pointer-events-none"
           style={{
             width: '50vw', height: '50vw', borderRadius: '50%',
-            background: 'radial-gradient(ellipse, rgba(124,58,237,0.07) 0%, transparent 65%)',
+            backgroundImage:  rgba(124,58,237,0.07) 0%, transparent 65%)',
             filter: 'blur(80px)',
           }}
         />
@@ -186,7 +186,7 @@ export default function Explorations() {
             Visual{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                backgroundImage: #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}
             >
@@ -244,8 +244,8 @@ export default function Explorations() {
           </motion.div>
 
           {/* Fade masks */}
-          <div className="absolute inset-y-0 right-0 w-32 pointer-events-none" style={{ background: 'linear-gradient(to left, var(--bg), transparent)' }} />
-          <div className="absolute inset-y-0 left-0 w-16 pointer-events-none" style={{ background: 'linear-gradient(to right, var(--bg), transparent)' }} />
+          <div className="absolute inset-y-0 right-0 w-32 pointer-events-none" style={{ backgroundImage:  var(--bg), transparent)' }} />
+          <div className="absolute inset-y-0 left-0 w-16 pointer-events-none" style={{ backgroundImage:  var(--bg), transparent)' }} />
         </div>
 
         {/* Scroll hint */}

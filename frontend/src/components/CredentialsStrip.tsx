@@ -101,13 +101,13 @@ function Separator({ color }: { color: string }) {
       display: 'flex', alignItems: 'center', gap: 6,
       flexShrink: 0, margin: '0 8px',
     }}>
-      <div style={{ width: 32, height: 1, background: `linear-gradient(to right, transparent, ${color}40)` }} />
+      <div style={{ width: 32, height: 1, backgroundImage:  transparent, ${color}40)` }} />
       <div style={{
         width: 6, height: 6, transform: 'rotate(45deg)',
         background: color, opacity: 0.5,
         boxShadow: `0 0 8px ${color}`,
       }} />
-      <div style={{ width: 32, height: 1, background: `linear-gradient(to left, transparent, ${color}40)` }} />
+      <div style={{ width: 32, height: 1, backgroundImage:  transparent, ${color}40)` }} />
     </div>
   );
 }
@@ -164,7 +164,7 @@ function CredentialBadge({ cred }: { cred: typeof CREDENTIALS[0] }) {
             transition={{ duration: 0.8, ease: 'easeInOut' }}
             style={{
               position: 'absolute', top: 0, width: '30%', height: '100%', zIndex: 1,
-              background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+              backgroundImage:  transparent, rgba(255,255,255,0.1), transparent)',
               pointerEvents: 'none',
             }}
           />
@@ -176,7 +176,7 @@ function CredentialBadge({ cred }: { cred: typeof CREDENTIALS[0] }) {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             style={{
               position: 'absolute', inset: -1, borderRadius: 999,
-              background: `linear-gradient(90deg, ${cred.color}60, transparent, ${cred.color}60)`,
+              backgroundImage:  ${cred.color}60, transparent, ${cred.color}60)`,
               backgroundSize: '200% 100%',
               animation: 'cred-border-flow 2s linear infinite',
               zIndex: 0, pointerEvents: 'none',
@@ -201,7 +201,7 @@ function CredentialBadge({ cred }: { cred: typeof CREDENTIALS[0] }) {
             )}
             <div style={{
               width: 34, height: 34, borderRadius: '50%', flexShrink: 0,
-              background: `linear-gradient(135deg, rgba(${cred.colorRgb},0.25), rgba(${cred.colorRgb},0.08))`,
+              backgroundImage:  rgba(${cred.colorRgb},0.25), rgba(${cred.colorRgb},0.08))`,
               border: `1px solid rgba(${cred.colorRgb},0.3)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '0.95rem',
@@ -226,7 +226,7 @@ function CredentialBadge({ cred }: { cred: typeof CREDENTIALS[0] }) {
             <div style={{
               fontFamily: 'Syne, sans-serif', fontWeight: 800,
               fontSize: 'clamp(0.82rem,1.5vw,0.98rem)',
-              background: hovered ? cred.gradient : 'rgba(255,255,255,0.8)',
+              backgroundImage: 255,255,0.8)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               backgroundSize: '200% 100%',
@@ -286,7 +286,7 @@ export default function CredentialsStrip() {
     <div style={{
       position: 'relative', width: '100%', overflow: 'hidden',
       padding: '20px 0',
-      background: 'linear-gradient(180deg, rgba(10,5,25,0.0) 0%, rgba(10,5,25,0.6) 50%, rgba(10,5,25,0.0) 100%)',
+      backgroundImage:  rgba(10,5,25,0.0) 0%, rgba(10,5,25,0.6) 50%, rgba(10,5,25,0.0) 100%)',
       borderTop: '1px solid rgba(167,139,250,0.08)',
       borderBottom: '1px solid rgba(167,139,250,0.08)',
     }}>
@@ -295,25 +295,25 @@ export default function CredentialsStrip() {
       {/* Fade edges */}
       <div style={{
         position: 'absolute', left: 0, top: 0, bottom: 0, width: 140, zIndex: 10,
-        background: 'linear-gradient(to right, var(--bg) 20%, transparent)',
+        backgroundImage:  var(--bg) 20%, transparent)',
         pointerEvents: 'none',
       }} />
       <div style={{
         position: 'absolute', right: 0, top: 0, bottom: 0, width: 140, zIndex: 10,
-        background: 'linear-gradient(to left, var(--bg) 20%, transparent)',
+        backgroundImage:  var(--bg) 20%, transparent)',
         pointerEvents: 'none',
       }} />
 
       {/* Glow line top */}
       <div style={{
         position: 'absolute', top: 0, left: '10%', right: '10%', height: 1,
-        background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.3), rgba(244,114,182,0.3), rgba(56,189,248,0.3), transparent)',
+        backgroundImage:  transparent, rgba(167,139,250,0.3), rgba(244,114,182,0.3), rgba(56,189,248,0.3), transparent)',
         pointerEvents: 'none',
       }} />
       {/* Glow line bottom */}
       <div style={{
         position: 'absolute', bottom: 0, left: '10%', right: '10%', height: 1,
-        background: 'linear-gradient(90deg, transparent, rgba(56,189,248,0.3), rgba(167,139,250,0.3), rgba(244,114,182,0.3), transparent)',
+        backgroundImage:  transparent, rgba(56,189,248,0.3), rgba(167,139,250,0.3), rgba(244,114,182,0.3), transparent)',
         pointerEvents: 'none',
       }} />
 
