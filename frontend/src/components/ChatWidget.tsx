@@ -128,7 +128,7 @@ export default function ChatWidget() {
               whiteSpace: 'nowrap',
             }}
           >
-            Chat with AI
+            Chat
           </span>
 
           {/* Online pulse indicator */}
