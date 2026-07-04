@@ -78,7 +78,7 @@ export default function GISShowcase() {
     surkhetMarker.bindPopup(`
       <div style="background: rgba(15,8,35,0.9); border: 1px solid rgba(244,114,182,0.3); padding: 12px; border-radius: 12px; backdrop-filter: blur(10px); color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-width: 180px;">
         <h4 style="font-weight: 700; margin-bottom: 6px; font-size: 14px; color: #f472b6;">Birendranagar, Surkhet</h4>
-        <p style="font-size: 11px; margin: 0; color: rgba(255,255,255,0.7);">LULC Analysis using Random Forest</p>
+        <p style="font-size: 11px; margin: 0; color: rgba(var(--text-base-rgb),0.7);">LULC Analysis using Random Forest</p>
       </div>
     `);
 
@@ -86,7 +86,7 @@ export default function GISShowcase() {
     nawalparasiMarker.bindPopup(`
       <div style="background: rgba(15,8,35,0.9); border: 1px solid rgba(56,189,248,0.3); padding: 12px; border-radius: 12px; backdrop-filter: blur(10px); color: white; font-family: 'Plus Jakarta Sans', sans-serif; min-width: 180px;">
         <h4 style="font-weight: 700; margin-bottom: 6px; font-size: 14px; color: #38bdf8;">Nawalparasi West</h4>
-        <p style="font-size: 11px; margin: 0; color: rgba(255,255,255,0.7);">Decadal LULC Dynamics (2016-2026)</p>
+        <p style="font-size: 11px; margin: 0; color: rgba(var(--text-base-rgb),0.7);">Decadal LULC Dynamics (2016-2026)</p>
       </div>
     `).openPopup();
 
@@ -162,7 +162,7 @@ export default function GISShowcase() {
               padding: '10px 20px', borderRadius: 12,
               background: 'rgba(167,139,250,0.15)',
               border: '1px solid rgba(167,139,250,0.3)',
-              color: 'rgba(255,255,255,0.85)',
+              color: 'rgba(var(--text-base-rgb),0.85)',
               fontSize: '0.78rem', fontWeight: 600,
               letterSpacing: '0.05em',
             }}>

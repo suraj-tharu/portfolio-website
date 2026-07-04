@@ -9,7 +9,7 @@ export const EnhancedThemeToggle = ({ className = "" }: { className?: string }) 
 
     const themes = [
         { name: 'dark', colors: ['#0a0a0a', '#1a1a1a', '#D4AF37'], icon: Moon },
-        { name: 'light', colors: ['#f5f5f5', '#ffffff', '#D4AF37'], icon: Sun },
+        { name: 'light', colors: ['#f5f5f5', 'var(--white)', '#D4AF37'], icon: Sun },
         { name: 'midnight', colors: ['#001a33', '#0033cc', '#00ffff'], icon: Moon },
         { name: 'aurora', colors: ['#1a0033', '#ff00ff', '#00ffff'], icon: Sun }
     ];

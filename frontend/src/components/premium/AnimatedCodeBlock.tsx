@@ -56,10 +56,10 @@ export const AnimatedCodeBlock = ({
         >
             {/* Header */}
             <div className="bg-slate-800 px-4 py-3 flex justify-between items-center">
-                <span className="text-sm text-slate-400">{language}</span>
+                <span className="text-sm text-text-secondary dark:text-slate-400">{language}</span>
                 <button
                     onClick={handleCopy}
-                    className="flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors"
+                    className="flex items-center gap-2 text-text-secondary dark:text-slate-400 hover:text-slate-200 transition-colors"
                 >
                     {copied ? <Check size={16} /> : <Copy size={16} />}
                     {copied ? 'Copied!' : 'Copy'}

@@ -36,7 +36,7 @@ function LuxuryInput({
 
   const sharedStyle = {
     width: '100%',
-    background: focused ? 'rgba(167,139,250,0.06)' : 'var(--surface)',
+    background: focused ? 'rgba(167,139,250,0.06)' : 'rgba(var(--text-base-rgb), 0.02)',
     borderRadius: 14,
     border: `1px solid ${borderColor}`,
     padding: '14px 16px',
@@ -46,6 +46,7 @@ function LuxuryInput({
     fontSize: '0.9rem',
     transition: 'all 0.3s ease',
     boxShadow: shadow,
+    backdropFilter: 'blur(10px)',
   };
 
   return (
@@ -65,6 +66,7 @@ function LuxuryInput({
 
       {type === 'textarea' ? (
         <textarea
+          className="contact-input-premium"
           id={id} name={name} rows={5} value={value} required={required}
           onChange={onChange}
           onBlur={e => { setFocused(false); onBlur(e); }}
@@ -75,6 +77,7 @@ function LuxuryInput({
         />
       ) : (
         <input
+          className="contact-input-premium"
           type={type} id={id} name={name} value={value} required={required}
           onChange={onChange}
           onBlur={e => { setFocused(false); onBlur(e); }}
@@ -128,8 +131,8 @@ function InfoCard({ icon: Icon, label, value, link, color, delay }: {
       style={{
         display: 'flex', alignItems: 'center', gap: 16,
         padding: '16px 20px', borderRadius: 16,
-        background: hovered ? `${color}08` : 'rgba(255,255,255,0.025)',
-        border: `1px solid ${hovered ? color + '30' : 'rgba(255,255,255,0.06)'}`,
+        background: hovered ? `${color}08` : 'rgba(var(--text-base-rgb),0.025)',
+        border: `1px solid ${hovered ? color + '30' : 'rgba(var(--text-base-rgb),0.06)'}`,
         transition: 'all 0.3s ease',
         cursor: link ? 'pointer' : 'default',
       }}
@@ -147,14 +150,14 @@ function InfoCard({ icon: Icon, label, value, link, color, delay }: {
         <p style={{
           fontFamily: 'Syne, sans-serif', fontWeight: 700,
           fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase',
-          color: 'rgba(255,255,255,0.22)', marginBottom: 3,
+          color: 'rgba(var(--text-base-rgb),0.22)', marginBottom: 3,
         }}>
           {label}
         </p>
         {link ? (
           <a href={link} style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.88rem',
-            color: hovered ? color : 'rgba(255,255,255,0.7)',
+            color: hovered ? color : 'rgba(var(--text-base-rgb),0.7)',
             textDecoration: 'none', transition: 'color 0.2s ease',
           }}>
             {value}
@@ -162,7 +165,7 @@ function InfoCard({ icon: Icon, label, value, link, color, delay }: {
         ) : (
           <p style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.88rem',
-            color: 'rgba(255,255,255,0.7)',
+            color: 'rgba(var(--text-base-rgb),0.7)',
           }}>
             {value}
           </p>
@@ -194,9 +197,9 @@ function SocialLink({ s }: { s: typeof SOCIALS[number] }) {
         padding: '10px 18px', borderRadius: 999,
         fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.78rem',
         letterSpacing: '0.04em',
-        border: `1px solid ${hovered ? s.color + '50' : 'rgba(255,255,255,0.08)'}`,
-        background: hovered ? `${s.color}10` : 'rgba(255,255,255,0.025)',
-        color: hovered ? s.color : 'rgba(255,255,255,0.45)',
+        border: `1px solid ${hovered ? s.color + '50' : 'rgba(var(--text-base-rgb),0.08)'}`,
+        background: hovered ? `${s.color}10` : 'rgba(var(--text-base-rgb),0.025)',
+        color: hovered ? s.color : 'rgba(var(--text-base-rgb),0.45)',
         textDecoration: 'none',
         boxShadow: hovered ? `0 0 20px ${s.color}20` : 'none',
         transition: 'all 0.3s ease',
@@ -342,7 +345,7 @@ export default function Contact() {
                 fontFamily: 'Syne, sans-serif', fontWeight: 900,
                 fontSize: 'clamp(2.4rem,5vw,4.5rem)',
                 lineHeight: 0.95, letterSpacing: '-0.04em',
-                color: 'rgba(255,255,255,0.95)',
+                color: 'rgba(var(--text-base-rgb),0.95)',
                 marginBottom: 6,
               }}>
                 Let's build
@@ -361,7 +364,7 @@ export default function Contact() {
               <p style={{
                 fontFamily: 'Plus Jakarta Sans, sans-serif',
                 fontSize: 'clamp(0.88rem,1.3vw,1rem)',
-                color: 'rgba(255,255,255,0.38)',
+                color: 'rgba(var(--text-base-rgb),0.38)',
                 lineHeight: 1.8, maxWidth: 400,
               }}>
                 Open to GIS projects, research collaborations, development contracts,
@@ -392,7 +395,7 @@ export default function Contact() {
               <p style={{
                 fontFamily: 'Syne, sans-serif', fontWeight: 700,
                 fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.2)', marginBottom: 12,
+                color: 'rgba(var(--text-base-rgb),0.2)', marginBottom: 12,
               }}>
                 Connect
               </p>
@@ -424,6 +427,7 @@ export default function Contact() {
               {submitted ? (
                 <motion.div
                   key="success"
+                  className="glass-card-v2"
                   initial={{ opacity: 0, scale: 0.94 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.94 }}
@@ -431,10 +435,8 @@ export default function Contact() {
                   style={{
                     padding: 'clamp(2rem,5vw,3.5rem)',
                     borderRadius: 24,
-                    background: 'rgba(255,255,255,0.025)',
-                    border: '1px solid rgba(52,211,153,0.2)',
-                    boxShadow: '0 0 40px rgba(52,211,153,0.08)',
-                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(52,211,153,0.3)',
+                    boxShadow: '0 0 40px rgba(52,211,153,0.15), inset 0 1px 0 rgba(var(--text-base-rgb),0.05)',
                     display: 'flex', flexDirection: 'column', alignItems: 'center',
                     textAlign: 'center', gap: 20,
                   }}
@@ -455,12 +457,12 @@ export default function Contact() {
                   <div>
                     <h3 style={{
                       fontFamily: 'Syne, sans-serif', fontWeight: 900,
-                      fontSize: '1.5rem', color: 'rgba(255,255,255,0.92)',
+                      fontSize: '1.5rem', color: 'rgba(var(--text-base-rgb),0.92)',
                       letterSpacing: '-0.02em', marginBottom: 8,
                     }}>
                       Thank you, {submittedName}! 🎉
                     </h3>
-                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.88rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
+                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.88rem', color: 'rgba(var(--text-base-rgb),0.38)', lineHeight: 1.7 }}>
                       Your message has been sent successfully. I'll get back to you within 24 hours.
                     </p>
                   </div>
@@ -483,16 +485,13 @@ export default function Contact() {
               ) : (
                 <motion.form
                   key="form"
+                  className="glass-card-v2"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                   onSubmit={formSubmit}
                   noValidate
                   style={{
                     padding: 'clamp(1.5rem,4vw,2.5rem)',
                     borderRadius: 24,
-                    background: 'rgba(255,255,255,0.025)',
-                    border: '1px solid rgba(255,255,255,0.07)',
-                    backdropFilter: 'blur(20px)',
-                    boxShadow: '0 20px 60px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)',
                     display: 'flex', flexDirection: 'column', gap: 22,
                     position: 'relative', overflow: 'hidden',
                   }}
@@ -516,10 +515,10 @@ export default function Contact() {
                       <Mail size={16} style={{ color: '#a78bfa' }} />
                     </div>
                     <div>
-                      <p style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1rem', color: 'rgba(255,255,255,0.88)', lineHeight: 1 }}>
+                      <p style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1rem', color: 'rgba(var(--text-base-rgb),0.88)', lineHeight: 1 }}>
                         Send a Message
                       </p>
-                      <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.72rem', color: 'rgba(255,255,255,0.3)', marginTop: 3 }}>
+                      <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.72rem', color: 'rgba(var(--text-base-rgb),0.3)', marginTop: 3 }}>
                         I read every message personally
                       </p>
                     </div>
@@ -556,7 +555,7 @@ export default function Contact() {
                       error={touched.message && errors.message ? errors.message[0] : undefined}
                       onChange={handleChange} onBlur={handleBlur}
                     />
-                    <p style={{ marginTop: 6, textAlign: 'right', fontSize: '0.67rem', color: 'rgba(255,255,255,0.2)', fontFamily: 'monospace' }}>
+                    <p style={{ marginTop: 6, textAlign: 'right', fontSize: '0.67rem', color: 'rgba(var(--text-base-rgb),0.2)', fontFamily: 'monospace' }}>
                       {values.message.length}/5000
                     </p>
                   </div>
@@ -575,7 +574,7 @@ export default function Contact() {
                       background: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
                       backgroundSize: '250% 250%',
                       animation: 'hero-shimmer-cta 5s linear infinite',
-                      color: '#fff', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                      color: 'var(--white)', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer',
                       opacity: isSubmitting ? 0.7 : 1,
                       boxShadow: '0 12px 36px rgba(124,58,237,0.5), 0 4px 12px rgba(236,72,153,0.25)',
                       overflow: 'hidden', position: 'relative',
@@ -585,7 +584,7 @@ export default function Contact() {
                     {/* Shimmer */}
                     <span style={{
                       position: 'absolute', inset: 0,
-                      background: 'linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.2) 50%,transparent 65%)',
+                      background: 'linear-gradient(105deg,transparent 35%,rgba(var(--text-base-rgb),0.2) 50%,transparent 65%)',
                       backgroundSize: '200% 100%',
                       animation: 'hero-shimmer-cta 2.8s linear infinite',
                     }} />
@@ -593,7 +592,7 @@ export default function Contact() {
                       <span style={{ display: 'flex', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
                         <span style={{ display: 'flex', gap: 4 }}>
                           {[0, 0.15, 0.3].map((d, i) => (
-                            <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', animation: `bounce 1s ${d}s infinite` }} />
+                            <span key={i} style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--white)', animation: `bounce 1s ${d}s infinite` }} />
                           ))}
                         </span>
                         Sending…
@@ -607,7 +606,7 @@ export default function Contact() {
                     )}
                   </motion.button>
 
-                  <p style={{ textAlign: 'center', fontSize: '0.67rem', color: 'rgba(255,255,255,0.18)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
+                  <p style={{ textAlign: 'center', fontSize: '0.67rem', color: 'rgba(var(--text-base-rgb),0.18)', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>
                     Your information is kept private and secure ✦
                   </p>
                 </motion.form>

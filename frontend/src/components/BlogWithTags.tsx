@@ -144,7 +144,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                 </div>
 
                 {/* Results Counter */}
-                <p className="text-sm dark:text-text-muted text-gray-600 mb-8">
+                <p className="text-sm dark:text-text-muted text-text-secondary dark:text-gray-400 mb-8">
                     Showing {filteredPosts.length} of {posts.length} articles
                 </p>
 
@@ -175,7 +175,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                         <span className="inline-block px-3 py-1 rounded-full text-xs font-semibold dark:bg-brand-light/20 bg-brand-light/10 dark:text-brand-light text-brand-dark">
                                             {post.category}
                                         </span>
-                                        <span className="text-xs dark:text-text-muted text-gray-600">
+                                        <span className="text-xs dark:text-text-muted text-text-secondary dark:text-gray-400">
                                             {post.readTime} min read
                                         </span>
                                     </div>
@@ -188,7 +188,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                         {post.excerpt}
                                     </p>
 
-                                    <div className="flex items-center justify-between text-xs dark:text-text-muted text-gray-600">
+                                    <div className="flex items-center justify-between text-xs dark:text-text-muted text-text-secondary dark:text-gray-400">
                                         <span>{new Date(post.date).toLocaleDateString()}</span>
                                         <span>by {post.author}</span>
                                     </div>
@@ -197,7 +197,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                         {post.tags.slice(0, 3).map(tag => (
                                             <span
                                                 key={tag}
-                                                className="text-xs dark:text-text-muted text-gray-600"
+                                                className="text-xs dark:text-text-muted text-text-secondary dark:text-gray-400"
                                             >
                                                 #{tag}
                                             </span>

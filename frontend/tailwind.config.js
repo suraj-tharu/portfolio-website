@@ -18,7 +18,10 @@ export default {
           400: "var(--brand-light)",
           500: "var(--brand)",
           600: "var(--brand-dark)",
-        }
+        },
+        "luxury-gold": { 400: "#F3E5AB", 500: "#D4AF37", 600: "#AA8C2C" },
+        "obsidian": { 800: "#111111", 900: "#0a0a0a", 950: "#050505" },
+        "pearl": { 100: "#FDFDFD", 200: "#F9F9F9", 300: "#F0F0F0" }
       },
       fontFamily: {
         body: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
@@ -58,6 +61,7 @@ export default {
         'ambient-breathe': 'ambient-breathe 4s ease-in-out infinite',
         'luxury-pulse': 'luxury-pulse 2s infinite',
         'luxury-shine': 'luxury-shine 3s infinite',
+        'mesh': 'mesh 15s ease-in-out infinite alternate',
       },
       keyframes: {
         'scroll-down': {
@@ -118,6 +122,10 @@ export default {
         'luxury-shine': {
           '0%': { left: '-100%' },
           '100%': { left: '100%' },
+        },
+        'mesh': {
+          '0%': { backgroundPosition: '0% 0%' },
+          '100%': { backgroundPosition: '100% 100%' },
         },
       },
       boxShadow: {

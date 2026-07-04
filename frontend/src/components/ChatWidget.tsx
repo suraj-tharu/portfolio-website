@@ -94,14 +94,14 @@ export default function ChatWidget() {
             gap: '10px',
             padding: '13px 22px 13px 16px',
             borderRadius: '9999px',
-            border: '1px solid rgba(255,255,255,0.2)',
+            border: '1px solid rgba(var(--text-base-rgb),0.2)',
             background: 'linear-gradient(135deg, #6d28d9 0%, #2563eb 100%)',
-            color: '#fff',
+            color: 'var(--white)',
             cursor: 'pointer',
-            boxShadow: '0 8px 32px rgba(109,40,217,0.45)',
             fontFamily: 'inherit',
             userSelect: 'none',
           }}
+          className="chat-widget-toggle"
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLButtonElement).style.transform = 'scale(1.06)';
           }}
@@ -181,7 +181,7 @@ export default function ChatWidget() {
               flexDirection: 'column',
               borderRadius: '20px',
               overflow: 'hidden',
-              border: '1px solid rgba(255,255,255,0.12)',
+              border: '1px solid rgba(var(--text-base-rgb),0.12)',
               boxShadow:
                 '0 25px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(109,40,217,0.2)',
               backdropFilter: 'blur(20px)',
@@ -206,13 +206,13 @@ export default function ChatWidget() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div
                   style={{
-                    background: 'rgba(255,255,255,0.2)',
+                    background: 'rgba(var(--text-base-rgb),0.2)',
                     borderRadius: '50%',
                     padding: '7px',
                     display: 'flex',
                   }}
                 >
-                  <Bot size={18} color="#fff" />
+                  <Bot size={18} color='var(--white)' />
                 </div>
                 <div>
                   <h3
@@ -221,7 +221,7 @@ export default function ChatWidget() {
                       margin: 0,
                       fontSize: '15px',
                       fontWeight: 700,
-                      color: '#fff',
+                      color: 'var(--white)',
                     }}
                   >
                     AI Assistant
@@ -232,7 +232,7 @@ export default function ChatWidget() {
                       alignItems: 'center',
                       gap: '5px',
                       fontSize: '11px',
-                      color: 'rgba(255,255,255,0.8)',
+                      color: 'rgba(var(--text-base-rgb),0.8)',
                     }}
                   >
                     <span
@@ -253,7 +253,7 @@ export default function ChatWidget() {
                 onClick={() => setIsOpen(false)}
                 aria-label="Close chat"
                 style={{
-                  background: 'rgba(255,255,255,0.15)',
+                  background: 'rgba(var(--text-base-rgb),0.15)',
                   border: 'none',
                   borderRadius: '50%',
                   width: '32px',
@@ -262,16 +262,16 @@ export default function ChatWidget() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
-                  color: '#fff',
+                  color: 'var(--white)',
                   transition: 'background 0.2s',
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background =
-                    'rgba(255,255,255,0.3)';
+                    'rgba(var(--text-base-rgb),0.3)';
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLButtonElement).style.background =
-                    'rgba(255,255,255,0.15)';
+                    'rgba(var(--text-base-rgb),0.15)';
                 }}
               >
                 <X size={16} />
@@ -312,12 +312,12 @@ export default function ChatWidget() {
                       background:
                         msg.role === 'user'
                           ? 'linear-gradient(135deg, #6d28d9, #2563eb)'
-                          : 'rgba(255,255,255,0.08)',
+                          : 'rgba(var(--text-base-rgb),0.08)',
                       border:
                         msg.role === 'user'
                           ? 'none'
-                          : '1px solid rgba(255,255,255,0.15)',
-                      color: '#fff',
+                          : '1px solid rgba(var(--text-base-rgb),0.15)',
+                      color: 'var(--white)',
                     }}
                   >
                     {msg.role === 'user' ? (
@@ -335,12 +335,12 @@ export default function ChatWidget() {
                       background:
                         msg.role === 'user'
                           ? 'linear-gradient(135deg, #6d28d9, #1d4ed8)'
-                          : 'rgba(255,255,255,0.07)',
-                      color: '#fff',
+                          : 'rgba(var(--text-base-rgb),0.07)',
+                      color: 'var(--white)',
                       border:
                         msg.role === 'user'
                           ? 'none'
-                          : '1px solid rgba(255,255,255,0.1)',
+                          : '1px solid rgba(var(--text-base-rgb),0.1)',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',
                     }}
@@ -361,9 +361,9 @@ export default function ChatWidget() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      background: 'rgba(255,255,255,0.08)',
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      color: '#fff',
+                      background: 'rgba(var(--text-base-rgb),0.08)',
+                      border: '1px solid rgba(var(--text-base-rgb),0.15)',
+                      color: 'var(--white)',
                     }}
                   >
                     <Bot size={14} />
@@ -372,8 +372,8 @@ export default function ChatWidget() {
                     style={{
                       padding: '12px 16px',
                       borderRadius: '4px 18px 18px 18px',
-                      background: 'rgba(255,255,255,0.07)',
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      background: 'rgba(var(--text-base-rgb),0.07)',
+                      border: '1px solid rgba(var(--text-base-rgb),0.1)',
                       display: 'flex',
                       gap: '4px',
                       alignItems: 'center',
@@ -404,7 +404,7 @@ export default function ChatWidget() {
               onSubmit={handleSubmit}
               style={{
                 padding: '12px 14px',
-                borderTop: '1px solid rgba(255,255,255,0.08)',
+                borderTop: '1px solid rgba(var(--text-base-rgb),0.08)',
                 background: 'rgba(0,0,0,0.15)',
                 flexShrink: 0,
               }}
@@ -421,9 +421,9 @@ export default function ChatWidget() {
                     width: '100%',
                     padding: '11px 48px 11px 16px',
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    background: 'rgba(255,255,255,0.07)',
-                    color: '#fff',
+                    border: '1px solid rgba(var(--text-base-rgb),0.15)',
+                    background: 'rgba(var(--text-base-rgb),0.07)',
+                    color: 'var(--white)',
                     fontSize: '13.5px',
                     outline: 'none',
                     fontFamily: 'inherit',
@@ -434,7 +434,7 @@ export default function ChatWidget() {
                     e.currentTarget.style.boxShadow = '0 0 0 3px rgba(109,40,217,0.15)';
                   }}
                   onBlur={(e) => {
-                    e.currentTarget.style.border = '1px solid rgba(255,255,255,0.15)';
+                    e.currentTarget.style.border = '1px solid rgba(var(--text-base-rgb),0.15)';
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 />
@@ -451,9 +451,9 @@ export default function ChatWidget() {
                     border: 'none',
                     background:
                       !input.trim() || isTyping
-                        ? 'rgba(255,255,255,0.15)'
+                        ? 'rgba(var(--text-base-rgb),0.15)'
                         : 'linear-gradient(135deg, #6d28d9, #2563eb)',
-                    color: '#fff',
+                    color: 'var(--white)',
                     cursor: !input.trim() || isTyping ? 'default' : 'pointer',
                     display: 'flex',
                     alignItems: 'center',

@@ -152,8 +152,8 @@ export default function AmbientSoundToggle() {
             style={{
               background: active
                 ? 'rgba(124,58,237,0.15)'
-                : 'rgba(255,255,255,0.03)',
-              borderColor: active ? 'rgba(167,139,250,0.3)' : 'rgba(255,255,255,0.08)',
+                : 'rgba(var(--text-base-rgb),0.03)',
+              borderColor: active ? 'rgba(167,139,250,0.3)' : 'rgba(var(--text-base-rgb),0.08)',
               boxShadow: active
                 ? '0 0 20px rgba(124,58,237,0.2), 0 4px 16px rgba(0,0,0,0.3)'
                 : '0 4px 16px rgba(0,0,0,0.2)',
@@ -180,7 +180,7 @@ export default function AmbientSoundToggle() {
 
               <span
                 className="text-[10px] font-bold uppercase tracking-[0.12em] font-jakarta"
-                style={{ color: active ? '#a78bfa' : 'rgba(255,255,255,0.3)' }}
+                style={{ color: active ? '#a78bfa' : 'rgba(var(--text-base-rgb),0.3)' }}
               >
                 {active ? 'Ambient' : 'Sound'}
               </span>

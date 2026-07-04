@@ -45,7 +45,7 @@ export const Accordion = ({ items, allowMultiple = false, className = "" }: Acco
                     key={index}
                     className="border border-black/5 dark:border-white/10 rounded-lg overflow-hidden"
                     animate={{
-                        backgroundColor: isExpanded(index) ? 'rgba(255, 255, 255, 0.05)' : 'transparent'
+                        backgroundColor: isExpanded(index) ? 'rgba(var(--text-base-rgb), 0.05)' : 'transparent'
                     }}
                 >
                     <motion.button

@@ -96,7 +96,7 @@ export default function TerminalResume() {
           {/* Body */}
           <div className="flex-1 p-4 overflow-y-auto" onClick={() => inputRef.current?.focus()}>
             {history.map((item, i) => (
-              <div key={i} className={`mb-2 ${item.type === 'input' ? 'text-brand-light' : 'text-gray-400'}`}>
+              <div key={i} className={`mb-2 ${item.type === 'input' ? 'text-brand-light' : 'text-text-secondary dark:text-gray-400'}`}>
                 {item.text}
               </div>
             ))}

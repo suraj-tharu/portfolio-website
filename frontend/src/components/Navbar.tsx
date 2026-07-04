@@ -19,7 +19,7 @@ function ScrollProgress() {
   return (
     <motion.div
       style={{ scaleX, transformOrigin: '0%' }}
-      className="fixed top-0 left-0 right-0 h-[2px] z-[200]
+  className="fixed top-0 left-0 right-0 h-[2px] z-[200]
         bg-gradient-to-r from-violet-500 via-pink-500 to-cyan-500"
     >
       {/* Glow layer */}
@@ -57,7 +57,7 @@ function NavLink({
     relative px-4 py-2 text-[13px] font-bold rounded-full transition-colors duration-150 select-none cursor-pointer
     ${isActive
       ? 'text-violet-700 dark:text-violet-300'
-      : 'text-slate-500 dark:text-white/50 hover:text-slate-900 dark:hover:text-white'
+      : 'text-slate-500 dark:text-white/55 hover:bg-slate-100/50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
     }`;
 
   const inner = (
@@ -73,7 +73,7 @@ function NavLink({
             dark:from-violet-500/20 dark:to-purple-500/20
             border border-violet-200/80 dark:border-violet-500/30"
           style={{
-            boxShadow: '0 0 20px rgba(124,58,237,0.2), 0 0 40px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.15)',
+            boxShadow: '0 0 20px rgba(124,58,237,0.2), 0 0 40px rgba(124,58,237,0.1), inset 0 1px 0 rgba(var(--text-base-rgb),0.15)',
           }}
           transition={{ type: 'spring', stiffness: 320, damping: 32, mass: 0.8 }}
         />
@@ -251,7 +251,7 @@ function FullscreenMenu({
                     {link.label}
                   </motion.span>
                   <div className="flex items-center gap-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300">
-                    <span className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400 dark:text-white/30">
+                    <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-secondary dark:text-slate-400 dark:text-white/30">
                       0{i + 1}
                     </span>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center
@@ -281,7 +281,7 @@ function FullscreenMenu({
                     {link.label}
                   </motion.span>
                   <div className="flex items-center gap-3 opacity-0 group-hover/link:opacity-100 transition-opacity duration-300">
-                    <span className="text-xs font-bold uppercase tracking-[0.3em] text-slate-400 dark:text-white/30">
+                    <span className="text-xs font-bold uppercase tracking-[0.3em] text-text-secondary dark:text-slate-400 dark:text-white/30">
                       0{i + 1}
                     </span>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center
@@ -306,12 +306,12 @@ function FullscreenMenu({
           border-t border-slate-100 dark:border-white/5"
       >
         <div className="flex flex-wrap gap-x-6 gap-y-2">
-          <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-white/35 font-medium">
+          <div className="flex items-center gap-2 text-xs text-muted dark:text-slate-500 dark:text-white/35 font-medium">
             <MapPin size={11} className="text-violet-500 shrink-0" />
             Nawalparasi West, Nepal
           </div>
           <a href="mailto:suraj.xaudhary@gmail.com"
-            className="flex items-center gap-2 text-xs text-slate-500 dark:text-white/35 font-medium
+            className="flex items-center gap-2 text-xs text-muted dark:text-slate-500 dark:text-white/35 font-medium
               hover:text-violet-600 dark:hover:text-violet-300 transition-colors">
             <Mail size={11} className="text-violet-500 shrink-0" />
             suraj.xaudhary@gmail.com
@@ -325,7 +325,7 @@ function FullscreenMenu({
           ].map(s => (
             <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
               className="text-[11px] font-bold uppercase tracking-widest
-                text-slate-400 dark:text-white/30
+                text-text-secondary dark:text-slate-400 dark:text-white/30
                 hover:text-violet-600 dark:hover:text-violet-300
                 transition-colors duration-200"
             >
@@ -502,7 +502,9 @@ export default function Navbar() {
           backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'blur(12px) saturate(120%)',
           WebkitBackdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'blur(12px) saturate(120%)',
           boxShadow: scrolled
-            ? '0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(124,58,237,0.04), inset 0 1px 0 rgba(255,255,255,0.08)'
+            ? theme === 'light'
+              ? '0 20px 40px rgba(0,0,0,0.04), 0 0 0 1px rgba(124,58,237,0.06), inset 0 1px 0 rgba(255,255,255,0.8)'
+              : '0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(124,58,237,0.04), inset 0 1px 0 rgba(255,255,255,0.05)'
             : 'none',
         }}
       >
@@ -518,7 +520,7 @@ export default function Navbar() {
             <div className="absolute inset-0 bg-gradient-to-br from-violet-600 via-purple-600 to-pink-600
               group-hover:from-violet-500 group-hover:to-pink-500 transition-all duration-300" />
             {/* Shine sweep */}
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.3)_0%,transparent_55%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(var(--text-base-rgb),0.3)_0%,transparent_55%)]" />
             <span className="absolute inset-0 flex items-center justify-center
               font-display italic font-black text-[13px] text-white leading-none z-10">
               SC
@@ -529,7 +531,7 @@ export default function Navbar() {
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
               style={{
-                boxShadow: 'inset 0 0 8px rgba(255,255,255,0.15)',
+                boxShadow: 'inset 0 0 8px rgba(var(--text-base-rgb),0.15)',
               }}
             />
           </div>
@@ -587,7 +589,7 @@ export default function Navbar() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
             </span>
-            <span className="text-[11px] font-bold text-slate-500 dark:text-white/50 tabular-nums">
+            <span className="text-[11px] font-bold text-muted dark:text-slate-500 dark:text-white/50 tabular-nums">
               {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </span>
           </motion.div>

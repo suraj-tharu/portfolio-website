@@ -41,7 +41,7 @@ export const AnimatedBadge = ({
             <motion.div
                 animate={unlocked ? { rotate: 360 } : {}}
                 transition={{ duration: 2, repeat: Infinity }}
-                className={`text-4xl mb-3 ${unlocked ? 'text-yellow-400' : 'text-gray-400'}`}
+                className={`text-4xl mb-3 ${unlocked ? 'text-yellow-400' : 'text-text-secondary dark:text-gray-400'}`}
             >
                 {icon}
             </motion.div>

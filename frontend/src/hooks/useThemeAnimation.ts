@@ -36,15 +36,15 @@ export const useThemeAnimation = () => {
 
       /* Glassmorphism enhancement */
       .glass-effect {
-        background: rgba(255, 255, 255, 0.1);
+        background: rgba(var(--text-base-rgb), 0.1);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(var(--text-base-rgb), 0.2);
       }
 
       .glass-effect.dark {
         background: rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(var(--text-base-rgb), 0.1);
       }
 
       /* Micro-interactions - better performance */
@@ -61,7 +61,7 @@ export const useThemeAnimation = () => {
         width: 0;
         height: 0;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
+        background: rgba(var(--text-base-rgb), 0.3);
         transform: translate(-50%, -50%);
         pointer-events: none;
       }

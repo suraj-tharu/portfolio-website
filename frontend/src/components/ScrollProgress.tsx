@@ -100,7 +100,7 @@ export default function ScrollProgress() {
                       transition={{ duration: 0.2, delay: idx * 0.015 }}
                       className="text-[10px] font-bold uppercase tracking-[0.15em] font-syne whitespace-nowrap"
                       style={{
-                        color: isActive ? '#a78bfa' : 'rgba(255,255,255,0.25)',
+                        color: isActive ? '#a78bfa' : 'rgba(var(--text-base-rgb),0.25)',
                         textShadow: isActive ? '0 0 12px rgba(167,139,250,0.6)' : 'none',
                       }}
                     >
@@ -123,7 +123,7 @@ export default function ScrollProgress() {
                       ? 'linear-gradient(90deg, #7c3aed, #f472b6, #38bdf8)'
                       : isPast
                       ? 'rgba(167,139,250,0.5)'
-                      : 'rgba(255,255,255,0.15)',
+                      : 'rgba(var(--text-base-rgb),0.15)',
                     boxShadow: isActive
                       ? '0 0 10px rgba(124,58,237,0.6), 0 0 20px rgba(244,114,182,0.3)'
                       : 'none',

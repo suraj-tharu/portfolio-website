@@ -46,7 +46,7 @@ function FloatingPreview({
           >
             <img src={src} alt={title} className="w-full aspect-video object-cover block" />
             <div className="px-3 py-2" style={{ background: 'rgba(10,8,20,0.85)' }}>
-              <p className="font-syne font-bold text-white text-xs tracking-wide truncate">{title}</p>
+              <p className="font-syne font-bold text-[var(--text)] text-xs tracking-wide truncate">{title}</p>
               <div className="w-8 h-0.5 mt-1 rounded-full" style={{ background: `linear-gradient(90deg, ${color}, transparent)` }} />
             </div>
           </div>
@@ -201,7 +201,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
-            background: `radial-gradient(circle 200px at ${spotX}% ${spotY}%, rgba(255,255,255,0.08), transparent 70%)`,
+            background: `radial-gradient(circle 200px at ${spotX}% ${spotY}%, rgba(var(--text-base-rgb),0.08), transparent 70%)`,
             opacity: hovered ? 1 : 0,
           }}
         />
@@ -237,9 +237,9 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
             <motion.div
               animate={{ scale: hovered ? 1 : 0.8, opacity: hovered ? 1 : 0 }}
               transition={{ duration: 0.3 }}
-              className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center"
+              className="w-9 h-9 rounded-full bg-[rgba(var(--text-base-rgb),0.10)] backdrop-blur-sm border border-[rgba(var(--text-base-rgb),0.20)] flex items-center justify-center"
             >
-              <ArrowUpRight size={15} className="text-white" />
+              <ArrowUpRight size={15} className="text-[var(--text)]" />
             </motion.div>
           </div>
 
@@ -254,7 +254,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 border border-white/15 text-white/70 font-jakarta backdrop-blur-sm"
+                  className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[rgba(var(--text-base-rgb),0.10)] border border-[rgba(var(--text-base-rgb),0.15)] text-[rgba(var(--text-base-rgb),0.70)] font-jakarta backdrop-blur-sm shadow-sm dark:shadow-none"
                 >
                   {tag}
                 </span>
@@ -263,7 +263,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
 
             {/* Title */}
             <h3
-              className="font-syne font-black text-white leading-tight tracking-tight"
+              className="font-syne font-black text-[var(--text)] leading-tight tracking-tight"
               style={{ fontSize: 'clamp(1.1rem, 2.5vw, 1.6rem)', transform: 'translateZ(20px)' }}
             >
               {project.title}
@@ -271,13 +271,13 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
 
             {/* Year + link */}
             <div className="flex items-center justify-between mt-2">
-              <span className="text-white/35 text-xs font-mono font-bold">{project.year}</span>
+              <span className="text-[rgba(var(--text-base-rgb),0.35)] text-xs font-mono font-bold">{project.year}</span>
               {project.url !== '#' && (
                 <a
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-xs text-white/50 hover:text-white transition-colors font-jakarta"
+                  className="flex items-center gap-1 text-xs text-[rgba(var(--text-base-rgb),0.50)] hover:text-[var(--text)] transition-colors font-jakarta"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ExternalLink size={11} />
@@ -334,7 +334,7 @@ export default function SelectedWorks() {
             whileInView={{ opacity: 0.03, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1 }}
-            className="font-syne font-black text-white inline-block"
+            className="font-syne font-black text-[var(--text)] inline-block"
             style={{ fontSize: 'clamp(8rem, 15vw, 15rem)', lineHeight: 0.8 }}
           >
             01
@@ -352,7 +352,7 @@ export default function SelectedWorks() {
           <div className="flex flex-col gap-4">
             <span className="float-badge self-start">Selected Work</span>
             <h2
-              className="font-syne font-black text-white/95 tracking-tight"
+              className="font-syne font-black text-[rgba(var(--text-base-rgb),0.95)] tracking-tight"
               style={{ fontSize: 'clamp(2.5rem, 6vw, 5.5rem)', lineHeight: 0.92, letterSpacing: '-0.035em' }}
             >
               Highlighted{' '}
@@ -366,7 +366,7 @@ export default function SelectedWorks() {
                 Works
               </span>
             </h2>
-            <p className="font-jakarta text-white/35 max-w-sm" style={{ fontSize: 'clamp(0.87rem, 1.2vw, 1rem)', lineHeight: 1.75 }}>
+            <p className="font-jakarta text-[rgba(var(--text-base-rgb),0.35)] max-w-sm" style={{ fontSize: 'clamp(0.87rem, 1.2vw, 1rem)', lineHeight: 1.75 }}>
               A curated selection of research, engineering, and innovation — from concept to impact.
             </p>
           </div>

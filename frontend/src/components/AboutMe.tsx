@@ -246,9 +246,9 @@ export default function AboutMe() {
             <div className="flex flex-col gap-5">
               <BioParagraph delay={0.1}>
                 Computer Engineering professional with deep expertise in{' '}
-                <strong className="text-white/85 font-semibold">GIS & Remote Sensing</strong>,{' '}
-                <strong className="text-white/85 font-semibold">Machine Learning</strong>, and{' '}
-                <strong className="text-white/85 font-semibold">full-stack development</strong>.
+                <strong className="text-[var(--text)] opacity-85 font-semibold">GIS & Remote Sensing</strong>,{' '}
+                <strong className="text-[var(--text)] opacity-85 font-semibold">Machine Learning</strong>, and{' '}
+                <strong className="text-[var(--text)] opacity-85 font-semibold">Web Technologies</strong>. 
                 Passionate about leveraging technology for sustainable development and innovation in Nepal.
               </BioParagraph>
               <BioParagraph delay={0.18}>

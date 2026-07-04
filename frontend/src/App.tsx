@@ -1,8 +1,8 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import SmoothScroll from './components/SmoothScroll';
-import CustomCursor from './components/CustomCursor';
+import MagneticCursor from './components/premium/MagneticCursor';
 import CinematicIntro from './components/CinematicIntro';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -20,7 +20,6 @@ import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
 import { FluidBackground } from './components/premium';
 import { DeveloperMode } from './components/DeveloperMode';
 import NoiseTexture from './components/NoiseTexture';
-import ScrollProgress from './components/ScrollProgress';
 import AmbientSoundToggle from './components/AmbientSoundToggle';
 import PageWrapper from './components/PageWrapper';
 
@@ -32,7 +31,7 @@ const LearningHub = lazy(() => import('./pages/LearningHub'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Initialize error tracking on app load
-initErrorTracking(); // Add your Sentry DSN here if available
+initErrorTracking();
 enableConsoleSpy();
 
 // Initialize analytics (LogRocket & Hotjar)
@@ -47,7 +46,6 @@ function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
     window.scrollTo(0, 0);
-    // Track page view on route change
     trackPageView(pathname, document.title);
   }, [pathname]);
   return null;
@@ -58,15 +56,14 @@ function AppContent() {
   const { setTheme } = useTheme();
   const systemColorScheme = usePrefersColorScheme();
   const location = useLocation();
-  const { scrollYProgress } = useScroll();
 
   // Initialize premium hooks
-  useThemeAnimation(); // Smooth theme transitions
-  usePageTransition(); // Smooth page transitions
-  useScrollSpy(); // Scroll-spy for navbar
+  useThemeAnimation();
+  usePageTransition();
+  useScrollSpy();
 
   // Initialize analytics
-  useGoogleAnalytics({ debug: false }); // Replace with your GA4 ID
+  useGoogleAnalytics({ debug: false });
   useWebVitals();
   useSkipToContent();
 
@@ -86,7 +83,6 @@ function AppContent() {
     return () => clearTimeout(safetyTimer);
   }, []);
 
-
   return (
     <>
       <ScrollToTop />
@@ -94,14 +90,11 @@ function AppContent() {
         <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] transition-colors duration-300">
           {isLoading && <CinematicIntro onComplete={() => setIsLoading(false)} />}
 
-          <CustomCursor />
+          {/* Global premium overlays — z-index safe stack */}
+          <MagneticCursor />
           <NoiseTexture />
-          <ScrollProgress />
+          {/* ScrollProgress is rendered inside Navbar.tsx (z-index: 200) */}
           <AmbientSoundToggle />
-          <motion.div
-            className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-500 via-pink-500 to-amber-500 origin-left z-[110]"
-            style={{ scaleX: scrollYProgress }}
-          />
           <FluidBackground />
           <DeveloperMode />
           <ChatWidget />
@@ -116,7 +109,7 @@ function AppContent() {
             }}
           >
             <Navbar />
-            <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-brand">Loading...</div>}>
+            <Suspense fallback={<div className="h-screen w-full flex items-center justify-center text-brand-500">Loading…</div>}>
               <AnimatePresence mode="wait">
                 <Routes location={location} key={location.pathname}>
                   <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
@@ -143,4 +136,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-

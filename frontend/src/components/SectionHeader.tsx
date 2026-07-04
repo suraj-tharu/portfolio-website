@@ -180,7 +180,7 @@ export default function SectionHeader({
             {/* Base faint track */}
             <path
               d="M4 7 Q60 3 120 7 Q180 11 236 7"
-              stroke="rgba(255,255,255,0.06)"
+              stroke="rgba(var(--text-base-rgb),0.06)"
               strokeWidth="2"
               strokeLinecap="round"
             />

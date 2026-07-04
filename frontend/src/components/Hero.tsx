@@ -109,8 +109,8 @@ const globalStyles = `
     --name-grad-2: linear-gradient(135deg,#f9a8d4 0%,#f472b6 25%,#ec4899 50%,#f97316 80%,#fbbf24 100%);
     --name-grad-3: linear-gradient(135deg,#bae6fd 0%,#7dd3fc 25%,#38bdf8 50%,#818cf8 75%,#a78bfa 100%);
     --role-grad: linear-gradient(135deg,#c4b5fd,#a78bfa 30%,#f472b6 70%,#fb7185);
-    --desc-color: #ffffff;
-    --loc-color: #ffffff;
+    --desc-color: var(--white);
+    --loc-color: var(--white);
   }
 
   .light {
@@ -145,14 +145,28 @@ const globalStyles = `
   }
   /* Greeting pill — light mode */
   .light .hero-greeting-pill {
-    background: linear-gradient(rgba(250,248,255,0.96), rgba(250,248,255,0.96)) padding-box,
-                linear-gradient(135deg, rgba(109,40,217,0.5), rgba(219,39,119,0.4), rgba(6,182,212,0.3)) border-box !important;
-    box-shadow: 0 4px 20px rgba(109,40,217,0.12) !important;
+    background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)) padding-box,
+                linear-gradient(135deg, rgba(109,40,217,0.3), rgba(219,39,119,0.2), rgba(6,182,212,0.2)) border-box !important;
+    box-shadow: 0 8px 32px rgba(109,40,217,0.08), inset 0 0 0 1px rgba(255,255,255,0.5) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+  .light .hero-greeting-text {
+    background: linear-gradient(135deg, #4c1d95, #be185d, #0284c7) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+  }
+  .light .hero-greeting-welcome {
+    color: rgba(79, 70, 229, 0.7) !important;
+    font-weight: 600 !important;
   }
   /* Name headline — light keeps gradient but stronger */
   .light .hero-name-word {
     animation: none !important;
     filter: none !important;
+  }
+  .light .hero-name-word span {
+    filter: drop-shadow(0 4px 10px rgba(109,40,217,0.15)) !important;
   }
   /* Role badge text */
   .light .hero-role span {
@@ -164,38 +178,61 @@ const globalStyles = `
   }
   /* Description text */
   .light .hero-description {
-    color: rgba(30, 27, 75, 0.72) !important;
+    color: rgba(30, 27, 75, 0.8) !important;
+    font-weight: 500 !important;
   }
   /* Location */
   .light .hero-location {
-    color: rgba(79, 70, 229, 0.6) !important;
+    color: rgba(79, 70, 229, 0.8) !important;
+    font-weight: 600 !important;
+  }
+  .light .hero-loc-icon, .light .hero-loc-zap {
+    color: rgba(79, 70, 229, 0.9) !important;
+  }
+  .light .hero-loc-dot {
+    color: rgba(109, 40, 217, 0.3) !important;
+  }
+  .light .hero-loc-avail {
+    color: #1e1b4b !important;
+    font-weight: 700 !important;
   }
   /* Stats strip */
   .light .hero-stats-strip {
-    background: linear-gradient(135deg, rgba(245,243,255,0.9), rgba(255,255,255,0.85), rgba(240,253,255,0.8)) !important;
+    background: linear-gradient(135deg, rgba(var(--text-base-rgb),0.95), rgba(var(--text-base-rgb), 0.9), rgba(var(--text-base-rgb),0.95)) !important;
     border: 1px solid rgba(109,40,217,0.15) !important;
-    box-shadow: 0 4px 32px rgba(109,40,217,0.1), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+    border-top-color: rgba(var(--text-base-rgb),0.8) !important;
+    border-bottom-color: rgba(109,40,217,0.2) !important;
+    box-shadow: 0 15px 40px -10px rgba(109,40,217,0.15), inset 0 1px 0 rgba(var(--text-base-rgb),1), inset 0 0 30px rgba(var(--text-base-rgb),0.5) !important;
   }
   .light .hero-stat-value {
-    background: linear-gradient(135deg, #4c1d95, #6d28d9, #be185d) !important;
+    background: linear-gradient(135deg, #4c1d95, #7c3aed, #db2777) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
+    filter: drop-shadow(0 2px 10px rgba(109,40,217,0.15)) !important;
   }
   .light .hero-stat-label {
-    color: rgba(79, 70, 229, 0.5) !important;
+    color: rgba(79, 70, 229, 0.8) !important;
+    text-shadow: none !important;
+    font-weight: 700 !important;
+  }
+  .light .hero-stat-icon {
+    filter: drop-shadow(0 4px 10px rgba(109,40,217,0.25)) !important;
+  }
+  .light .hero-stat-item {
+    border-right-color: rgba(109,40,217,0.15) !important;
   }
   /* Scroll indicator */
   .light .hero-scroll-label {
-    color: rgba(79, 70, 229, 0.45) !important;
+    color: rgba(79, 70, 229, 0.6) !important;
   }
   .light .hero-scroll-shell {
-    border-color: rgba(109,40,217,0.25) !important;
-    background: rgba(109,40,217,0.04) !important;
+    border-color: rgba(109,40,217,0.4) !important;
+    background: rgba(109,40,217,0.08) !important;
   }
   /* Overline */
   .light .hero-overline {
-    color: rgba(109, 40, 217, 0.5) !important;
+    color: rgba(109, 40, 217, 0.7) !important;
   }
   /* Corner accents */
   .light .hero-corners path {
@@ -203,8 +240,8 @@ const globalStyles = `
   }
   /* Floating tags — light mode */
   .light .hero-tag {
-    background: linear-gradient(rgba(250,248,255,0.95), rgba(250,248,255,0.95)) !important;
-    box-shadow: 0 4px 20px rgba(109,40,217,0.12), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+    background: linear-gradient(rgba(var(--text-base-rgb), 0.95), rgba(var(--text-base-rgb), 0.95)) !important;
+    box-shadow: 0 4px 20px rgba(109,40,217,0.12), inset 0 1px 0 rgba(var(--text-base-rgb),0.9) !important;
   }
   /* Grid visible in light mode */
   .light .hero-dot-grid {
@@ -228,10 +265,15 @@ const globalStyles = `
   .light .hero-cta-secondary {
     color: rgba(79, 70, 229, 0.9) !important;
     box-shadow: 0 4px 16px rgba(109,40,217,0.12) !important;
+    background: linear-gradient(rgba(var(--text-base-rgb),0.95),rgba(var(--text-base-rgb),0.95)) padding-box, linear-gradient(135deg,rgba(109,40,217,0.4),rgba(219,39,119,0.4)) border-box !important;
+  }
+  .light .hero-cta-secondary:hover {
+    color: white !important;
+    background: linear-gradient(135deg,#7c3aed,#ec4899,#0ea5e9) border-box !important;
   }
   /* Available badge */
   .light .hero-available {
-    color: rgba(5, 150, 105, 0.7) !important;
+    color: rgba(5, 150, 105, 0.9) !important;
   }
   /* Badge dot */
   .light .hero-badge-dot-pulse {
@@ -646,11 +688,11 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
         display: 'inline-flex', alignItems: 'center', gap: 12,
         borderRadius: 999, padding: '16px 40px',
         fontSize: '0.92rem', fontWeight: 800,
-        color: '#fff',
+        color: 'var(--white)',
         background: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
         backgroundSize: '250% 250%',
         animation: 'hero-shimmer-cta 5s linear infinite',
-        boxShadow: '0 12px 42px rgba(124,58,237,0.6), 0 4px 16px rgba(236,72,153,0.3), 0 0 0 1px rgba(167,139,250,0.3), inset 0 1px 0 rgba(255,255,255,0.15)',
+        boxShadow: '0 12px 42px rgba(124,58,237,0.6), 0 4px 16px rgba(236,72,153,0.3), 0 0 0 1px rgba(167,139,250,0.3), inset 0 1px 0 rgba(var(--text-base-rgb),0.15)',
         textDecoration: 'none',
         letterSpacing: '0.04em',
         overflow: 'hidden',
@@ -660,7 +702,7 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
       {/* Shimmer sweep */}
       <span style={{
         position: 'absolute', inset: 0,
-        background: 'linear-gradient(105deg,transparent 35%,rgba(255,255,255,0.22) 50%,transparent 65%)',
+        background: 'linear-gradient(105deg,transparent 35%,rgba(var(--text-base-rgb),0.22) 50%,transparent 65%)',
         backgroundSize: '200% 100%',
         animation: 'hero-shimmer-cta 2.8s linear infinite',
       }} />
@@ -688,7 +730,7 @@ function SecondaryCTA({ href, children }: { href: string; children: React.ReactN
         display: 'inline-flex', alignItems: 'center', gap: 12,
         borderRadius: 999, padding: '16px 40px',
         fontSize: '0.92rem', fontWeight: 800,
-        color: hovered ? '#fff' : 'rgba(196,181,253,0.92)',
+        color: hovered ? 'var(--white)' : 'rgba(196,181,253,0.92)',
         border: '1px solid transparent',
         background: hovered
           ? 'linear-gradient(rgba(15,8,35,0.95),rgba(15,8,35,0.95)) padding-box, linear-gradient(135deg,#7c3aed,#ec4899,#0ea5e9) border-box'
@@ -740,7 +782,7 @@ function ScrollIndicator() {
         padding: '7px 0',
         background: 'rgba(124,58,237,0.04)',
         backdropFilter: 'blur(10px)',
-        boxShadow: '0 4px 20px rgba(124,58,237,0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
+        boxShadow: '0 4px 20px rgba(124,58,237,0.1), inset 0 1px 0 rgba(var(--text-base-rgb),0.05)',
       }}>
         <div style={{
           width: 4, height: 10, borderRadius: 999,
@@ -810,6 +852,15 @@ export default function Hero() {
   const containerRef = useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = useState(0);
   const { rotateX, rotateY, handleMouseMove, handleMouseLeave } = use3DTilt();
+
+  const mouseX = useSpring(0, { stiffness: 40, damping: 20 });
+  const mouseY = useSpring(0, { stiffness: 40, damping: 20 });
+
+  const handleGlobalMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    handleMouseMove(e);
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+  }, [handleMouseMove, mouseX, mouseY]);
 
   const roles = [
     t('hero.role.engineer'),
@@ -883,7 +934,7 @@ export default function Hero() {
       ref={containerRef}
       className="hero-section"
       style={{ opacity, scale }}
-      onMouseMove={handleMouseMove as unknown as React.MouseEventHandler<HTMLElement>}
+      onMouseMove={handleGlobalMouseMove as unknown as React.MouseEventHandler<HTMLElement>}
       onMouseLeave={handleMouseLeave}
       css-hero="true"
     >
@@ -898,6 +949,17 @@ export default function Hero() {
         justifyContent: 'center',
         overflow: 'hidden',
       }}>
+
+        {/* ── AMBIENT CURSOR LIGHTING ── */}
+        <motion.div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 1,
+            pointerEvents: 'none',
+            background: useTransform(() => `radial-gradient(600px circle at ${mouseX.get()}px ${mouseY.get()}px, rgba(167,139,250,0.1), transparent 80%)`)
+          }}
+        />
 
         {/* ── BACKGROUND (parallax) ── */}
         <motion.div style={{ y: yBg, position: 'absolute', inset: 0, zIndex: 0 }}>
@@ -960,7 +1022,7 @@ export default function Hero() {
                   border: '1px solid transparent',
                   backdropFilter: 'blur(20px)',
                   animation: 'badge-pulse-luxury 3.5s ease-in-out infinite',
-                  boxShadow: '0 8px 32px rgba(124,58,237,0.18), inset 0 1px 0 rgba(255,255,255,0.07)',
+                  boxShadow: '0 8px 32px rgba(124,58,237,0.18), inset 0 1px 0 rgba(var(--text-base-rgb),0.07)',
                 }}>
                   {/* Live indicator */}
                   <span style={{ position: 'relative', width: 8, height: 8 }}>
@@ -977,7 +1039,7 @@ export default function Hero() {
                     }} />
                   </span>
                   <Star size={11} style={{ color: '#fbbf24', opacity: 0.8 }} />
-                  <span style={{
+                  <span className="hero-greeting-text" style={{
                     fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.25em',
                     textTransform: 'uppercase',
                     background: 'linear-gradient(135deg,#a78bfa,#f472b6,#38bdf8)',
@@ -986,7 +1048,7 @@ export default function Hero() {
                   }}>
                     {greeting}
                   </span>
-                  <span style={{ fontSize: '0.68rem', color: 'rgba(167,139,250,0.4)', fontWeight: 500 }}>
+                  <span className="hero-greeting-welcome" style={{ fontSize: '0.68rem', color: 'rgba(167,139,250,0.4)', fontWeight: 500 }}>
                     — Welcome
                   </span>
                 </div>
@@ -1058,15 +1120,15 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 1.25 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 8, marginBottom: 36,
-                fontSize: '0.83rem', fontWeight: 500, color: 'var(--loc-color)',
+                fontSize: '0.83rem', fontWeight: 500, color: 'var(--text-secondary)',
                 letterSpacing: '0.04em',
               }}
             >
-              <MapPin size={12} style={{ color: '#a78bfa', flexShrink: 0 }} />
+              <MapPin className="hero-loc-icon" size={12} style={{ color: '#a78bfa', flexShrink: 0 }} />
               {t('hero.location')}
-              <span style={{ color: 'rgba(167,139,250,0.25)', margin: '0 4px' }}>·</span>
-              <Zap size={10} style={{ color: '#34d399' }} />
-              <span style={{ color: '#ffffff', fontSize: '0.75rem', fontWeight: 600 }}>Available</span>
+              <span className="hero-loc-dot" style={{ color: 'rgba(167,139,250,0.25)', margin: '0 4px' }}>·</span>
+              <Zap className="hero-loc-zap" size={10} style={{ color: '#34d399' }} />
+              <span className="hero-loc-avail" style={{ color: 'var(--text)', fontSize: '0.75rem', fontWeight: 600 }}>Available</span>
             </motion.div>
 
             {/* ── DESCRIPTION ── */}
@@ -1080,7 +1142,7 @@ export default function Hero() {
                 marginBottom: 46,
                 fontSize: 'clamp(0.92rem,1.4vw,1.08rem)',
                 lineHeight: 1.85,
-                color: 'var(--desc-color)',
+                color: 'var(--text-secondary)',
                 fontWeight: 400,
                 letterSpacing: '0.01em',
               }}
@@ -1117,77 +1179,126 @@ export default function Hero() {
               </SecondaryCTA>
             </motion.div>
 
-            {/* ── LUXURY STATS STRIP ── */}
+            {/* ── ULTRA LUXURY STATS STRIP ── */}
             <motion.div
-              initial={{ opacity: 0, y: 32 }}
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.1, delay: 1.75 }}
-              style={{ width: '100%', maxWidth: 580 }}
+              transition={{ duration: 1.2, delay: 1.75, type: 'spring', stiffness: 50, damping: 20 }}
+              style={{ width: '100%', maxWidth: 720, position: 'relative', zIndex: 10 }}
             >
-              {/* Top accent line */}
-              <div style={{
-                height: 1,
-                background: 'linear-gradient(90deg,transparent,rgba(167,139,250,0.2),rgba(244,114,182,0.15),rgba(167,139,250,0.2),transparent)',
-                marginBottom: 0,
-              }} />
+              {/* Premium glowing animated backdrop */}
+              <motion.div 
+                style={{
+                  position: 'absolute', inset: -2, 
+                  background: 'linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #e879f9, #38bdf8)',
+                  backgroundSize: '200% 100%',
+                  filter: 'blur(16px)', opacity: 0.35, borderRadius: 28, zIndex: -1
+                }} 
+                animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
+                transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              />
 
-              <div className="hero-stats-strip" style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4,1fr)',
-                borderRadius: 20,
-                padding: 'clamp(16px,2.5vw,24px) clamp(10px,2vw,18px)',
-                background: 'linear-gradient(135deg,rgba(124,58,237,0.06),rgba(15,8,35,0.85),rgba(56,189,248,0.04))',
-                border: '1px solid rgba(167,139,250,0.1)',
-                backdropFilter: 'blur(28px)',
-                boxShadow: '0 8px 56px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(167,139,250,0.06)',
+              {/* Glassmorphism Main Container */}
+              <motion.div 
+                className="hero-stats-strip group" 
+                whileHover={{ scale: 1.015, y: -4 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                style={{
+                  display: 'grid', gridTemplateColumns: 'repeat(4,1fr)',
+                  borderRadius: 24,
+                  padding: 'clamp(20px,3vw,28px) clamp(16px,2vw,24px)',
+                  background: 'linear-gradient(145deg, rgba(20,10,40,0.85), rgba(15,8,30,0.9), rgba(20,10,40,0.85))',
+                  border: '1px solid rgba(var(--text-base-rgb),0.08)',
+                  borderTopColor: 'rgba(var(--text-base-rgb),0.15)',
+                  borderBottomColor: 'rgba(0,0,0,0.5)',
+                  backdropFilter: 'blur(40px)',
+                  WebkitBackdropFilter: 'blur(40px)',
+                  boxShadow: '0 25px 80px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(var(--text-base-rgb),0.15), inset 0 0 30px rgba(167,139,250,0.08)',
+                  position: 'relative',
+                  overflow: 'hidden'
               }}>
+                {/* Shine Sweep Effect */}
+                <motion.div 
+                  style={{
+                    position: 'absolute', top: 0, left: '-100%', width: '30%', height: '100%',
+                    background: 'linear-gradient(90deg, transparent, rgba(var(--text-base-rgb),0.1), transparent)',
+                    transform: 'skewX(-25deg)', pointerEvents: 'none', zIndex: 1
+                  }}
+                  animate={{ left: ['-100%', '300%'] }}
+                  transition={{ duration: 4, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
+                />
+
                 {stats.map(({ value, suffix, label, icon, isText }, i) => (
                   <motion.div
                     key={label}
-                    whileHover={{ scale: 1.1, y: -3 }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                    className="hero-stat-item"
+                    whileHover={{ y: -8, scale: 1.05 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                     style={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
-                      borderRight: i < 3 ? '1px solid rgba(167,139,250,0.08)' : 'none',
-                      padding: '6px 8px',
-                      cursor: 'default',
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                      borderRight: i < 3 ? '1px solid rgba(var(--text-base-rgb),0.04)' : 'none',
+                      padding: '8px 14px',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      zIndex: 2
                     }}
                   >
-                    <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>{icon}</span>
+                    {/* Icon with interactive glow */}
+                    <div style={{ position: 'relative', marginBottom: 2 }}>
+                      <motion.div
+                        style={{
+                          position: 'absolute', inset: -12, 
+                          background: 'radial-gradient(circle, rgba(167,139,250,0.3) 0%, transparent 60%)',
+                          opacity: 0, scale: 0.8
+                        }}
+                        whileHover={{ opacity: 1, scale: 1.2 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      <motion.span 
+                        className="hero-stat-icon"
+                        style={{ 
+                          fontSize: '1.6rem', lineHeight: 1, position: 'relative', zIndex: 2, 
+                          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
+                          display: 'block'
+                        }}
+                        whileHover={{ rotate: [-5, 5, -5, 0] }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        {icon}
+                      </motion.span>
+                    </div>
+
                     <span className="hero-stat-value" style={{
-                      fontSize: 'clamp(0.9rem,2.2vw,1.3rem)',
-                      fontWeight: 900,
-                      fontFamily: '"Cormorant Garamond", Georgia, serif',
+                      fontSize: 'clamp(1.1rem,2.8vw,1.8rem)',
+                      fontWeight: 800,
+                      fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif',
                       fontStyle: 'italic',
-                      background: 'linear-gradient(135deg,#ddd6fe,#a78bfa,#f472b6)',
+                      background: 'linear-gradient(135deg, var(--white) 20%, #c4b5fd 60%, #f472b6 100%)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                       backgroundClip: 'text',
                       lineHeight: 1,
+                      letterSpacing: '0.01em',
+                      filter: 'drop-shadow(0 2px 10px rgba(196,181,253,0.3))'
                     }}>
                       {isText ? suffix : <><AnimCounter to={value} />{suffix}</>}
                     </span>
+
                     <span className="hero-stat-label" style={{
-                      fontSize: '0.56rem',
+                      fontSize: '0.62rem',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.14em',
-                      fontWeight: 700,
-                      color: 'rgba(167,139,250,0.38)',
+                      letterSpacing: '0.22em',
+                      fontWeight: 800,
+                      color: 'rgba(var(--text-base-rgb),0.6)',
                       textAlign: 'center',
                       lineHeight: 1.4,
+                      textShadow: '0 2px 4px rgba(0,0,0,0.5)'
                     }}>
                       {label}
                     </span>
                   </motion.div>
                 ))}
-              </div>
-
-              {/* Bottom accent line */}
-              <div style={{
-                height: 1,
-                background: 'linear-gradient(90deg,transparent,rgba(56,189,248,0.15),rgba(167,139,250,0.2),rgba(56,189,248,0.15),transparent)',
-                marginTop: 0,
-              }} />
+              </motion.div>
             </motion.div>
 
           </div>

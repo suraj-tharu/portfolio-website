@@ -486,7 +486,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                   initial={{ opacity: 0, scaleX: 0 }}
                   animate={{ opacity: 1, scaleX: 1 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
-                  style={{ originX: 0, position: 'relative', height: 2.5, borderRadius: 999, overflow: 'hidden', background: 'rgba(255,255,255,0.05)' }}
+                  style={{ originX: 0, position: 'relative', height: 2.5, borderRadius: 999, overflow: 'hidden', background: 'rgba(var(--text-base-rgb),0.05)' }}
                 >
                   <div style={{
                     position: 'absolute', top: 0, left: 0, height: '100%',
@@ -500,7 +500,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                   <div style={{
                     position: 'absolute', top: 0, left: 0, height: '100%',
                     width: `${progress}%`,
-                    background: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.45) 50%,transparent 100%)',
+                    background: 'linear-gradient(90deg,transparent 0%,rgba(var(--text-base-rgb),0.45) 50%,transparent 100%)',
                     backgroundSize: '200% 100%',
                     animation: 'ls-shimmer 1s linear infinite',
                     borderRadius: 999,

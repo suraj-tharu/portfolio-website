@@ -23,7 +23,7 @@ function OdometerCounter({ to, prefix = '', suffix = '', duration = 2.2, delay =
     const x = (rect.left + rect.width / 2) / window.innerWidth;
     const y = (rect.top + rect.height / 2) / window.innerHeight;
     confetti({ particleCount: 18, spread: 50, startVelocity: 20, gravity: 1.2,
-      origin: { x, y }, colors: [color, '#ffffff', color + 'aa'], scalar: 0.8, ticks: 80 });
+      origin: { x, y }, colors: [color, 'var(--white)', color + 'aa'], scalar: 0.8, ticks: 80 });
   }, [color]);
 
   useEffect(() => {
@@ -71,20 +71,23 @@ function StatCell({ stat, index }: { stat: typeof STATS[number]; index: number }
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLElement).style.background = `${stat.color}0a`;
-        (e.currentTarget as HTMLElement).style.borderColor = `${stat.color}30`;
-        (e.currentTarget as HTMLElement).style.boxShadow = `0 8px 40px rgba(0,0,0,0.3), 0 0 30px ${stat.color}12`;
+        const isLight = document.documentElement.classList.contains('light');
+        (e.currentTarget as HTMLElement).style.background = `${stat.color}${isLight ? '06' : '0a'}`;
+        (e.currentTarget as HTMLElement).style.borderColor = `${stat.color}${isLight ? '40' : '30'}`;
+        (e.currentTarget as HTMLElement).style.boxShadow = isLight 
+          ? `0 12px 40px rgba(0,0,0,0.06), 0 0 40px ${stat.color}15`
+          : `0 8px 40px rgba(0,0,0,0.3), 0 0 30px ${stat.color}12`;
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)';
-        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)';
+        (e.currentTarget as HTMLElement).style.background = 'rgba(var(--text-base-rgb),0.02)';
+        (e.currentTarget as HTMLElement).style.borderColor = 'rgba(var(--text-base-rgb),0.06)';
         (e.currentTarget as HTMLElement).style.boxShadow = 'none';
       }}
       style={{
         padding: 'clamp(20px,3vw,32px) clamp(16px,2.5vw,28px)',
         borderRadius: 20,
-        background: 'rgba(255,255,255,0.02)',
-        border: '1px solid rgba(255,255,255,0.06)',
+        background: 'rgba(var(--text-base-rgb),0.02)',
+        border: '1px solid rgba(var(--text-base-rgb),0.06)',
         backdropFilter: 'blur(20px)',
         display: 'flex', flexDirection: 'column', gap: 14,
         transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
@@ -113,7 +116,7 @@ function StatCell({ stat, index }: { stat: typeof STATS[number]; index: number }
         fontFamily: 'Syne, sans-serif', fontWeight: 900,
         fontSize: 'clamp(2rem,4vw,3.2rem)',
         lineHeight: 0.95, letterSpacing: '-0.03em',
-        background: `linear-gradient(135deg, ${stat.color} 0%, rgba(255,255,255,0.9) 60%)`,
+        background: `linear-gradient(135deg, ${stat.color} 0%, rgba(var(--text-base-rgb),0.9) 60%)`,
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
       }}>
         <OdometerCounter
@@ -129,14 +132,14 @@ function StatCell({ stat, index }: { stat: typeof STATS[number]; index: number }
         <p style={{
           fontFamily: 'Syne, sans-serif', fontWeight: 800,
           fontSize: 'clamp(0.82rem,1.2vw,1rem)',
-          color: 'rgba(255,255,255,0.82)',
+          color: 'rgba(var(--text-base-rgb),0.82)',
           letterSpacing: '-0.01em', lineHeight: 1.2,
         }}>
           {stat.label}
         </p>
         <p style={{
           fontFamily: 'Plus Jakarta Sans, sans-serif',
-          fontSize: '0.72rem', color: 'rgba(255,255,255,0.28)',
+          fontSize: '0.72rem', color: 'rgba(var(--text-base-rgb),0.28)',
           marginTop: 4, lineHeight: 1.5,
         }}>
           {stat.desc}
@@ -210,7 +213,7 @@ export default function Stats() {
               fontFamily: 'Syne, sans-serif', fontWeight: 900,
               fontSize: 'clamp(2.4rem,5.5vw,5rem)',
               lineHeight: 0.95, letterSpacing: '-0.035em',
-              color: 'rgba(255,255,255,0.95)',
+              color: 'rgba(var(--text-base-rgb),0.95)',
               marginBottom: 16,
             }}>
               Impact in{' '}
@@ -226,7 +229,7 @@ export default function Stats() {
             <p style={{
               fontFamily: 'Plus Jakarta Sans, sans-serif',
               fontSize: 'clamp(0.88rem,1.3vw,1.05rem)',
-              color: 'rgba(255,255,255,0.35)',
+              color: 'rgba(var(--text-base-rgb),0.35)',
               lineHeight: 1.8, maxWidth: 480, margin: '0 auto',
             }}>
               A decade of engineering, research, and education — measured in milestones.
@@ -266,7 +269,7 @@ export default function Stats() {
               textAlign: 'center', marginTop: 'clamp(24px,4vw,48px)',
               fontFamily: 'Plus Jakarta Sans, sans-serif',
               fontSize: '0.68rem', letterSpacing: '0.25em',
-              textTransform: 'uppercase', color: 'rgba(255,255,255,0.15)',
+              textTransform: 'uppercase', color: 'rgba(var(--text-base-rgb),0.15)',
             }}
           >
             ✦ &nbsp; Growing Every Day &nbsp; ✦

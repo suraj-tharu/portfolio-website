@@ -100,7 +100,7 @@ export const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ items, onSelect 
                                 className="w-full text-left px-4 py-3 hover:bg-gray-100 border-b last:border-b-0 transition-colors"
                             >
                                 <div className="font-semibold text-sm">{item.title}</div>
-                                <div className="text-xs text-gray-500">{item.category}</div>
+                                <div className="text-xs text-muted dark:text-gray-500">{item.category}</div>
                             </motion.button>
                         ))}
                     </motion.div>
@@ -137,7 +137,7 @@ export const BarChart: React.FC<BarChartProps> = ({
                     <motion.div key={item.label} initial={{ width: 0 }} animate={{ width: '100%' }}>
                         <div className="flex items-center justify-between mb-2">
                             <span className="text-sm font-medium">{item.label}</span>
-                            <span className="text-sm text-gray-600">{item.value}</span>
+                            <span className="text-sm text-text-secondary dark:text-gray-400">{item.value}</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full overflow-hidden">
                             <motion.div

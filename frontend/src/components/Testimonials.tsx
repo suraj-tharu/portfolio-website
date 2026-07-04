@@ -96,8 +96,8 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
         borderRadius: 20,
         background: hovered
           ? `linear-gradient(135deg, ${t.color}12, rgba(0,0,0,0))` 
-          : 'rgba(255,255,255,0.025)',
-        border: `1px solid ${hovered ? t.color + '35' : 'rgba(255,255,255,0.07)'}`,
+          : 'rgba(var(--text-base-rgb),0.025)',
+        border: `1px solid ${hovered ? t.color + '35' : 'rgba(var(--text-base-rgb),0.07)'}`,
         boxShadow: hovered ? `0 16px 48px rgba(0,0,0,0.3), 0 0 24px ${t.color}18` : '0 4px 20px rgba(0,0,0,0.12)',
         backdropFilter: 'blur(16px)',
         transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
@@ -108,6 +108,7 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
     >
       {/* Decorative quote mark */}
       <Quote
+        className="testimonial-quote-icon"
         size={32}
         style={{
           position: 'absolute', top: 16, right: 18,
@@ -129,7 +130,7 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
         fontSize: 'clamp(0.95rem,1.4vw,1.1rem)',
         fontStyle: 'italic',
         fontWeight: 500,
-        color: 'rgba(240,242,248,0.85)',
+        color: 'rgba(var(--text-base-rgb), 0.85)',
         lineHeight: 1.65,
         marginBottom: 20,
       }}>
@@ -159,14 +160,14 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
         <div>
           <p style={{
             fontFamily: 'Syne, sans-serif', fontWeight: 700,
-            fontSize: '0.85rem', color: 'rgba(255,255,255,0.88)',
+            fontSize: '0.85rem', color: 'rgba(var(--text-base-rgb),0.88)',
             letterSpacing: '-0.01em',
           }}>
             {t.name}
           </p>
           <p style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif',
-            fontSize: '0.7rem', color: 'rgba(255,255,255,0.38)',
+            fontSize: '0.7rem', color: 'rgba(var(--text-base-rgb),0.38)',
             marginTop: 2,
           }}>
             {t.role}
@@ -258,7 +259,7 @@ export default function Testimonials() {
             fontFamily: 'Syne, sans-serif', fontWeight: 900,
             fontSize: 'clamp(2.4rem,5.5vw,5rem)',
             lineHeight: 0.95, letterSpacing: '-0.035em',
-            color: 'rgba(255,255,255,0.95)',
+            color: 'rgba(var(--text-base-rgb),0.95)',
             marginBottom: 18,
           }}>
             What{' '}
@@ -275,7 +276,7 @@ export default function Testimonials() {
           <p style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif',
             fontSize: 'clamp(0.88rem,1.3vw,1.05rem)',
-            color: 'rgba(255,255,255,0.35)',
+            color: 'rgba(var(--text-base-rgb),0.35)',
             lineHeight: 1.8, maxWidth: 480, margin: '0 auto',
           }}>
             Reflections from colleagues, mentors, and students on our shared journey.
@@ -312,7 +313,7 @@ export default function Testimonials() {
             textAlign: 'center', marginTop: 'clamp(28px,4vw,48px)',
             fontFamily: 'Plus Jakarta Sans, sans-serif',
             fontSize: '0.7rem', letterSpacing: '0.2em',
-            textTransform: 'uppercase', color: 'rgba(255,255,255,0.15)',
+            textTransform: 'uppercase', color: 'rgba(var(--text-base-rgb),0.15)',
           }}
         >
           ✦ &nbsp; Hover to pause &nbsp; ✦

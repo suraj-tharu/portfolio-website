@@ -102,7 +102,7 @@ export const PerformanceMonitor: React.FC = () => {
                 >
                     {metricsList.map(metric => (
                         <div key={metric.label} className="flex items-center justify-between text-sm">
-                            <span className="text-gray-600 dark:text-gray-300">{metric.label}</span>
+                            <span className="text-text-secondary dark:text-gray-400 dark:text-gray-300">{metric.label}</span>
                             <motion.span
                                 animate={{
                                     color: metric.value && metric.value <= metric.good ? '#10b981' : '#ef4444',
@@ -143,7 +143,7 @@ const StatCard: React.FC<{ label: string; value: number | string; unit?: string 
         animate={{ opacity: 1, y: 0 }}
         className="bg-gradient-to-br from-violet-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 p-4 rounded-lg"
     >
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{label}</p>
+        <p className="text-sm text-text-secondary dark:text-gray-400 dark:text-gray-300 mb-1">{label}</p>
         <motion.p className="text-2xl font-bold text-violet-600">
             {value}
             {unit}

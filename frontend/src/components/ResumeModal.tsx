@@ -57,24 +57,24 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
                   <div>
-                    <p className="text-xs uppercase text-gray-500 font-mono mb-1">Date</p>
+                    <p className="text-xs uppercase text-muted dark:text-gray-500 font-mono mb-1">Date</p>
                     <p className="font-bold font-mono">2026</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-gray-500 font-mono mb-1">Class</p>
+                    <p className="text-xs uppercase text-muted dark:text-gray-500 font-mono mb-1">Class</p>
                     <p className="font-bold font-mono">FIRST</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-gray-500 font-mono mb-1">Origin</p>
+                    <p className="text-xs uppercase text-muted dark:text-gray-500 font-mono mb-1">Origin</p>
                     <p className="font-bold font-mono">NPL</p>
                   </div>
                   <div>
-                    <p className="text-xs uppercase text-gray-500 font-mono mb-1">Destination</p>
+                    <p className="text-xs uppercase text-muted dark:text-gray-500 font-mono mb-1">Destination</p>
                     <p className="font-bold font-mono">GLOBAL</p>
                   </div>
                 </div>
 
-                <div className="space-y-4 font-mono text-sm text-gray-400">
+                <div className="space-y-4 font-mono text-sm text-text-secondary dark:text-gray-400">
                   <div className="flex justify-between border-b border-gray-500/20 pb-2">
                     <span>SKILLS</span>
                     <span className={isDark ? 'text-white' : 'text-black'}>TS, REACT, NEXT, GIS, ML</span>
@@ -99,7 +99,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
               <div className={`w-full md:w-64 p-8 md:p-12 flex flex-col justify-between ${isDark ? 'bg-gradient-to-br from-purple-900/20 to-pink-900/20' : 'bg-purple-50'}`}>
                 <div className="flex flex-col items-center mb-8">
                   <QrCode size={100} className={`mb-4 opacity-80 ${isDark ? 'text-white' : 'text-black'}`} />
-                  <p className="font-mono text-xs text-center text-gray-500 break-all">
+                  <p className="font-mono text-xs text-center text-muted dark:text-gray-500 break-all">
                     01101001 01101110 01100110 01101111
                   </p>
                 </div>

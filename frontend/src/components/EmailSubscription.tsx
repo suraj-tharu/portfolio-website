@@ -123,7 +123,7 @@ export default function EmailSubscription() {
                 </form>
 
                 {/* Privacy notice */}
-                <p className="text-xs dark:text-text-muted text-gray-600 mt-4">
+                <p className="text-xs dark:text-text-muted text-text-secondary dark:text-gray-400 mt-4">
                     We respect your privacy. Unsubscribe at any time.
                 </p>
             </div>

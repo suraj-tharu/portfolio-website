@@ -106,7 +106,7 @@ function ExplorationCard({ img, index }: { img: typeof images[0]; index: number 
           </motion.span>
 
           <h3
-            className="font-syne font-black text-white text-xl leading-tight tracking-tight"
+            className="font-syne font-black text-[var(--text)] text-xl leading-tight tracking-tight"
             style={{ textShadow: '0 2px 20px rgba(0,0,0,0.5)' }}
           >
             {img.title}
@@ -167,7 +167,7 @@ export default function Explorations() {
         <div className="relative z-10 px-6 md:px-16 mb-10 max-w-2xl">
           <div className="flex items-center gap-4 mb-5">
             <div className="w-8 h-px bg-gradient-to-r from-violet-500 to-pink-500" />
-            <span className="text-[10px] text-white/30 uppercase tracking-[0.3em] font-syne font-bold">
+            <span className="text-[10px] text-[rgba(var(--text-base-rgb),0.30)] uppercase tracking-[0.3em] font-syne font-bold">
               Visual Explorations
             </span>
           </div>
@@ -180,7 +180,7 @@ export default function Explorations() {
               fontStyle: 'italic',
               lineHeight: 0.95,
               letterSpacing: '-0.02em',
-              color: 'rgba(240,242,248,0.95)',
+              color: 'rgba(var(--text-base-rgb), 0.95)',
             }}
           >
             Visual{' '}
@@ -194,7 +194,7 @@ export default function Explorations() {
             </span>
           </h2>
 
-          <p className="mt-4 font-jakarta text-white/35 text-sm md:text-base leading-relaxed max-w-md">
+          <p className="mt-4 font-jakarta text-[rgba(var(--text-base-rgb),0.35)] text-sm md:text-base leading-relaxed max-w-md">
             Scroll to explore — a collection of experiments, generative art, and conceptual UI interactions.
           </p>
         </div>
@@ -220,7 +220,7 @@ export default function Explorations() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.5 }}
               style={{ flexShrink: 0, width: 320, height: 400 }}
-              className="relative rounded-3xl border border-white/8 flex flex-col items-center justify-center text-center gap-4 p-8 cursor-pointer group"
+              className="relative rounded-3xl border border-[rgba(var(--text-base-rgb),0.08)] flex flex-col items-center justify-center text-center gap-4 p-8 cursor-pointer group hover:bg-[var(--text)] transition-colors duration-500"
               onClick={() => window.open('https://dribbble.com', '_blank')}
             >
               {/* Rotating ring background */}
@@ -237,8 +237,8 @@ export default function Explorations() {
               </div>
 
               <div>
-                <p className="font-syne font-bold text-white text-lg">View All</p>
-                <p className="font-jakarta text-white/30 text-xs mt-1 tracking-widest uppercase">On Dribbble</p>
+                <p className="font-syne font-bold text-[var(--text)] group-hover:text-[var(--bg)] text-lg transition-colors duration-500">View All</p>
+                <p className="font-jakarta text-[rgba(var(--text-base-rgb),0.30)] group-hover:text-[var(--bg)] group-hover:opacity-60 text-xs mt-1 tracking-widest uppercase transition-colors duration-500">On Dribbble</p>
               </div>
             </motion.div>
           </motion.div>
@@ -255,7 +255,7 @@ export default function Explorations() {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
         >
           <div className="w-10 h-px bg-gradient-to-r from-violet-500 to-transparent" />
-          <span className="text-[10px] text-white/20 uppercase tracking-[0.2em] font-syne">Scroll to explore</span>
+          <span className="text-[10px] text-[rgba(var(--text-base-rgb),0.20)] uppercase tracking-[0.2em] font-syne">Scroll to explore</span>
         </motion.div>
       </div>
     </section>

@@ -141,10 +141,12 @@ function ConstellationGraph() {
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
       ctx.lineWidth = 1.5;
+      const isLight = document.documentElement.classList.contains('light');
       links.forEach(link => {
         const s = link.source as D3Node; const t = link.target as D3Node;
         const g = ctx.createLinearGradient(s.x || 0, s.y || 0, t.x || 0, t.y || 0);
-        g.addColorStop(0, `${s.color}40`); g.addColorStop(1, `${t.color}40`);
+        const alpha = isLight ? '70' : '40';
+        g.addColorStop(0, `${s.color}${alpha}`); g.addColorStop(1, `${t.color}${alpha}`);
         ctx.beginPath(); ctx.strokeStyle = g;
         ctx.moveTo(s.x || 0, s.y || 0); ctx.lineTo(t.x || 0, t.y || 0); ctx.stroke();
       });
@@ -157,10 +159,10 @@ function ConstellationGraph() {
         ctx.beginPath(); ctx.arc(x, y, node.radius + (isH ? 8 : 4), 0, 2 * Math.PI);
         ctx.fillStyle = `${node.color}20`; ctx.fill();
         ctx.beginPath(); ctx.arc(x, y, node.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = isH ? '#fff' : '#0a051e'; ctx.strokeStyle = node.color; ctx.lineWidth = 2;
+        ctx.fillStyle = isH ? (isLight ? '#000' : '#fff') : (isLight ? '#f9fafb' : '#0a051e'); ctx.strokeStyle = node.color; ctx.lineWidth = 2;
         ctx.fill(); ctx.stroke();
         ctx.font = `600 ${isH ? 12 : 10}px 'Plus Jakarta Sans', sans-serif`;
-        ctx.fillStyle = isH ? '#000' : '#fff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = isH ? (isLight ? '#fff' : '#000') : (isLight ? '#000' : '#fff'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         if (node.radius > 16 || isH) ctx.fillText(isH ? node.id : node.id.substring(0, 3) + (node.id.length > 3 ? '..' : ''), x, y);
       });
       setHoveredNode(hover);
@@ -171,7 +173,7 @@ function ConstellationGraph() {
       const r = canvas.getBoundingClientRect();
       mx = e.clientX - r.left; my = e.clientY - r.top;
       sim.force('mouse', d3.forceRadial(100, mx, my).strength(-0.1)).alpha(0.1);
-      cancelIdle(idleId as any); tickSim();
+      cancelIdle(idleId as number); tickSim();
     };
     const onLeave = () => { mx = -1000; my = -1000; sim.force('mouse', null); };
     canvas.addEventListener('mousemove', onMove); canvas.addEventListener('mouseleave', onLeave);
@@ -180,11 +182,11 @@ function ConstellationGraph() {
       canvas.width = width * dpr; canvas.height = height * dpr; ctx.scale(dpr, dpr);
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
       sim.force('center', d3.forceCenter(width / 2, height / 2)).alpha(0.3);
-      cancelIdle(idleId as any); tickSim();
+      cancelIdle(idleId as number); tickSim();
     };
     window.addEventListener('resize', onResize);
     return () => {
-      cancelAnimationFrame(raf); sim.stop(); cancelIdle(idleId as any);
+      cancelAnimationFrame(raf); sim.stop(); cancelIdle(idleId as number);
       canvas.removeEventListener('mousemove', onMove); canvas.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('resize', onResize);
     };
@@ -232,8 +234,8 @@ function SkillBar({ name, level, icon: Icon, desc, color, delay }: {
       style={{
         padding: '14px 18px',
         borderRadius: 16,
-        background: hovered ? `${color}0a` : 'rgba(255,255,255,0.02)',
-        border: `1px solid ${hovered ? color + '35' : 'rgba(255,255,255,0.06)'}`,
+        background: hovered ? `${color}0a` : 'rgba(var(--text-base-rgb),0.02)',
+        border: `1px solid ${hovered ? color + '35' : 'rgba(var(--text-base-rgb),0.06)'}`,
         transition: 'all 0.3s ease',
         cursor: 'default',
       }}
@@ -249,8 +251,8 @@ function SkillBar({ name, level, icon: Icon, desc, color, delay }: {
             <Icon size={15} style={{ color }} />
           </div>
           <div>
-            <p style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.88rem', color: 'rgba(255,255,255,0.9)', lineHeight: 1.2 }}>{name}</p>
-            <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.65rem', color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>{desc}</p>
+            <p style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.88rem', color: 'rgba(var(--text-base-rgb),0.9)', lineHeight: 1.2 }}>{name}</p>
+            <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.65rem', color: 'rgba(var(--text-base-rgb),0.35)', marginTop: 2 }}>{desc}</p>
           </div>
         </div>
         {/* Level badge */}
@@ -264,7 +266,7 @@ function SkillBar({ name, level, icon: Icon, desc, color, delay }: {
 
       {/* Progress bar */}
       <div style={{
-        height: 4, borderRadius: 999, background: 'rgba(255,255,255,0.06)', overflow: 'hidden',
+        height: 4, borderRadius: 999, background: 'rgba(var(--text-base-rgb),0.06)', overflow: 'hidden',
       }}>
         <motion.div
           initial={{ width: 0 }}
@@ -283,7 +285,7 @@ function SkillBar({ name, level, icon: Icon, desc, color, delay }: {
             transition={{ duration: 2.2, delay: delay + 1.4, ease: 'linear', repeat: Infinity, repeatDelay: 3 }}
             style={{
               position: 'absolute', inset: 0,
-              background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent)',
+              background: 'linear-gradient(90deg,transparent,rgba(var(--text-base-rgb),0.5),transparent)',
               width: '40%',
             }}
           />
@@ -308,10 +310,10 @@ function CategoryTab({ cat, active, onClick }: {
         padding: '10px 20px', borderRadius: 999,
         fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.8rem',
         letterSpacing: '0.02em',
-        border: `1px solid ${active ? cat.color + '50' : 'rgba(255,255,255,0.08)'}`,
-        background: active ? `${cat.color}15` : 'rgba(255,255,255,0.03)',
-        color: active ? cat.color : 'rgba(255,255,255,0.4)',
-        boxShadow: active ? `0 0 20px ${cat.color}25, inset 0 1px 0 rgba(255,255,255,0.06)` : 'none',
+        border: `1px solid ${active ? cat.color + '50' : 'rgba(var(--text-base-rgb),0.08)'}`,
+        background: active ? `${cat.color}15` : 'rgba(var(--text-base-rgb),0.03)',
+        color: active ? cat.color : 'rgba(var(--text-base-rgb),0.4)',
+        boxShadow: active ? `0 0 20px ${cat.color}25, inset 0 1px 0 rgba(var(--text-base-rgb),0.06)` : 'none',
         cursor: 'pointer',
         transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)',
         whiteSpace: 'nowrap',
@@ -448,7 +450,7 @@ export default function SkillsVisualization() {
                       fontFamily: 'Syne, sans-serif', fontWeight: 800,
                       fontSize: 'clamp(1.1rem,2vw,1.4rem)', color: activeCat.color, letterSpacing: '-0.01em',
                     }}>{activeCat.label}</h3>
-                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.78rem', color: 'rgba(255,255,255,0.4)', marginTop: 3 }}>
+                    <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.78rem', color: 'rgba(var(--text-base-rgb),0.4)', marginTop: 3 }}>
                       {activeCat.skills.length} core competencies · Click bars to explore
                     </p>
                   </div>
@@ -458,12 +460,12 @@ export default function SkillsVisualization() {
                     <div style={{
                       fontFamily: 'Syne, sans-serif', fontWeight: 900,
                       fontSize: 'clamp(1.6rem,3vw,2.4rem)',
-                      background: `linear-gradient(135deg, ${activeCat.color}, #fff)`,
+                      background: `linear-gradient(135deg, ${activeCat.color}, var(--white))`,
                       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                     }}>
                       {Math.round(activeCat.skills.reduce((a, s) => a + s.level, 0) / activeCat.skills.length)}%
                     </div>
-                    <div style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.25)', fontFamily: 'Syne, sans-serif' }}>avg proficiency</div>
+                    <div style={{ fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(var(--text-base-rgb),0.25)', fontFamily: 'Syne, sans-serif' }}>avg proficiency</div>
                   </div>
                 </div>
 

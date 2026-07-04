@@ -45,13 +45,13 @@ function NepalClock() {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: 0.3, duration: 0.6 }}
-      className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-white/8"
+      className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl border border-[rgba(var(--text-base-rgb),0.08)] dark:border-white/8"
       style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(8px)' }}
     >
       <Clock size={13} style={{ color: 'rgba(167,139,250,0.6)', flexShrink: 0 }} />
       <div>
-        <p className="text-xs font-bold font-mono text-white/70 leading-tight">{time}</p>
-        <p className="text-[0.6rem] text-white/25 font-jakarta tracking-wide">{date} · Nawalparasi, Nepal</p>
+        <p className="text-xs font-bold font-mono text-[rgba(var(--text-base-rgb),0.70)] dark:text-white/70 leading-tight">{time}</p>
+        <p className="text-[0.6rem] text-[rgba(var(--text-base-rgb),0.25)] dark:text-white/25 font-jakarta tracking-wide">{date} · Nawalparasi, Nepal</p>
       </div>
     </motion.div>
   );
@@ -83,7 +83,7 @@ function MagneticEmailButton({ email }: { email: string }) {
       onMouseLeave={handleMouseLeave}
       whileTap={{ scale: 0.96 }}
       data-cursor-text="Email"
-      className="group relative inline-flex items-center gap-3 rounded-full px-8 sm:px-12 py-4 sm:py-5 text-base md:text-lg font-semibold overflow-hidden border border-white/15 bg-white/5 text-white/80 hover:text-white backdrop-blur-xl transition-colors duration-300"
+      className="group relative inline-flex items-center gap-3 rounded-full px-8 sm:px-12 py-4 sm:py-5 text-base md:text-lg font-semibold overflow-hidden border border-[rgba(var(--text-base-rgb),0.15)] dark:border-white/15 bg-[rgba(var(--text-base-rgb),0.05)] dark:bg-white/5 text-[rgba(var(--text-base-rgb),0.80)] dark:text-white/80 hover:text-[var(--text)] dark:text-white backdrop-blur-xl transition-colors duration-300"
     >
       {/* Gradient hover fill */}
       <span className="absolute inset-0 bg-gradient-to-r from-violet-600 via-pink-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -118,7 +118,7 @@ export default function Footer() {
   return (
     <footer
       ref={containerRef}
-      className="relative z-20 overflow-hidden bg-[#060608] text-white border-t border-white/10 rounded-t-[40px] md:rounded-t-[72px]"
+      className="relative z-20 overflow-hidden bg-[rgba(var(--text-base-rgb),0.80)] dark:bg-white/80 dark:bg-[#060608] text-[var(--text)] dark:text-[var(--text)] dark:text-white backdrop-blur-3xl border-t border-[rgba(var(--text-base-rgb),0.10)] dark:border-white/10 rounded-t-[40px] md:rounded-t-[72px]"
     >
       <style>{`
         @keyframes footer-shimmer { 0%{left:-100%} 100%{left:200%} }
@@ -129,7 +129,7 @@ export default function Footer() {
 
       {/* Ghost watermark */}
       <div aria-hidden className="pointer-events-none select-none absolute inset-0 flex items-center justify-center z-0 overflow-hidden">
-        <span className="text-[18vw] font-display italic font-black whitespace-nowrap text-white/[0.022]">
+        <span className="text-[18vw] font-display italic font-black whitespace-nowrap text-[rgba(var(--text-base-rgb),0.022)] dark:text-white/[0.022]">
           SURAJ THARU
         </span>
       </div>
@@ -142,7 +142,7 @@ export default function Footer() {
       </motion.div>
 
       {/* ── Dual-row Marquee strip ──────────────────────── */}
-      <div className="relative z-10 w-full overflow-hidden py-8 md:py-12 border-b border-white/5 flex flex-col gap-3">
+      <div className="relative z-10 w-full overflow-hidden py-8 md:py-12 border-b border-[rgba(var(--text-base-rgb),0.05)] dark:border-white/5 flex flex-col gap-3">
         {/* Row 1 — scrolls LEFT */}
         <div className="flex whitespace-nowrap" style={{ animation: 'marquee-left 28s linear infinite' }}>
           {Array.from({ length: 2 }).map((_, rep) =>
@@ -196,7 +196,7 @@ export default function Footer() {
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             style={{ height: 1.5, width: 40, originX: 0, background: 'linear-gradient(90deg,transparent,rgba(167,139,250,0.6))', borderRadius: 999 }}
           />
-          <span className="text-xs uppercase tracking-[0.35em] text-white/35 font-syne font-bold">Let's collaborate</span>
+          <span className="text-xs uppercase tracking-[0.35em] text-[rgba(var(--text-base-rgb),0.35)] dark:text-white/35 font-syne font-bold">Let's collaborate</span>
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
@@ -210,7 +210,7 @@ export default function Footer() {
         <h2 className="font-syne font-black tracking-tight leading-[0.9] mb-10"
           style={{ fontSize: 'clamp(3.5rem, 9vw, 7.5rem)', letterSpacing: '-0.035em' }}>
           <motion.span
-            className="text-white block"
+            className="text-[var(--text)] dark:text-white block"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -254,7 +254,7 @@ export default function Footer() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
         viewport={{ once: true }}
-        className="relative z-10 px-6 md:px-14 pb-8 md:pb-10 border-t border-white/[0.06] flex flex-col lg:flex-row gap-8 lg:gap-6 justify-between pt-10"
+        className="relative z-10 px-6 md:px-14 pb-8 md:pb-10 border-t border-[rgba(var(--text-base-rgb),0.06)] dark:border-white/[0.06] flex flex-col lg:flex-row gap-8 lg:gap-6 justify-between pt-10"
       >
         {/* Column 1: Status + Location + Clock */}
         <div className="flex flex-col gap-3 lg:w-1/3">
@@ -269,7 +269,7 @@ export default function Footer() {
             <span className="text-sm font-semibold text-emerald-300 font-jakarta">Available for projects</span>
           </motion.div>
 
-          <div className="flex items-center gap-2 text-sm text-white/35 pl-1 font-jakarta">
+          <div className="flex items-center gap-2 text-sm text-[rgba(var(--text-base-rgb),0.35)] dark:text-white/35 pl-1 font-jakarta">
             <MapPin size={13} className="shrink-0 text-violet-400" />
             Nawalparasi West, Nepal
           </div>
@@ -279,7 +279,7 @@ export default function Footer() {
 
         {/* Column 2: Social links */}
         <div className="flex flex-col gap-3 lg:items-center lg:w-1/3">
-          <p className="text-xs uppercase tracking-[0.25em] text-white/25 font-bold font-syne text-left lg:text-center w-full">Connect</p>
+          <p className="text-xs uppercase tracking-[0.25em] text-[rgba(var(--text-base-rgb),0.25)] dark:text-white/25 font-bold font-syne text-left lg:text-center w-full">Connect</p>
           <div className="flex flex-wrap gap-2 lg:justify-center">
             {socials.map(({ label, url, icon: Icon, color }) => (
               <motion.a
@@ -288,7 +288,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ y: -3, scale: 1.08 }}
-                className="flex items-center gap-1.5 text-xs font-semibold rounded-full px-3.5 py-1.5 border border-white/8 bg-white/[0.04] text-white/55 transition-all duration-300 font-jakarta"
+                className="flex items-center gap-1.5 text-xs font-semibold rounded-full px-3.5 py-1.5 border border-[rgba(var(--text-base-rgb),0.08)] dark:border-white/8 bg-[rgba(var(--text-base-rgb),0.04)] dark:bg-white/[0.04] text-[rgba(var(--text-base-rgb),0.55)] dark:text-white/55 transition-all duration-300 font-jakarta"
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = color + '80';
                   (e.currentTarget as HTMLElement).style.color = color;
@@ -313,7 +313,7 @@ export default function Footer() {
             style={{ background: 'linear-gradient(90deg,#a78bfa,#38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
             © {new Date().getFullYear()} Er. Suraj Tharu Chaudhary.
           </p>
-          <p className="text-xs text-white/25 tracking-wide -mt-2 lg:text-right font-jakarta">
+          <p className="text-xs text-[rgba(var(--text-base-rgb),0.25)] dark:text-white/25 tracking-wide -mt-2 lg:text-right font-jakarta">
             All rights reserved. Crafted with ❤️ in Nepal.
           </p>
           <VisitorCounter />
