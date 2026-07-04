@@ -342,12 +342,12 @@ export default function AboutMe() {
               className="bento-card"
             >
               <p className="text-[0.65rem] uppercase tracking-[0.2em] about-overline font-bold font-syne mb-3">Core Expertise</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2" style={{ minWidth: 0, overflow: 'hidden' }}>
                 {[
                   'GIS & Remote Sensing','Machine Learning','Python','React','Node.js',
                   'Earth Engine','Flutter','Next.js','Research','Data Viz',
                 ].map((skill) => (
-                  <span key={skill} className="tag-luxury font-jakarta">{skill}</span>
+                  <span key={skill} className="tag-luxury font-jakarta" style={{ maxWidth: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{skill}</span>
                 ))}
               </div>
             </motion.div>

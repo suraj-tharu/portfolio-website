@@ -1,7 +1,7 @@
 // ChatWidget - AI-powered floating chat widget
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { X, Send } from 'lucide-react';
 
 export const ChatWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -42,86 +42,71 @@ export const ChatWidget = () => {
         }, 1000);
     };
 
+    if (!isOpen) return null;
+
     return (
-        <div className="fixed bottom-6 right-6 z-40">
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, y: 20 }}
-                        className="absolute bottom-16 right-0 w-96 h-96 bg-gradient-to-br from-slate-900 to-slate-800 
+        <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            className="w-96 h-96 bg-gradient-to-br from-slate-900 to-slate-800
               rounded-2xl shadow-2xl border border-white/10 backdrop-blur-xl flex flex-col overflow-hidden"
+        >
+            {/* Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
+                <h3 className="text-text-primary dark:text-white font-bold">Suraj's AI Assistant</h3>
+                <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1 rounded">
+                    <X size={20} className="text-text-primary dark:text-white" />
+                </button>
+            </div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {messages.map((msg, i) => (
+                    <motion.div
+                        key={i}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
-                        {/* Header */}
-                        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-4 flex justify-between items-center">
-                            <h3 className="text-text-primary dark:text-white font-bold">Suraj's AI Assistant</h3>
-                            <button onClick={() => setIsOpen(false)} className="hover:bg-white/20 p-1 rounded">
-                                <X size={20} className="text-text-primary dark:text-white" />
-                            </button>
-                        </div>
-
-                        {/* Messages */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                            {messages.map((msg, i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                                >
-                                    <div
-                                        className={`max-w-xs px-4 py-2 rounded-lg ${msg.role === 'user'
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-slate-700 text-gray-100'
-                                            }`}
-                                    >
-                                        {msg.text}
-                                    </div>
-                                </motion.div>
-                            ))}
-                            {isLoading && (
-                                <div className="flex gap-2">
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
-                                </div>
-                            )}
-                            <div ref={messagesEndRef} />
-                        </div>
-
-                        {/* Input */}
-                        <div className="border-t border-black/5 dark:border-white/10 p-4 flex gap-2">
-                            <input
-                                type="text"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                                placeholder="Ask me anything..."
-                                className="flex-1 bg-slate-700 text-text-primary dark:text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <button
-                                onClick={handleSendMessage}
-                                disabled={isLoading}
-                                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
-                            >
-                                <Send size={18} />
-                            </button>
+                        <div
+                            className={`max-w-xs px-4 py-2 rounded-lg ${msg.role === 'user'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-slate-700 text-gray-100'
+                                }`}
+                        >
+                            {msg.text}
                         </div>
                     </motion.div>
+                ))}
+                {isLoading && (
+                    <div className="flex gap-2">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+                    </div>
                 )}
-            </AnimatePresence>
+                <div ref={messagesEndRef} />
+            </div>
 
-            {/* Floating Button */}
-            <motion.button
-                onClick={() => setIsOpen(!isOpen)}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full 
-          flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow"
-            >
-                <MessageCircle size={24} />
-            </motion.button>
-        </div>
+            {/* Input */}
+            <div className="border-t border-black/5 dark:border-white/10 p-4 flex gap-2">
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                    placeholder="Ask me anything..."
+                    className="flex-1 bg-slate-700 text-text-primary dark:text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <button
+                    onClick={handleSendMessage}
+                    disabled={isLoading}
+                    className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
+                >
+                    <Send size={18} />
+                </button>
+            </div>
+        </motion.div>
     );
 };
