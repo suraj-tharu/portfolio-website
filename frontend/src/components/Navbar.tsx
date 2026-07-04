@@ -8,7 +8,7 @@ import { Sun, Moon, X, MapPin, Mail, ExternalLink, ArrowUpRight } from 'lucide-r
 import { useTheme } from '../hooks/useTheme';
 import { useLanguage } from '../context/LanguageContext';
 import { useScrollSpy } from '../hooks/useScrollSpy';
-import { useSoundEffects } from '../hooks/useSoundEffects';
+
 
 /* ══════════════════════════════════════════════════════════
    SCROLL PROGRESS BAR
@@ -429,7 +429,8 @@ export default function Navbar() {
 
   const { theme, toggleTheme }         = useTheme();
   const { language, toggleLanguage, t } = useLanguage();
-  const { playHover, playClick }        = useSoundEffects();
+  const playHover = () => {};
+  const playClick = () => {};
   const activeSection = useScrollSpy(['', 'skills', 'work', 'research', 'contact'], 300);
 
   /* Scroll lock */

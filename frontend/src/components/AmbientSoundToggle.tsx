@@ -175,12 +175,12 @@ export default function AmbientSoundToggle() {
               {active ? (
                 <Waveform active={active} />
               ) : (
-                <VolumeX size={13} className="text-white/40" />
+                <VolumeX size={13} style={{ color: 'var(--text-secondary)' }} />
               )}
 
               <span
                 className="text-[10px] font-bold uppercase tracking-[0.12em] font-jakarta"
-                style={{ color: active ? '#a78bfa' : 'rgba(var(--text-base-rgb),0.3)' }}
+                style={{ color: active ? '#a78bfa' : 'var(--text-secondary)' }}
               >
                 {active ? 'Ambient' : 'Sound'}
               </span>

@@ -47,10 +47,10 @@ const STATS: {
   icon: LucideIcon; value: number; suffix: string; prefix?: string;
   label: string; desc: string; color: string;
 }[] = [
-  { icon: Globe2,  value: 8,    suffix: '+',  label: 'Years of Experience', desc: 'In GIS, research & education', color: '#a78bfa' },
-  { icon: Rocket,  value: 40,   suffix: '+',  label: 'Projects Delivered',  desc: 'Across GIS, web & mobile',    color: '#38bdf8' },
+  { icon: Globe2,  value: 5,    suffix: '+',  label: 'Years of Experience', desc: 'In GIS, research & education', color: '#a78bfa' },
+  { icon: Rocket,  value: 17,   suffix: '+',  label: 'Projects Delivered',  desc: 'Across GIS, web & mobile',    color: '#38bdf8' },
   { icon: Users2,  value: 500,  suffix: '+',  label: 'Students Taught',     desc: 'Technical education',         color: '#34d399' },
-  { icon: Trophy,  value: 5,    suffix: '+',  label: 'Publications',        desc: 'Peer-reviewed research',      color: '#f472b6' },
+  { icon: Trophy,  value: 2,    suffix: '+',  label: 'Publications',        desc: 'Peer-reviewed research',      color: '#f472b6' },
   { icon: Star,    value: 12,   suffix: '+',  label: 'Certifications',      desc: 'Professional & technical',    color: '#fbbf24' },
   { icon: Sparkles,value: 2847, suffix: '',   label: 'Cups of Tea',         desc: 'Fueling innovation',          color: '#fb923c' },
 ];
