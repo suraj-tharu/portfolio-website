@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Hls from 'hls.js';
-import { motion, useScroll, useTransform, AnimatePresence, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence, useSpring, useMotionValue } from 'framer-motion';
 import { TextReveal } from './premium/TextReveal';
 import Hero3D from './Hero3D';
 import { useLanguage } from '../context/LanguageContext';
@@ -751,6 +751,143 @@ function SecondaryCTA({ href, children }: { href: string; children: React.ReactN
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+   ULTRA-PREMIUM STAT CARD
+═══════════════════════════════════════════════════════════════════════ */
+function UltraStatCard({
+  value, suffix, label, icon, isText,
+  color, colorRgb, gradient, desc, isLast,
+}: {
+  value: number; suffix: string; label: string; icon: string;
+  isText: boolean; color: string; colorRgb: string; gradient: string;
+  desc: string; isLast: boolean;
+}) {
+  const [hovered, setHovered] = useState(false);
+  const mx = useSpring(useMotionValue(0), { stiffness: 300, damping: 30 });
+  const my = useSpring(useMotionValue(0), { stiffness: 300, damping: 30 });
+  const rotateX = useTransform(my, [-40, 40], [10, -10]);
+  const rotateY = useTransform(mx, [-60, 60], [-10, 10]);
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(e.clientX - r.left - r.width / 2);
+    my.set(e.clientY - r.top - r.height / 2);
+  };
+  const handleLeave = () => { mx.set(0); my.set(0); setHovered(false); };
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={handleLeave}
+      onMouseMove={handleMove}
+      style={{
+        perspective: 600,
+        borderRight: !isLast ? `1px solid rgba(${colorRgb},0.08)` : 'none',
+        position: 'relative', zIndex: 2,
+      }}
+    >
+      <motion.div
+        style={{
+          rotateX, rotateY, transformStyle: 'preserve-3d',
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          gap: 10, padding: 'clamp(14px,2vw,22px) clamp(8px,1.5vw,18px)',
+          cursor: 'default', position: 'relative',
+        }}
+        whileHover={{ y: -6, scale: 1.04 }}
+        transition={{ type: 'spring', stiffness: 380, damping: 24 }}
+      >
+        {/* Per-card colour wash */}
+        <motion.div
+          style={{
+            position: 'absolute', inset: 0,
+            background: `radial-gradient(ellipse at 50% 0%, rgba(${colorRgb},0.14) 0%, transparent 70%)`,
+            opacity: 0, borderRadius: 16,
+          }}
+          animate={{ opacity: hovered ? 1 : 0 }}
+          transition={{ duration: 0.35 }}
+        />
+
+        {/* Icon with halo ring */}
+        <div style={{ position: 'relative', marginBottom: 2 }}>
+          {hovered && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0.8 }}
+              animate={{ scale: 1.6, opacity: 0 }}
+              transition={{ duration: 1.2, repeat: Infinity, ease: 'easeOut' }}
+              style={{
+                position: 'absolute', inset: -8, borderRadius: '50%',
+                border: `1px solid ${color}`,
+                pointerEvents: 'none',
+              }}
+            />
+          )}
+          <motion.div
+            style={{
+              width: 44, height: 44, borderRadius: 14,
+              background: `linear-gradient(135deg, rgba(${colorRgb},0.22), rgba(${colorRgb},0.07))`,
+              border: `1px solid rgba(${colorRgb},0.3)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '1.4rem',
+              boxShadow: hovered ? `0 0 24px rgba(${colorRgb},0.5), 0 0 48px rgba(${colorRgb},0.2)` : 'none',
+              transition: 'box-shadow 0.4s ease',
+            }}
+            whileHover={{ rotate: [0, -8, 8, -4, 0] }}
+            transition={{ duration: 0.6 }}
+          >
+            {icon}
+          </motion.div>
+        </div>
+
+        {/* Value */}
+        <motion.span
+          style={{
+            fontSize: 'clamp(1.1rem,2.6vw,1.75rem)',
+            fontWeight: 900,
+            fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif',
+            fontStyle: 'italic',
+            background: hovered ? gradient : 'linear-gradient(135deg,rgba(255,255,255,0.95),rgba(255,255,255,0.6))',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text', lineHeight: 1,
+            filter: hovered ? `drop-shadow(0 0 14px rgba(${colorRgb},0.5))` : 'none',
+            transition: 'filter 0.4s ease',
+          }}
+        >
+          {isText ? suffix : <><AnimCounter to={value} />{suffix}</>}
+        </motion.span>
+
+        {/* Label */}
+        <span style={{
+          fontSize: '0.58rem', textTransform: 'uppercase',
+          letterSpacing: '0.2em', fontWeight: 800,
+          color: hovered ? `rgba(${colorRgb},0.85)` : 'rgba(255,255,255,0.35)',
+          textAlign: 'center', lineHeight: 1.4,
+          transition: 'color 0.35s ease',
+        }}>
+          {label}
+        </span>
+
+        {/* Desc badge — revealed on hover */}
+        <motion.div
+          initial={{ opacity: 0, y: 4, scale: 0.9 }}
+          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 4, scale: hovered ? 1 : 0.9 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            fontSize: '0.52rem', fontWeight: 700,
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: color,
+            background: `rgba(${colorRgb},0.1)`,
+            border: `1px solid rgba(${colorRgb},0.25)`,
+            borderRadius: 999, padding: '2px 8px',
+          }}
+        >
+          {desc}
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
    PREMIUM SCROLL INDICATOR
 ═══════════════════════════════════════════════════════════════════════ */
 function ScrollIndicator() {
@@ -921,19 +1058,12 @@ export default function Hero() {
     },
   ];
 
-  /* Luxury stats with rich data */
-  const stats = [
-    { value: 5, suffix: '+', label: 'Years Teaching', icon: '🎓', isText: false },
-    { value: 0, suffix: 'MSc', label: 'Info Systems', icon: '📡', isText: true },
-    { value: 0, suffix: 'GIS', label: 'Spatial Analysis', icon: '🗺️', isText: true },
-    { value: 0, suffix: 'ML', label: 'Deep Learning', icon: '🤖', isText: true },
-  ];
 
   return (
     <motion.section
       ref={containerRef}
       className="hero-section"
-      style={{ opacity, scale }}
+      style={{ opacity, scale, overflow: 'hidden', position: 'relative', height: '100vh' }}
       onMouseMove={handleGlobalMouseMove as unknown as React.MouseEventHandler<HTMLElement>}
       onMouseLeave={handleMouseLeave}
       css-hero="true"
@@ -942,7 +1072,7 @@ export default function Hero() {
       <div style={{
         position: 'relative',
         width: '100%',
-        minHeight: '100vh',
+        height: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -1004,7 +1134,7 @@ export default function Hero() {
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
-            padding: 'clamp(100px,14vh,160px) clamp(16px,5vw,48px) clamp(80px,12vh,140px)',
+            padding: 'clamp(80px,10vh,120px) clamp(16px,5vw,48px) clamp(40px,6vh,80px)',
           }}>
 
             {/* ── GREETING PILL ── */}
@@ -1013,7 +1143,7 @@ export default function Hero() {
                 initial={{ opacity: 0, y: -30, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                style={{ marginBottom: 36 }}
+                style={{ marginBottom: 16 }}
               >
                 <div className="hero-greeting-pill" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 12,
@@ -1059,7 +1189,7 @@ export default function Hero() {
             {/* ── 3D TILT NAME ── */}
             <motion.h1
               style={{
-                marginBottom: 28,
+                marginBottom: 12,
                 lineHeight: 0.86,
                 perspective: 1400,
                 rotateX,
@@ -1100,7 +1230,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, delay: 1.1 }}
               style={{
-                marginBottom: 12,
+                marginBottom: 8,
                 fontSize: 'clamp(1.05rem,2.4vw,1.7rem)',
                 fontFamily: '"Cormorant Garamond", Georgia, serif',
                 fontStyle: 'italic',
@@ -1119,7 +1249,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 1.25 }}
               style={{
-                display: 'flex', alignItems: 'center', gap: 8, marginBottom: 36,
+                display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16,
                 fontSize: '0.83rem', fontWeight: 500, color: 'var(--text-secondary)',
                 letterSpacing: '0.04em',
               }}
@@ -1139,7 +1269,7 @@ export default function Hero() {
               transition={{ duration: 1.0, delay: 1.35 }}
               style={{
                 maxWidth: 660,
-                marginBottom: 46,
+                marginBottom: 24,
                 fontSize: 'clamp(0.92rem,1.4vw,1.08rem)',
                 lineHeight: 1.85,
                 color: 'var(--text-secondary)',
@@ -1166,7 +1296,7 @@ export default function Hero() {
                 flexWrap: 'wrap',
                 justifyContent: 'center',
                 gap: 16,
-                marginBottom: 64,
+                marginBottom: 32,
               }}
             >
               <PrimaryCTA href="#work">
@@ -1181,125 +1311,71 @@ export default function Hero() {
 
             {/* ── ULTRA LUXURY STATS STRIP ── */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 1.75, type: 'spring', stiffness: 50, damping: 20 }}
-              style={{ width: '100%', maxWidth: 720, position: 'relative', zIndex: 10 }}
+              initial={{ opacity: 0, y: 50, scale: 0.94 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ duration: 1.4, delay: 1.75, type: 'spring', stiffness: 45, damping: 18 }}
+              style={{ width: '100%', maxWidth: 760, position: 'relative', zIndex: 10 }}
             >
-              {/* Premium glowing animated backdrop */}
-              <motion.div 
+              {/* Flowing rainbow glow backdrop */}
+              <motion.div
                 style={{
-                  position: 'absolute', inset: -2, 
-                  background: 'linear-gradient(90deg, #38bdf8, #818cf8, #c084fc, #e879f9, #38bdf8)',
-                  backgroundSize: '200% 100%',
-                  filter: 'blur(16px)', opacity: 0.35, borderRadius: 28, zIndex: -1
-                }} 
-                animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
-                transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+                  position: 'absolute', inset: -3,
+                  background: 'linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6,#34d399,#f59e0b,#38bdf8)',
+                  backgroundSize: '300% 100%',
+                  filter: 'blur(22px)', opacity: 0.28, borderRadius: 32, zIndex: -1,
+                }}
+                animate={{ backgroundPosition: ['0% 0%', '300% 0%'] }}
+                transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
               />
 
-              {/* Glassmorphism Main Container */}
-              <motion.div 
-                className="hero-stats-strip group" 
-                whileHover={{ scale: 1.015, y: -4 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                style={{
-                  display: 'grid', gridTemplateColumns: 'repeat(4,1fr)',
-                  borderRadius: 24,
-                  padding: 'clamp(20px,3vw,28px) clamp(16px,2vw,24px)',
-                  background: 'linear-gradient(145deg, rgba(20,10,40,0.85), rgba(15,8,30,0.9), rgba(20,10,40,0.85))',
-                  border: '1px solid rgba(var(--text-base-rgb),0.08)',
-                  borderTopColor: 'rgba(var(--text-base-rgb),0.15)',
-                  borderBottomColor: 'rgba(0,0,0,0.5)',
-                  backdropFilter: 'blur(40px)',
-                  WebkitBackdropFilter: 'blur(40px)',
-                  boxShadow: '0 25px 80px -10px rgba(0,0,0,0.8), inset 0 1px 0 rgba(var(--text-base-rgb),0.15), inset 0 0 30px rgba(167,139,250,0.08)',
-                  position: 'relative',
-                  overflow: 'hidden'
+              {/* Glass shell */}
+              <div style={{
+                display: 'grid', gridTemplateColumns: 'repeat(4,1fr)',
+                borderRadius: 28,
+                background: 'linear-gradient(145deg,rgba(12,6,28,0.92),rgba(8,4,20,0.96))',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderTopColor: 'rgba(255,255,255,0.12)',
+                backdropFilter: 'blur(48px)',
+                WebkitBackdropFilter: 'blur(48px)',
+                boxShadow: '0 32px 80px -10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.1),inset 0 0 40px rgba(167,139,250,0.05)',
+                position: 'relative', overflow: 'hidden',
               }}>
-                {/* Shine Sweep Effect */}
-                <motion.div 
+                {/* Global shimmer sweep */}
+                <motion.div
                   style={{
-                    position: 'absolute', top: 0, left: '-100%', width: '30%', height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(var(--text-base-rgb),0.1), transparent)',
-                    transform: 'skewX(-25deg)', pointerEvents: 'none', zIndex: 1
+                    position: 'absolute', top: 0, left: '-100%', width: '25%', height: '100%',
+                    background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)',
+                    transform: 'skewX(-20deg)', pointerEvents: 'none', zIndex: 1,
                   }}
-                  animate={{ left: ['-100%', '300%'] }}
-                  transition={{ duration: 4, repeat: Infinity, repeatDelay: 6, ease: 'easeInOut' }}
+                  animate={{ left: ['-100%', '400%'] }}
+                  transition={{ duration: 5, repeat: Infinity, repeatDelay: 7, ease: 'easeInOut' }}
                 />
 
-                {stats.map(({ value, suffix, label, icon, isText }, i) => (
-                  <motion.div
-                    key={label}
-                    className="hero-stat-item"
-                    whileHover={{ y: -8, scale: 1.05 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-                    style={{
-                      display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-                      borderRight: i < 3 ? '1px solid rgba(var(--text-base-rgb),0.04)' : 'none',
-                      padding: '8px 14px',
-                      cursor: 'pointer',
-                      position: 'relative',
-                      zIndex: 2
-                    }}
-                  >
-                    {/* Icon with interactive glow */}
-                    <div style={{ position: 'relative', marginBottom: 2 }}>
-                      <motion.div
-                        style={{
-                          position: 'absolute', inset: -12, 
-                          background: 'radial-gradient(circle, rgba(167,139,250,0.3) 0%, transparent 60%)',
-                          opacity: 0, scale: 0.8
-                        }}
-                        whileHover={{ opacity: 1, scale: 1.2 }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      <motion.span 
-                        className="hero-stat-icon"
-                        style={{ 
-                          fontSize: '1.6rem', lineHeight: 1, position: 'relative', zIndex: 2, 
-                          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.5))',
-                          display: 'block'
-                        }}
-                        whileHover={{ rotate: [-5, 5, -5, 0] }}
-                        transition={{ duration: 0.5 }}
-                      >
-                        {icon}
-                      </motion.span>
-                    </div>
-
-                    <span className="hero-stat-value" style={{
-                      fontSize: 'clamp(1.1rem,2.8vw,1.8rem)',
-                      fontWeight: 800,
-                      fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif',
-                      fontStyle: 'italic',
-                      background: 'linear-gradient(135deg, var(--white) 20%, #c4b5fd 60%, #f472b6 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      lineHeight: 1,
-                      letterSpacing: '0.01em',
-                      filter: 'drop-shadow(0 2px 10px rgba(196,181,253,0.3))'
-                    }}>
-                      {isText ? suffix : <><AnimCounter to={value} />{suffix}</>}
-                    </span>
-
-                    <span className="hero-stat-label" style={{
-                      fontSize: '0.62rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.22em',
-                      fontWeight: 800,
-                      color: 'rgba(var(--text-base-rgb),0.6)',
-                      textAlign: 'center',
-                      lineHeight: 1.4,
-                      textShadow: '0 2px 4px rgba(0,0,0,0.5)'
-                    }}>
-                      {label}
-                    </span>
-                  </motion.div>
+                {[
+                  { value: 5, suffix: '+',   label: 'Years Teaching',  icon: '🎓', isText: false,
+                    color: '#F59E0B', colorRgb: '245,158,11',
+                    gradient: 'linear-gradient(135deg,#f59e0b,#fbbf24,#fde68a)', desc: 'Instructor' },
+                  { value: 0, suffix: 'MSc', label: 'Info Systems',    icon: '📡', isText: true,
+                    color: '#38BDF8', colorRgb: '56,189,248',
+                    gradient: 'linear-gradient(135deg,#0284c7,#38bdf8,#7dd3fc)', desc: 'Candidate' },
+                  { value: 0, suffix: 'GIS', label: 'Spatial Analysis', icon: '🗺️', isText: true,
+                    color: '#34D399', colorRgb: '52,211,153',
+                    gradient: 'linear-gradient(135deg,#059669,#34d399,#6ee7b7)', desc: 'Specialist' },
+                  { value: 0, suffix: 'ML',  label: 'Deep Learning',   icon: '🤖', isText: true,
+                    color: '#A78BFA', colorRgb: '167,139,250',
+                    gradient: 'linear-gradient(135deg,#7c3aed,#a78bfa,#c4b5fd)', desc: 'Researcher' },
+                ].map((s, i) => (
+                  <UltraStatCard
+                    key={s.label}
+                    value={s.value} suffix={s.suffix} label={s.label}
+                    icon={s.icon} isText={s.isText}
+                    color={s.color} colorRgb={s.colorRgb} gradient={s.gradient}
+                    desc={s.desc} isLast={i === 3}
+                  />
                 ))}
-              </motion.div>
+              </div>
             </motion.div>
+
 
           </div>
         </motion.div>

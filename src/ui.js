@@ -35,11 +35,42 @@ export function playSound(type) {
 }
 
 export function initUI() {
-  // --- Preloader ---
-  window.addEventListener('load', () => {
-    const p = document.getElementById('preloader');
-    if (p) { p.style.opacity = '0'; setTimeout(() => p.remove(), 700); }
-  });
+  // --- Cinematic Preloader ---
+  (function runPreloader() {
+    const bar   = document.getElementById('preloader-bar');
+    const pct   = document.getElementById('preloader-pct');
+    const status = document.getElementById('preloader-status');
+    const steps = [
+      { pct: 20, status: 'Loading assets...' },
+      { pct: 45, status: 'Rendering components...' },
+      { pct: 70, status: 'Initializing GIS modules...' },
+      { pct: 90, status: 'Applying luxury theme...' },
+      { pct: 100, status: 'Ready.' }
+    ];
+    let stepIdx = 0;
+    const tick = () => {
+      if (stepIdx >= steps.length) {
+        // All done — wait for window.load then dismiss
+        window.addEventListener('load', dismiss, { once: true });
+        // Safety: dismiss after 4s even if load doesn't fire
+        setTimeout(dismiss, 4000);
+        return;
+      }
+      const s = steps[stepIdx++];
+      if (bar) bar.style.width = s.pct + '%';
+      if (pct) pct.textContent = s.pct + '%';
+      if (status) status.textContent = s.status;
+      setTimeout(tick, stepIdx === 1 ? 200 : 350);
+    };
+    setTimeout(tick, 100);
+
+    function dismiss() {
+      const p = document.getElementById('preloader');
+      if (!p || p.classList.contains('done')) return;
+      p.classList.add('done');
+      setTimeout(() => p.remove(), 900);
+    }
+  })();
 
   // --- Live Clock & Greeting ---
   function updateTimeAndGreeting() {
@@ -102,41 +133,109 @@ export function initUI() {
     setTimeout(type, 1000);
   }
 
-  // --- Custom Cursor (GSAP-powered for buttery smoothness) ---
+  // --- Premium Cursor: GSAP-powered + Particle Trail ---
   const curDot = document.getElementById('cur-dot');
   const curRing = document.getElementById('cur-ring');
   if (curDot && curRing && window.matchMedia('(pointer: fine)').matches) {
-    let mouseX = 0, mouseY = 0;
+    const trailColors = [
+      '#38bdf8', '#0ea5e9', '#f59e0b', '#fcd34d', '#22d3ee', '#a78bfa'
+    ];
+    let trailIdx = 0;
+
+    function spawnParticle(x, y) {
+      if (document.body.classList.contains('a11y-reduce-motion')) return;
+      const p = document.createElement('div');
+      p.className = 'cur-particle';
+      const size = 2 + Math.random() * 4;
+      const color = trailColors[trailIdx++ % trailColors.length];
+      Object.assign(p.style, {
+        left: (x + (Math.random() - 0.5) * 12) + 'px',
+        top: (y + (Math.random() - 0.5) * 12) + 'px',
+        width: size + 'px', height: size + 'px',
+        background: color,
+        boxShadow: `0 0 ${size * 2}px ${color}`
+      });
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 600);
+    }
+
+    let frameCount = 0;
     if (typeof gsap !== 'undefined') {
-      const dotX = gsap.quickTo(curDot, 'x', { duration: 0.1, ease: 'power3' });
-      const dotY = gsap.quickTo(curDot, 'y', { duration: 0.1, ease: 'power3' });
-      const ringX = gsap.quickTo(curRing, 'x', { duration: 0.5, ease: 'power3' });
-      const ringY = gsap.quickTo(curRing, 'y', { duration: 0.5, ease: 'power3' });
+      const dotX = gsap.quickTo(curDot, 'x', { duration: 0.08, ease: 'power3' });
+      const dotY = gsap.quickTo(curDot, 'y', { duration: 0.08, ease: 'power3' });
+      const ringX = gsap.quickTo(curRing, 'x', { duration: 0.45, ease: 'power3' });
+      const ringY = gsap.quickTo(curRing, 'y', { duration: 0.45, ease: 'power3' });
 
       document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX; mouseY = e.clientY;
-        dotX(mouseX - 3); dotY(mouseY - 3);
-        ringX(mouseX - 18); ringY(mouseY - 18);
+        dotX(e.clientX - 3); dotY(e.clientY - 3);
+        ringX(e.clientX - 19); ringY(e.clientY - 19);
+        if (++frameCount % 3 === 0) spawnParticle(e.clientX, e.clientY);
       });
 
-      // Scale ring on hoverable elements
-      document.querySelectorAll('a, button, .project-card, [data-cursor-hover]').forEach(el => {
+      document.querySelectorAll('a, button, .project-card, .tilt-card, [data-cursor-hover]').forEach(el => {
         el.addEventListener('mouseenter', () => {
-          gsap.to(curRing, { scale: 2, duration: 0.3, ease: 'power2.out' });
+          document.body.classList.add('cur-hover');
+          gsap.to(curRing, { scale: 1.6, duration: 0.3, ease: 'power2.out' });
         });
         el.addEventListener('mouseleave', () => {
+          document.body.classList.remove('cur-hover');
           gsap.to(curRing, { scale: 1, duration: 0.3, ease: 'power2.out' });
         });
       });
     } else {
       document.addEventListener('mousemove', (e) => {
         curDot.style.transform = `translate(${e.clientX - 3}px, ${e.clientY - 3}px)`;
-        curRing.style.transform = `translate(${e.clientX - 18}px, ${e.clientY - 18}px)`;
+        curRing.style.transform = `translate(${e.clientX - 19}px, ${e.clientY - 19}px)`;
+        if (++frameCount % 3 === 0) spawnParticle(e.clientX, e.clientY);
       });
     }
   } else if (curDot && curRing) {
     curDot.style.display = 'none';
     curRing.style.display = 'none';
+  }
+
+  // --- 3D Card Tilt System ---
+  function initTiltCards() {
+    document.querySelectorAll('.tilt-card, .glass-card, .project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        if (document.body.classList.contains('a11y-reduce-motion')) return;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const rotateX = ((y - cy) / cy) * -8;
+        const rotateY = ((x - cx) / cx) * 8;
+        const angle = Math.atan2(y - cy, x - cx) * (180 / Math.PI) + 180;
+        card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        card.style.setProperty('--holo-angle', angle + 'deg');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+        card.style.removeProperty('--holo-angle');
+      });
+    });
+  }
+  initTiltCards();
+
+  // --- 3D Profile Photo Tilt ---
+  const profileWrap = document.getElementById('hero-photo-wrap');
+  const profile3d = document.getElementById('profile-3d');
+  if (profileWrap && profile3d) {
+    profileWrap.addEventListener('mousemove', (e) => {
+      if (document.body.classList.contains('a11y-reduce-motion')) return;
+      const rect = profileWrap.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotX = (y / rect.height) * -20;
+      const rotY = (x / rect.width) * 20;
+      profile3d.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.04)`;
+    });
+    profileWrap.addEventListener('mouseleave', () => {
+      profile3d.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg) scale(1)';
+      profile3d.style.transition = 'transform 0.8s cubic-bezier(0.34,1.56,0.64,1)';
+      setTimeout(() => { profile3d.style.transition = ''; }, 800);
+    });
   }
 
   // --- Progress Bar (works with both Lenis and native scroll) ---
@@ -560,4 +659,135 @@ export function initUI() {
       if (qr2) new QRCode(qr2, { text: 'https://aws.amazon.com/verification', width: 56, height: 56, colorDark: '#0f172a', colorLight: '#ffffff' });
     }
   }, 1000);
+
+  // --- Constellation Footer Stars ---
+  (function buildConstellation() {
+    const bg = document.getElementById('constellation-bg');
+    if (!bg) return;
+    const starCount = 60;
+    const colors = ['#38bdf8', '#f59e0b', '#a78bfa', '#22d3ee', '#ffffff'];
+    for (let i = 0; i < starCount; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      const size = 1 + Math.random() * 2.5;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const dur = 2 + Math.random() * 4;
+      const delay = Math.random() * 5;
+      const opacity = 0.15 + Math.random() * 0.5;
+      Object.assign(star.style, {
+        left: Math.random() * 100 + '%',
+        top: Math.random() * 100 + '%',
+        width: size + 'px',
+        height: size + 'px',
+        background: color,
+        boxShadow: `0 0 ${size * 3}px ${color}`,
+        '--star-dur': dur + 's',
+        '--star-delay': delay + 's',
+        '--star-opacity': opacity
+      });
+      bg.appendChild(star);
+    }
+  })();
+
+  // --- Stat Counter Animations ---
+  (function initCounters() {
+    const counters = [
+      { id: 'stat-years', target: 5, suffix: '+', decimals: 0 }
+    ];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const cfg = counters.find(c => c.id === el.id);
+        if (!cfg) return;
+        io.unobserve(el);
+        let start = 0;
+        const duration = 1800;
+        const startTime = performance.now();
+        const animate = (now) => {
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = start + (cfg.target - start) * eased;
+          el.textContent = current.toFixed(cfg.decimals) + cfg.suffix;
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => {
+      const el = document.getElementById(c.id);
+      if (el) io.observe(el);
+    });
+  })();
+
+  // --- Text Scramble on Section Headings ---
+  (function initScramble() {
+    const chars = '!<>-_\\/[]{}—=+*^?#█▓░@ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    function scrambleText(el) {
+      const original = el.textContent;
+      let frame = 0;
+      const totalFrames = 16;
+      const interval = setInterval(() => {
+        el.textContent = original.split('').map((char, idx) => {
+          if (char === ' ') return ' ';
+          if (idx < (frame / totalFrames) * original.length) return original[idx];
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+        frame++;
+        if (frame > totalFrames) { el.textContent = original; clearInterval(interval); }
+      }, 35);
+    }
+
+    const headings = document.querySelectorAll('h2.section-heading');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target._scrambled) {
+          entry.target._scrambled = true;
+          scrambleText(entry.target);
+        }
+      });
+    }, { threshold: 0.8 });
+    headings.forEach(h => observer.observe(h));
+  })();
+
+  // --- Skill Bar Animated Fill (scroll-triggered) ---
+  (function initSkillBars() {
+    const bars = document.querySelectorAll('.skill-bar-fill[data-width]');
+    if (!bars.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.width = e.target.dataset.width;
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    bars.forEach(b => { b.style.width = '0'; obs.observe(b); });
+  })();
+
+  // --- Footer Contact Button ---
+  document.getElementById('footer-contact-btn')?.addEventListener('click', () => {
+    document.getElementById('init-conn-btn')?.click();
+    document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // --- Nav Active Section Highlight ---
+  (function initNavHighlight() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    if (!navLinks.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          active?.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => obs.observe(s));
+  })();
 }
+
