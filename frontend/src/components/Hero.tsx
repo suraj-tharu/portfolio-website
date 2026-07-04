@@ -685,9 +685,10 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
       whileTap={{ scale: 0.97 }}
       style={{
         position: 'relative',
-        display: 'inline-flex', alignItems: 'center', gap: 12,
-        borderRadius: 999, padding: '16px 40px',
-        fontSize: '0.92rem', fontWeight: 800,
+        display: 'inline-flex', alignItems: 'center', gap: 10,
+        borderRadius: 999,
+        padding: 'clamp(11px,2vw,16px) clamp(20px,4vw,40px)',
+        fontSize: 'clamp(0.78rem,2vw,0.92rem)', fontWeight: 800,
         color: 'var(--white)',
         background: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
         backgroundSize: '250% 250%',
@@ -697,6 +698,7 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
         letterSpacing: '0.04em',
         overflow: 'hidden',
         cursor: 'pointer',
+        whiteSpace: 'nowrap',
       }}
     >
       {/* Shimmer sweep */}
@@ -727,9 +729,10 @@ function SecondaryCTA({ href, children }: { href: string; children: React.ReactN
       className="hero-cta-secondary"
       style={{
         position: 'relative',
-        display: 'inline-flex', alignItems: 'center', gap: 12,
-        borderRadius: 999, padding: '16px 40px',
-        fontSize: '0.92rem', fontWeight: 800,
+        display: 'inline-flex', alignItems: 'center', gap: 10,
+        borderRadius: 999,
+        padding: 'clamp(11px,2vw,16px) clamp(20px,4vw,40px)',
+        fontSize: 'clamp(0.78rem,2vw,0.92rem)', fontWeight: 800,
         color: hovered ? 'var(--white)' : 'rgba(196,181,253,0.92)',
         border: '1px solid transparent',
         background: hovered
@@ -740,6 +743,7 @@ function SecondaryCTA({ href, children }: { href: string; children: React.ReactN
         letterSpacing: '0.04em',
         cursor: 'pointer',
         transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+        whiteSpace: 'nowrap',
         boxShadow: hovered
           ? '0 8px 32px rgba(124,58,237,0.35), 0 0 0 1px rgba(167,139,250,0.2), inset 0 0 24px rgba(124,58,237,0.08)'
           : '0 4px 16px rgba(0,0,0,0.3)',
@@ -1134,7 +1138,10 @@ export default function Hero() {
             flexDirection: 'column',
             alignItems: 'center',
             textAlign: 'center',
-            padding: 'clamp(80px,10vh,120px) clamp(16px,5vw,48px) clamp(40px,6vh,80px)',
+            padding: 'clamp(60px,10vh,120px) clamp(12px,4vw,48px) clamp(32px,6vh,80px)',
+            minWidth: 0,
+            width: '100%',
+            boxSizing: 'border-box',
           }}>
 
             {/* ── GREETING PILL ── */}
@@ -1339,7 +1346,7 @@ export default function Hero() {
                 WebkitBackdropFilter: 'blur(48px)',
                 boxShadow: '0 32px 80px -10px rgba(0,0,0,0.85),inset 0 1px 0 rgba(255,255,255,0.1),inset 0 0 40px rgba(167,139,250,0.05)',
                 position: 'relative', overflow: 'hidden',
-              }}>
+              }} className="hero-stats-grid">
                 {/* Global shimmer sweep */}
                 <motion.div
                   style={{
@@ -1387,16 +1394,55 @@ export default function Hero() {
 
       {/* ── RESPONSIVE STYLES ── */}
       <style>{`
+        /* ── Mobile: hide heavy decorations ── */
         @media (max-width: 640px) {
-          .hero-section [data-floating-tags] {
-            display: none;
+          .hero-section [data-floating-tags] { display: none; }
+          /* Rings shrink to avoid overflow */
+          .hero-section [data-rings] {
+            width: 240px !important;
+            height: 240px !important;
+          }
+          /* Greeting pill wraps text gracefully */
+          .hero-greeting-pill {
+            flex-wrap: wrap;
+            text-align: center;
+            gap: 8px !important;
+            padding: 8px 16px !important;
+          }
+        }
+        @media (max-width: 480px) {
+          /* Stats: 2 columns on very small screens */
+          .hero-stats-grid {
+            grid-template-columns: repeat(2,1fr) !important;
+          }
+          /* Remove right border on every second stat cell */
+          .hero-stats-grid > div:nth-child(2n) > div {
+            border-right: none !important;
+          }
+          /* Restore divider between row pairs */
+          .hero-stats-grid > div:nth-child(1),
+          .hero-stats-grid > div:nth-child(2) {
+            border-bottom: 1px solid rgba(255,255,255,0.06);
           }
         }
         @media (max-width: 768px) {
           .hero-section [data-rings] {
-            width: 320px !important;
-            height: 320px !important;
+            width: 300px !important;
+            height: 300px !important;
           }
+          /* Corner accents positioned safely */
+          .hero-section [data-corners] {
+            display: none;
+          }
+        }
+        /* Prevent any child from bleeding out of hero horizontally */
+        .hero-section * {
+          max-width: 100%;
+        }
+        /* Override for absolutely-positioned decorative elements */
+        .hero-orb, .hero-particles, .hero-aurora-base,
+        .hero-vignette, .hero-bottom-fade, .hero-dot-grid {
+          max-width: none;
         }
         @media (prefers-reduced-motion: reduce) {
           * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
