@@ -140,7 +140,7 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
       {/* Divider */}
       <div style={{
         height: 1, marginBottom: 18,
-        backgroundImage:  transparent, ${t.color}40, transparent)`,
+        background: `linear-gradient(90deg, transparent, ${t.color}40, transparent)`,
       }} />
 
       {/* Author */}
@@ -148,7 +148,7 @@ function TestimonialCard({ t }: { t: typeof TESTIMONIALS[number] }) {
         {/* Avatar */}
         <div style={{
           width: 42, height: 42, borderRadius: '50%', flexShrink: 0,
-          backgroundImage:  ${t.color}50, ${t.color}20)`,
+          background: `linear-gradient(135deg, ${t.color}50, ${t.color}20)`,
           border: `2px solid ${t.color}40`,
           boxShadow: `0 0 16px ${t.color}25`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -222,13 +222,13 @@ export default function Testimonials() {
         <div style={{
           position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%,-50%)',
           width: '60vw', height: '40vw', borderRadius: '50%',
-          backgroundImage: rgba(167,139,250,0.06) 0%,transparent 65%)',
+          background: 'radial-gradient(ellipse,rgba(167,139,250,0.06) 0%,transparent 65%)',
           filter: 'blur(80px)',
         }} />
         <div style={{
           position: 'absolute', bottom: '20%', right: '-5%',
           width: '30vw', height: '30vw', borderRadius: '50%',
-          backgroundImage: rgba(244,114,182,0.05),transparent 65%)',
+          background: 'radial-gradient(circle,rgba(244,114,182,0.05),transparent 65%)',
           filter: 'blur(60px)',
         }} />
       </div>
@@ -264,7 +264,7 @@ export default function Testimonials() {
           }}>
             What{' '}
             <span style={{
-              backgroundImage: #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+              background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               fontStyle: 'italic',
             }}>
@@ -295,7 +295,7 @@ export default function Testimonials() {
         {/* Gradient fade masks */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 10, pointerEvents: 'none',
-          backgroundImage:  var(--bg) 0%, transparent 8%, transparent 92%, var(--bg) 100%)',
+          background: 'linear-gradient(90deg, var(--bg) 0%, transparent 8%, transparent 92%, var(--bg) 100%)',
         }} />
 
         <MarqueeRow items={row1} direction="left" />

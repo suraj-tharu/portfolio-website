@@ -137,21 +137,21 @@ const globalStyles = `
      Ensures all text and UI elements are crisp & readable in day mode.
   ──────────────────────────────────────────────────────────────────── */
   .light .hero-section {
-    backgroundImage:  #faf8ff 0%, #f3f0ff 40%, #fdf2ff 70%, #f0f8ff 100%) !important;
+    background: linear-gradient(160deg, #faf8ff 0%, #f3f0ff 40%, #fdf2ff 70%, #f0f8ff 100%) !important;
   }
   /* Dark background orbs → off in light mode */
   .light .hero-aurora-base {
-    backgroundImage:  #faf8ff 0%, #f1edff 50%, #fdf4ff 100%) !important;
+    background: linear-gradient(160deg, #faf8ff 0%, #f1edff 50%, #fdf4ff 100%) !important;
   }
   /* Greeting pill — light mode */
   .light .hero-greeting-pill {
-    backgroundImage: 255,255,0.7), rgba(255,255,255,0.7)) padding-box,
+    background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)) padding-box,
                 linear-gradient(135deg, rgba(109,40,217,0.3), rgba(219,39,119,0.2), rgba(6,182,212,0.2)) border-box !important;
     box-shadow: 0 8px 32px rgba(109,40,217,0.08), inset 0 0 0 1px rgba(255,255,255,0.5) !important;
     backdrop-filter: blur(12px) !important;
   }
   .light .hero-greeting-text {
-    backgroundImage:  #4c1d95, #be185d, #0284c7) !important;
+    background: linear-gradient(135deg, #4c1d95, #be185d, #0284c7) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
@@ -170,7 +170,7 @@ const globalStyles = `
   }
   /* Role badge text */
   .light .hero-role span {
-    backgroundImage:  #5b21b6, #7c3aed 35%, #db2777 70%, #e11d48) !important;
+    background: linear-gradient(135deg, #5b21b6, #7c3aed 35%, #db2777 70%, #e11d48) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
@@ -198,14 +198,14 @@ const globalStyles = `
   }
   /* Stats strip */
   .light .hero-stats-strip {
-    backgroundImage:  rgba(var(--text-base-rgb),0.95), rgba(var(--text-base-rgb), 0.9), rgba(var(--text-base-rgb),0.95)) !important;
+    background: linear-gradient(135deg, rgba(var(--text-base-rgb),0.95), rgba(var(--text-base-rgb), 0.9), rgba(var(--text-base-rgb),0.95)) !important;
     border: 1px solid rgba(109,40,217,0.15) !important;
     border-top-color: rgba(var(--text-base-rgb),0.8) !important;
     border-bottom-color: rgba(109,40,217,0.2) !important;
     box-shadow: 0 15px 40px -10px rgba(109,40,217,0.15), inset 0 1px 0 rgba(var(--text-base-rgb),1), inset 0 0 30px rgba(var(--text-base-rgb),0.5) !important;
   }
   .light .hero-stat-value {
-    backgroundImage:  #4c1d95, #7c3aed, #db2777) !important;
+    background: linear-gradient(135deg, #4c1d95, #7c3aed, #db2777) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
     background-clip: text !important;
@@ -240,7 +240,7 @@ const globalStyles = `
   }
   /* Floating tags — light mode */
   .light .hero-tag {
-    backgroundImage:  0.95), rgba(var(--text-base-rgb), 0.95)) !important;
+    background: linear-gradient(rgba(var(--text-base-rgb), 0.95), rgba(var(--text-base-rgb), 0.95)) !important;
     box-shadow: 0 4px 20px rgba(109,40,217,0.12), inset 0 1px 0 rgba(var(--text-base-rgb),0.9) !important;
   }
   /* Grid visible in light mode */
@@ -265,11 +265,11 @@ const globalStyles = `
   .light .hero-cta-secondary {
     color: rgba(79, 70, 229, 0.9) !important;
     box-shadow: 0 4px 16px rgba(109,40,217,0.12) !important;
-    backgroundImage: 0.95),rgba(var(--text-base-rgb),0.95)) padding-box, linear-gradient(135deg,rgba(109,40,217,0.4),rgba(219,39,119,0.4)) border-box !important;
+    background: linear-gradient(rgba(var(--text-base-rgb),0.95),rgba(var(--text-base-rgb),0.95)) padding-box, linear-gradient(135deg,rgba(109,40,217,0.4),rgba(219,39,119,0.4)) border-box !important;
   }
   .light .hero-cta-secondary:hover {
     color: white !important;
-    backgroundImage: #7c3aed,#ec4899,#0ea5e9) border-box !important;
+    background: linear-gradient(135deg,#7c3aed,#ec4899,#0ea5e9) border-box !important;
   }
   /* Available badge */
   .light .hero-available {
@@ -290,7 +290,7 @@ function UltraAuroraBg() {
       <style>{globalStyles}</style>
 
       {/* Absolute depth base */}
-      <div className="hero-aurora-base" style={{ position: 'absolute', inset: 0, backgroundImage: #04020e 0%,#060412 40%,#08050f 70%,#030209 100%)' }} />
+      <div className="hero-aurora-base" style={{ position: 'absolute', inset: 0, background: 'linear-gradient(145deg,#04020e 0%,#060412 40%,#08050f 70%,#030209 100%)' }} />
 
       {/* Cinematic noise texture overlay */}
       <div style={{
@@ -304,7 +304,7 @@ function UltraAuroraBg() {
       <div className="hero-orb" style={{
         position: 'absolute', top: '-30%', left: '-25%',
         width: '85vw', height: '85vw', borderRadius: '50%',
-        backgroundImage: rgba(124,58,237,0.55),rgba(219,39,119,0.25) 40%,rgba(56,189,248,0.06) 65%,transparent 75%)',
+        background: 'radial-gradient(circle at 35% 35%,rgba(124,58,237,0.55),rgba(219,39,119,0.25) 40%,rgba(56,189,248,0.06) 65%,transparent 75%)',
         filter: 'blur(100px)',
         animation: 'aurora-drift-1 20s ease-in-out infinite',
         willChange: 'transform',
@@ -313,7 +313,7 @@ function UltraAuroraBg() {
       <div className="hero-orb" style={{
         position: 'absolute', bottom: '-25%', right: '-22%',
         width: '75vw', height: '75vw', borderRadius: '50%',
-        backgroundImage: rgba(6,182,212,0.4),rgba(59,130,246,0.22) 40%,rgba(124,58,237,0.08) 65%,transparent 78%)',
+        background: 'radial-gradient(circle at 65% 65%,rgba(6,182,212,0.4),rgba(59,130,246,0.22) 40%,rgba(124,58,237,0.08) 65%,transparent 78%)',
         filter: 'blur(110px)',
         animation: 'aurora-drift-2 25s ease-in-out infinite',
         willChange: 'transform',
@@ -322,7 +322,7 @@ function UltraAuroraBg() {
       <div className="hero-orb" style={{
         position: 'absolute', top: '28%', left: '42%', transform: 'translateX(-50%)',
         width: '60vw', height: '60vw', borderRadius: '50%',
-        backgroundImage: rgba(244,114,182,0.22),rgba(167,139,250,0.18) 40%,transparent 68%)',
+        background: 'radial-gradient(circle,rgba(244,114,182,0.22),rgba(167,139,250,0.18) 40%,transparent 68%)',
         filter: 'blur(90px)',
         animation: 'aurora-drift-3 16s ease-in-out infinite 1.5s',
         willChange: 'transform',
@@ -331,7 +331,7 @@ function UltraAuroraBg() {
       <div className="hero-orb" style={{
         position: 'absolute', top: '-10%', right: '-10%',
         width: '50vw', height: '50vw', borderRadius: '50%',
-        backgroundImage: rgba(79,70,229,0.25),rgba(99,102,241,0.1) 50%,transparent 70%)',
+        background: 'radial-gradient(circle,rgba(79,70,229,0.25),rgba(99,102,241,0.1) 50%,transparent 70%)',
         filter: 'blur(85px)',
         animation: 'aurora-drift-1 22s ease-in-out infinite 4s',
         willChange: 'transform',
@@ -354,19 +354,19 @@ function UltraAuroraBg() {
       {/* Center radial glow */}
       <div style={{
         position: 'absolute', inset: 0,
-        backgroundImage: rgba(124,58,237,0.12) 0%,transparent 70%)',
+        background: 'radial-gradient(ellipse 70% 60% at 50% 42%,rgba(124,58,237,0.12) 0%,transparent 70%)',
       }} />
 
       {/* Vignette */}
       <div className="hero-vignette" style={{
         position: 'absolute', inset: 0,
-        backgroundImage: transparent 30%,rgba(3,1,9,0.8) 100%)',
+        background: 'radial-gradient(ellipse 90% 80% at 50% 48%,transparent 30%,rgba(3,1,9,0.8) 100%)',
       }} />
 
       {/* Bottom fade to next section */}
       <div className="hero-bottom-fade" style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: '42%',
-        backgroundImage: rgba(4,2,14,1) 0%,transparent 100%)',
+        background: 'linear-gradient(to top,rgba(4,2,14,1) 0%,transparent 100%)',
       }} />
     </>
   );
@@ -567,7 +567,7 @@ function CinematicWord({ text, delay = 0, gradient }: { text: string; delay?: nu
           }}
           style={{
             display: 'inline-block',
-            backgroundImage: 
+            background: gradient,
             backgroundSize: '200% 200%',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
@@ -655,7 +655,7 @@ function LuxuryDivider() {
       {/* Main gradient line */}
       <div style={{
         height: 1.5,
-        backgroundImage: transparent 0%,rgba(167,139,250,0.5) 20%,rgba(244,114,182,0.8) 50%,rgba(56,189,248,0.6) 80%,transparent 100%)',
+        background: 'linear-gradient(90deg,transparent 0%,rgba(167,139,250,0.5) 20%,rgba(244,114,182,0.8) 50%,rgba(56,189,248,0.6) 80%,transparent 100%)',
         backgroundSize: '300% 300%',
         animation: 'luxury-divider 6s ease-in-out infinite',
         borderRadius: 999,
@@ -666,7 +666,7 @@ function LuxuryDivider() {
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%, -50%) rotate(45deg)',
         width: 7, height: 7,
-        backgroundImage: #a78bfa,#f472b6)',
+        background: 'linear-gradient(135deg,#a78bfa,#f472b6)',
         boxShadow: '0 0 12px rgba(167,139,250,0.8)',
       }} />
     </motion.div>
@@ -690,7 +690,7 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
         padding: 'clamp(11px,2vw,16px) clamp(20px,4vw,40px)',
         fontSize: 'clamp(0.78rem,2vw,0.92rem)', fontWeight: 800,
         color: 'var(--white)',
-        backgroundImage: #7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
+        background: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
         backgroundSize: '250% 250%',
         animation: 'hero-shimmer-cta 5s linear infinite',
         boxShadow: '0 12px 42px rgba(124,58,237,0.6), 0 4px 16px rgba(236,72,153,0.3), 0 0 0 1px rgba(167,139,250,0.3), inset 0 1px 0 rgba(var(--text-base-rgb),0.15)',
@@ -704,7 +704,7 @@ function PrimaryCTA({ href, children }: { href: string; children: React.ReactNod
       {/* Shimmer sweep */}
       <span style={{
         position: 'absolute', inset: 0,
-        backgroundImage: transparent 35%,rgba(var(--text-base-rgb),0.22) 50%,transparent 65%)',
+        background: 'linear-gradient(105deg,transparent 35%,rgba(var(--text-base-rgb),0.22) 50%,transparent 65%)',
         backgroundSize: '200% 100%',
         animation: 'hero-shimmer-cta 2.8s linear infinite',
       }} />
@@ -803,7 +803,7 @@ function UltraStatCard({
         <motion.div
           style={{
             position: 'absolute', inset: 0,
-            backgroundImage:  rgba(${colorRgb},0.14) 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse at 50% 0%, rgba(${colorRgb},0.14) 0%, transparent 70%)`,
             opacity: 0, borderRadius: 16,
           }}
           animate={{ opacity: hovered ? 1 : 0 }}
@@ -827,7 +827,7 @@ function UltraStatCard({
           <motion.div
             style={{
               width: 44, height: 44, borderRadius: 14,
-              backgroundImage:  rgba(${colorRgb},0.22), rgba(${colorRgb},0.07))`,
+              background: `linear-gradient(135deg, rgba(${colorRgb},0.22), rgba(${colorRgb},0.07))`,
               border: `1px solid rgba(${colorRgb},0.3)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '1.4rem',
@@ -848,7 +848,7 @@ function UltraStatCard({
             fontWeight: 900,
             fontFamily: '"Cormorant Garamond", "Playfair Display", Georgia, serif',
             fontStyle: 'italic',
-            backgroundImage: rgba(255,255,255,0.95),rgba(255,255,255,0.6))',
+            background: hovered ? gradient : 'linear-gradient(135deg,rgba(255,255,255,0.95),rgba(255,255,255,0.6))',
             WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             backgroundClip: 'text', lineHeight: 1,
             filter: hovered ? `drop-shadow(0 0 14px rgba(${colorRgb},0.5))` : 'none',
@@ -927,7 +927,7 @@ function ScrollIndicator() {
       }}>
         <div style={{
           width: 4, height: 10, borderRadius: 999,
-          backgroundImage: #a78bfa,#f472b6)',
+          background: 'linear-gradient(to bottom,#a78bfa,#f472b6)',
           boxShadow: '0 0 10px rgba(167,139,250,0.9)',
           animation: 'scroll-dot-flow 2.2s ease-in-out infinite',
         }} />
@@ -935,9 +935,9 @@ function ScrollIndicator() {
 
       {/* Side lines decoration */}
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <div style={{ width: 20, height: 1, backgroundImage: transparent,rgba(167,139,250,0.3))' }} />
+        <div style={{ width: 20, height: 1, background: 'linear-gradient(to right,transparent,rgba(167,139,250,0.3))' }} />
         <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(167,139,250,0.4)' }} />
-        <div style={{ width: 20, height: 1, backgroundImage: transparent,rgba(167,139,250,0.3))' }} />
+        <div style={{ width: 20, height: 1, background: 'linear-gradient(to left,transparent,rgba(167,139,250,0.3))' }} />
       </div>
     </motion.div>
   );
@@ -1091,7 +1091,7 @@ export default function Hero() {
             inset: 0,
             zIndex: 1,
             pointerEvents: 'none',
-            backgroundImage: px ${mouseY.get()}px, rgba(167,139,250,0.1), transparent 80%)`)
+            background: useTransform(() => `radial-gradient(600px circle at ${mouseX.get()}px ${mouseY.get()}px, rgba(167,139,250,0.1), transparent 80%)`)
           }}
         />
 
@@ -1155,7 +1155,7 @@ export default function Hero() {
                 <div className="hero-greeting-pill" style={{
                   display: 'inline-flex', alignItems: 'center', gap: 12,
                   padding: '11px 26px', borderRadius: 999,
-                  backgroundImage: 4,20,0.92),rgba(8,4,20,0.92)) padding-box, linear-gradient(135deg,rgba(124,58,237,0.5),rgba(244,114,182,0.4),rgba(56,189,248,0.3)) border-box',
+                  background: 'linear-gradient(rgba(8,4,20,0.92),rgba(8,4,20,0.92)) padding-box, linear-gradient(135deg,rgba(124,58,237,0.5),rgba(244,114,182,0.4),rgba(56,189,248,0.3)) border-box',
                   border: '1px solid transparent',
                   backdropFilter: 'blur(20px)',
                   animation: 'badge-pulse-luxury 3.5s ease-in-out infinite',
@@ -1179,7 +1179,7 @@ export default function Hero() {
                   <span className="hero-greeting-text" style={{
                     fontSize: '0.72rem', fontWeight: 800, letterSpacing: '0.25em',
                     textTransform: 'uppercase',
-                    backgroundImage: 'linear-gradient(135deg,#a78bfa,#f472b6,#38bdf8)',
+                    background: 'linear-gradient(135deg,#a78bfa,#f472b6,#38bdf8)',
                     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                   }}>
@@ -1327,7 +1327,7 @@ export default function Hero() {
               <motion.div
                 style={{
                   position: 'absolute', inset: -3,
-                  backgroundImage: #38bdf8,#a78bfa,#f472b6,#34d399,#f59e0b,#38bdf8)',
+                  background: 'linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6,#34d399,#f59e0b,#38bdf8)',
                   backgroundSize: '300% 100%',
                   filter: 'blur(22px)', opacity: 0.28, borderRadius: 32, zIndex: -1,
                 }}
@@ -1339,7 +1339,7 @@ export default function Hero() {
               <div style={{
                 display: 'grid', gridTemplateColumns: 'repeat(4,1fr)',
                 borderRadius: 28,
-                backgroundImage: rgba(12,6,28,0.92),rgba(8,4,20,0.96))',
+                background: 'linear-gradient(145deg,rgba(12,6,28,0.92),rgba(8,4,20,0.96))',
                 border: '1px solid rgba(255,255,255,0.07)',
                 borderTopColor: 'rgba(255,255,255,0.12)',
                 backdropFilter: 'blur(48px)',
@@ -1351,7 +1351,7 @@ export default function Hero() {
                 <motion.div
                   style={{
                     position: 'absolute', top: 0, left: '-100%', width: '25%', height: '100%',
-                    backgroundImage: transparent,rgba(255,255,255,0.06),transparent)',
+                    background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent)',
                     transform: 'skewX(-20deg)', pointerEvents: 'none', zIndex: 1,
                   }}
                   animate={{ left: ['-100%', '400%'] }}

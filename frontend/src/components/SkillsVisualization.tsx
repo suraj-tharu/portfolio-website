@@ -301,13 +301,13 @@ function ConstellationGraph() {
   return (
     <div style={{ position: 'relative', width: '100%', borderRadius: 28, overflow: 'hidden',
       border: '1px solid rgba(167,139,250,0.12)',
-      backgroundImage:  rgba(10,5,25,0.9), rgba(15,8,35,0.95))',
+      background: 'linear-gradient(145deg, rgba(10,5,25,0.9), rgba(15,8,35,0.95))',
       boxShadow: '0 32px 80px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(167,139,250,0.1)',
     }}>
       {/* Scan line effect */}
       <div style={{
         position: 'absolute', left: 0, right: 0, height: 2, zIndex: 2, pointerEvents: 'none',
-        backgroundImage:  transparent, rgba(167,139,250,0.4), transparent)',
+        background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.4), transparent)',
         animation: 'skills-scan 6s linear infinite',
       }} />
       <canvas ref={canvasRef} style={{ display: 'block', width: '100%', cursor: 'crosshair' }} />
@@ -410,7 +410,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
         {/* Corner accent */}
         <div style={{
           position: 'absolute', top: 0, right: 0, width: 60, height: 60,
-          backgroundImage:  rgba(${colorRgb},0.15), transparent 70%)`,
+          background: `radial-gradient(circle at top right, rgba(${colorRgb},0.15), transparent 70%)`,
           opacity: hovered ? 1 : 0, transition: 'opacity 0.4s ease',
         }} />
 
@@ -421,7 +421,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
             transition={{ duration: 1.2, ease: 'easeInOut' }}
             style={{
               position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-              backgroundImage:  transparent 35%, rgba(255,255,255,0.08) 50%, transparent 65%)',
+              background: 'linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.08) 50%, transparent 65%)',
               width: '60%',
             }}
           />
@@ -437,7 +437,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
                 transition={{ type: 'spring', stiffness: 400, damping: 20 }}
                 style={{
                   width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-                  backgroundImage:  rgba(${colorRgb},0.2), rgba(${colorRgb},0.08))`,
+                  background: `linear-gradient(135deg, rgba(${colorRgb},0.2), rgba(${colorRgb},0.08))`,
                   border: `1px solid rgba(${colorRgb},0.3)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: hovered ? `0 0 20px rgba(${colorRgb},0.3)` : 'none',
@@ -467,7 +467,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
               <div style={{
                 fontFamily: 'Syne, sans-serif', fontWeight: 900,
                 fontSize: '1.1rem', lineHeight: 1,
-                backgroundImage:  ${color}, rgba(255,255,255,0.9))`,
+                background: `linear-gradient(135deg, ${color}, rgba(255,255,255,0.9))`,
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>{level}%</div>
               <div style={{
@@ -490,7 +490,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
               transition={{ duration: 1.4, delay: delay + 0.25, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 height: '100%', borderRadius: 999, position: 'relative',
-                backgroundImage:  rgba(${colorRgb},0.5) 0%, ${color} 60%, rgba(255,255,255,0.9) 100%)`,
+                background: `linear-gradient(90deg, rgba(${colorRgb},0.5) 0%, ${color} 60%, rgba(255,255,255,0.9) 100%)`,
                 boxShadow: `0 0 16px rgba(${colorRgb},0.6), 0 0 4px rgba(${colorRgb},0.8)`,
               }}
             >
@@ -500,7 +500,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
                 transition={{ duration: 2.5, delay: delay + 1.5, ease: 'linear', repeat: Infinity, repeatDelay: 4 }}
                 style={{
                   position: 'absolute', inset: 0, width: '35%',
-                  backgroundImage:  transparent, rgba(255,255,255,0.6), transparent)',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
                 }}
               />
             </motion.div>
@@ -602,7 +602,7 @@ function ViewToggle({ view, onToggle }: { view: 'bars' | 'constellation'; onTogg
         fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '0.73rem',
         letterSpacing: '0.06em', textTransform: 'uppercase',
         border: '1px solid rgba(167,139,250,0.25)',
-        backgroundImage:  rgba(124,58,237,0.12), rgba(167,139,250,0.06))',
+        background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(167,139,250,0.06))',
         color: 'rgba(167,139,250,0.8)',
         cursor: 'pointer', backdropFilter: 'blur(12px)',
         boxShadow: '0 0 20px rgba(124,58,237,0.1)',
@@ -632,7 +632,7 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
       className="skills-category-hero"
       style={{
         marginBottom: 32, padding: '24px 28px', borderRadius: 24,
-        backgroundImage:  rgba(${cat.colorRgb},0.1) 0%, rgba(${cat.colorRgb},0.03) 60%, rgba(0,0,0,0) 100%)`,
+        background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.1) 0%, rgba(${cat.colorRgb},0.03) 60%, rgba(0,0,0,0) 100%)`,
         border: `1px solid rgba(${cat.colorRgb},0.2)`,
         backdropFilter: 'blur(24px)',
         boxShadow: `0 0 60px rgba(${cat.colorRgb},0.08), inset 0 1px 0 rgba(255,255,255,0.06)`,
@@ -644,14 +644,14 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
       <div style={{
         position: 'absolute', top: '-30%', right: '-10%',
         width: '40%', height: '200%', borderRadius: '50%',
-        backgroundImage:  rgba(${cat.colorRgb},0.12), transparent 65%)`,
+        background: `radial-gradient(circle, rgba(${cat.colorRgb},0.12), transparent 65%)`,
         pointerEvents: 'none',
       }} />
 
       {/* Icon */}
       <div style={{
         width: 60, height: 60, borderRadius: 18, flexShrink: 0,
-        backgroundImage:  rgba(${cat.colorRgb},0.25), rgba(${cat.colorRgb},0.08))`,
+        background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.25), rgba(${cat.colorRgb},0.08))`,
         border: `1px solid rgba(${cat.colorRgb},0.35)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         boxShadow: `0 0 30px rgba(${cat.colorRgb},0.2)`,
@@ -684,14 +684,14 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
       {/* Avg badge */}
       <div className="skills-category-hero-avg" style={{
         textAlign: 'right', flexShrink: 0,
-        backgroundImage:  rgba(${cat.colorRgb},0.12), rgba(${cat.colorRgb},0.04))`,
+        background: `linear-gradient(145deg, rgba(${cat.colorRgb},0.12), rgba(${cat.colorRgb},0.04))`,
         border: `1px solid rgba(${cat.colorRgb},0.2)`,
         borderRadius: 16, padding: '14px 20px',
       }}>
         <div style={{
           fontFamily: 'Syne, sans-serif', fontWeight: 900,
           fontSize: 'clamp(1.8rem,3vw,2.6rem)', lineHeight: 1,
-          backgroundImage:  ${cat.color}, rgba(255,255,255,0.95))`,
+          background: `linear-gradient(135deg, ${cat.color}, rgba(255,255,255,0.95))`,
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
         }}>{avg}%</div>
         <div style={{
@@ -728,21 +728,21 @@ export default function SkillsVisualization() {
         <div style={{
           position: 'absolute', top: '10%', left: '-5%',
           width: '55vw', height: '55vw', borderRadius: '50%',
-          backgroundImage:  rgba(34,211,238,0.07), transparent 60%)',
+          background: 'radial-gradient(circle, rgba(34,211,238,0.07), transparent 60%)',
           filter: 'blur(80px)', animation: 'skills-orb-drift 18s ease-in-out infinite',
         }} />
         {/* Pink orb */}
         <div style={{
           position: 'absolute', bottom: '5%', right: '-5%',
           width: '45vw', height: '45vw', borderRadius: '50%',
-          backgroundImage:  rgba(244,114,182,0.07), transparent 60%)',
+          background: 'radial-gradient(circle, rgba(244,114,182,0.07), transparent 60%)',
           filter: 'blur(90px)', animation: 'skills-orb-drift 22s ease-in-out infinite reverse',
         }} />
         {/* Violet orb */}
         <div style={{
           position: 'absolute', top: '45%', left: '35%',
           width: '40vw', height: '40vw', borderRadius: '50%',
-          backgroundImage:  rgba(167,139,250,0.05), transparent 60%)',
+          background: 'radial-gradient(circle, rgba(167,139,250,0.05), transparent 60%)',
           filter: 'blur(70px)', animation: 'skills-orb-drift 14s ease-in-out infinite 2s',
         }} />
       </div>
@@ -839,7 +839,7 @@ export default function SkillsVisualization() {
                   <div key={label} style={{ textAlign: 'center' }}>
                     <div style={{
                       fontFamily: 'Syne, sans-serif', fontWeight: 900, fontSize: '1.3rem',
-                      backgroundImage: 
+                      background: activeCat.gradient,
                       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                     }}>{value}</div>
                     <div style={{

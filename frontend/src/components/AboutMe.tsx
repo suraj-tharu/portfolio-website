@@ -76,7 +76,7 @@ function StatCard({
       {/* Bottom glow line */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-[1.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ backgroundImage: `linear-gradient(to right, transparent, ${color}, transparent)` }}
+        style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
       />
     </motion.div>
   );
@@ -135,13 +135,13 @@ export default function AboutMe() {
         <div style={{
           position: 'absolute', top: '10%', right: '-10%',
           width: '45vw', height: '45vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%)',
           filter: 'blur(60px)',
         }} />
         <div style={{
           position: 'absolute', bottom: '10%', left: '-8%',
           width: '35vw', height: '35vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(244,114,182,0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(244,114,182,0.06) 0%, transparent 70%)',
           filter: 'blur(50px)',
         }} />
       </div>
@@ -190,7 +190,7 @@ export default function AboutMe() {
                   className="font-syne font-black leading-[0.88] tracking-tight italic"
                   style={{
                     fontSize: 'clamp(3.2rem, 7vw, 7rem)',
-                    backgroundImage: 'linear-gradient(to right, #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                    background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -208,7 +208,7 @@ export default function AboutMe() {
                 transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 style={{
                   height: 2, width: 80, originX: 0, marginTop: '1.25rem',
-                  backgroundImage: 'linear-gradient(to right, #a78bfa,#f472b6)',
+                  background: 'linear-gradient(90deg,#a78bfa,#f472b6)',
                   borderRadius: 999,
                   boxShadow: '0 0 12px rgba(167,139,250,0.5)',
                 }}

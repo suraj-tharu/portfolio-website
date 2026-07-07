@@ -116,7 +116,7 @@ function StatCell({ stat, index }: { stat: typeof STATS[number]; index: number }
         fontFamily: 'Syne, sans-serif', fontWeight: 900,
         fontSize: 'clamp(2rem,4vw,3.2rem)',
         lineHeight: 0.95, letterSpacing: '-0.03em',
-        backgroundImage:  ${stat.color} 0%, rgba(var(--text-base-rgb),0.9) 60%)`,
+        background: `linear-gradient(135deg, ${stat.color} 0%, rgba(var(--text-base-rgb),0.9) 60%)`,
         WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
       }}>
         <OdometerCounter
@@ -153,7 +153,7 @@ function StatCell({ stat, index }: { stat: typeof STATS[number]; index: number }
         transition={{ duration: 1, delay: index * 0.08 + 0.5, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: 2, borderRadius: 999,
-          backgroundImage:  ${stat.color}60, ${stat.color}, ${stat.color}60)`,
+          background: `linear-gradient(90deg, ${stat.color}60, ${stat.color}, ${stat.color}60)`,
           originX: 0.5,
         }}
       />
@@ -173,14 +173,14 @@ export default function Stats() {
         <div style={{
           position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
           width: '70vw', height: '60vw', borderRadius: '50%',
-          backgroundImage: rgba(124,58,237,0.05) 0%,transparent 65%)',
+          background: 'radial-gradient(ellipse,rgba(124,58,237,0.05) 0%,transparent 65%)',
           filter: 'blur(80px)',
         }} />
       </div>
 
       {/* Full-width dark frosted glass strip */}
       <div style={{
-        backgroundImage: rgba(124,58,237,0.04),rgba(15,8,35,0.8),rgba(56,189,248,0.03))',
+        background: 'linear-gradient(135deg,rgba(124,58,237,0.04),rgba(15,8,35,0.8),rgba(56,189,248,0.03))',
         borderTop: '1px solid rgba(167,139,250,0.08)',
         borderBottom: '1px solid rgba(167,139,250,0.08)',
         backdropFilter: 'blur(40px)',
@@ -218,7 +218,7 @@ export default function Stats() {
             }}>
               Impact in{' '}
               <span style={{
-                backgroundImage: #a78bfa 0%,#f472b6 60%,#38bdf8 100%)',
+                background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 60%,#38bdf8 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 fontStyle: 'italic',
               }}>
@@ -243,7 +243,7 @@ export default function Stats() {
               transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 height: 1, maxWidth: 280, margin: '24px auto 0',
-                backgroundImage: transparent,rgba(167,139,250,0.5),rgba(244,114,182,0.4),transparent)',
+                background: 'linear-gradient(90deg,transparent,rgba(167,139,250,0.5),rgba(244,114,182,0.4),transparent)',
               }}
             />
           </motion.div>

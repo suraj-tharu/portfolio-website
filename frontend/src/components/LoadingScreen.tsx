@@ -134,7 +134,7 @@ function ProgressRing({ progress }: { progress: number }) {
           fontSize: '1.1rem',
           fontWeight: 900,
           fontFamily: 'Georgia, serif',
-          backgroundImage: #a78bfa,#f472b6)',
+          background: 'linear-gradient(135deg,#a78bfa,#f472b6)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -189,7 +189,7 @@ function CardFlipWord({ word }: { word: string }) {
           letterSpacing: '-0.04em',
           lineHeight: 1,
           fontFamily: 'Georgia, serif',
-          backgroundImage: rgba(167,139,250,0.18),rgba(244,114,182,0.14),rgba(56,189,248,0.18))',
+          background: 'linear-gradient(135deg,rgba(167,139,250,0.18),rgba(244,114,182,0.14),rgba(56,189,248,0.18))',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -213,7 +213,7 @@ function GlitchText({ text }: { text: string }) {
         aria-hidden
         style={{
           position: 'absolute', inset: 0,
-          backgroundImage: #7c3aed,#db2777,#06b6d4)',
+          background: 'linear-gradient(135deg,#7c3aed,#db2777,#06b6d4)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           animation: 'glitch1 3.5s infinite',
           clipPath: 'polygon(0 30%,100% 30%,100% 50%,0 50%)',
@@ -224,7 +224,7 @@ function GlitchText({ text }: { text: string }) {
         aria-hidden
         style={{
           position: 'absolute', inset: 0,
-          backgroundImage: #06b6d4,#7c3aed)',
+          background: 'linear-gradient(135deg,#06b6d4,#7c3aed)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           animation: 'glitch2 3.5s infinite',
           clipPath: 'polygon(0 60%,100% 60%,100% 75%,0 75%)',
@@ -233,7 +233,7 @@ function GlitchText({ text }: { text: string }) {
       >{text}</span>
       <span
         style={{
-          backgroundImage: #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+          background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
         }}
       >{text}</span>
@@ -318,7 +318,7 @@ export default function LoadingScreen({ onComplete }: Props) {
           <motion.div
             key="loader"
             className="fixed inset-0 z-[9999] overflow-hidden flex flex-col"
-            style={{ backgroundImage: #06040f 0%,#0d0a1f 40%,#0a0f1e 100%)' }}
+            style={{ background: 'linear-gradient(145deg,#06040f 0%,#0d0a1f 40%,#0a0f1e 100%)' }}
             exit={{
               opacity: 0,
               scale: 1.08,
@@ -334,19 +334,19 @@ export default function LoadingScreen({ onComplete }: Props) {
               <div style={{
                 position: 'absolute', top: '-15%', left: '-10%',
                 width: '55vw', height: '55vw', borderRadius: '50%',
-                backgroundImage: rgba(124,58,237,0.4) 0%,transparent 70%)',
+                background: 'radial-gradient(circle,rgba(124,58,237,0.4) 0%,transparent 70%)',
                 filter: 'blur(70px)', animation: 'ls-orb 9s ease-in-out infinite',
               }} />
               <div style={{
                 position: 'absolute', bottom: '-10%', right: '-10%',
                 width: '50vw', height: '50vw', borderRadius: '50%',
-                backgroundImage: rgba(219,39,119,0.35) 0%,transparent 70%)',
+                background: 'radial-gradient(circle,rgba(219,39,119,0.35) 0%,transparent 70%)',
                 filter: 'blur(80px)', animation: 'ls-orb 11s ease-in-out infinite reverse',
               }} />
               <div style={{
                 position: 'absolute', top: '40%', left: '50%',
                 width: '35vw', height: '35vw', borderRadius: '50%',
-                backgroundImage: rgba(6,182,212,0.25) 0%,transparent 70%)',
+                background: 'radial-gradient(circle,rgba(6,182,212,0.25) 0%,transparent 70%)',
                 filter: 'blur(60px)', animation: 'ls-orb 7s ease-in-out infinite 2s',
               }} />
             </div>
@@ -358,7 +358,7 @@ export default function LoadingScreen({ onComplete }: Props) {
             }} />
             <div style={{
               position: 'absolute', left: 0, right: 0, height: '18%', zIndex: 2, pointerEvents: 'none',
-              backgroundImage: rgba(167,139,250,0.04),transparent)',
+              background: 'linear-gradient(to bottom,rgba(167,139,250,0.04),transparent)',
               animation: 'ls-scanline 5s linear infinite',
             }} />
 
@@ -491,7 +491,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                   <div style={{
                     position: 'absolute', top: 0, left: 0, height: '100%',
                     width: `${progress}%`,
-                    backgroundImage: #7c3aed,#db2777,#06b6d4)',
+                    background: 'linear-gradient(90deg,#7c3aed,#db2777,#06b6d4)',
                     borderRadius: 999,
                     transition: 'width 0.08s linear',
                     boxShadow: '0 0 12px rgba(167,139,250,0.8)',
@@ -500,7 +500,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                   <div style={{
                     position: 'absolute', top: 0, left: 0, height: '100%',
                     width: `${progress}%`,
-                    backgroundImage: transparent 0%,rgba(var(--text-base-rgb),0.45) 50%,transparent 100%)',
+                    background: 'linear-gradient(90deg,transparent 0%,rgba(var(--text-base-rgb),0.45) 50%,transparent 100%)',
                     backgroundSize: '200% 100%',
                     animation: 'ls-shimmer 1s linear infinite',
                     borderRadius: 999,
@@ -521,7 +521,7 @@ export default function LoadingScreen({ onComplete }: Props) {
                 >
                   <span style={{
                     fontSize: 'clamp(0.65rem,1.1vw,0.78rem)',
-                    backgroundImage: rgba(167,139,250,0.55),rgba(244,114,182,0.45))',
+                    background: 'linear-gradient(90deg,rgba(167,139,250,0.55),rgba(244,114,182,0.45))',
                     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                     letterSpacing: '0.06em',
                   }}>

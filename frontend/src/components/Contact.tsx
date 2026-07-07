@@ -95,7 +95,7 @@ function LuxuryInput({
         style={{
           position: 'absolute', bottom: error ? 28 : 0, left: 0, right: 0,
           height: 1.5, borderRadius: 999, originX: 0.5,
-          backgroundImage: 'linear-gradient(to right, #7c3aed, #db2777, #06b6d4)',
+          background: 'linear-gradient(90deg,#7c3aed,#db2777,#06b6d4)',
         }}
       />
 
@@ -269,19 +269,19 @@ export default function Contact() {
         <div style={{
           position: 'absolute', top: '-15%', right: '-10%',
           width: '55vw', height: '55vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(124,58,237,0.08), transparent 65%)',
+          background: 'radial-gradient(circle,rgba(124,58,237,0.08),transparent 65%)',
           filter: 'blur(90px)',
         }} />
         <div style={{
           position: 'absolute', bottom: '-15%', left: '-10%',
           width: '45vw', height: '45vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(6,182,212,0.06), transparent 65%)',
+          background: 'radial-gradient(circle,rgba(6,182,212,0.06),transparent 65%)',
           filter: 'blur(70px)',
         }} />
         <div style={{
           position: 'absolute', top: '40%', left: '40%',
           width: '30vw', height: '30vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(244,114,182,0.05), transparent 65%)',
+          background: 'radial-gradient(circle,rgba(244,114,182,0.05),transparent 65%)',
           filter: 'blur(60px)',
         }} />
       </div>
@@ -355,7 +355,7 @@ export default function Contact() {
                 fontStyle: 'italic',
                 fontSize: 'clamp(2.4rem,5vw,4.5rem)',
                 lineHeight: 0.95, letterSpacing: '-0.02em',
-                backgroundImage: 'linear-gradient(to right, #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 marginBottom: 24,
               }}>
@@ -375,7 +375,7 @@ export default function Contact() {
             {/* Divider */}
             <div style={{
               height: 1,
-              backgroundImage: 'linear-gradient(to right, rgba(167,139,250,0.4),rgba(244,114,182,0.3),transparent)',
+              background: 'linear-gradient(90deg,rgba(167,139,250,0.4),rgba(244,114,182,0.3),transparent)',
             }} />
 
             {/* Info cards */}
@@ -500,7 +500,7 @@ export default function Contact() {
                   <div style={{
                     position: 'absolute', top: -40, right: -40,
                     width: 180, height: 180, borderRadius: '50%',
-                    backgroundImage: 'radial-gradient(circle, rgba(167,139,250,0.06), transparent 70%)',
+                    background: 'radial-gradient(circle,rgba(167,139,250,0.06),transparent 70%)',
                     pointerEvents: 'none',
                   }} />
 
@@ -571,7 +571,7 @@ export default function Contact() {
                       padding: '16px 28px', borderRadius: 999,
                       fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '0.92rem',
                       letterSpacing: '0.04em',
-                      backgroundImage: 'linear-gradient(to right, #7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
+                      background: 'linear-gradient(135deg,#7c3aed 0%,#a855f7 30%,#ec4899 65%,#0ea5e9 100%)',
                       backgroundSize: '250% 250%',
                       animation: 'hero-shimmer-cta 5s linear infinite',
                       color: 'var(--white)', border: 'none', cursor: isSubmitting ? 'not-allowed' : 'pointer',
@@ -584,7 +584,7 @@ export default function Contact() {
                     {/* Shimmer */}
                     <span style={{
                       position: 'absolute', inset: 0,
-                      backgroundImage: 'linear-gradient(to right, transparent 35%, rgba(var(--text-base-rgb),0.2) 50%, transparent 65%)',
+                      background: 'linear-gradient(105deg,transparent 35%,rgba(var(--text-base-rgb),0.2) 50%,transparent 65%)',
                       backgroundSize: '200% 100%',
                       animation: 'hero-shimmer-cta 2.8s linear infinite',
                     }} />

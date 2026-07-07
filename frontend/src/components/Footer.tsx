@@ -91,7 +91,7 @@ function MagneticEmailButton({ email }: { email: string }) {
       <span className="absolute inset-0 opacity-0 group-hover:opacity-100 overflow-hidden rounded-full">
         <span style={{
           position: 'absolute', top: 0, left: '-100%', width: '60%', height: '100%',
-          backgroundImage: 'linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent)',
+          background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent)',
           animation: 'footer-shimmer 1.5s ease-in-out infinite',
         }} />
       </span>
@@ -108,7 +108,7 @@ function MagneticEmailButton({ email }: { email: string }) {
 function AuroraDivider() {
   return (
     <div className="relative flex justify-center items-center w-full h-[2px] z-10" style={{ margin: '-2rem 0 2rem 0' }}>
-      <div className="relative w-[80%] max-w-[800px] h-[1px]" style={{ backgroundImage: 'linear-gradient(to right, transparent, rgba(56,189,248,0.5), transparent)' }}>
+      <div className="relative w-[80%] max-w-[800px] h-[1px]" style={{ background: 'linear-gradient(90deg, transparent, rgba(56,189,248,0.5), transparent)' }}>
         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-sm text-[#fcd34d] bg-white dark:bg-[#060608] px-3 py-0.5 rounded-full z-20 transition-colors duration-300" style={{ textShadow: '0 0 10px #f59e0b', border: '1px solid rgba(245,158,11,0.3)' }}>◆</span>
       </div>
     </div>
@@ -256,7 +256,7 @@ export default function Footer() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: 1.5, width: 40, originX: 0, backgroundImage: 'linear-gradient(to right, transparent, rgba(245,158,11,0.6))', borderRadius: 999 }}
+            style={{ height: 1.5, width: 40, originX: 0, background: 'linear-gradient(90deg,transparent,rgba(245,158,11,0.6))', borderRadius: 999 }}
           />
           <span className="text-xs uppercase tracking-[0.35em] text-amber-600 dark:text-[rgba(245,158,11,0.8)] font-syne font-bold">Let's collaborate</span>
           <motion.div
@@ -264,7 +264,7 @@ export default function Footer() {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            style={{ height: 1.5, width: 40, originX: 1, backgroundImage: 'linear-gradient(to right, rgba(245,158,11,0.6), transparent)', borderRadius: 999 }}
+            style={{ height: 1.5, width: 40, originX: 1, background: 'linear-gradient(90deg,rgba(245,158,11,0.6),transparent)', borderRadius: 999 }}
           />
         </div>
 
@@ -283,7 +283,7 @@ export default function Footer() {
           <motion.span
             className="italic block"
             style={{
-              backgroundImage: 'linear-gradient(to right, #f59e0b 0%,#ea580c 50%,#0ea5e9 100%)',
+              background: 'linear-gradient(135deg,#f59e0b 0%,#ea580c 50%,#0ea5e9 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}
             initial={{ opacity: 0, y: 30 }}
@@ -372,7 +372,7 @@ export default function Footer() {
         {/* Column 3: Copyright + visitor */}
         <div className="flex flex-col items-start lg:items-end gap-3 justify-end lg:w-1/3">
           <p className="text-xs font-bold uppercase tracking-widest lg:text-right font-syne"
-            style={{ backgroundImage: 'linear-gradient(to right, #f59e0b, #ea580c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            style={{ background: 'linear-gradient(90deg,#f59e0b,#ea580c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
             © {new Date().getFullYear()} Er.Suraj Tharu Chaudhary
           </p>
           <p className="text-xs text-slate-500 dark:text-white/40 tracking-wide -mt-2 lg:text-right font-jakarta font-medium">
@@ -387,7 +387,7 @@ export default function Footer() {
       {/* Animated bottom gradient bar */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 4,
-        backgroundImage: 'linear-gradient(to right, #0ea5e9, #2563eb, #f59e0b, #fcd34d, #0ea5e9)',
+        background: 'linear-gradient(90deg,#0ea5e9,#2563eb,#f59e0b,#fcd34d,#0ea5e9)',
         backgroundSize: '200% 100%',
         animation: 'footer-shimmer 6s linear infinite',
       }} />

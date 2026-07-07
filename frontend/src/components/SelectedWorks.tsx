@@ -47,7 +47,7 @@ function FloatingPreview({
             <img src={src} alt={title} className="w-full aspect-video object-cover block" />
             <div className="px-3 py-2" style={{ background: 'rgba(10,8,20,0.85)' }}>
               <p className="font-syne font-bold text-[var(--text)] text-xs tracking-wide truncate">{title}</p>
-              <div className="w-8 h-0.5 mt-1 rounded-full" style={{ backgroundImage:  ${color}, transparent)` }} />
+              <div className="w-8 h-0.5 mt-1 rounded-full" style={{ background: `linear-gradient(90deg, ${color}, transparent)` }} />
             </div>
           </div>
         </motion.div>
@@ -201,7 +201,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
         <div
           className="absolute inset-0 pointer-events-none transition-opacity duration-300"
           style={{
-            backgroundImage: % ${spotY}%, rgba(var(--text-base-rgb),0.08), transparent 70%)`,
+            background: `radial-gradient(circle 200px at ${spotX}% ${spotY}%, rgba(var(--text-base-rgb),0.08), transparent 70%)`,
             opacity: hovered ? 1 : 0,
           }}
         />
@@ -215,7 +215,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
               exit={{ opacity: 0 }}
               className="absolute inset-0 rounded-3xl pointer-events-none"
               style={{
-                backgroundImage:  ${project.color}25 0%, transparent 60%, ${project.color}15 100%)`,
+                background: `linear-gradient(135deg, ${project.color}25 0%, transparent 60%, ${project.color}15 100%)`,
               }}
             />
           )}
@@ -321,7 +321,7 @@ export default function SelectedWorks() {
         <div style={{
           position: 'absolute', top: '30%', left: '-5%',
           width: '40vw', height: '40vw', borderRadius: '50%',
-          backgroundImage: rgba(124,58,237,0.05),transparent 70%)',
+          background: 'radial-gradient(circle,rgba(124,58,237,0.05),transparent 70%)',
           filter: 'blur(60px)',
         }} />
       </div>
@@ -359,7 +359,7 @@ export default function SelectedWorks() {
               <span
                 className="italic"
                 style={{
-                  backgroundImage: #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                  background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
                   WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                 }}
               >

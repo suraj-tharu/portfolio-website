@@ -90,7 +90,7 @@ function GlowingSpine({ sectionRef }: { sectionRef: React.RefObject<HTMLElement 
           bottom: 0,
           scaleY,
           originY: 0,
-          backgroundImage: 'linear-gradient(to bottom, #7c3aed 0%, #db2777 50%, #34d399 100%)',
+          background: 'linear-gradient(to bottom, #7c3aed 0%, #db2777 50%, #34d399 100%)',
           borderRadius: 999,
           boxShadow: '0 0 16px rgba(124,58,237,0.7)',
         }}
@@ -125,7 +125,7 @@ function NodeDot({ color, side }: { color: string; side: 'left' | 'right' }) {
       <div style={{
         position: 'absolute', inset: 2,
         borderRadius: '50%',
-        backgroundImage: `radial-gradient(circle, ${color}, ${color}80)`,
+        background: `linear-gradient(135deg, ${color}, ${color}80)`,
         boxShadow: `0 0 12px ${color}`,
       }} />
     </div>
@@ -240,7 +240,7 @@ function CardInner({ item, color, hovered, isEdu }: {
       <div style={{
         position: 'absolute', left: 0, top: '10%', bottom: '10%',
         width: 3, borderRadius: 999,
-        backgroundImage: `linear-gradient(to bottom, ${color}, ${color}40)`,
+        background: `linear-gradient(to bottom, ${color}, ${color}40)`,
         boxShadow: `0 0 10px ${color}`,
         opacity: hovered ? 1 : 0.4,
         transition: 'opacity 0.3s ease',
@@ -348,14 +348,14 @@ function MobileTimelineCard({ item, index }: { item: TimelineEvent; index: numbe
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
         <div style={{
           width: 12, height: 12, borderRadius: '50%', flexShrink: 0,
-          backgroundImage: `radial-gradient(circle, ${color}, ${color}80)`,
+          background: `linear-gradient(135deg, ${color}, ${color}80)`,
           boxShadow: `0 0 10px ${color}`,
           marginTop: 26,
         }} />
         {index < defaultTimeline.length - 1 && (
           <div style={{
             width: 2, flex: 1, marginTop: 6,
-            backgroundImage: 'linear-gradient(to bottom, rgba(167,139,250,0.3), rgba(167,139,250,0.05))',
+            background: 'linear-gradient(to bottom, rgba(167,139,250,0.3), rgba(167,139,250,0.05))',
           }} />
         )}
       </div>
@@ -410,13 +410,13 @@ export default function AcademicTimeline() {
         <div style={{
           position: 'absolute', top: '10%', right: '-12%',
           width: '45vw', height: '45vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(124,58,237,0.06), transparent 70%)',
+          background: 'radial-gradient(circle,rgba(124,58,237,0.06),transparent 70%)',
           filter: 'blur(70px)',
         }} />
         <div style={{
           position: 'absolute', bottom: '10%', left: '-12%',
           width: '40vw', height: '40vw', borderRadius: '50%',
-          backgroundImage: 'radial-gradient(circle, rgba(52,211,153,0.05), transparent 70%)',
+          background: 'radial-gradient(circle,rgba(52,211,153,0.05),transparent 70%)',
           filter: 'blur(60px)',
         }} />
       </div>
@@ -452,7 +452,7 @@ export default function AcademicTimeline() {
           }}>
             Experience &{' '}
             <span style={{
-              backgroundImage: 'linear-gradient(to right, #a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+              background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               fontStyle: 'italic',
             }}>
@@ -478,7 +478,7 @@ export default function AcademicTimeline() {
             transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{
               height: 1, maxWidth: 320, margin: '28px auto 0',
-              backgroundImage: 'linear-gradient(to right, transparent, rgba(167,139,250,0.5), rgba(244,114,182,0.4), transparent)',
+              background: 'linear-gradient(90deg,transparent,rgba(167,139,250,0.5),rgba(244,114,182,0.4),transparent)',
             }}
           />
         </motion.div>
