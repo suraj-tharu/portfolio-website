@@ -20,7 +20,6 @@ import { addJsonLdSchema, organizationSchema } from './utils/jsonLdSchema';
 import { FluidBackground } from './components/premium';
 import { DeveloperMode } from './components/DeveloperMode';
 import NoiseTexture from './components/NoiseTexture';
-import AmbientSoundToggle from './components/AmbientSoundToggle';
 import PageWrapper from './components/PageWrapper';
 
 import Home from './pages/Home';
@@ -94,7 +93,6 @@ function AppContent() {
           <MagneticCursor />
           <NoiseTexture />
           {/* ScrollProgress is rendered inside Navbar.tsx (z-index: 200) */}
-          <AmbientSoundToggle />
           <FluidBackground />
           <DeveloperMode />
           <ChatWidget />

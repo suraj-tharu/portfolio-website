@@ -1,146 +1,180 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { motion, AnimatePresence, useInView, useSpring, useTransform, useMotionValue } from 'framer-motion';
+import {
+  motion, AnimatePresence, useInView, useSpring,
+  useTransform, useMotionValue,
+} from 'framer-motion';
 import * as d3 from 'd3-force';
-import SectionHeader from './SectionHeader';
 import type { LucideIcon } from 'lucide-react';
 import {
   Globe2, Brain, Code2, Map, Layers, Cpu, Eye, Database,
-  LayoutDashboard, Server, GitBranch, Activity, Sparkles, Zap, Star,
+  LayoutDashboard, Server, GitBranch, Activity, Sparkles,
+  Zap, Star, Award,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════
-   KEYFRAME STYLES
+   LUXURY KEYFRAMES + STYLES
 ═══════════════════════════════════════════════════════════════ */
 const CSS = `
-  @keyframes skills-orb-drift {
-    0%,100% { transform: translate(0,0) scale(1); opacity: 0.6; }
-    33%      { transform: translate(40px,-30px) scale(1.1); opacity: 0.8; }
-    66%      { transform: translate(-25px,20px) scale(0.95); opacity: 0.65; }
+  :root, .dark {
+    --lux-surface-rgb: 10, 5, 25;
+    --lux-surface-alt: 6, 4, 14;
+    --lux-card-bg: rgba(10, 10, 16, 0.6);
+    --lux-text-muted: rgba(232, 232, 232, 0.32);
+    --lux-text-soft: rgba(232, 232, 232, 0.25);
+    --lux-text-strong: rgba(232, 232, 232, 0.85);
   }
-  @keyframes skills-shimmer {
-    0%   { background-position: -200% center; }
-    100% { background-position: 200% center; }
+  .light {
+    --lux-surface-rgb: 252, 252, 254;
+    --lux-surface-alt: 245, 245, 250;
+    --lux-card-bg: rgba(255, 255, 255, 0.75);
+    --lux-text-muted: rgba(60, 60, 80, 0.6);
+    --lux-text-soft: rgba(60, 60, 80, 0.5);
+    --lux-text-strong: rgba(15, 15, 26, 0.9);
   }
-  @keyframes skills-pulse-ring {
-    0%   { transform: scale(0.95); opacity: 0.6; }
-    50%  { transform: scale(1.08); opacity: 0.25; }
-    100% { transform: scale(0.95); opacity: 0.6; }
+
+  @keyframes sk-gold-shimmer {
+    0%   { background-position: -300% center; }
+    100% { background-position: 300% center; }
   }
-  @keyframes skills-float {
-    0%,100% { transform: translateY(0px) rotate(0deg); }
-    50%      { transform: translateY(-8px) rotate(2deg); }
+  @keyframes sk-orb-drift {
+    0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 0.55; }
+    33%      { transform: translate(50px,-35px) scale(1.12) rotate(5deg); opacity: 0.82; }
+    66%      { transform: translate(-30px,25px) scale(0.94) rotate(-3deg); opacity: 0.6; }
   }
-  @keyframes skills-scan {
-    0%   { top: 0%; opacity: 0; }
-    5%   { opacity: 0.5; }
-    95%  { opacity: 0.3; }
+  @keyframes sk-pulse-ring {
+    0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); transform: scale(0.96); }
+    50%      { box-shadow: 0 0 0 16px rgba(212,175,55,0); transform: scale(1.06); }
+  }
+  @keyframes sk-scan {
+    0%   { top: -2px; opacity: 0; }
+    4%   { opacity: 0.55; }
+    96%  { opacity: 0.2; }
     100% { top: 100%; opacity: 0; }
   }
-  @keyframes skills-dot-pulse {
-    0%,100% { opacity: 0.3; transform: scale(0.8); }
-    50%      { opacity: 1; transform: scale(1.3); }
+  @keyframes sk-dot-pulse {
+    0%,100% { opacity: 0.25; transform: scale(0.75); }
+    50%      { opacity: 1; transform: scale(1.4); }
   }
-  @keyframes skills-border-flow {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes sk-float {
+    0%,100% { transform: translateY(0px) rotate(0deg); }
+    50%      { transform: translateY(-10px) rotate(3deg); }
   }
-  .skill-card-tilt {
+  @keyframes sk-border-glow {
+    0%,100% { opacity: 0.4; }
+    50%      { opacity: 0.9; }
+  }
+  @keyframes sk-spin {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes sk-counter-spin {
+    to { transform: rotate(-360deg); }
+  }
+
+  .sk-card {
     transform-style: preserve-3d;
-    perspective: 800px;
+    perspective: 900px;
   }
-  .skill-card-tilt:hover .skill-card-inner {
-    transform: translateZ(8px);
+  .sk-card:hover .sk-card-inner {
+    transform: translateZ(10px);
   }
-  .skill-card-inner {
-    transition: transform 0.3s ease;
+  .sk-card-inner {
+    transition: transform 0.35s ease;
   }
+
   @media (max-width: 640px) {
-    .skills-category-hero {
+    .sk-category-hero {
       flex-direction: column !important;
       align-items: stretch !important;
       gap: 16px !important;
-      padding: 16px 20px !important;
+      padding: 18px 20px !important;
     }
-    .skills-category-hero-avg {
+    .sk-hero-avg {
       text-align: left !important;
       display: flex !important;
       align-items: center !important;
       justify-content: space-between !important;
       width: 100% !important;
-      padding: 10px 14px !important;
-    }
-    .skills-category-hero-avg > div:last-child {
-      margin-top: 0 !important;
+      padding: 12px 16px !important;
     }
   }
 `;
 
 /* ═══════════════════════════════════════════════════════════════
-   DATA
+   LUXURY PALETTE
+═══════════════════════════════════════════════════════════════ */
+const GOLD      = '#D4AF37';
+const GOLD_RGB  = '212,175,55';
+const PLAT      = '#E8E8E8';
+const PLAT_RGB  = '232,232,232';
+const ROSE      = '#C9956C';
+const ROSE_RGB  = '201,149,108';
+const TEAL      = '#2DD4BF';
+const TEAL_RGB  = '45,212,191';
+const VIOLET    = '#A78BFA';
+const VIOLET_RGB = '167,139,250';
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA — 3 premium categories
 ═══════════════════════════════════════════════════════════════ */
 const CATEGORIES = [
   {
     id: 'gis',
     label: 'GIS & Remote Sensing',
     sublabel: 'Geospatial Intelligence',
-    color: '#22D3EE',
-    colorRgb: '34,211,238',
-    glow: 'rgba(34,211,238,0.15)',
-    border: 'rgba(34,211,238,0.2)',
-    gradient: 'linear-gradient(135deg, #06b6d4 0%, #22d3ee 50%, #67e8f9 100%)',
+    color: TEAL,
+    colorRgb: TEAL_RGB,
+    glow: `rgba(${TEAL_RGB},0.18)`,
+    gradient: `linear-gradient(135deg, #0d9488 0%, ${TEAL} 50%, #5eead4 100%)`,
     icon: Globe2,
     emoji: '🌍',
     tagline: 'Transforming raw satellite data into actionable spatial intelligence',
     skills: [
-      { name: 'QGIS', level: 95, icon: Map,       desc: 'Advanced spatial analysis & cartography', years: '5+' },
-      { name: 'ArcGIS', level: 88, icon: Layers,   desc: 'Enterprise GIS workflows & geodatabases', years: '4+' },
-      { name: 'Google Earth Engine', level: 85, icon: Globe2, desc: 'Cloud-based geospatial processing', years: '3+' },
-      { name: 'Remote Sensing', level: 90, icon: Activity, desc: 'Satellite imagery classification & analysis', years: '4+' },
-      { name: 'ENVI', level: 78, icon: Eye,         desc: 'Hyperspectral & multispectral analysis', years: '3+' },
-      { name: 'PostGIS', level: 80, icon: Database, desc: 'Spatial databases & complex queries', years: '3+' },
+      { name: 'QGIS',                level: 95, icon: Map,      desc: 'Advanced spatial analysis & cartography',          years: '5+' },
+      { name: 'ArcGIS',              level: 88, icon: Layers,   desc: 'Enterprise GIS workflows & geodatabases',          years: '4+' },
+      { name: 'Google Earth Engine', level: 85, icon: Globe2,   desc: 'Cloud-based geospatial processing',                years: '3+' },
+      { name: 'Remote Sensing',      level: 90, icon: Activity, desc: 'Satellite imagery classification & analysis',      years: '4+' },
+      { name: 'ENVI',                level: 78, icon: Eye,      desc: 'Hyperspectral & multispectral analysis',           years: '3+' },
+      { name: 'PostGIS',             level: 80, icon: Database, desc: 'Spatial databases & complex queries',              years: '3+' },
     ],
   },
   {
     id: 'ml',
     label: 'AI & Machine Learning',
     sublabel: 'Deep Intelligence Systems',
-    color: '#F472B6',
-    colorRgb: '244,114,182',
-    glow: 'rgba(244,114,182,0.15)',
-    border: 'rgba(244,114,182,0.2)',
-    gradient: 'linear-gradient(135deg, #db2777 0%, #f472b6 50%, #f9a8d4 100%)',
+    color: ROSE,
+    colorRgb: ROSE_RGB,
+    glow: `rgba(${ROSE_RGB},0.18)`,
+    gradient: `linear-gradient(135deg, #9a3412 0%, ${ROSE} 50%, #fdba74 100%)`,
     icon: Brain,
     emoji: '🧠',
     tagline: 'Building intelligent systems that learn, adapt and predict',
     skills: [
-      { name: 'Python', level: 92, icon: Code2,    desc: 'Primary language for ML & data pipelines', years: '5+' },
-      { name: 'TensorFlow / Keras', level: 85, icon: Brain, desc: 'Deep learning model training & deployment', years: '3+' },
-      { name: 'PyTorch', level: 78, icon: Cpu,     desc: 'Research-grade neural network architectures', years: '2+' },
-      { name: 'Computer Vision', level: 84, icon: Eye, desc: 'Image segmentation & object detection', years: '3+' },
-      { name: 'scikit-learn', level: 90, icon: Activity, desc: 'Classical ML algorithms & pipelines', years: '4+' },
-      { name: 'Pandas / NumPy', level: 93, icon: Database, desc: 'Data manipulation & scientific computing', years: '5+' },
+      { name: 'Python',            level: 92, icon: Code2,    desc: 'Primary language for ML & data pipelines',         years: '5+' },
+      { name: 'TensorFlow/Keras',  level: 85, icon: Brain,    desc: 'Deep learning model training & deployment',        years: '3+' },
+      { name: 'PyTorch',           level: 78, icon: Cpu,      desc: 'Research-grade neural network architectures',      years: '2+' },
+      { name: 'Computer Vision',   level: 84, icon: Eye,      desc: 'Image segmentation & object detection',            years: '3+' },
+      { name: 'scikit-learn',      level: 90, icon: Activity, desc: 'Classical ML algorithms & pipelines',              years: '4+' },
+      { name: 'Pandas / NumPy',    level: 93, icon: Database, desc: 'Data manipulation & scientific computing',         years: '5+' },
     ],
   },
   {
     id: 'web',
     label: 'Web Engineering',
     sublabel: 'Full-Stack Mastery',
-    color: '#A78BFA',
-    colorRgb: '167,139,250',
-    glow: 'rgba(167,139,250,0.15)',
-    border: 'rgba(167,139,250,0.2)',
-    gradient: 'linear-gradient(135deg, #7c3aed 0%, #a78bfa 50%, #c4b5fd 100%)',
+    color: VIOLET,
+    colorRgb: VIOLET_RGB,
+    glow: `rgba(${VIOLET_RGB},0.18)`,
+    gradient: `linear-gradient(135deg, #5b21b6 0%, ${VIOLET} 50%, #c4b5fd 100%)`,
     icon: Code2,
     emoji: '⚡',
     tagline: 'Crafting performant, beautiful, and scalable digital experiences',
     skills: [
-      { name: 'React / Next.js', level: 90, icon: LayoutDashboard, desc: 'Modern UI & full-stack applications', years: '4+' },
-      { name: 'TypeScript', level: 87, icon: Code2, desc: 'Type-safe, scalable application architecture', years: '3+' },
-      { name: 'Node.js', level: 82, icon: Server,  desc: 'REST APIs, WebSockets & backend services', years: '4+' },
-      { name: 'PostgreSQL', level: 80, icon: Database, desc: 'Relational databases & Prisma ORM', years: '3+' },
-      { name: 'Docker / CI-CD', level: 75, icon: GitBranch, desc: 'Containerisation & deployment pipelines', years: '2+' },
-      { name: 'Three.js / WebGL', level: 70, icon: Sparkles, desc: '3D visualisations, shaders & WebGL', years: '2+' },
+      { name: 'React / Next.js',  level: 90, icon: LayoutDashboard, desc: 'Modern UI & full-stack applications',        years: '4+' },
+      { name: 'TypeScript',       level: 87, icon: Code2,           desc: 'Type-safe, scalable application architecture', years: '3+' },
+      { name: 'Node.js',          level: 82, icon: Server,          desc: 'REST APIs, WebSockets & backend services',    years: '4+' },
+      { name: 'PostgreSQL',       level: 80, icon: Database,        desc: 'Relational databases & Prisma ORM',           years: '3+' },
+      { name: 'Docker / CI-CD',   level: 75, icon: GitBranch,       desc: 'Containerisation & deployment pipelines',     years: '2+' },
+      { name: 'Three.js / WebGL', level: 70, icon: Sparkles,        desc: '3D visualisations, shaders & WebGL',         years: '2+' },
     ],
   },
 ] as const;
@@ -148,7 +182,7 @@ const CATEGORIES = [
 type CategoryId = typeof CATEGORIES[number]['id'];
 
 /* ═══════════════════════════════════════════════════════════════
-   D3 CONSTELLATION GRAPH
+   D3 CONSTELLATION
 ═══════════════════════════════════════════════════════════════ */
 interface D3Node extends d3.SimulationNodeDatum {
   id: string; group: number; radius: number; color: string;
@@ -156,120 +190,131 @@ interface D3Node extends d3.SimulationNodeDatum {
 interface D3Link extends d3.SimulationLinkDatum<D3Node> {
   source: string | D3Node; target: string | D3Node;
 }
+
 const constellationData = {
   nodes: [
-    { id: 'GIS & RS',        group: 1, radius: 28, color: '#22D3EE' },
-    { id: 'QGIS',            group: 1, radius: 16, color: '#22D3EE' },
-    { id: 'ArcGIS',          group: 1, radius: 16, color: '#22D3EE' },
-    { id: 'Earth Engine',    group: 1, radius: 18, color: '#22D3EE' },
-    { id: 'Machine Learning',group: 2, radius: 28, color: '#F472B6' },
-    { id: 'Python',          group: 2, radius: 20, color: '#F472B6' },
-    { id: 'TensorFlow',      group: 2, radius: 16, color: '#F472B6' },
-    { id: 'Computer Vision', group: 2, radius: 18, color: '#F472B6' },
-    { id: 'Web Dev',         group: 3, radius: 28, color: '#A78BFA' },
-    { id: 'React',           group: 3, radius: 20, color: '#A78BFA' },
-    { id: 'Next.js',         group: 3, radius: 16, color: '#A78BFA' },
-    { id: 'Node.js',         group: 3, radius: 16, color: '#A78BFA' },
-    { id: 'TypeScript',      group: 3, radius: 16, color: '#A78BFA' },
+    { id: 'GIS & RS',        group: 1, radius: 28, color: TEAL   },
+    { id: 'QGIS',            group: 1, radius: 16, color: TEAL   },
+    { id: 'ArcGIS',          group: 1, radius: 16, color: TEAL   },
+    { id: 'Earth Engine',    group: 1, radius: 18, color: TEAL   },
+    { id: 'Machine Learning',group: 2, radius: 28, color: ROSE   },
+    { id: 'Python',          group: 2, radius: 20, color: ROSE   },
+    { id: 'TensorFlow',      group: 2, radius: 16, color: ROSE   },
+    { id: 'Computer Vision', group: 2, radius: 18, color: ROSE   },
+    { id: 'Web Dev',         group: 3, radius: 28, color: VIOLET },
+    { id: 'React',           group: 3, radius: 20, color: VIOLET },
+    { id: 'Next.js',         group: 3, radius: 16, color: VIOLET },
+    { id: 'Node.js',         group: 3, radius: 16, color: VIOLET },
+    { id: 'TypeScript',      group: 3, radius: 16, color: VIOLET },
   ] as D3Node[],
   links: [
-    { source: 'GIS & RS', target: 'QGIS' }, { source: 'GIS & RS', target: 'ArcGIS' },
-    { source: 'GIS & RS', target: 'Earth Engine' }, { source: 'Machine Learning', target: 'Python' },
-    { source: 'Machine Learning', target: 'TensorFlow' }, { source: 'Machine Learning', target: 'Computer Vision' },
-    { source: 'Python', target: 'Earth Engine' }, { source: 'Web Dev', target: 'React' },
-    { source: 'Web Dev', target: 'Next.js' }, { source: 'Web Dev', target: 'Node.js' },
-    { source: 'Web Dev', target: 'TypeScript' }, { source: 'TypeScript', target: 'React' },
-    { source: 'Python', target: 'Web Dev' },
+    { source: 'GIS & RS',        target: 'QGIS' },
+    { source: 'GIS & RS',        target: 'ArcGIS' },
+    { source: 'GIS & RS',        target: 'Earth Engine' },
+    { source: 'Machine Learning', target: 'Python' },
+    { source: 'Machine Learning', target: 'TensorFlow' },
+    { source: 'Machine Learning', target: 'Computer Vision' },
+    { source: 'Python',          target: 'Earth Engine' },
+    { source: 'Web Dev',         target: 'React' },
+    { source: 'Web Dev',         target: 'Next.js' },
+    { source: 'Web Dev',         target: 'Node.js' },
+    { source: 'Web Dev',         target: 'TypeScript' },
+    { source: 'TypeScript',      target: 'React' },
+    { source: 'Python',          target: 'Web Dev' },
   ] as D3Link[],
 };
 
 function ConstellationGraph() {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [hoveredNode, setHoveredNode] = useState<D3Node | null>(null);
+  const canvasRef   = useRef<HTMLCanvasElement>(null);
+  const [hovered, setHovered] = useState<D3Node | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    let width = canvas.parentElement?.clientWidth || 800;
-    let height = window.innerWidth < 768 ? 380 : 500;
-    const dpr = window.devicePixelRatio || 1;
+    let width  = canvas.parentElement?.clientWidth || 800;
+    let height = window.innerWidth < 768 ? 360 : 480;
+    const dpr  = window.devicePixelRatio || 1;
     canvas.width = width * dpr; canvas.height = height * dpr;
     ctx.scale(dpr, dpr);
     canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
 
     const nodes = constellationData.nodes.map(d => ({ ...d }));
     const links = constellationData.links.map(d => ({ ...d }));
-    const sim = d3.forceSimulation<D3Node>(nodes)
+    const sim   = d3.forceSimulation<D3Node>(nodes)
       .force('link', d3.forceLink<D3Node, D3Link>(links).id(d => d.id).distance(100))
-      .force('charge', d3.forceManyBody().strength(-350))
+      .force('charge', d3.forceManyBody().strength(-360))
       .force('center', d3.forceCenter(width / 2, height / 2))
-      .force('collision', d3.forceCollide<D3Node>().radius((d: D3Node) => d.radius + 14))
-      .alphaDecay(0.01).stop();
+      .force('collision', d3.forceCollide<D3Node>().radius((d: D3Node) => d.radius + 16))
+      .alphaDecay(0.012).stop();
 
-    const reqIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
-    const cancelIdle = window.cancelIdleCallback || clearTimeout;
+    const reqIdle    = window.requestIdleCallback    || ((cb: () => void) => setTimeout(cb, 1));
+    const cancelIdle = window.cancelIdleCallback     || clearTimeout;
     let idleId: number;
     const tickSim = () => {
-      idleId = reqIdle(() => { sim.tick(); if (sim.alpha() > sim.alphaMin()) tickSim(); });
+      idleId = reqIdle(() => { sim.tick(); if (sim.alpha() > sim.alphaMin()) tickSim(); }) as unknown as number;
     };
     tickSim();
+
     let raf: number; let mx = -1000; let my = -1000; let time = 0;
 
     const draw = () => {
-      time += 0.008;
+      time += 0.007;
       ctx.clearRect(0, 0, width, height);
-      const isLight = document.documentElement.classList.contains('light');
 
-      // Draw links with animated dashes
+      // Animated links
       links.forEach(link => {
         const s = link.source as D3Node; const t = link.target as D3Node;
         const g = ctx.createLinearGradient(s.x || 0, s.y || 0, t.x || 0, t.y || 0);
-        const alpha = isLight ? '55' : '30';
-        g.addColorStop(0, `${s.color}${alpha}`); g.addColorStop(1, `${t.color}${alpha}`);
-        ctx.beginPath(); ctx.strokeStyle = g; ctx.lineWidth = 1.2;
-        ctx.setLineDash([4, 8]); ctx.lineDashOffset = -time * 20;
+        g.addColorStop(0, `${s.color}40`); g.addColorStop(1, `${t.color}25`);
+        ctx.beginPath(); ctx.strokeStyle = g; ctx.lineWidth = 1.4;
+        ctx.setLineDash([4, 9]); ctx.lineDashOffset = -time * 22;
         ctx.moveTo(s.x || 0, s.y || 0); ctx.lineTo(t.x || 0, t.y || 0); ctx.stroke();
         ctx.setLineDash([]);
       });
 
-      let hover: D3Node | null = null;
+      let hoverNode: D3Node | null = null;
       nodes.forEach(node => {
         const x = node.x || 0; const y = node.y || 0;
         const dist = Math.sqrt((mx - x) ** 2 + (my - y) ** 2);
-        const isH = dist < node.radius + 8;
-        if (isH) hover = node;
+        const isH  = dist < node.radius + 10;
+        if (isH) hoverNode = node;
 
-        // Outer pulse ring
-        ctx.beginPath(); ctx.arc(x, y, node.radius + (isH ? 18 : 10), 0, 2 * Math.PI);
-        const alpha = isH ? 0.25 + 0.15 * Math.sin(time * 3) : 0.08 + 0.05 * Math.sin(time * 2 + node.radius);
-        ctx.fillStyle = `${node.color}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`; ctx.fill();
+        // Pulse ring
+        const pulseAlpha = isH ? 0.28 + 0.14 * Math.sin(time * 3.5) : 0.07 + 0.04 * Math.sin(time * 2 + node.radius);
+        ctx.beginPath(); ctx.arc(x, y, node.radius + (isH ? 20 : 12), 0, 2 * Math.PI);
+        ctx.fillStyle = `${node.color}${Math.floor(pulseAlpha * 255).toString(16).padStart(2, '0')}`; ctx.fill();
 
-        // Main circle
-        ctx.beginPath(); ctx.arc(x, y, node.radius + (isH ? 4 : 0), 0, 2 * Math.PI);
-        const gradNode = ctx.createRadialGradient(x - node.radius * 0.3, y - node.radius * 0.3, 0, x, y, node.radius + 2);
-        gradNode.addColorStop(0, isLight ? '#e0f2fe' : '#1e1040');
-        gradNode.addColorStop(1, isLight ? '#bae6fd' : '#0d0824');
-        ctx.fillStyle = gradNode; ctx.strokeStyle = isH ? node.color : `${node.color}90`; ctx.lineWidth = isH ? 2 : 1.5;
-        ctx.fill(); ctx.stroke();
-
-        // Glow stroke overlay
+        // Gold glow ring on hover
         if (isH) {
           ctx.beginPath(); ctx.arc(x, y, node.radius + 4, 0, 2 * Math.PI);
-          ctx.strokeStyle = `${node.color}60`; ctx.lineWidth = 6; ctx.stroke();
+          ctx.strokeStyle = `${GOLD}50`; ctx.lineWidth = 8; ctx.stroke();
+          ctx.strokeStyle = `${node.color}80`; ctx.lineWidth = 2.5; ctx.stroke();
         }
 
-        // Text
-        ctx.font = `700 ${isH ? 11 : 9}px 'Plus Jakarta Sans', sans-serif`;
-        ctx.fillStyle = isH ? (isLight ? '#0c0a1e' : '#ffffff') : (isLight ? '#1e1b4b' : 'rgba(255,255,255,0.85)');
+        // Main circle with gradient fill
+        ctx.beginPath(); ctx.arc(x, y, node.radius + (isH ? 5 : 0), 0, 2 * Math.PI);
+        const grad = ctx.createRadialGradient(
+          x - node.radius * 0.3, y - node.radius * 0.3, 0,
+          x, y, node.radius + 4,
+        );
+        grad.addColorStop(0, 'var(--surface-3)'); grad.addColorStop(1, 'var(--surface)');
+        ctx.fillStyle = grad;
+        ctx.strokeStyle = isH ? node.color : `${node.color}70`;
+        ctx.lineWidth  = isH ? 2.2 : 1.5;
+        ctx.fill(); ctx.stroke();
+
+        // Label
+        ctx.font = `800 ${isH ? 11.5 : 9}px 'Syne', sans-serif`;
+        ctx.fillStyle = isH ? '#fff' : 'rgba(255,255,255,0.75)';
         ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
         if (node.radius > 18 || isH) {
           const label = isH ? node.id : (node.id.length > 5 ? node.id.substring(0, 4) + '..' : node.id);
           ctx.fillText(label, x, y);
         }
       });
-      setHoveredNode(hover);
+      setHovered(hoverNode);
       raf = requestAnimationFrame(draw);
     };
     draw();
@@ -277,77 +322,100 @@ function ConstellationGraph() {
     const onMove = (e: MouseEvent) => {
       const r = canvas.getBoundingClientRect();
       mx = e.clientX - r.left; my = e.clientY - r.top;
-      sim.force('mouse', d3.forceRadial(90, mx, my).strength(-0.08)).alpha(0.12);
+      sim.force('mouse', d3.forceRadial(90, mx, my).strength(-0.09)).alpha(0.12);
       cancelIdle(idleId as number); tickSim();
     };
     const onLeave = () => { mx = -1000; my = -1000; sim.force('mouse', null); };
-    canvas.addEventListener('mousemove', onMove); canvas.addEventListener('mouseleave', onLeave);
+    canvas.addEventListener('mousemove', onMove);
+    canvas.addEventListener('mouseleave', onLeave);
 
     const onResize = () => {
-      width = canvas.parentElement?.clientWidth || 800; height = window.innerWidth < 768 ? 380 : 500;
+      width  = canvas.parentElement?.clientWidth || 800;
+      height = window.innerWidth < 768 ? 360 : 480;
       canvas.width = width * dpr; canvas.height = height * dpr; ctx.scale(dpr, dpr);
       canvas.style.width = `${width}px`; canvas.style.height = `${height}px`;
       sim.force('center', d3.forceCenter(width / 2, height / 2)).alpha(0.3);
       cancelIdle(idleId as number); tickSim();
     };
     window.addEventListener('resize', onResize);
+
     return () => {
       cancelAnimationFrame(raf); sim.stop(); cancelIdle(idleId as number);
-      canvas.removeEventListener('mousemove', onMove); canvas.removeEventListener('mouseleave', onLeave);
+      canvas.removeEventListener('mousemove', onMove);
+      canvas.removeEventListener('mouseleave', onLeave);
       window.removeEventListener('resize', onResize);
     };
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', borderRadius: 28, overflow: 'hidden',
-      border: '1px solid rgba(167,139,250,0.12)',
-      background: 'linear-gradient(145deg, rgba(10,5,25,0.9), rgba(15,8,35,0.95))',
-      boxShadow: '0 32px 80px -12px rgba(0,0,0,0.7), inset 0 1px 0 rgba(167,139,250,0.1)',
+    <div style={{
+      position: 'relative', width: '100%', borderRadius: 28, overflow: 'hidden',
+      border: `1px solid rgba(${GOLD_RGB},0.15)`,
+      background: 'linear-gradient(145deg, rgba(var(--lux-surface-rgb), 0.96), rgba(var(--lux-surface-alt), 0.98))',
+      boxShadow: `0 40px 100px -12px rgba(0,0,0,0.8), inset 0 1px 0 rgba(${GOLD_RGB},0.12)`,
     }}>
-      {/* Scan line effect */}
+      {/* Scan line */}
       <div style={{
         position: 'absolute', left: 0, right: 0, height: 2, zIndex: 2, pointerEvents: 'none',
-        background: 'linear-gradient(90deg, transparent, rgba(167,139,250,0.4), transparent)',
-        animation: 'skills-scan 6s linear infinite',
+        background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.5), rgba(${PLAT_RGB},0.2), transparent)`,
+        animation: 'sk-scan 7s linear infinite',
       }} />
+
       <canvas ref={canvasRef} style={{ display: 'block', width: '100%', cursor: 'crosshair' }} />
-      {hoveredNode && (
+
+      {/* Hover tooltip */}
+      {hovered && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 8 }}
+          initial={{ opacity: 0, scale: 0.82, y: 10 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9 }}
           style={{
             position: 'absolute', top: 20, left: 20,
-            padding: '14px 20px', borderRadius: 16,
-            background: 'rgba(10,5,30,0.92)',
-            border: `1px solid ${hoveredNode.color}40`,
-            backdropFilter: 'blur(20px)',
-            boxShadow: `0 0 30px ${hoveredNode.color}20`,
-            pointerEvents: 'none', minWidth: 160,
+            padding: '14px 20px', borderRadius: 18,
+            background: `linear-gradient(145deg, rgba(var(--lux-surface-rgb), 0.95), rgba(var(--lux-surface-alt), 0.98))`,
+            border: `1px solid rgba(${GOLD_RGB},0.3)`,
+            backdropFilter: 'blur(24px)',
+            boxShadow: `0 0 40px rgba(${GOLD_RGB},0.15), 0 20px 60px rgba(0,0,0,0.5)`,
+            pointerEvents: 'none', minWidth: 175,
           }}
         >
+          {/* Gold shimmer top */}
+          <div style={{
+            position: 'absolute', top: 0, left: '10%', right: '10%', height: 1,
+            background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.8), transparent)`,
+          }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
               width: 10, height: 10, borderRadius: '50%',
-              background: hoveredNode.color,
-              boxShadow: `0 0 14px ${hoveredNode.color}`,
+              background: hovered.color,
+              boxShadow: `0 0 16px ${hovered.color}, 0 0 6px ${GOLD}`,
             }} />
-            <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1rem', color: hoveredNode.color }}>{hoveredNode.id}</span>
+            <span style={{
+              fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '0.95rem',
+              color: hovered.color,
+            }}>{hovered.id}</span>
           </div>
-          <p style={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.65rem', color: 'rgba(167,139,250,0.5)', marginTop: 6, letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-            {hoveredNode.group === 1 ? 'GIS & Remote Sensing' : hoveredNode.group === 2 ? 'AI & Machine Learning' : 'Web Engineering'}
+          <p style={{
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: '0.62rem', color: `rgba(${GOLD_RGB},0.45)`,
+            marginTop: 6, letterSpacing: '0.14em', textTransform: 'uppercase',
+          }}>
+            {hovered.group === 1 ? 'GIS & Remote Sensing'
+              : hovered.group === 2 ? 'AI & Machine Learning'
+              : 'Web Engineering'}
           </p>
         </motion.div>
       )}
+
       {/* Legend */}
       <div style={{
         position: 'absolute', bottom: 16, right: 16,
-        display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'flex-end',
+        display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'flex-end',
       }}>
-        {[['#22D3EE', 'GIS & RS'], ['#F472B6', 'AI/ML'], ['#A78BFA', 'Web']].map(([color, label]) => (
-          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{ width: 8, height: 8, borderRadius: '50%', background: color, boxShadow: `0 0 8px ${color}` }} />
-            <span style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.08em' }}>{label}</span>
+        {([[TEAL, 'GIS & RS'], [ROSE, 'AI/ML'], [VIOLET, 'Web']] as [string, string][]).map(([color, label]) => (
+          <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: color, boxShadow: `0 0 10px ${color}` }} />
+            <span style={{ fontSize: '0.62rem', color: 'var(--lux-text-muted)', fontFamily: 'Plus Jakarta Sans, sans-serif', letterSpacing: '0.1em' }}>{label}</span>
           </div>
         ))}
       </div>
@@ -356,106 +424,124 @@ function ConstellationGraph() {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ULTRA PREMIUM SKILL CARD
+   ULTRA-PREMIUM SKILL CARD — 3D Tilt + Gold Shimmer
 ═══════════════════════════════════════════════════════════════ */
-function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, years }: {
+function SkillCard({
+  name, level, icon: Icon, desc, color, colorRgb, delay, years,
+}: {
   name: string; level: number; icon: LucideIcon; desc: string;
   color: string; colorRgb: string; delay: number; years: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref    = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-30px' });
   const [hovered, setHovered] = useState(false);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-60, 60], [8, -8]), { stiffness: 300, damping: 30 });
-  const rotateY = useSpring(useTransform(mouseX, [-80, 80], [-8, 8]), { stiffness: 300, damping: 30 });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+  const mouseX  = useMotionValue(0);
+  const mouseY  = useMotionValue(0);
+  const rotateX = useSpring(useTransform(mouseY, [-60, 60], [10, -10]), { stiffness: 320, damping: 28 });
+  const rotateY = useSpring(useTransform(mouseX, [-80, 80], [-10, 10]), { stiffness: 320, damping: 28 });
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     mouseX.set(e.clientX - rect.left - rect.width / 2);
-    mouseY.set(e.clientY - rect.top - rect.height / 2);
+    mouseY.set(e.clientY - rect.top  - rect.height / 2);
   };
-  const handleMouseLeave = () => { mouseX.set(0); mouseY.set(0); setHovered(false); };
+  const handleLeave = () => { mouseX.set(0); mouseY.set(0); setHovered(false); };
 
-  // Proficiency label
   const profLabel = level >= 90 ? 'Expert' : level >= 80 ? 'Advanced' : level >= 70 ? 'Proficient' : 'Intermediate';
+  const profColor = level >= 90 ? GOLD : level >= 80 ? PLAT : `rgba(${colorRgb},0.8)`;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 32, scale: 0.96 }}
+      className="sk-card"
+      initial={{ opacity: 0, y: 36, scale: 0.94 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-      style={{ perspective: 800 }}
-      onMouseMove={handleMouseMove}
+      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{ perspective: 900 }}
+      onMouseMove={handleMove}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={handleMouseLeave}
+      onMouseLeave={handleLeave}
     >
       <motion.div
+        className="sk-card-inner"
         style={{
           rotateX, rotateY, transformStyle: 'preserve-3d',
-          padding: '20px 22px', borderRadius: 20,
+          padding: '22px 24px', borderRadius: 22,
           background: hovered
-            ? `linear-gradient(145deg, rgba(${colorRgb},0.12), rgba(${colorRgb},0.04))`
+            ? `linear-gradient(145deg, rgba(${colorRgb},0.12), rgba(${GOLD_RGB},0.04), rgba(${colorRgb},0.06))`
             : 'linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))',
-          border: `1px solid ${hovered ? color + '40' : 'rgba(255,255,255,0.06)'}`,
+          border: `1px solid ${hovered ? `rgba(${GOLD_RGB},0.35)` : `rgba(${colorRgb},0.12)`}`,
           boxShadow: hovered
-            ? `0 20px 60px -10px rgba(${colorRgb},0.25), 0 0 0 1px rgba(${colorRgb},0.15), inset 0 1px 0 rgba(255,255,255,0.08)`
-            : '0 4px 20px rgba(0,0,0,0.2)',
-          backdropFilter: 'blur(20px)',
+            ? `0 24px 70px -10px rgba(${colorRgb},0.28), 0 0 0 1px rgba(${GOLD_RGB},0.15), inset 0 1px 0 rgba(${GOLD_RGB},0.1)`
+            : `0 4px 24px rgba(0,0,0,0.25)`,
+          backdropFilter: 'blur(24px)',
+          position: 'relative', overflow: 'hidden',
           transition: 'background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease',
-          cursor: 'default', position: 'relative', overflow: 'hidden',
         }}
       >
-        {/* Corner accent */}
-        <div style={{
-          position: 'absolute', top: 0, right: 0, width: 60, height: 60,
-          background: `radial-gradient(circle at top right, rgba(${colorRgb},0.15), transparent 70%)`,
-          opacity: hovered ? 1 : 0, transition: 'opacity 0.4s ease',
-        }} />
-
-        {/* Shimmer on hover */}
+        {/* Gold shimmer on hover */}
         {hovered && (
           <motion.div
-            initial={{ x: '-100%' }} animate={{ x: '200%' }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            initial={{ x: '-110%' }}
+            animate={{ x: '220%' }}
+            transition={{ duration: 1.3, ease: 'easeInOut' }}
             style={{
               position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-              background: 'linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.08) 50%, transparent 65%)',
-              width: '60%',
+              background: `linear-gradient(108deg, transparent 30%, rgba(${GOLD_RGB},0.12) 50%, transparent 70%)`,
+              width: '65%',
             }}
           />
         )}
 
+        {/* Top shimmer line */}
+        <div style={{
+          position: 'absolute', top: 0, left: '8%', right: '8%', height: 1,
+          background: `linear-gradient(90deg, transparent, rgba(${colorRgb},0.6), rgba(${GOLD_RGB},0.4), transparent)`,
+          opacity: hovered ? 1 : 0.4, transition: 'opacity 0.4s ease',
+        }} />
+
+        {/* Corner accent glow */}
+        <div style={{
+          position: 'absolute', top: -20, right: -20, width: 80, height: 80,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(${colorRgb},0.2) 0%, transparent 70%)`,
+          opacity: hovered ? 1 : 0, transition: 'opacity 0.4s ease',
+          pointerEvents: 'none',
+        }} />
+
         <div style={{ position: 'relative', zIndex: 2 }}>
-          {/* Header row */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              {/* Icon box */}
+          {/* Header */}
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
+              {/* Icon */}
               <motion.div
-                whileHover={{ scale: 1.12, rotate: 5 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                whileHover={{ scale: 1.15, rotate: 8 }}
+                transition={{ type: 'spring', stiffness: 420, damping: 20 }}
                 style={{
-                  width: 40, height: 40, borderRadius: 12, flexShrink: 0,
-                  background: `linear-gradient(135deg, rgba(${colorRgb},0.2), rgba(${colorRgb},0.08))`,
-                  border: `1px solid rgba(${colorRgb},0.3)`,
+                  width: 44, height: 44, borderRadius: 14, flexShrink: 0,
+                  background: `linear-gradient(135deg, rgba(${colorRgb},0.22), rgba(${GOLD_RGB},0.08))`,
+                  border: `1px solid rgba(${colorRgb},0.32)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: hovered ? `0 0 20px rgba(${colorRgb},0.3)` : 'none',
-                  transition: 'box-shadow 0.3s ease',
+                  boxShadow: hovered ? `0 0 28px rgba(${colorRgb},0.35), 0 0 12px rgba(${GOLD_RGB},0.12)` : 'none',
+                  transition: 'box-shadow 0.35s ease',
+                  animation: hovered ? 'sk-float 3s ease-in-out infinite' : 'none',
                 }}
               >
-                <Icon size={18} style={{ color }} />
+                <Icon size={19} style={{ color }} />
               </motion.div>
+
               <div style={{ minWidth: 0, flex: 1 }}>
                 <p style={{
                   fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                  fontSize: '0.92rem', color: 'rgba(255,255,255,0.92)', lineHeight: 1.2,
-                  letterSpacing: '-0.01em',
+                  fontSize: '0.92rem', color: hovered ? PLAT : 'var(--lux-text-strong)',
+                  lineHeight: 1.2, letterSpacing: '-0.01em',
                   whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                  transition: 'color 0.35s ease',
                 }}>{name}</p>
                 <p style={{
                   fontFamily: 'Plus Jakarta Sans, sans-serif',
-                  fontSize: '0.62rem', color: 'rgba(255,255,255,0.28)', marginTop: 3,
+                  fontSize: '0.6rem', color: 'var(--lux-text-soft)', marginTop: 3,
                   letterSpacing: '0.04em',
                   whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 }}>{desc}</p>
@@ -466,64 +552,68 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
             <div style={{ textAlign: 'right', flexShrink: 0 }}>
               <div style={{
                 fontFamily: 'Syne, sans-serif', fontWeight: 900,
-                fontSize: '1.1rem', lineHeight: 1,
-                background: `linear-gradient(135deg, ${color}, rgba(255,255,255,0.9))`,
+                fontSize: '1.15rem', lineHeight: 1,
+                background: `linear-gradient(135deg, ${GOLD} 0%, ${color} 40%, ${PLAT} 100%)`,
+                backgroundSize: '200% auto',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                animation: hovered ? 'sk-gold-shimmer 3s linear infinite' : 'none',
               }}>{level}%</div>
               <div style={{
-                fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.12em',
-                color: `rgba(${colorRgb},0.6)`, marginTop: 2,
-                fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700,
+                fontSize: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.14em',
+                color: profColor, marginTop: 3,
+                fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800,
               }}>{profLabel}</div>
             </div>
           </div>
 
-          {/* Progress bar */}
+          {/* Progress bar — luxury glow */}
           <div style={{
             height: 5, borderRadius: 999,
-            background: 'rgba(255,255,255,0.05)',
-            overflow: 'hidden', position: 'relative', marginBottom: 12,
+            background: 'rgba(255,255,255,0.04)',
+            overflow: 'hidden', position: 'relative', marginBottom: 14,
+            boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.4)',
           }}>
             <motion.div
               initial={{ width: 0 }}
               animate={inView ? { width: `${level}%` } : {}}
-              transition={{ duration: 1.4, delay: delay + 0.25, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.5, delay: delay + 0.3, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 height: '100%', borderRadius: 999, position: 'relative',
-                background: `linear-gradient(90deg, rgba(${colorRgb},0.5) 0%, ${color} 60%, rgba(255,255,255,0.9) 100%)`,
-                boxShadow: `0 0 16px rgba(${colorRgb},0.6), 0 0 4px rgba(${colorRgb},0.8)`,
+                background: `linear-gradient(90deg, rgba(${colorRgb},0.45) 0%, ${color} 55%, ${GOLD} 85%, ${PLAT} 100%)`,
+                boxShadow: `0 0 20px rgba(${colorRgb},0.65), 0 0 6px ${GOLD}55`,
               }}
             >
-              {/* Animated shimmer on bar */}
+              {/* Shimmer sweep on bar */}
               <motion.div
-                animate={{ x: ['-100%', '250%'] }}
-                transition={{ duration: 2.5, delay: delay + 1.5, ease: 'linear', repeat: Infinity, repeatDelay: 4 }}
+                animate={{ x: ['-100%', '300%'] }}
+                transition={{ duration: 2.8, delay: delay + 1.8, ease: 'linear', repeat: Infinity, repeatDelay: 5 }}
                 style={{
                   position: 'absolute', inset: 0, width: '35%',
-                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent)',
+                  background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent)',
                 }}
               />
             </motion.div>
           </div>
 
-          {/* Footer: years badge */}
+          {/* Footer */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-              <Zap size={10} style={{ color: `rgba(${colorRgb},0.7)` }} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Zap size={10} style={{ color: `rgba(${GOLD_RGB},0.7)` }} />
               <span style={{
-                fontSize: '0.6rem', fontFamily: 'Plus Jakarta Sans, sans-serif',
-                color: `rgba(${colorRgb},0.6)`, letterSpacing: '0.06em', fontWeight: 600,
+                fontSize: '0.58rem', fontFamily: 'Plus Jakarta Sans, sans-serif',
+                color: `rgba(${GOLD_RGB},0.55)`, letterSpacing: '0.07em', fontWeight: 700,
               }}>{years} yrs exp</span>
             </div>
-            {/* Dot indicators */}
-            <div style={{ display: 'flex', gap: 3 }}>
+            {/* Star dots */}
+            <div style={{ display: 'flex', gap: 4 }}>
               {[...Array(5)].map((_, i) => (
-                <div key={i} style={{
-                  width: 5, height: 5, borderRadius: '50%',
-                  background: i < Math.round(level / 20) ? color : 'rgba(255,255,255,0.08)',
-                  boxShadow: i < Math.round(level / 20) ? `0 0 6px rgba(${colorRgb},0.8)` : 'none',
-                  transition: 'all 0.3s ease',
-                }} />
+                <Star key={i} size={8}
+                  style={{
+                    color: i < Math.round(level / 20) ? GOLD : 'rgba(255,255,255,0.08)',
+                    fill:  i < Math.round(level / 20) ? GOLD : 'transparent',
+                    filter: i < Math.round(level / 20) ? `drop-shadow(0 0 4px ${GOLD})` : 'none',
+                    transition: 'all 0.3s ease',
+                  }} />
               ))}
             </div>
           </div>
@@ -534,7 +624,7 @@ function SkillCard({ name, level, icon: Icon, desc, color, colorRgb, delay, year
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ULTRA PREMIUM CATEGORY TAB
+   CATEGORY TAB — Luxury Pill
 ═══════════════════════════════════════════════════════════════ */
 function CategoryTab({ cat, active, onClick }: {
   cat: typeof CATEGORIES[number]; active: boolean; onClick: () => void;
@@ -543,23 +633,23 @@ function CategoryTab({ cat, active, onClick }: {
   return (
     <motion.button
       onClick={onClick}
-      whileHover={{ y: -2, scale: 1.03 }}
-      whileTap={{ scale: 0.97 }}
+      whileHover={{ y: -3, scale: 1.04 }}
+      whileTap={{ scale: 0.96 }}
       style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        padding: '12px 22px', borderRadius: 999,
-        fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '0.82rem',
-        letterSpacing: '0.02em', cursor: 'pointer', position: 'relative',
-        border: `1px solid ${active ? cat.color + '50' : 'rgba(255,255,255,0.07)'}`,
+        display: 'flex', alignItems: 'center', gap: 9,
+        padding: '12px 24px', borderRadius: 999,
+        fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '0.8rem',
+        letterSpacing: '0.03em', cursor: 'pointer', position: 'relative',
+        border: `1px solid ${active ? `rgba(${GOLD_RGB},0.45)` : `rgba(${PLAT_RGB},0.07)`}`,
         background: active
-          ? `linear-gradient(135deg, rgba(${cat.colorRgb},0.18), rgba(${cat.colorRgb},0.06))`
-          : 'rgba(255,255,255,0.03)',
-        color: active ? cat.color : 'rgba(255,255,255,0.35)',
+          ? `linear-gradient(135deg, rgba(${cat.colorRgb},0.18), rgba(${GOLD_RGB},0.06))`
+          : 'rgba(255,255,255,0.025)',
+        color: active ? GOLD : 'var(--lux-text-soft)',
         boxShadow: active
-          ? `0 0 30px rgba(${cat.colorRgb},0.2), inset 0 1px 0 rgba(255,255,255,0.08)`
+          ? `0 0 35px rgba(${cat.colorRgb},0.22), 0 0 15px rgba(${GOLD_RGB},0.12), inset 0 1px 0 rgba(${GOLD_RGB},0.1)`
           : 'none',
-        backdropFilter: 'blur(12px)',
-        transition: 'all 0.35s cubic-bezier(0.16,1,0.3,1)',
+        backdropFilter: 'blur(14px)',
+        transition: 'all 0.38s cubic-bezier(0.16,1,0.3,1)',
         whiteSpace: 'nowrap',
       }}
     >
@@ -567,20 +657,20 @@ function CategoryTab({ cat, active, onClick }: {
       <span>{cat.label}</span>
       {active && (
         <>
-          {/* Animated border glow */}
           <motion.div
-            layoutId="tab-indicator"
+            layoutId="sk-tab-indicator"
             style={{
               position: 'absolute', inset: -1, borderRadius: 999,
-              border: `1px solid ${cat.color}50`, pointerEvents: 'none',
+              border: `1px solid rgba(${GOLD_RGB},0.6)`,
+              pointerEvents: 'none',
             }}
-            transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
           />
-          {/* Active dot */}
           <div style={{
-            width: 5, height: 5, borderRadius: '50%', background: cat.color,
-            boxShadow: `0 0 8px ${cat.color}`,
-            animation: 'skills-dot-pulse 2s ease-in-out infinite',
+            width: 5, height: 5, borderRadius: '50%',
+            background: GOLD,
+            boxShadow: `0 0 10px ${GOLD}, 0 0 20px rgba(${GOLD_RGB},0.5)`,
+            animation: 'sk-dot-pulse 1.8s ease-in-out infinite',
           }} />
         </>
       )}
@@ -595,22 +685,23 @@ function ViewToggle({ view, onToggle }: { view: 'bars' | 'constellation'; onTogg
   return (
     <motion.button
       onClick={onToggle}
-      whileHover={{ scale: 1.05, y: -1 }} whileTap={{ scale: 0.97 }}
+      whileHover={{ scale: 1.06, y: -2 }}
+      whileTap={{ scale: 0.96 }}
       style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        padding: '10px 18px', borderRadius: 999,
-        fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '0.73rem',
-        letterSpacing: '0.06em', textTransform: 'uppercase',
-        border: '1px solid rgba(167,139,250,0.25)',
-        background: 'linear-gradient(135deg, rgba(124,58,237,0.12), rgba(167,139,250,0.06))',
-        color: 'rgba(167,139,250,0.8)',
-        cursor: 'pointer', backdropFilter: 'blur(12px)',
-        boxShadow: '0 0 20px rgba(124,58,237,0.1)',
+        display: 'flex', alignItems: 'center', gap: 9,
+        padding: '11px 22px', borderRadius: 999,
+        fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '0.7rem',
+        letterSpacing: '0.08em', textTransform: 'uppercase',
+        border: `1px solid rgba(${GOLD_RGB},0.28)`,
+        background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.1), rgba(${ROSE_RGB},0.05))`,
+        color: GOLD,
+        cursor: 'pointer', backdropFilter: 'blur(14px)',
+        boxShadow: `0 0 25px rgba(${GOLD_RGB},0.12), inset 0 1px 0 rgba(${GOLD_RGB},0.12)`,
       }}
     >
       {view === 'bars'
-        ? <><Globe2 size={12} />Constellation</>
-        : <><Layers size={12} />Skill Cards</>}
+        ? <><Globe2 size={13} />Constellation</>
+        : <><Layers size={13} />Skill Cards</>}
     </motion.button>
   );
 }
@@ -620,88 +711,119 @@ function ViewToggle({ view, onToggle }: { view: 'bars' | 'constellation'; onTogg
 ═══════════════════════════════════════════════════════════════ */
 function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
   const Icon = cat.icon;
-  const avg = Math.round(cat.skills.reduce((a, s) => a + s.level, 0) / cat.skills.length);
+  const avg  = Math.round(cat.skills.reduce((a, s) => a + s.level, 0) / cat.skills.length);
 
   return (
     <motion.div
       key={cat.id}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 22 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -12 }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="skills-category-hero"
+      exit={{ opacity: 0, y: -14 }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      className="sk-category-hero"
       style={{
-        marginBottom: 32, padding: '24px 28px', borderRadius: 24,
-        background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.1) 0%, rgba(${cat.colorRgb},0.03) 60%, rgba(0,0,0,0) 100%)`,
-        border: `1px solid rgba(${cat.colorRgb},0.2)`,
-        backdropFilter: 'blur(24px)',
-        boxShadow: `0 0 60px rgba(${cat.colorRgb},0.08), inset 0 1px 0 rgba(255,255,255,0.06)`,
-        display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap',
+        marginBottom: 32, padding: '28px 32px', borderRadius: 26,
+        background: `linear-gradient(145deg,
+          rgba(${cat.colorRgb},0.1) 0%,
+          rgba(${GOLD_RGB},0.04) 40%,
+          rgba(0,0,0,0) 100%)`,
+        border: `1px solid rgba(${GOLD_RGB},0.2)`,
+        backdropFilter: 'blur(28px)',
+        boxShadow: `0 0 70px rgba(${cat.colorRgb},0.1), 0 0 30px rgba(${GOLD_RGB},0.06), inset 0 1px 0 rgba(${GOLD_RGB},0.1)`,
+        display: 'flex', alignItems: 'center', gap: 22, flexWrap: 'wrap',
         position: 'relative', overflow: 'hidden',
       }}
     >
-      {/* BG radial glow */}
+      {/* Gold top shimmer */}
       <div style={{
-        position: 'absolute', top: '-30%', right: '-10%',
-        width: '40%', height: '200%', borderRadius: '50%',
-        background: `radial-gradient(circle, rgba(${cat.colorRgb},0.12), transparent 65%)`,
+        position: 'absolute', top: 0, left: '10%', right: '10%', height: 1,
+        background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.7), rgba(${cat.colorRgb},0.5), transparent)`,
+      }} />
+
+      {/* BG radial */}
+      <div style={{
+        position: 'absolute', top: '-40%', right: '-8%',
+        width: '45%', height: '220%', borderRadius: '50%',
+        background: `radial-gradient(circle, rgba(${cat.colorRgb},0.13), transparent 60%)`,
         pointerEvents: 'none',
       }} />
 
-      {/* Icon */}
-      <div style={{
-        width: 60, height: 60, borderRadius: 18, flexShrink: 0,
-        background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.25), rgba(${cat.colorRgb},0.08))`,
-        border: `1px solid rgba(${cat.colorRgb},0.35)`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        boxShadow: `0 0 30px rgba(${cat.colorRgb},0.2)`,
-      }}>
-        <Icon size={26} style={{ color: cat.color }} />
+      {/* Icon with spin rings */}
+      <div style={{ position: 'relative', flexShrink: 0 }}>
+        <div style={{
+          position: 'absolute', inset: -12, borderRadius: '50%',
+          border: `1px dashed rgba(${GOLD_RGB},0.3)`,
+          animation: 'sk-spin 20s linear infinite',
+        }} />
+        <div style={{
+          position: 'absolute', inset: -6, borderRadius: '50%',
+          border: `1px solid rgba(${cat.colorRgb},0.25)`,
+          animation: 'sk-counter-spin 14s linear infinite',
+        }} />
+        <div style={{
+          width: 64, height: 64, borderRadius: 20, flexShrink: 0,
+          background: `linear-gradient(135deg, rgba(${cat.colorRgb},0.28), rgba(${GOLD_RGB},0.1))`,
+          border: `1px solid rgba(${GOLD_RGB},0.3)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: `0 0 40px rgba(${cat.colorRgb},0.25), 0 0 16px rgba(${GOLD_RGB},0.1)`,
+        }}>
+          <Icon size={28} style={{ color: cat.color }} />
+        </div>
       </div>
 
+      {/* Text */}
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-          <span style={{ fontSize: '1.2rem' }}>{cat.emoji}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+          <span style={{ fontSize: '1.3rem' }}>{cat.emoji}</span>
           <h3 style={{
-            fontFamily: 'Syne, sans-serif', fontWeight: 800,
-            fontSize: 'clamp(1.1rem,2.2vw,1.45rem)', color: cat.color,
-            letterSpacing: '-0.02em',
+            fontFamily: 'Syne, sans-serif', fontWeight: 900,
+            fontSize: 'clamp(1.1rem,2.2vw,1.5rem)',
+            background: `linear-gradient(135deg, ${GOLD} 0%, ${cat.color} 50%, ${PLAT} 100%)`,
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            letterSpacing: '-0.025em',
           }}>{cat.label}</h3>
           <span style={{
-            fontSize: '0.6rem', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700,
-            letterSpacing: '0.14em', textTransform: 'uppercase',
-            color: `rgba(${cat.colorRgb},0.6)`,
-            background: `rgba(${cat.colorRgb},0.1)`, padding: '3px 8px', borderRadius: 999,
-            border: `1px solid rgba(${cat.colorRgb},0.2)`,
+            fontSize: '0.58rem', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800,
+            letterSpacing: '0.16em', textTransform: 'uppercase',
+            color: `rgba(${GOLD_RGB},0.6)`,
+            background: `rgba(${GOLD_RGB},0.08)`, padding: '3px 9px', borderRadius: 999,
+            border: `1px solid rgba(${GOLD_RGB},0.2)`,
           }}>{cat.sublabel}</span>
         </div>
         <p style={{
           fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.8rem',
-          color: 'rgba(255,255,255,0.35)', lineHeight: 1.5, maxWidth: 480,
+          color: 'var(--lux-text-muted)', lineHeight: 1.6, maxWidth: 480,
         }}>{cat.tagline}</p>
       </div>
 
-      {/* Avg badge */}
-      <div className="skills-category-hero-avg" style={{
+      {/* Avg mastery badge */}
+      <div className="sk-hero-avg" style={{
         textAlign: 'right', flexShrink: 0,
-        background: `linear-gradient(145deg, rgba(${cat.colorRgb},0.12), rgba(${cat.colorRgb},0.04))`,
-        border: `1px solid rgba(${cat.colorRgb},0.2)`,
-        borderRadius: 16, padding: '14px 20px',
+        background: `linear-gradient(145deg, rgba(${GOLD_RGB},0.1), rgba(${cat.colorRgb},0.05))`,
+        border: `1px solid rgba(${GOLD_RGB},0.22)`,
+        borderRadius: 18, padding: '16px 22px',
+        boxShadow: `0 0 30px rgba(${GOLD_RGB},0.08)`,
       }}>
         <div style={{
           fontFamily: 'Syne, sans-serif', fontWeight: 900,
-          fontSize: 'clamp(1.8rem,3vw,2.6rem)', lineHeight: 1,
-          background: `linear-gradient(135deg, ${cat.color}, rgba(255,255,255,0.95))`,
+          fontSize: 'clamp(1.9rem,3.2vw,2.8rem)', lineHeight: 1,
+          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 45%, ${cat.color} 100%)`,
+          backgroundSize: '200% auto',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          animation: 'sk-gold-shimmer 4s linear infinite',
         }}>{avg}%</div>
         <div style={{
-          fontSize: '0.58rem', textTransform: 'uppercase', letterSpacing: '0.14em',
-          color: `rgba(${cat.colorRgb},0.5)`, marginTop: 4,
-          fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700,
+          fontSize: '0.55rem', textTransform: 'uppercase', letterSpacing: '0.16em',
+          color: `rgba(${GOLD_RGB},0.5)`, marginTop: 4,
+          fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800,
         }}>avg mastery</div>
-        <div style={{ display: 'flex', gap: 3, justifyContent: 'flex-end', marginTop: 8 }}>
+        <div style={{ display: 'flex', gap: 4, justifyContent: 'flex-end', marginTop: 8 }}>
           {[...Array(5)].map((_, i) => (
-            <Star key={i} size={8} style={{ color: i < Math.round(avg / 20) ? cat.color : 'rgba(255,255,255,0.1)', fill: i < Math.round(avg / 20) ? cat.color : 'transparent' }} />
+            <Star key={i} size={9} style={{
+              color: i < Math.round(avg / 20) ? GOLD : 'rgba(255,255,255,0.08)',
+              fill:  i < Math.round(avg / 20) ? GOLD : 'transparent',
+              filter: i < Math.round(avg / 20) ? `drop-shadow(0 0 5px ${GOLD})` : 'none',
+            }} />
           ))}
         </div>
       </div>
@@ -710,65 +832,179 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   SECTION HEADER — Ultra Luxury Gold
+═══════════════════════════════════════════════════════════════ */
+function LuxurySkillsHeader() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 56 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      style={{ textAlign: 'center', marginBottom: 'clamp(48px,7vw,88px)', position: 'relative' }}
+    >
+      {/* Badge */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.72 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.65, delay: 0.1 }}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 10,
+          padding: '7px 24px', borderRadius: 999, marginBottom: 28,
+          fontFamily: 'Syne, sans-serif', fontWeight: 800,
+          fontSize: '0.6rem', letterSpacing: '0.28em', textTransform: 'uppercase',
+          background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.14), rgba(${ROSE_RGB},0.06))`,
+          border: `1px solid rgba(${GOLD_RGB},0.3)`,
+          color: GOLD,
+          boxShadow: `0 0 35px rgba(${GOLD_RGB},0.12), inset 0 1px 0 rgba(${GOLD_RGB},0.12)`,
+        }}
+      >
+        <Award size={11} />
+        Expertise
+        <Sparkles size={9} style={{ opacity: 0.7 }} />
+      </motion.div>
+
+      {/* Title */}
+      <h2 style={{
+        fontFamily: 'Syne, sans-serif', fontWeight: 900,
+        fontSize: 'clamp(2.6rem, 5.5vw, 5.8rem)',
+        lineHeight: 0.92, letterSpacing: '-0.045em',
+        color: 'var(--text)', marginBottom: 26,
+      }}>
+        Skill{' '}
+        <span style={{
+          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 30%, ${ROSE} 60%, ${GOLD} 100%)`,
+          backgroundSize: '300% auto',
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+          fontStyle: 'italic',
+          animation: 'sk-gold-shimmer 4.5s linear infinite',
+        }}>
+          Constellation
+        </span>
+      </h2>
+
+      <p style={{
+        fontFamily: 'Plus Jakarta Sans, sans-serif',
+        fontSize: 'clamp(0.87rem,1.25vw,1.04rem)',
+        color: 'var(--lux-text-muted)', lineHeight: 1.9,
+        maxWidth: 520, margin: '0 auto 32px',
+      }}>
+        A deep-dive into my technical proficiencies across GIS &amp; Remote Sensing,
+        AI &amp; Machine Learning, and Web Engineering.
+      </p>
+
+      {/* Decorative rule */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          height: 1, maxWidth: 420, margin: '0 auto',
+          background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.9), rgba(${ROSE_RGB},0.55), rgba(${GOLD_RGB},0.9), transparent)`,
+          transformOrigin: 'center',
+        }}
+      />
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 1, duration: 0.45 }}
+        style={{
+          width: 8, height: 8, background: GOLD,
+          transform: 'rotate(45deg)', margin: '-4px auto 0',
+          boxShadow: `0 0 18px ${GOLD}, 0 0 35px rgba(${GOLD_RGB},0.4)`,
+        }}
+      />
+    </motion.div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   AMBIENT PARTICLES
+═══════════════════════════════════════════════════════════════ */
+const SK_PARTICLES = Array.from({ length: 20 }, (_, i) => ({
+  id: i, x: 5 + (i * 4.8) % 90, y: 5 + (i * 6.9) % 90,
+  size: 1.2 + (i % 4) * 0.5, delay: (i * 0.3) % 5.5, duration: 5 + (i % 7),
+  color: i % 4 === 0 ? GOLD : i % 4 === 1 ? PLAT : i % 4 === 2 ? ROSE : TEAL,
+}));
+
+/* ═══════════════════════════════════════════════════════════════
    MAIN EXPORT
 ═══════════════════════════════════════════════════════════════ */
 export default function SkillsVisualization() {
   const [activeTab, setActiveTab] = useState<CategoryId>('gis');
-  const [view, setView] = useState<'bars' | 'constellation'>('bars');
+  const [view, setView]           = useState<'bars' | 'constellation'>('bars');
   const toggleView = useCallback(() => setView(v => v === 'bars' ? 'constellation' : 'bars'), []);
-  const activeCat = CATEGORIES.find(c => c.id === activeTab)!;
+  const activeCat  = CATEGORIES.find(c => c.id === activeTab)!;
 
   return (
-    <section id="skills" style={{ position: 'relative', zIndex: 20, padding: 'clamp(64px,8vw,120px) 0', background: 'var(--bg)' }}>
+    <section id="skills" style={{ position: 'relative', zIndex: 20, padding: 'clamp(64px,8vw,120px) 0', background: 'var(--bg)', overflow: 'hidden' }}>
       <style>{CSS}</style>
 
-      {/* ── Ambient aurora glows ── */}
-      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-        {/* Cyan orb */}
+      {/* Floating particles */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
+        {SK_PARTICLES.map(p => (
+          <motion.div
+            key={p.id}
+            style={{
+              position: 'absolute', left: `${p.x}%`, top: `${p.y}%`,
+              width: p.size, height: p.size, borderRadius: '50%',
+              background: p.color, boxShadow: `0 0 ${p.size * 5}px ${p.color}`,
+            }}
+            animate={{ y: [-12, 12, -12], x: [-5, 5, -5], opacity: [0, 0.65, 0], scale: [0.6, 1.4, 0.6] }}
+            transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        ))}
+      </div>
+
+      {/* Aurora ambient glows */}
+      <div aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
         <div style={{
-          position: 'absolute', top: '10%', left: '-5%',
+          position: 'absolute', top: '8%', left: '-8%',
           width: '55vw', height: '55vw', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(34,211,238,0.07), transparent 60%)',
-          filter: 'blur(80px)', animation: 'skills-orb-drift 18s ease-in-out infinite',
+          background: `radial-gradient(circle, rgba(${GOLD_RGB},0.07) 0%, transparent 65%)`,
+          filter: 'blur(90px)',
+          animation: 'sk-orb-drift 20s ease-in-out infinite',
         }} />
-        {/* Pink orb */}
         <div style={{
-          position: 'absolute', bottom: '5%', right: '-5%',
-          width: '45vw', height: '45vw', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(244,114,182,0.07), transparent 60%)',
-          filter: 'blur(90px)', animation: 'skills-orb-drift 22s ease-in-out infinite reverse',
+          position: 'absolute', bottom: '3%', right: '-6%',
+          width: '48vw', height: '48vw', borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(${TEAL_RGB},0.07) 0%, transparent 65%)`,
+          filter: 'blur(100px)',
+          animation: 'sk-orb-drift 24s ease-in-out infinite reverse',
         }} />
-        {/* Violet orb */}
         <div style={{
-          position: 'absolute', top: '45%', left: '35%',
-          width: '40vw', height: '40vw', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(167,139,250,0.05), transparent 60%)',
-          filter: 'blur(70px)', animation: 'skills-orb-drift 14s ease-in-out infinite 2s',
+          position: 'absolute', top: '42%', left: '32%',
+          width: '42vw', height: '42vw', borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(${ROSE_RGB},0.05) 0%, transparent 65%)`,
+          filter: 'blur(80px)',
+          animation: 'sk-orb-drift 16s ease-in-out infinite 3s',
         }} />
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 clamp(16px,5vw,48px)', position: 'relative' }}>
+      <div style={{
+        maxWidth: '1220px', margin: '0 auto',
+        padding: '0 clamp(16px,5vw,52px)',
+        position: 'relative', zIndex: 1,
+      }}>
+        {/* Section header */}
+        <LuxurySkillsHeader />
 
-        {/* ── Section header ── */}
-        <SectionHeader
-          badge="Expertise"
-          title="Skill Constellation"
-          description="A deep-dive into my technical proficiencies across GIS & Remote Sensing, AI & Machine Learning, and Web Engineering."
-        />
-
-        {/* ── Controls ── */}
+        {/* Controls bar */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.65, delay: 0.2 }}
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            flexWrap: 'wrap', gap: 12, marginTop: 40, marginBottom: 40,
+            flexWrap: 'wrap', gap: 14, marginTop: 44, marginBottom: 44,
           }}
         >
           {/* Category tabs */}
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {CATEGORIES.map(cat => (
               <CategoryTab
                 key={cat.id}
@@ -781,15 +1017,15 @@ export default function SkillsVisualization() {
           <ViewToggle view={view} onToggle={toggleView} />
         </motion.div>
 
-        {/* ── Content ── */}
+        {/* Content */}
         <AnimatePresence mode="wait">
           {view === 'bars' ? (
             <motion.div
               key={`bars-${activeTab}`}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 32 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
             >
               {/* Category hero */}
               <AnimatePresence mode="wait">
@@ -799,8 +1035,8 @@ export default function SkillsVisualization() {
               {/* Skill cards grid */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 360px), 1fr))',
-                gap: 14,
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 370px), 1fr))',
+                gap: 16,
               }}>
                 {activeCat.skills.map((skill, i) => (
                   <SkillCard
@@ -811,41 +1047,50 @@ export default function SkillsVisualization() {
                     desc={skill.desc}
                     color={activeCat.color}
                     colorRgb={activeCat.colorRgb}
-                    delay={i * 0.08}
+                    delay={i * 0.09}
                     years={skill.years}
                   />
                 ))}
               </div>
 
-              {/* Bottom summary stats */}
+              {/* Summary stats bar */}
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
+                transition={{ duration: 0.65, delay: 0.4 }}
                 style={{
-                  marginTop: 32, padding: '20px 24px', borderRadius: 20,
-                  background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.05)',
-                  display: 'flex', gap: 24, flexWrap: 'wrap', justifyContent: 'center',
+                  marginTop: 36, padding: '22px 28px', borderRadius: 22,
+                  background: `linear-gradient(145deg, rgba(${GOLD_RGB},0.06), rgba(${activeCat.colorRgb},0.03))`,
+                  border: `1px solid rgba(${GOLD_RGB},0.15)`,
+                  boxShadow: `0 0 40px rgba(${GOLD_RGB},0.06), inset 0 1px 0 rgba(${GOLD_RGB},0.1)`,
+                  display: 'flex', gap: 28, flexWrap: 'wrap', justifyContent: 'center',
+                  position: 'relative', overflow: 'hidden',
                 }}
               >
+                {/* Top shimmer */}
+                <div style={{
+                  position: 'absolute', top: 0, left: '15%', right: '15%', height: 1,
+                  background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.6), transparent)`,
+                }} />
                 {[
-                  { label: 'Skills Tracked', value: activeCat.skills.length.toString() },
-                  { label: 'Avg Mastery', value: `${Math.round(activeCat.skills.reduce((a, s) => a + s.level, 0) / activeCat.skills.length)}%` },
-                  { label: 'Expert Level', value: activeCat.skills.filter(s => s.level >= 90).length.toString() },
-                  { label: 'Category', value: activeCat.sublabel },
+                  { label: 'Skills Tracked',  value: activeCat.skills.length.toString() },
+                  { label: 'Avg Mastery',     value: `${Math.round(activeCat.skills.reduce((a, s) => a + s.level, 0) / activeCat.skills.length)}%` },
+                  { label: 'Expert Level',    value: activeCat.skills.filter(s => s.level >= 90).length.toString() },
+                  { label: 'Specialty',       value: activeCat.sublabel },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ textAlign: 'center' }}>
                     <div style={{
-                      fontFamily: 'Syne, sans-serif', fontWeight: 900, fontSize: '1.3rem',
-                      background: activeCat.gradient,
+                      fontFamily: 'Syne, sans-serif', fontWeight: 900, fontSize: '1.4rem',
+                      background: `linear-gradient(135deg, ${GOLD} 0%, ${activeCat.color} 50%, ${PLAT} 100%)`,
+                      backgroundSize: '200% auto',
                       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      animation: 'sk-gold-shimmer 5s linear infinite',
                     }}>{value}</div>
                     <div style={{
-                      fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.6rem',
-                      textTransform: 'uppercase', letterSpacing: '0.14em',
-                      color: 'rgba(255,255,255,0.25)', marginTop: 2,
+                      fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.58rem',
+                      textTransform: 'uppercase', letterSpacing: '0.16em',
+                      color: `rgba(${GOLD_RGB},0.35)`, marginTop: 4,
                     }}>{label}</div>
                   </div>
                 ))}
@@ -854,16 +1099,16 @@ export default function SkillsVisualization() {
           ) : (
             <motion.div
               key="constellation"
-              initial={{ opacity: 0, scale: 0.96 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.52, ease: [0.16, 1, 0.3, 1] }}
             >
               <ConstellationGraph />
               <p style={{
-                textAlign: 'center', marginTop: 16,
-                fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.72rem',
-                color: 'rgba(167,139,250,0.4)', letterSpacing: '0.08em',
+                textAlign: 'center', marginTop: 18,
+                fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: '0.7rem',
+                color: `rgba(${GOLD_RGB},0.35)`, letterSpacing: '0.1em',
               }}>
                 ✦ Hover nodes to explore · Move cursor to interact with the force field
               </p>

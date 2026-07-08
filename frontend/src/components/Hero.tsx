@@ -891,57 +891,6 @@ function UltraStatCard({
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════════
-   PREMIUM SCROLL INDICATOR
-═══════════════════════════════════════════════════════════════════════ */
-function ScrollIndicator() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 2.8, duration: 1.2 }}
-      style={{
-        position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)',
-        display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-        zIndex: 12, cursor: 'pointer',
-      }}
-      onClick={() => window.scrollBy({ top: window.innerHeight, behavior: 'smooth' })}
-    >
-      <span className="hero-scroll-label" style={{
-        fontSize: '0.56rem', textTransform: 'uppercase', letterSpacing: '0.45em',
-        fontWeight: 700, color: 'rgba(167,139,250,0.35)',
-        fontFamily: 'Plus Jakarta Sans, sans-serif',
-      }}>
-        Scroll
-      </span>
-
-      {/* Luxury mouse shape */}
-      <div className="hero-scroll-shell" style={{
-        width: 28, height: 48, borderRadius: 14,
-        border: '1.5px solid rgba(167,139,250,0.22)',
-        display: 'flex', justifyContent: 'center', alignItems: 'flex-start',
-        padding: '7px 0',
-        background: 'rgba(124,58,237,0.04)',
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0 4px 20px rgba(124,58,237,0.1), inset 0 1px 0 rgba(var(--text-base-rgb),0.05)',
-      }}>
-        <div style={{
-          width: 4, height: 10, borderRadius: 999,
-          background: 'linear-gradient(to bottom,#a78bfa,#f472b6)',
-          boxShadow: '0 0 10px rgba(167,139,250,0.9)',
-          animation: 'scroll-dot-flow 2.2s ease-in-out infinite',
-        }} />
-      </div>
-
-      {/* Side lines decoration */}
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <div style={{ width: 20, height: 1, background: 'linear-gradient(to right,transparent,rgba(167,139,250,0.3))' }} />
-        <div style={{ width: 4, height: 4, borderRadius: '50%', background: 'rgba(167,139,250,0.4)' }} />
-        <div style={{ width: 20, height: 1, background: 'linear-gradient(to left,transparent,rgba(167,139,250,0.3))' }} />
-      </div>
-    </motion.div>
-  );
-}
 
 /* ═══════════════════════════════════════════════════════════════════════
    LUXURY CORNER ACCENTS
@@ -1386,9 +1335,6 @@ export default function Hero() {
 
           </div>
         </motion.div>
-
-        {/* ── SCROLL INDICATOR ── */}
-        <ScrollIndicator />
 
       </div>
 
