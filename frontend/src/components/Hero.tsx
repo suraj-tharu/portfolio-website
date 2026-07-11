@@ -177,7 +177,7 @@ function LuxuryProfileCard({ isMobile, isSmall }: { isMobile: boolean; isSmall: 
   const [hovered, setHovered] = useState(false);
 
   /* Three-tier sizing — never overflows the column */
-  const cardSize = isSmall ? 200 : isMobile ? 260 : 400;
+  const cardSize = isSmall ? 170 : isMobile ? 240 : 400;
 
   return (
     <motion.div
