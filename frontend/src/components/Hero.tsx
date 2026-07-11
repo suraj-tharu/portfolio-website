@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import { TextReveal } from './premium/TextReveal';
 import Hero3D from './Hero3D';
@@ -117,7 +117,7 @@ function RoleBadge({ role }: { role: string }) {
 /* ═══════════════════════════════════════════════════════════════════════
    ULTRA STAT CARD (Cleaned)
 ═══════════════════════════════════════════════════════════════════════ */
-function UltraStatCard({ value, suffix, label, icon, isLast }: any) {
+function UltraStatCard({ value, suffix, label, icon, isLast }: { value: string | number; suffix: string; label: string; icon: React.ReactNode; isLast: boolean }) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
   
@@ -198,7 +198,8 @@ export default function Hero() {
   return (
     <motion.section
       ref={containerRef}
-      className="hero-section"
+      id="hero"
+      className="relative w-full flex items-start justify-center overflow-hidden"
       style={{ 
         opacity, scale, 
         position: 'relative', 
@@ -214,7 +215,7 @@ export default function Hero() {
 
       {/* Hero3D — Subtle Background Accent */}
       <div style={{
-        position: 'absolute', top: '15%', right: '5%',
+        position: 'absolute', top: '25%', right: '5%',
         width: '50vw', height: '50vw',
         maxWidth: '800px', maxHeight: '800px',
         opacity: 0.35, pointerEvents: 'none', zIndex: 1,
@@ -231,7 +232,7 @@ export default function Hero() {
         <div style={{
           maxWidth: '1000px', margin: '0 auto',
           display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
-          padding: 'clamp(140px, 18vh, 180px) clamp(20px, 5vw, 40px) clamp(40px, 8vh, 80px)',
+          padding: 'clamp(160px, 22vh, 220px) clamp(20px, 5vw, 40px) clamp(40px, 8vh, 80px)',
         }}>
           
           {/* Greeting */}
@@ -241,15 +242,31 @@ export default function Hero() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
-                style={{ marginBottom: 24 }}
+                style={{ marginBottom: 40 }}
               >
-                <span style={{
-                  fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.25em',
-                  textTransform: 'uppercase',
-                  color: isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.5)',
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 10,
+                  padding: '8px 20px', borderRadius: 999,
+                  background: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'}`,
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: isDark ? '0 4px 20px rgba(0,0,0,0.2)' : '0 4px 20px rgba(0,0,0,0.05)'
                 }}>
-                  {greeting} — Welcome
-                </span>
+                  <span style={{
+                    width: 6, height: 6, borderRadius: '50%',
+                    background: '#34D399',
+                    boxShadow: '0 0 10px rgba(52, 211, 153, 0.4)',
+                  }} />
+                  <span style={{
+                    fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: isDark ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)',
+                    lineHeight: 1.5,
+                    whiteSpace: 'nowrap'
+                  }}>
+                    {greeting} — Welcome
+                  </span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -263,8 +280,9 @@ export default function Hero() {
               fontFamily: '"Cormorant Garamond", serif', fontStyle: 'italic',
               fontWeight: 400,
               fontSize: 'clamp(3.5rem, 8vw, 7.5rem)',
-              lineHeight: 0.95,
+              lineHeight: 1.1,
               marginBottom: 32,
+              paddingTop: 4,
               background: isDark 
                 ? 'linear-gradient(135deg, #FFFFFF 0%, #A78BFA 100%)' 
                 : 'linear-gradient(135deg, #0F0F1A 0%, #7C3AED 100%)',
