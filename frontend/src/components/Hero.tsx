@@ -756,7 +756,7 @@ function StatCard({ value, suffix, label, accentColor, gradColors, icon, delay }
       </div>
       <span style={{
         fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
-        fontSize: 'clamp(0.5rem, 2.5vw, 0.6rem)', fontWeight: 700, letterSpacing: '0.14em',
+        fontSize: 'clamp(0.65rem, 2.5vw, 0.7rem)', fontWeight: 700, letterSpacing: '0.14em',
         textTransform: 'uppercase',
         color: isDark ? 'rgba(255,255,255,0.32)' : 'rgba(0,0,0,0.38)',
         textAlign: 'center',

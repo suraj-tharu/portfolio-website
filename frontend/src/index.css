@@ -131,10 +131,16 @@
     overflow-x: hidden;
     /* Fluid root typography: 
        - 13px at 320px mobile width
-       - Scales fluidly
-       - 16px (100%) at 1280px desktop width and above
-       This automatically scales all rem-based sizes across the entire site by up to ~18% on small screens! */
+       - Scales fluidly up to 16px at 1280px desktop
+       All rem-based sizes (text, padding, margin) scale proportionally! */
     font-size: clamp(13px, 0.3125vw + 12px, 16px);
+  }
+
+  /* Extra safety for ultra-narrow screens (< 375px) */
+  @media (max-width: 375px) {
+    html {
+      font-size: 12px;
+    }
   }
 
   body {
@@ -528,6 +534,20 @@ button, a {
     .glass-card:hover, .timeline-card:hover {
       transform: none !important;
     }
+  }
+
+  /* ── Text no-break utility: prevents mid-word wrapping ── */
+  .text-no-break {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ── Text safe-wrap: wraps between words only, never mid-word ── */
+  .text-safe-wrap {
+    word-break: keep-all;
+    overflow-wrap: normal;
+    hyphens: none;
   }
 }
 

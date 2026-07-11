@@ -40,7 +40,7 @@ function NavLink({
   const inner = (
     <span className="relative py-1.5 flex items-center gap-1">
       <span className={`
-        text-[13px] font-medium tracking-[-0.01em] transition-colors duration-300
+        text-[13px] font-medium tracking-[-0.01em] transition-colors duration-300 whitespace-nowrap
         ${isActive
           ? 'text-slate-900 dark:text-white'
           : 'text-slate-500 dark:text-white/50 hover:text-slate-800 dark:hover:text-white/80'

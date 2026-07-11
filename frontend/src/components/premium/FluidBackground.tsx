@@ -14,13 +14,33 @@ export const FluidBackground = () => {
 
         let animationFrameId: number;
         let t = 0;
+        let debounceTimer: ReturnType<typeof setTimeout>;
 
+        // HiDPI / Retina support: scale canvas by device pixel ratio
         const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            const dpr = window.devicePixelRatio || 1;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            // Set canvas physical pixel size
+            canvas.width  = w * dpr;
+            canvas.height = h * dpr;
+
+            // Scale CSS display size back to logical pixels
+            canvas.style.width  = `${w}px`;
+            canvas.style.height = `${h}px`;
+
+            // Scale context to match DPR so drawing coords stay logical
+            ctx.scale(dpr, dpr);
         };
-        
-        window.addEventListener('resize', resize);
+
+        // Debounced resize — prevents excessive redraws while user drags window
+        const onResize = () => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(resize, 100);
+        };
+
+        window.addEventListener('resize', onResize);
         resize();
 
         // Premium color palettes based on theme
@@ -43,27 +63,31 @@ export const FluidBackground = () => {
         const render = () => {
             t += 0.002; // Very slow, luxurious movement
             const colors = getColors();
-            
+
+            // Use logical pixel dimensions (before DPR scaling)
+            const logicalW = window.innerWidth;
+            const logicalH = window.innerHeight;
+
             // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
+            ctx.clearRect(0, 0, logicalW, logicalH);
+
             // Draw fluid blobs
             colors.forEach((color, index) => {
-                const xOffset = Math.sin(t + index) * (canvas.width * 0.3) + canvas.width / 2;
-                const yOffset = Math.cos(t * 0.8 + index * 2) * (canvas.height * 0.3) + canvas.height / 2;
-                let radius = Math.max(canvas.width, canvas.height) * 0.4 + Math.sin(t * 1.5 + index) * 100;
+                const xOffset = Math.sin(t + index) * (logicalW * 0.3) + logicalW / 2;
+                const yOffset = Math.cos(t * 0.8 + index * 2) * (logicalH * 0.3) + logicalH / 2;
+                let radius = Math.max(logicalW, logicalH) * 0.4 + Math.sin(t * 1.5 + index) * 100;
                 radius = Math.max(10, radius); // Prevent negative radius
 
                 const gradient = ctx.createRadialGradient(xOffset, yOffset, 0, xOffset, yOffset, radius);
-                
+
                 // Very subtle opacity for premium feel (dark mode = more opaque, light mode = very faint)
                 const alpha = theme === 'dark' ? 0.15 : 0.05;
-                
+
                 gradient.addColorStop(0, `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`);
                 gradient.addColorStop(1, `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0)`);
 
                 ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillRect(0, 0, logicalW, logicalH);
             });
 
             animationFrameId = requestAnimationFrame(render);
@@ -72,7 +96,8 @@ export const FluidBackground = () => {
         render();
 
         return () => {
-            window.removeEventListener('resize', resize);
+            clearTimeout(debounceTimer);
+            window.removeEventListener('resize', onResize);
             cancelAnimationFrame(animationFrameId);
         };
     }, [theme]);

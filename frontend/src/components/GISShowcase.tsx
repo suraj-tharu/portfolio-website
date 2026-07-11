@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
+// L is accessed only inside useEffects to avoid SSR crashes
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const L = (window as any).L;
+const getL = () => (window as any).L as any;
 
 const layers = [
   { id: '2016', name: '2016 Base Map' },
@@ -26,6 +27,7 @@ export default function GISShowcase() {
 
   // Swaps tile layer URL dynamically when layer selection changes
   useEffect(() => {
+    const L = getL();
     if (tileLayerRef.current && L) {
       tileLayerRef.current.setUrl(tileLayerUrls[activeLayer]);
     }
@@ -41,6 +43,7 @@ export default function GISShowcase() {
   }, [isZoomed]);
 
   useEffect(() => {
+    const L = getL();
     if (typeof L === 'undefined') return;
 
     // Fix Leaflet default marker icons not loading correctly due to packaging relative paths
@@ -100,6 +103,7 @@ export default function GISShowcase() {
 
   // Handle Layer change with FlyTo animation
   useEffect(() => {
+    const L = getL();
     if (mapRef.current && L) {
       if (activeLayer === '2016') mapRef.current.flyTo([27.5319, 83.6922], 10, { duration: 2.5, easeLinearity: 0.1 });
       if (activeLayer === '2026') mapRef.current.flyTo([28.6015, 81.6322], 11, { duration: 2.5, easeLinearity: 0.1 });
