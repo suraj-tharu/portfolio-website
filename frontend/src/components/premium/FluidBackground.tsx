@@ -51,7 +51,8 @@ export const FluidBackground = () => {
             colors.forEach((color, index) => {
                 const xOffset = Math.sin(t + index) * (canvas.width * 0.3) + canvas.width / 2;
                 const yOffset = Math.cos(t * 0.8 + index * 2) * (canvas.height * 0.3) + canvas.height / 2;
-                const radius = Math.max(canvas.width, canvas.height) * 0.4 + Math.sin(t * 1.5 + index) * 100;
+                let radius = Math.max(canvas.width, canvas.height) * 0.4 + Math.sin(t * 1.5 + index) * 100;
+                radius = Math.max(10, radius); // Prevent negative radius
 
                 const gradient = ctx.createRadialGradient(xOffset, yOffset, 0, xOffset, yOffset, radius);
                 
