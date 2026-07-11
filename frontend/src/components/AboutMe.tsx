@@ -1,5 +1,5 @@
-import { useRef, useEffect, useState } from "react";
-import { motion, useInView, useMotionValue, useTransform, animate, useScroll, useSpring } from "framer-motion";
+ï»¿import { useRef, useEffect, useState } from "react";
+import { motion, useInView, useMotionValue, useTransform, animate, useScroll } from "framer-motion";
 import {
   MapPin, GraduationCap, Briefcase, Users, BookOpen, Code2,
   Coffee, Award, Download, ArrowRight, ExternalLink,
@@ -132,7 +132,6 @@ function SkillBar({ name, level, color, delay }: { name: string; level: number; 
 
 /* --- Profile Orb ---------------------------------------------------- */
 function ProfileOrb() {
-  const initials = ["S", "T"];
   return (
     <div className="relative w-full aspect-square max-w-[340px] mx-auto select-none">
       {/* Outer rotating ring */}
@@ -188,7 +187,7 @@ function ProfileOrb() {
         </div>
         <div className="text-center px-3">
           <p className="font-syne font-bold text-sm about-heading-primary leading-tight">Er. Suraj Tharu</p>
-          <p className="font-jakarta text-[0.62rem] about-muted-text mt-0.5">GIS · ML · Web Engineer</p>
+          <p className="font-jakarta text-[0.62rem] about-muted-text mt-0.5">GIS ï¿½ ML ï¿½ Web Engineer</p>
         </div>
         {/* Shimmer sweep */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-[2rem]">
@@ -381,11 +380,11 @@ export default function AboutMe() {
             ))}
           </div>
           <span className="text-[0.6rem] font-bold uppercase tracking-[0.35em] about-overline font-syne">
-            Engineer · Educator · Researcher
+            Engineer ï¿½ Educator ï¿½ Researcher
           </span>
         </motion.div>
 
-        {/* -- Hero headline — full width ------------------- */}
+        {/* -- Hero headline ï¿½ full width ------------------- */}
         <div className="mb-16 overflow-hidden">
           <div style={{ overflow: "hidden" }}>
             <motion.h2
@@ -497,7 +496,7 @@ export default function AboutMe() {
                 delay={0.2}
               />
               <EduItem
-                degree="Internship — Nepal Telecom"
+                degree="Internship ï¿½ Nepal Telecom"
                 uni="Six-month industry training"
                 year="2016"
                 color="#f472b6"
@@ -542,7 +541,7 @@ export default function AboutMe() {
                     <>
                       Currently working as a{" "}
                       <strong className="text-emerald-300 font-semibold">Coordinator</strong> at Shree Tri Shaheed Model Secondary School,
-                      Syangja — focusing on technology-driven learning, research, and capacity building in technical &amp; vocational education.
+                      Syangja ï¿½ focusing on technology-driven learning, research, and capacity building in technical &amp; vocational education.
                     </>
                   ),
                 },
@@ -585,7 +584,7 @@ export default function AboutMe() {
               </div>
             </motion.div>
 
-            {/* Stats grid 3×2 */}
+            {/* Stats grid 3ï¿½2 */}
             <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
               {stats.map((s) => (
                 <StatCard key={s.label} {...s} />
