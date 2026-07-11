@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
   motion, AnimatePresence, useScroll,
-  useMotionValueEvent, useSpring, useMotionValue,
+  useMotionValueEvent, useSpring,
 } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Sun, Moon, X, MapPin, Mail, ArrowUpRight } from 'lucide-react';
