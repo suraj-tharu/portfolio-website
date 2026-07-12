@@ -15,13 +15,23 @@ export default {
         muted: "var(--muted)",
         stroke: "var(--stroke)",
         brand: {
+          300: "var(--brand-light)",
           400: "var(--brand-light)",
           500: "var(--brand)",
           600: "var(--brand-dark)",
+          700: "var(--brand-dark)",
         },
-        "luxury-gold": { 400: "#F3E5AB", 500: "#D4AF37", 600: "#AA8C2C" },
-        "obsidian": { 800: "#111111", 900: "#0a0a0a", 950: "#050505" },
-        "pearl": { 100: "#FDFDFD", 200: "#F9F9F9", 300: "#F0F0F0" }
+        /* Astral Luxury static palettes — for when CSS vars aren't usable */
+        "astral-iris":    { 300: "#C4AAFF", 400: "#B898FF", 500: "#9B6DFF", 600: "#7445E8", 700: "#5824CC" },
+        "champagne-gilt": { 300: "#FFE9A8", 400: "#F0C46A", 500: "#F7A824", 600: "#D48A00", 700: "#A86800" },
+        "orchid":         { 300: "#FFAAD5", 400: "#FF8FAD", 500: "#FF6FB8", 600: "#E04A9A", 700: "#C0155E" },
+        "electric-azure": { 300: "#7AECFF", 400: "#2FD6F5", 500: "#0AA8CC", 600: "#0272AA", 700: "#015580" },
+        "void-obsidian":  { 800: "#0D0F1C", 900: "#08090F", 950: "#030307" },
+        "warm-ivory":     { 100: "#FEFDFB", 200: "#F8F6F2", 300: "#F1EDE8" },
+        /* Legacy aliases kept for backward compatibility */
+        "luxury-gold": { 400: "#FFE9A8", 500: "#F0C46A", 600: "#D4A820" },
+        "obsidian": { 800: "#0D0F1C", 900: "#08090F", 950: "#030307" },
+        "pearl": { 100: "#FEFDFB", 200: "#F8F6F2", 300: "#F1EDE8" }
       },
       fontFamily: {
         body: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
@@ -134,8 +144,10 @@ export default {
         'lg-premium': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
         'xl-premium': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         '2xl-premium': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        'luxury': '0 0 20px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.15)',
-        'luxury-strong': '0 0 30px rgba(139, 92, 246, 0.5), 0 0 80px rgba(139, 92, 246, 0.2)',
+        'luxury': '0 0 24px rgba(155, 109, 255, 0.35), 0 0 64px rgba(155, 109, 255, 0.16)',
+        'luxury-strong': '0 0 36px rgba(155, 109, 255, 0.55), 0 0 90px rgba(155, 109, 255, 0.22)',
+        'luxury-gold': '0 0 28px rgba(240, 196, 106, 0.48), 0 0 72px rgba(247, 168, 36, 0.22)',
+        'luxury-iris': '0 4px 28px rgba(155, 109, 255, 0.44)',
       },
       backdropBlur: {
         xs: '2px',

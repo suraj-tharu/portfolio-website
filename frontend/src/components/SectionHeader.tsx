@@ -40,11 +40,11 @@ function WordReveal({ text, highlightWord, delay, onHighlightVisible }: {
               style={{
                 display: 'inline-block',
                 ...(isHighlight ? {
-                  background: 'linear-gradient(135deg,#a78bfa 0%,#f472b6 50%,#38bdf8 100%)',
+                  background: 'linear-gradient(135deg,#B898FF 0%,#FF6FB8 50%,#2FD6F5 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
-                  filter: 'drop-shadow(0 0 20px rgba(167,139,250,0.35))',
+                  filter: 'drop-shadow(0 0 22px rgba(155,109,255,0.40))',
                 } : {}),
               }}
             >
@@ -114,15 +114,15 @@ export default function SectionHeader({
               transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 width: 32, height: 1.5, originX: 0,
-                background: 'linear-gradient(90deg,#7c3aed,#f472b6)',
+                background: 'linear-gradient(90deg,#7445E8,#FF6FB8)',
                 borderRadius: 999,
-                boxShadow: '0 0 8px rgba(124,58,237,0.5)',
+                boxShadow: '0 0 10px rgba(116,69,232,0.55)',
               }}
             />
             <span style={{
               fontSize: '0.7rem', fontWeight: 800,
               letterSpacing: '0.28em', textTransform: 'uppercase',
-              background: 'linear-gradient(135deg,#a78bfa,#f472b6)',
+              background: 'linear-gradient(135deg,#B898FF,#FF6FB8)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>
               {displayEyebrow}
@@ -134,9 +134,9 @@ export default function SectionHeader({
               transition={{ delay: 0.1, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 width: 32, height: 1.5, originX: 1,
-                background: 'linear-gradient(270deg,#7c3aed,#f472b6)',
+                background: 'linear-gradient(270deg,#7445E8,#FF6FB8)',
                 borderRadius: 999,
-                boxShadow: '0 0 8px rgba(124,58,237,0.5)',
+                boxShadow: '0 0 10px rgba(116,69,232,0.55)',
               }}
             />
           </motion.div>
@@ -172,9 +172,10 @@ export default function SectionHeader({
           >
             <defs>
               <linearGradient id="underline-grad" x1="0" y1="0" x2="240" y2="0" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#7c3aed" />
-                <stop offset="50%" stopColor="#f472b6" />
-                <stop offset="100%" stopColor="#38bdf8" />
+                <stop offset="0%" stopColor="#7445E8" />
+                <stop offset="40%" stopColor="#FF6FB8" />
+                <stop offset="75%" stopColor="#F0C46A" />
+                <stop offset="100%" stopColor="#2FD6F5" />
               </linearGradient>
             </defs>
             {/* Base faint track */}
@@ -198,11 +199,11 @@ export default function SectionHeader({
             {/* Leading glow dot */}
             <motion.circle
               cx="0" cy="7" r="3"
-              fill="#a78bfa"
+              fill="#B898FF"
               initial={{ opacity: 0 }}
               animate={underlineVisible ? { opacity: [0, 1, 0], offsetDistance: ['0%', '100%'] } : { opacity: 0 }}
               transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-              style={{ filter: 'blur(1px)', boxShadow: '0 0 8px #a78bfa' }}
+              style={{ filter: 'blur(1px)', boxShadow: '0 0 8px #B898FF' }}
             />
           </svg>
         )}
