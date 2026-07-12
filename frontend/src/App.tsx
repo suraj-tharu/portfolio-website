@@ -8,6 +8,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ChatWidget from './components/ChatWidget';
 import FloatingActionButton from './components/FloatingActionButton';
+import PWAInstallPrompt from './components/PWAInstallPrompt';
 import { ToastProvider } from './components/Toast';
 import { useTheme } from './hooks/useTheme';
 import { useGoogleAnalytics, useWebVitals, trackPageView } from './hooks/useAnalytics';
@@ -97,6 +98,7 @@ function AppContent() {
           <DeveloperMode />
           <ChatWidget />
           <FloatingActionButton />
+          <PWAInstallPrompt />
 
           <div
             className="transition-opacity duration-1000 ease-in-out"
