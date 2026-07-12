@@ -7,6 +7,7 @@ import {
   Code2, Database, Globe, Cpu, Sparkles, AlertCircle, Loader2,
 } from 'lucide-react';
 import { setMetaTags, pageMetaTags } from '../utils/metaTags';
+import { addJsonLdSchema, breadcrumbSchema, webPageSchema, setCanonical } from '../utils/jsonLdSchema';
 
 /* ═══════════════════════════════════════════════════════════
    TYPES
@@ -165,6 +166,16 @@ export default function LearningHub() {
 
   useEffect(() => {
     setMetaTags(pageMetaTags.learning);
+    setCanonical('https://portfolio-website-vto2.onrender.com/learning-hub');
+    addJsonLdSchema(breadcrumbSchema([
+      { name: 'Home', url: 'https://portfolio-website-vto2.onrender.com' },
+      { name: 'Learning Hub', url: 'https://portfolio-website-vto2.onrender.com/learning-hub' },
+    ]), 'breadcrumb');
+    addJsonLdSchema(webPageSchema({
+      name: 'Learning Hub | Suraj Tharu Chaudhary',
+      description: 'Free study materials, class notes, and resources for SEE, NEB Grade 11 & 12 Computer Science by Er. Suraj Tharu Chaudhary.',
+      url: 'https://portfolio-website-vto2.onrender.com/learning-hub',
+    }), 'webpage');
   }, []);
 
   // === Fetch real data — Sanity first, backend API fallback ===

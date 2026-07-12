@@ -20,10 +20,20 @@ import InteractiveResume from '../components/InteractiveResume';
 import Contact from '../components/Contact';
 import FAQ from '../components/FAQ';
 import { setMetaTags, pageMetaTags } from '../utils/metaTags';
+import { addJsonLdSchema, breadcrumbSchema, webPageSchema, setCanonical } from '../utils/jsonLdSchema';
 
 export default function Home() {
   useEffect(() => {
     setMetaTags(pageMetaTags.home);
+    setCanonical('https://portfolio-website-vto2.onrender.com');
+    addJsonLdSchema(breadcrumbSchema([
+      { name: 'Home', url: 'https://portfolio-website-vto2.onrender.com' }
+    ]), 'breadcrumb');
+    addJsonLdSchema(webPageSchema({
+      name: 'Suraj Tharu Chaudhary — Computer Engineer, GIS Researcher & Educator',
+      description: 'Official portfolio of Suraj Tharu Chaudhary, Computer Engineer and GIS Researcher from Nepal.',
+      url: 'https://portfolio-website-vto2.onrender.com',
+    }), 'webpage');
   }, []);
 
   return (

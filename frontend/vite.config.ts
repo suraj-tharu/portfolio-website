@@ -14,6 +14,12 @@ export default defineConfig({
           if (id.includes('lucide-react')) return 'lucide';
           // D3 force simulation
           if (id.includes('d3-force') || id.includes('d3-')) return 'd3';
+          // Sanity client — split out so it loads on demand
+          if (id.includes('@sanity') || id.includes('sanity')) return 'sanity';
+          // Three.js / 3D
+          if (id.includes('three') || id.includes('@react-three')) return 'three';
+          // Leaflet mapping
+          if (id.includes('leaflet')) return 'leaflet';
           // React + ReactDOM vendor chunk
           if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) return 'react-vendor';
           // Other large node_modules
@@ -21,6 +27,8 @@ export default defineConfig({
         },
       },
     },
+    // Raise warning threshold to 600kb (vendor is legitimately large)
+    chunkSizeWarningLimit: 600,
   },
   server: {
     proxy: {

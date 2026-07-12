@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { addJsonLdSchema, faqSchema } from '../utils/jsonLdSchema';
@@ -21,38 +21,38 @@ interface FAQProps {
 const defaultFAQs: FAQItem[] = [
     {
         id: '1',
-        question: 'What are your areas of expertise?',
-        answer: 'I specialize in full-stack web development, system design, cloud architecture, and educational technology. My expertise spans backend technologies (Node.js, Python), frontend frameworks (React, Vue), and DevOps practices.',
-        category: 'Skills'
+        question: 'Who is Suraj Tharu Chaudhary?',
+        answer: 'Suraj Tharu Chaudhary is a Computer Engineer, GIS Researcher, and Senior Instructor from Nepal. He specializes in Machine Learning, Remote Sensing, LULC Analysis, and Full-Stack Web Development. He holds a B.E. in Computer Engineering from Himalaya College of Engineering and is currently pursuing an MSc in Information System Engineering at Purbanchal University.',
+        category: 'About'
     },
     {
         id: '2',
-        question: 'Do you offer freelance services?',
-        answer: 'Yes, I am available for freelance projects. I work with startups and organizations on custom solutions, consulting, and technical training. Please contact me for project details and timeline.',
-        category: 'Services'
+        question: 'What GIS and Remote Sensing research has Suraj Tharu done?',
+        answer: 'Suraj Tharu Chaudhary has conducted research on Land Use Land Cover (LULC) change analysis in Nawalparasi district using satellite imagery, supervised classification techniques, and Deep Learning models. His research focuses on urban sprawl simulation, hydrological modeling, and environmental impact assessments using QGIS, ArcGIS, and Python.',
+        category: 'Research'
     },
     {
         id: '3',
-        question: 'What is your teaching background?',
-        answer: 'I have been an instructor since 2021, teaching computer engineering fundamentals, web development, and system design. I believe in practical, hands-on learning approaches.',
+        question: 'What subjects does Suraj Tharu Chaudhary teach?',
+        answer: 'Er. Suraj Tharu Chaudhary teaches Computer Science for SEE (Grade 10) and NEB (Grade 11 & 12) students in Nepal. He also delivers Teacher Training sessions on modern pedagogy and ICT integration. His courses cover programming fundamentals, data structures, database management, and web development.',
         category: 'Education'
     },
     {
         id: '4',
-        question: 'Can I access your learning resources?',
-        answer: 'Yes! Visit the Learning Hub section for free tutorials, articles, and resources on web development, programming, and software engineering concepts.',
+        question: 'Are free study materials available for Class 10, 11, and 12?',
+        answer: 'Yes! Visit the Learning Hub section of this portfolio to access free class notes, tutorials, and PDF resources for SEE Computer Science, NEB Grade 11 Computer Science, and NEB Grade 12 Computer Science. New materials are added regularly.',
         category: 'Learning'
     },
     {
         id: '5',
-        question: 'How do I stay updated with your latest work?',
-        answer: 'Subscribe to my newsletter to receive updates on new articles, projects, and research. You can also follow me on GitHub, LinkedIn, and Twitter for regular updates.',
-        category: 'Updates'
+        question: 'Can I hire Suraj Tharu Chaudhary for freelance work?',
+        answer: 'Yes, Suraj is available for freelance projects including GIS analysis, machine learning model development, full-stack web applications, and technical training programs. Reach out through the Contact section of this portfolio with your project details.',
+        category: 'Services'
     },
     {
         id: '6',
-        question: 'What technologies do you use?',
-        answer: 'I work with modern tech stacks including React, Node.js, TypeScript, Tailwind CSS, PostgreSQL, Docker, and AWS. I stay updated with emerging technologies and best practices.',
+        question: 'What programming languages and tools does Suraj use?',
+        answer: 'Suraj Tharu Chaudhary works with Python, JavaScript, TypeScript, and SQL for development. His GIS toolkit includes QGIS, ArcGIS Pro, Google Earth Engine, and ERDAS Imagine. For machine learning, he uses TensorFlow, Keras, and scikit-learn. Web development projects use React, Node.js, Express, and PostgreSQL.',
         category: 'Technology'
     }
 ];
@@ -61,14 +61,15 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-    // Add JSON-LD schema on mount
-    useState(() => {
+    // Add JSON-LD schema on mount (useEffect = correct side-effect hook)
+    useEffect(() => {
         const qaItems = items.map(item => ({
             question: item.question,
             answer: item.answer
         }));
         addJsonLdSchema(faqSchema(qaItems));
-    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const toggleFAQ = (id: string) => {
         setExpandedId(expandedId === id ? null : id);

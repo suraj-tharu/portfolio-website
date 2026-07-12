@@ -3,11 +3,28 @@
  * Suggestion #12: Structured Data (JSON-LD)
  */
 
-export const addJsonLdSchema = (schema: Record<string, unknown>) => {
+export const addJsonLdSchema = (schema: Record<string, unknown>, id?: string) => {
+    // Avoid duplicate schemas
+    if (id) {
+        const existing = document.getElementById(`ld-${id}`);
+        if (existing) existing.remove();
+    }
     const script = document.createElement('script');
     script.type = 'application/ld+json';
+    if (id) script.id = `ld-${id}`;
     script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
+};
+
+// Set or update canonical URL dynamically per page
+export const setCanonical = (url: string) => {
+    let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link) {
+        link = document.createElement('link');
+        link.rel = 'canonical';
+        document.head.appendChild(link);
+    }
+    link.href = url;
 };
 
 // Person Schema
@@ -138,3 +155,39 @@ export const organizationSchema = {
         contactType: 'Customer Service'
     }
 };
+
+// BreadcrumbList Schema
+export const breadcrumbSchema = (crumbs: Array<{ name: string; url: string }>) => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((crumb, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: crumb.name,
+        item: crumb.url,
+    })),
+});
+
+// WebPage Schema
+export const webPageSchema = (page: {
+    name: string;
+    description: string;
+    url: string;
+}) => ({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': page.url,
+    name: page.name,
+    description: page.description,
+    url: page.url,
+    isPartOf: {
+        '@type': 'WebSite',
+        '@id': 'https://portfolio-website-vto2.onrender.com/#website',
+        name: 'Suraj Tharu Chaudhary',
+        url: 'https://portfolio-website-vto2.onrender.com',
+    },
+    author: {
+        '@type': 'Person',
+        name: 'Suraj Tharu Chaudhary',
+    },
+});

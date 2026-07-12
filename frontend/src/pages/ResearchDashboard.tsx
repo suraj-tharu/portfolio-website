@@ -3,10 +3,21 @@ import { useEffect } from 'react';
 import GISShowcase from '../components/GISShowcase';
 import GlobeShowcase from '../components/GlobeShowcase';
 import { setMetaTags, pageMetaTags } from '../utils/metaTags';
+import { addJsonLdSchema, breadcrumbSchema, webPageSchema, setCanonical } from '../utils/jsonLdSchema';
 
 export default function ResearchDashboard() {
   useEffect(() => {
     setMetaTags(pageMetaTags.research);
+    setCanonical('https://portfolio-website-vto2.onrender.com/research');
+    addJsonLdSchema(breadcrumbSchema([
+      { name: 'Home', url: 'https://portfolio-website-vto2.onrender.com' },
+      { name: 'Research', url: 'https://portfolio-website-vto2.onrender.com/research' },
+    ]), 'breadcrumb');
+    addJsonLdSchema(webPageSchema({
+      name: 'Research & GIS Projects | Suraj Tharu Chaudhary',
+      description: 'GIS, Remote Sensing, LULC Analysis and Machine Learning research by Suraj Tharu Chaudhary.',
+      url: 'https://portfolio-website-vto2.onrender.com/research',
+    }), 'webpage');
   }, []);
 
   return (
