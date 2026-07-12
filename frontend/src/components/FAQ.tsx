@@ -81,10 +81,10 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
         : items.filter(item => (item.category || 'General') === selectedCategory);
 
     return (
-        <section id="faq" className="py-12 md:py-16 relative z-20">
+        <section id="faq" className="py-8 md:py-10 relative z-20">
             <div className="max-w-4xl mx-auto px-6 md:px-10">
                 {/* Header */}
-                <div className="flex flex-col items-center text-center mb-16">
+                <div className="flex flex-col items-center text-center mb-10">
                     <div className="flex items-center justify-center gap-4 mb-4">
                         <div className="hidden md:block w-8 h-px bg-stroke" />
                         <span className="text-xs font-bold uppercase tracking-[0.4em] bg-gradient-to-r from-slate-600 to-slate-800 dark:from-white dark:via-slate-200 dark:to-slate-400 bg-clip-text text-transparent drop-shadow-sm">Questions</span>

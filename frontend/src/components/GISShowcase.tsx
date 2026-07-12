@@ -112,11 +112,11 @@ export default function GISShowcase() {
   }, [activeLayer]);
 
   return (
-    <section id="gis-showcase" className="py-12 md:py-16 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">
+    <section id="gis-showcase" className="py-8 md:py-10 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10">
         
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
           <div>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-8 h-px bg-[var(--brand)]" />

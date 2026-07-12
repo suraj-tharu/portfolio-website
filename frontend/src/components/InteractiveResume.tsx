@@ -6,7 +6,7 @@ import ResumeModal from './ResumeModal';
 export default function InteractiveResume() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   return (
-    <section id="resume" className="bg-bg py-12 md:py-16 relative z-20 border-t border-stroke">
+    <section id="resume" className="bg-bg py-8 md:py-10 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 flex flex-col items-center">
 
         <motion.div

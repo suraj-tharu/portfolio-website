@@ -66,7 +66,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
     };
 
     return (
-        <section className="py-12 md:py-16 relative z-20">
+        <section className="py-8 md:py-10 relative z-20">
             <div className="max-w-6xl mx-auto px-6 md:px-10">
                 {/* Header */}
                 <div className="text-center mb-12">

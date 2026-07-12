@@ -12,22 +12,28 @@ import {
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════
-   LUXURY CSS
+   ULTRA-PREMIUM CSS
 ═══════════════════════════════════════════════════════ */
 const TIMELINE_CSS = `
   :root, .dark {
-    --lux-surface-rgb: 8, 8, 14;
-    --lux-card-bg: rgba(10, 10, 16, 0.6);
-    --lux-text-muted: rgba(232, 232, 232, 0.55);
-    --lux-text-soft: rgba(232, 232, 232, 0.4);
-    --lux-text-strong: rgba(232, 232, 232, 0.8);
+    --lux-surface-rgb: 6, 6, 12;
+    --lux-surface-alt: 4, 4, 10;
+    --lux-card-bg: rgba(8, 8, 16, 0.72);
+    --lux-card-border: rgba(212, 175, 55, 0.18);
+    --lux-text-muted: rgba(235, 235, 245, 0.7);
+    --lux-text-soft: rgba(235, 235, 245, 0.52);
+    --lux-text-strong: rgba(245, 245, 255, 0.92);
+    --lux-text-faint: rgba(235, 235, 245, 0.32);
   }
   .light {
-    --lux-surface-rgb: 252, 252, 254;
-    --lux-card-bg: rgba(255, 255, 255, 0.75);
-    --lux-text-muted: rgba(60, 60, 80, 0.7);
-    --lux-text-soft: rgba(60, 60, 80, 0.6);
-    --lux-text-strong: rgba(15, 15, 26, 0.9);
+    --lux-surface-rgb: 250, 249, 255;
+    --lux-surface-alt: 244, 242, 252;
+    --lux-card-bg: rgba(255, 255, 255, 0.88);
+    --lux-card-border: rgba(180, 140, 30, 0.22);
+    --lux-text-muted: rgba(30, 25, 55, 0.78);
+    --lux-text-soft: rgba(40, 35, 65, 0.65);
+    --lux-text-strong: rgba(12, 10, 28, 0.95);
+    --lux-text-faint: rgba(40, 35, 65, 0.4);
   }
 
   @keyframes tl-gold-shimmer {
@@ -35,22 +41,27 @@ const TIMELINE_CSS = `
     100% { background-position: 300% center; }
   }
   @keyframes tl-orb-breathe {
-    0%,100% { transform: scale(1) rotate(0deg); opacity: 0.55; }
-    50%      { transform: scale(1.18) rotate(8deg); opacity: 0.85; }
+    0%,100% { transform: scale(1) rotate(0deg); opacity: 0.6; }
+    50%      { transform: scale(1.22) rotate(10deg); opacity: 0.9; }
   }
   @keyframes tl-pulse {
-    0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.45); }
-    50%      { box-shadow: 0 0 0 14px rgba(212,175,55,0); }
+    0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.55), 0 0 20px rgba(212,175,55,0.2); }
+    50%      { box-shadow: 0 0 0 16px rgba(212,175,55,0), 0 0 30px rgba(212,175,55,0); }
+  }
+  @keyframes tl-teal-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(45,212,191,0.55), 0 0 20px rgba(45,212,191,0.2); }
+    50%      { box-shadow: 0 0 0 16px rgba(45,212,191,0), 0 0 30px rgba(45,212,191,0); }
   }
   @keyframes tl-scan-line {
     0%   { top: -2px; opacity: 0; }
-    5%   { opacity: 0.6; }
-    95%  { opacity: 0.25; }
+    4%   { opacity: 0.7; }
+    96%  { opacity: 0.3; }
     100% { top: 100%; opacity: 0; }
   }
   @keyframes tl-float-slow {
-    0%,100% { transform: translateY(0px); }
-    50%      { transform: translateY(-14px); }
+    0%,100% { transform: translateY(0px) rotate(0deg); }
+    33%      { transform: translateY(-10px) rotate(1.5deg); }
+    66%      { transform: translateY(-6px) rotate(-1deg); }
   }
   @keyframes tl-spin-slow {
     to { transform: rotate(360deg); }
@@ -58,11 +69,41 @@ const TIMELINE_CSS = `
   @keyframes tl-counter-spin {
     to { transform: rotate(-360deg); }
   }
+  @keyframes tl-halo {
+    0%,100% { opacity: 0.35; transform: scale(1); }
+    50%      { opacity: 0.7; transform: scale(1.08); }
+  }
+  @keyframes tl-live-dot {
+    0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(74,222,128,0.6); }
+    50%      { opacity: 0.85; transform: scale(1.3); box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+  }
+  @keyframes tl-badge-glow {
+    0%,100% { box-shadow: 0 0 20px rgba(212,175,55,0.12), inset 0 1px 0 rgba(212,175,55,0.15); }
+    50%      { box-shadow: 0 0 40px rgba(212,175,55,0.28), inset 0 1px 0 rgba(212,175,55,0.25); }
+  }
+  @keyframes tl-orbit-drift {
+    0%   { transform: rotate(0deg) translateX(3px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(3px) rotate(-360deg); }
+  }
+
   .tl-timeline-card {
-    transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    transition: border-color 0.45s ease, box-shadow 0.45s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1), background 0.45s ease;
   }
   .tl-timeline-card:hover {
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-6px) scale(1.015);
+  }
+  .tl-detail-card {
+    transition: box-shadow 0.45s ease;
+  }
+  @media (max-width: 767px) {
+    .tl-orbital-wrap { display: none !important; }
+    .tl-mobile-cards { display: flex !important; }
+  }
+  @media (min-width: 768px) {
+    .tl-mobile-cards { display: none !important; }
+  }
+  @media (max-width: 480px) {
+    .tl-cta-btn { padding: 14px 28px !important; font-size: 0.75rem !important; }
   }
 `;
 
@@ -383,22 +424,27 @@ function LuxuryDetailCard({ item, index }: { item: TimelineEvent; index: number 
     <AnimatePresence mode="wait">
       <motion.div
         key={index}
-        initial={{ opacity: 0, y: 40, filter: 'blur(14px)' }}
-        animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-        exit={{ opacity: 0, y: -24, filter: 'blur(10px)' }}
-        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+        initial={{ opacity: 0, y: 48, filter: 'blur(18px)', scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, filter: 'blur(0px)', scale: 1 }}
+        exit={{ opacity: 0, y: -28, filter: 'blur(14px)', scale: 0.97 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="tl-detail-card"
         style={{
           flex: 1, minWidth: 0, position: 'relative',
           background: `linear-gradient(145deg,
-            rgba(${colorRgb},0.05) 0%,
-            rgba(var(--lux-surface-rgb), 0.96) 45%,
-            rgba(${ROSE_RGB},0.03) 100%)`,
-          border: `1px solid rgba(${colorRgb},0.22)`,
+            rgba(${colorRgb},0.07) 0%,
+            rgba(var(--lux-surface-rgb), 0.97) 40%,
+            rgba(var(--lux-surface-alt), 0.95) 70%,
+            rgba(${ROSE_RGB},0.035) 100%)`,
+          border: `1px solid rgba(${colorRgb},0.26)`,
           borderRadius: 28,
-          padding: 'clamp(28px,3.5vw,48px)',
+          padding: 'clamp(28px,3.5vw,52px)',
           overflow: 'hidden',
-          backdropFilter: 'blur(24px)',
-          boxShadow: `0 0 0 1px rgba(${colorRgb},0.07), 0 40px 80px rgba(0,0,0,0.55), 0 0 100px rgba(${colorRgb},0.07)`,
+          backdropFilter: 'blur(32px)',
+          boxShadow: `0 0 0 1px rgba(${colorRgb},0.1),
+            0 40px 100px rgba(0,0,0,0.65),
+            0 0 80px rgba(${colorRgb},0.08),
+            inset 0 1px 0 rgba(255,255,255,0.06)`,
         }}
       >
         {/* Top shimmer line */}
@@ -499,38 +545,43 @@ function LuxuryDetailCard({ item, index }: { item: TimelineEvent; index: number 
 
         {/* Meta row */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.38 }}
-          style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center' }}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.42, duration: 0.5 }}
+          style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}
         >
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
+            display: 'flex', alignItems: 'center', gap: 10,
             fontFamily: 'Plus Jakarta Sans, sans-serif',
-            fontSize: '0.78rem', color: 'var(--lux-text-soft)',
+            fontSize: 'clamp(0.74rem, 1.1vw, 0.82rem)',
+            color: 'var(--lux-text-muted)',
           }}>
             <div style={{
-              width: 30, height: 30, borderRadius: 10,
-              background: `rgba(${colorRgb},0.1)`,
-              border: `1px solid rgba(${colorRgb},0.22)`,
+              width: 32, height: 32, borderRadius: 11,
+              background: `linear-gradient(135deg, rgba(${colorRgb},0.14), rgba(${GOLD_RGB},0.06))`,
+              border: `1px solid rgba(${colorRgb},0.28)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: `0 0 16px rgba(${colorRgb},0.12)`,
             }}>
-              <MapPin size={11} style={{ color }} />
+              <MapPin size={12} style={{ color }} />
             </div>
             {item.location}
           </div>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto',
-            fontFamily: 'Syne, sans-serif', fontSize: '0.7rem', fontWeight: 800,
-            color, letterSpacing: '0.08em',
+            display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto',
+            fontFamily: 'Syne, sans-serif',
+            fontSize: 'clamp(0.68rem, 1.0vw, 0.75rem)',
+            fontWeight: 800,
+            color, letterSpacing: '0.1em',
           }}>
             <div style={{
-              width: 30, height: 30, borderRadius: 10,
-              background: `rgba(${colorRgb},0.1)`,
-              border: `1px solid rgba(${colorRgb},0.22)`,
+              width: 32, height: 32, borderRadius: 11,
+              background: `linear-gradient(135deg, rgba(${colorRgb},0.14), rgba(${GOLD_RGB},0.06))`,
+              border: `1px solid rgba(${colorRgb},0.28)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: `0 0 16px rgba(${colorRgb},0.12)`,
             }}>
-              <Calendar size={11} style={{ color }} />
+              <Calendar size={12} style={{ color }} />
             </div>
             {item.year}
           </div>
@@ -553,30 +604,32 @@ function StepNavigator({ total, active, onSelect, items }: {
   total: number; active: number; onSelect: (i: number) => void; items: TimelineEvent[];
 }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', justifyContent: 'center' }}>
       {Array.from({ length: total }, (_, i) => {
         const col = items[i]?.type === 'education' ? GOLD : TEAL_LUX;
         return (
           <motion.button
             key={i}
             onClick={() => onSelect(i)}
+            whileHover={{ scaleY: 1.35 }}
             animate={{
-              width: active === i ? 36 : 8,
-              backgroundColor: active === i ? col : 'rgba(var(--text-base-rgb), 0.15)',
+              width: active === i ? 40 : 8,
+              backgroundColor: active === i ? col : 'rgba(var(--text-base-rgb,100,100,120), 0.18)',
+              boxShadow: active === i ? `0 0 18px ${col}AA, 0 0 35px rgba(${active === i ? (items[i]?.type === 'education' ? GOLD_RGB : TEAL_RGB) : GOLD_RGB},0.25)` : 'none',
             }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             style={{
               height: 8, borderRadius: 999, border: 'none', cursor: 'pointer',
               padding: 0, outline: 'none',
-              boxShadow: active === i ? `0 0 14px ${col}90` : 'none',
             }}
           />
         );
       })}
       <span style={{
-        marginLeft: 8, fontSize: '0.6rem',
-        color: `rgba(${GOLD_RGB},0.5)`,
-        fontFamily: 'Syne, sans-serif', fontWeight: 800, letterSpacing: '0.12em',
+        marginLeft: 10, fontSize: '0.62rem',
+        background: `linear-gradient(90deg, ${GOLD}, ${ROSE_GOLD})`,
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+        fontFamily: 'Syne, sans-serif', fontWeight: 800, letterSpacing: '0.14em',
       }}>
         {String(active + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
       </span>
@@ -711,89 +764,137 @@ function MobileLuxeCard({
 function LuxuryHeader() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-      style={{ textAlign: 'center', marginBottom: 'clamp(56px,8vw,96px)', position: 'relative' }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      style={{ textAlign: 'center', marginBottom: 'clamp(56px,8vw,100px)', position: 'relative' }}
     >
+      {/* Halo radial behind header */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 'min(600px, 90vw)', height: 'min(600px, 90vw)',
+        borderRadius: '50%',
+        background: `radial-gradient(circle, rgba(${GOLD_RGB},0.055) 0%, rgba(${ROSE_RGB},0.03) 45%, transparent 70%)`,
+        filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0,
+        animation: 'tl-halo 8s ease-in-out infinite',
+      }} />
+
       {/* Overline badge */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.75 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.7, y: 12 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.7, delay: 0.1 }}
+        transition={{ duration: 0.75, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
         style={{
+          position: 'relative', zIndex: 1,
           display: 'inline-flex', alignItems: 'center', gap: 10,
-          padding: '7px 22px', borderRadius: 999, marginBottom: 28,
+          padding: '8px 24px', borderRadius: 999, marginBottom: 32,
           fontFamily: 'Syne, sans-serif', fontWeight: 800,
-          fontSize: '0.62rem', letterSpacing: '0.26em', textTransform: 'uppercase',
-          background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.12), rgba(${ROSE_RGB},0.06))`,
-          border: `1px solid rgba(${GOLD_RGB},0.28)`,
+          fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase',
+          background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.14), rgba(${ROSE_RGB},0.07), rgba(${GOLD_RGB},0.1))`,
+          border: `1px solid rgba(${GOLD_RGB},0.32)`,
           color: GOLD,
-          boxShadow: `0 0 30px rgba(${GOLD_RGB},0.1)`,
+          animation: 'tl-badge-glow 4s ease-in-out infinite',
+          backdropFilter: 'blur(12px)',
         }}
       >
-        <span style={{ width: 4, height: 4, borderRadius: '50%', background: GOLD, boxShadow: `0 0 8px ${GOLD}` }} />
+        {/* Live green dot */}
+        <span style={{
+          width: 7, height: 7, borderRadius: '50%',
+          background: '#4ade80',
+          display: 'inline-block',
+          animation: 'tl-live-dot 2s ease-in-out infinite',
+          flexShrink: 0,
+        }} />
         Professional Journey
-        <span style={{ width: 4, height: 4, borderRadius: '50%', background: GOLD, boxShadow: `0 0 8px ${GOLD}` }} />
+        <span style={{ width: 4, height: 4, borderRadius: '50%', background: GOLD, boxShadow: `0 0 10px ${GOLD}`, display: 'inline-block' }} />
       </motion.div>
 
       {/* Main title */}
-      <h2 style={{
-        fontFamily: 'Syne, sans-serif', fontWeight: 900,
-        fontSize: 'clamp(2.8rem, 6vw, 6rem)',
-        lineHeight: 0.92, letterSpacing: '-0.045em',
-        color: 'var(--text)', marginBottom: 28,
-      }}>
-        Experience &{' '}
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative', zIndex: 1,
+          fontFamily: 'Syne, sans-serif', fontWeight: 900,
+          fontSize: 'clamp(2.6rem, 6vw, 6.2rem)',
+          lineHeight: 0.9, letterSpacing: '-0.048em',
+          color: 'var(--text)', marginBottom: 28,
+        }}
+      >
+        Experience{' '}&{' '}
         <br />
         <span style={{
-          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 35%, ${ROSE_GOLD} 65%, ${GOLD} 100%)`,
+          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 30%, ${ROSE_GOLD} 60%, ${GOLD} 100%)`,
           backgroundSize: '300% auto',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           fontStyle: 'italic',
-          animation: 'tl-gold-shimmer 4s linear infinite',
+          animation: 'tl-gold-shimmer 3.5s linear infinite',
         }}>
           Education
         </span>
-      </h2>
+      </motion.h2>
 
-      <p style={{
-        fontFamily: 'Plus Jakarta Sans, sans-serif',
-        fontSize: 'clamp(0.88rem, 1.3vw, 1.05rem)',
-        color: 'var(--lux-text-soft)', lineHeight: 1.9, maxWidth: 500, margin: '0 auto 32px',
-      }}>
+      <motion.p
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.75, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative', zIndex: 1,
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          fontSize: 'clamp(0.9rem, 1.35vw, 1.08rem)',
+          color: 'var(--lux-text-soft)', lineHeight: 1.95,
+          maxWidth: 520, margin: '0 auto 36px',
+        }}
+      >
         A continuous path of growth through engineering, teaching, and research —
         each milestone forged with precision and purpose.
-      </p>
+      </motion.p>
 
-      {/* Decorative divider */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          height: 1, maxWidth: 400, margin: '0 auto',
-          background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.8), rgba(${ROSE_RGB},0.5), rgba(${GOLD_RGB},0.8), transparent)`,
-          transformOrigin: 'center',
-        }}
-      />
-      {/* Center diamond */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: 0.9 }}
-        style={{
-          width: 8, height: 8,
-          background: GOLD,
-          transform: 'rotate(45deg)',
-          margin: '-4px auto 0',
-          boxShadow: `0 0 16px ${GOLD}`,
-        }}
-      />
+      {/* Decorative triple-line divider */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.6, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            height: 1, width: 'min(480px, 80vw)',
+            background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.9), rgba(${ROSE_RGB},0.6), rgba(${GOLD_RGB},0.9), transparent)`,
+            transformOrigin: 'center',
+          }}
+        />
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            height: 1, width: 'min(280px, 50vw)', opacity: 0.35,
+            background: `linear-gradient(90deg, transparent, rgba(${PLAT_RGB},0.7), transparent)`,
+            transformOrigin: 'center',
+          }}
+        />
+        {/* Center diamond */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0, rotate: -45 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 1.0, type: 'spring', stiffness: 300 }}
+          style={{
+            width: 10, height: 10,
+            background: `linear-gradient(135deg, ${GOLD}, ${ROSE_GOLD})`,
+            transform: 'rotate(45deg)',
+            margin: '-5px auto 0',
+            boxShadow: `0 0 20px ${GOLD}, 0 0 40px rgba(${GOLD_RGB},0.4)`,
+          }}
+        />
+      </div>
     </motion.div>
   );
 }

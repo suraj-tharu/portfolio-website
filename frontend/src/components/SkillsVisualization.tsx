@@ -12,24 +12,26 @@ import {
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════
-   LUXURY KEYFRAMES + STYLES
+   ULTRA-PREMIUM LUXURY KEYFRAMES + STYLES
 ═══════════════════════════════════════════════════════════════ */
 const CSS = `
   :root, .dark {
-    --lux-surface-rgb: 10, 5, 25;
-    --lux-surface-alt: 6, 4, 14;
-    --lux-card-bg: rgba(10, 10, 16, 0.6);
-    --lux-text-muted: rgba(232, 232, 232, 0.32);
-    --lux-text-soft: rgba(232, 232, 232, 0.25);
-    --lux-text-strong: rgba(232, 232, 232, 0.85);
+    --lux-surface-rgb: 6, 5, 18;
+    --lux-surface-alt: 4, 4, 12;
+    --lux-card-bg: rgba(8, 8, 18, 0.75);
+    --lux-text-muted: rgba(235, 235, 248, 0.72);
+    --lux-text-soft: rgba(235, 235, 248, 0.42);
+    --lux-text-strong: rgba(248, 248, 255, 0.94);
+    --lux-text-faint: rgba(235, 235, 248, 0.28);
   }
   .light {
-    --lux-surface-rgb: 252, 252, 254;
-    --lux-surface-alt: 245, 245, 250;
-    --lux-card-bg: rgba(255, 255, 255, 0.75);
-    --lux-text-muted: rgba(60, 60, 80, 0.6);
-    --lux-text-soft: rgba(60, 60, 80, 0.5);
-    --lux-text-strong: rgba(15, 15, 26, 0.9);
+    --lux-surface-rgb: 248, 247, 255;
+    --lux-surface-alt: 242, 240, 254;
+    --lux-card-bg: rgba(255, 255, 255, 0.92);
+    --lux-text-muted: rgba(22, 18, 50, 0.82);
+    --lux-text-soft: rgba(35, 30, 65, 0.6);
+    --lux-text-strong: rgba(10, 8, 28, 0.96);
+    --lux-text-faint: rgba(35, 30, 65, 0.38);
   }
 
   @keyframes sk-gold-shimmer {
@@ -37,31 +39,32 @@ const CSS = `
     100% { background-position: 300% center; }
   }
   @keyframes sk-orb-drift {
-    0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 0.55; }
-    33%      { transform: translate(50px,-35px) scale(1.12) rotate(5deg); opacity: 0.82; }
-    66%      { transform: translate(-30px,25px) scale(0.94) rotate(-3deg); opacity: 0.6; }
+    0%,100% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 0.6; }
+    33%      { transform: translate(55px,-40px) scale(1.15) rotate(6deg); opacity: 0.88; }
+    66%      { transform: translate(-35px,28px) scale(0.92) rotate(-4deg); opacity: 0.65; }
   }
   @keyframes sk-pulse-ring {
-    0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.5); transform: scale(0.96); }
-    50%      { box-shadow: 0 0 0 16px rgba(212,175,55,0); transform: scale(1.06); }
+    0%,100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.55); transform: scale(0.96); }
+    50%      { box-shadow: 0 0 0 18px rgba(212,175,55,0); transform: scale(1.08); }
   }
   @keyframes sk-scan {
     0%   { top: -2px; opacity: 0; }
-    4%   { opacity: 0.55; }
-    96%  { opacity: 0.2; }
+    3%   { opacity: 0.65; }
+    97%  { opacity: 0.22; }
     100% { top: 100%; opacity: 0; }
   }
   @keyframes sk-dot-pulse {
-    0%,100% { opacity: 0.25; transform: scale(0.75); }
-    50%      { opacity: 1; transform: scale(1.4); }
+    0%,100% { opacity: 0.28; transform: scale(0.7); }
+    50%      { opacity: 1; transform: scale(1.5); }
   }
   @keyframes sk-float {
     0%,100% { transform: translateY(0px) rotate(0deg); }
-    50%      { transform: translateY(-10px) rotate(3deg); }
+    33%      { transform: translateY(-8px) rotate(2deg); }
+    66%      { transform: translateY(-5px) rotate(-1.5deg); }
   }
   @keyframes sk-border-glow {
-    0%,100% { opacity: 0.4; }
-    50%      { opacity: 0.9; }
+    0%,100% { opacity: 0.45; }
+    50%      { opacity: 1; }
   }
   @keyframes sk-spin {
     to { transform: rotate(360deg); }
@@ -69,16 +72,32 @@ const CSS = `
   @keyframes sk-counter-spin {
     to { transform: rotate(-360deg); }
   }
+  @keyframes sk-halo {
+    0%,100% { opacity: 0.32; transform: scale(1) rotate(0deg); }
+    50%      { opacity: 0.65; transform: scale(1.12) rotate(3deg); }
+  }
+  @keyframes sk-live-dot {
+    0%,100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(74,222,128,0.65); }
+    50%      { opacity: 0.82; transform: scale(1.35); box-shadow: 0 0 0 7px rgba(74,222,128,0); }
+  }
+  @keyframes sk-badge-glow {
+    0%,100% { box-shadow: 0 0 22px rgba(212,175,55,0.14), inset 0 1px 0 rgba(212,175,55,0.18); }
+    50%      { box-shadow: 0 0 45px rgba(212,175,55,0.32), inset 0 1px 0 rgba(212,175,55,0.28); }
+  }
+  @keyframes sk-grid-shimmer {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 200% 200%; }
+  }
 
   .sk-card {
     transform-style: preserve-3d;
-    perspective: 900px;
+    perspective: 1000px;
   }
   .sk-card:hover .sk-card-inner {
-    transform: translateZ(10px);
+    transform: translateZ(14px);
   }
   .sk-card-inner {
-    transition: transform 0.35s ease;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
   }
 
   @media (max-width: 640px) {
@@ -86,7 +105,7 @@ const CSS = `
       flex-direction: column !important;
       align-items: stretch !important;
       gap: 16px !important;
-      padding: 18px 20px !important;
+      padding: 18px 18px !important;
     }
     .sk-hero-avg {
       text-align: left !important;
@@ -94,7 +113,14 @@ const CSS = `
       align-items: center !important;
       justify-content: space-between !important;
       width: 100% !important;
-      padding: 12px 16px !important;
+      padding: 12px 14px !important;
+    }
+  }
+  @media (max-width: 480px) {
+    .sk-controls-bar {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px !important;
     }
   }
 `;
@@ -299,7 +325,9 @@ function ConstellationGraph() {
           x - node.radius * 0.3, y - node.radius * 0.3, 0,
           x, y, node.radius + 4,
         );
-        grad.addColorStop(0, 'var(--surface-3)'); grad.addColorStop(1, 'var(--surface)');
+        const isLight = document.documentElement.classList.contains('light');
+        grad.addColorStop(0, isLight ? '#E8E8ED' : '#181B2E');
+        grad.addColorStop(1, isLight ? '#F5F5F7' : '#0A0B12');
         ctx.fillStyle = grad;
         ctx.strokeStyle = isH ? node.color : `${node.color}70`;
         ctx.lineWidth  = isH ? 2.2 : 1.5;
@@ -438,8 +466,8 @@ function SkillCard({
 
   const mouseX  = useMotionValue(0);
   const mouseY  = useMotionValue(0);
-  const rotateX = useSpring(useTransform(mouseY, [-60, 60], [10, -10]), { stiffness: 320, damping: 28 });
-  const rotateY = useSpring(useTransform(mouseX, [-80, 80], [-10, 10]), { stiffness: 320, damping: 28 });
+  const rotateX = useSpring(useTransform(mouseY, [-70, 70], [12, -12]), { stiffness: 360, damping: 30 });
+  const rotateY = useSpring(useTransform(mouseX, [-90, 90], [-12, 12]), { stiffness: 360, damping: 30 });
 
   const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -449,16 +477,16 @@ function SkillCard({
   const handleLeave = () => { mouseX.set(0); mouseY.set(0); setHovered(false); };
 
   const profLabel = level >= 90 ? 'Expert' : level >= 80 ? 'Advanced' : level >= 70 ? 'Proficient' : 'Intermediate';
-  const profColor = level >= 90 ? GOLD : level >= 80 ? PLAT : `rgba(${colorRgb},0.8)`;
+  const profColor = level >= 90 ? GOLD : level >= 80 ? PLAT : `rgba(${colorRgb},0.9)`;
 
   return (
     <motion.div
       ref={ref}
       className="sk-card"
-      initial={{ opacity: 0, y: 36, scale: 0.94 }}
+      initial={{ opacity: 0, y: 40, scale: 0.93 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
-      style={{ perspective: 900 }}
+      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      style={{ perspective: 1000 }}
       onMouseMove={handleMove}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={handleLeave}
@@ -467,28 +495,28 @@ function SkillCard({
         className="sk-card-inner"
         style={{
           rotateX, rotateY, transformStyle: 'preserve-3d',
-          padding: '22px 24px', borderRadius: 22,
+          padding: '24px 26px', borderRadius: 24,
           background: hovered
-            ? `linear-gradient(145deg, rgba(${colorRgb},0.12), rgba(${GOLD_RGB},0.04), rgba(${colorRgb},0.06))`
-            : 'linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))',
-          border: `1px solid ${hovered ? `rgba(${GOLD_RGB},0.35)` : `rgba(${colorRgb},0.12)`}`,
+            ? `linear-gradient(145deg, rgba(${colorRgb},0.14), rgba(${GOLD_RGB},0.05), rgba(${colorRgb},0.07))`
+            : 'linear-gradient(145deg, rgba(var(--lux-surface-rgb),0.9), rgba(var(--lux-surface-alt),0.8))',
+          border: `1px solid ${hovered ? `rgba(${GOLD_RGB},0.4)` : `rgba(${colorRgb},0.15)`}`,
           boxShadow: hovered
-            ? `0 24px 70px -10px rgba(${colorRgb},0.28), 0 0 0 1px rgba(${GOLD_RGB},0.15), inset 0 1px 0 rgba(${GOLD_RGB},0.1)`
-            : `0 4px 24px rgba(0,0,0,0.25)`,
-          backdropFilter: 'blur(24px)',
+            ? `0 28px 80px -8px rgba(${colorRgb},0.32), 0 0 0 1px rgba(${GOLD_RGB},0.18), inset 0 1px 0 rgba(${GOLD_RGB},0.12)`
+            : `0 4px 28px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.04)`,
+          backdropFilter: 'blur(28px)',
           position: 'relative', overflow: 'hidden',
-          transition: 'background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease',
+          transition: 'background 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease',
         }}
       >
-        {/* Gold shimmer on hover */}
+        {/* Gold shimmer sweep on hover */}
         {hovered && (
           <motion.div
-            initial={{ x: '-110%' }}
-            animate={{ x: '220%' }}
-            transition={{ duration: 1.3, ease: 'easeInOut' }}
+            initial={{ x: '-120%' }}
+            animate={{ x: '240%' }}
+            transition={{ duration: 1.4, ease: 'easeInOut' }}
             style={{
               position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-              background: `linear-gradient(108deg, transparent 30%, rgba(${GOLD_RGB},0.12) 50%, transparent 70%)`,
+              background: `linear-gradient(108deg, transparent 25%, rgba(${GOLD_RGB},0.15) 50%, transparent 75%)`,
               width: '65%',
             }}
           />
@@ -496,52 +524,61 @@ function SkillCard({
 
         {/* Top shimmer line */}
         <div style={{
-          position: 'absolute', top: 0, left: '8%', right: '8%', height: 1,
-          background: `linear-gradient(90deg, transparent, rgba(${colorRgb},0.6), rgba(${GOLD_RGB},0.4), transparent)`,
-          opacity: hovered ? 1 : 0.4, transition: 'opacity 0.4s ease',
+          position: 'absolute', top: 0, left: '6%', right: '6%', height: 1,
+          background: `linear-gradient(90deg, transparent, rgba(${colorRgb},0.7), rgba(${GOLD_RGB},0.5), transparent)`,
+          opacity: hovered ? 1 : 0.45, transition: 'opacity 0.4s ease',
         }} />
 
         {/* Corner accent glow */}
         <div style={{
-          position: 'absolute', top: -20, right: -20, width: 80, height: 80,
+          position: 'absolute', top: -24, right: -24, width: 100, height: 100,
           borderRadius: '50%',
-          background: `radial-gradient(circle, rgba(${colorRgb},0.2) 0%, transparent 70%)`,
-          opacity: hovered ? 1 : 0, transition: 'opacity 0.4s ease',
+          background: `radial-gradient(circle, rgba(${colorRgb},0.22) 0%, transparent 70%)`,
+          opacity: hovered ? 1 : 0.2, transition: 'opacity 0.45s ease',
+          pointerEvents: 'none',
+        }} />
+        {/* Bottom left glow */}
+        <div style={{
+          position: 'absolute', bottom: -20, left: -20, width: 80, height: 80,
+          borderRadius: '50%',
+          background: `radial-gradient(circle, rgba(${GOLD_RGB},0.12) 0%, transparent 70%)`,
+          opacity: hovered ? 0.8 : 0, transition: 'opacity 0.45s ease',
           pointerEvents: 'none',
         }} />
 
         <div style={{ position: 'relative', zIndex: 2 }}>
           {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 13 }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 18 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               {/* Icon */}
               <motion.div
-                whileHover={{ scale: 1.15, rotate: 8 }}
-                transition={{ type: 'spring', stiffness: 420, damping: 20 }}
+                whileHover={{ scale: 1.18, rotate: 10 }}
+                transition={{ type: 'spring', stiffness: 450, damping: 20 }}
                 style={{
-                  width: 44, height: 44, borderRadius: 14, flexShrink: 0,
-                  background: `linear-gradient(135deg, rgba(${colorRgb},0.22), rgba(${GOLD_RGB},0.08))`,
-                  border: `1px solid rgba(${colorRgb},0.32)`,
+                  width: 46, height: 46, borderRadius: 15, flexShrink: 0,
+                  background: `linear-gradient(135deg, rgba(${colorRgb},0.26), rgba(${GOLD_RGB},0.1))`,
+                  border: `1px solid rgba(${colorRgb},0.36)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: hovered ? `0 0 28px rgba(${colorRgb},0.35), 0 0 12px rgba(${GOLD_RGB},0.12)` : 'none',
-                  transition: 'box-shadow 0.35s ease',
-                  animation: hovered ? 'sk-float 3s ease-in-out infinite' : 'none',
+                  boxShadow: hovered ? `0 0 32px rgba(${colorRgb},0.42), 0 0 14px rgba(${GOLD_RGB},0.15)` : 'none',
+                  transition: 'box-shadow 0.38s ease',
+                  animation: hovered ? 'sk-float 3.5s ease-in-out infinite' : 'none',
                 }}
               >
-                <Icon size={19} style={{ color }} />
+                <Icon size={20} style={{ color }} />
               </motion.div>
 
               <div style={{ minWidth: 0, flex: 1 }}>
                 <p style={{
                   fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                  fontSize: '0.92rem', color: hovered ? PLAT : 'var(--lux-text-strong)',
+                  fontSize: 'clamp(0.88rem, 1.1vw, 0.96rem)',
+                  color: hovered ? PLAT : 'var(--lux-text-strong)',
                   lineHeight: 1.2, letterSpacing: '-0.01em',
                   whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-                  transition: 'color 0.35s ease',
+                  transition: 'color 0.38s ease',
                 }}>{name}</p>
                 <p style={{
                   fontFamily: 'Plus Jakarta Sans, sans-serif',
-                  fontSize: '0.6rem', color: 'var(--lux-text-soft)', marginTop: 3,
+                  fontSize: '0.62rem', color: 'var(--lux-text-soft)', marginTop: 3,
                   letterSpacing: '0.04em',
                   whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
                 }}>{desc}</p>
@@ -837,86 +874,135 @@ function CategoryHero({ cat }: { cat: typeof CATEGORIES[number] }) {
 function LuxurySkillsHeader() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 56 }}
+      initial={{ opacity: 0, y: 64 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-      style={{ textAlign: 'center', marginBottom: 'clamp(48px,7vw,88px)', position: 'relative' }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      style={{ textAlign: 'center', marginBottom: 'clamp(48px,7vw,92px)', position: 'relative' }}
     >
+      {/* Halo radial glow */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 'min(640px, 90vw)', height: 'min(640px, 90vw)',
+        borderRadius: '50%',
+        background: `radial-gradient(circle, rgba(${GOLD_RGB},0.065) 0%, rgba(${VIOLET_RGB},0.03) 40%, transparent 68%)`,
+        filter: 'blur(70px)', pointerEvents: 'none', zIndex: 0,
+        animation: 'sk-halo 9s ease-in-out infinite',
+      }} />
+
       {/* Badge */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.72 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.68, y: 14 }}
+        whileInView={{ opacity: 1, scale: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.65, delay: 0.1 }}
+        transition={{ duration: 0.78, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         style={{
+          position: 'relative', zIndex: 1,
           display: 'inline-flex', alignItems: 'center', gap: 10,
-          padding: '7px 24px', borderRadius: 999, marginBottom: 28,
+          padding: '8px 26px', borderRadius: 999, marginBottom: 32,
           fontFamily: 'Syne, sans-serif', fontWeight: 800,
-          fontSize: '0.6rem', letterSpacing: '0.28em', textTransform: 'uppercase',
-          background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.14), rgba(${ROSE_RGB},0.06))`,
-          border: `1px solid rgba(${GOLD_RGB},0.3)`,
+          fontSize: '0.62rem', letterSpacing: '0.3em', textTransform: 'uppercase',
+          background: `linear-gradient(135deg, rgba(${GOLD_RGB},0.16), rgba(${VIOLET_RGB},0.06), rgba(${GOLD_RGB},0.12))`,
+          border: `1px solid rgba(${GOLD_RGB},0.34)`,
           color: GOLD,
-          boxShadow: `0 0 35px rgba(${GOLD_RGB},0.12), inset 0 1px 0 rgba(${GOLD_RGB},0.12)`,
+          animation: 'sk-badge-glow 4s ease-in-out infinite',
+          backdropFilter: 'blur(14px)',
         }}
       >
-        <Award size={11} />
+        {/* Live green dot */}
+        <span style={{
+          width: 7, height: 7, borderRadius: '50%',
+          background: '#4ade80',
+          display: 'inline-block',
+          animation: 'sk-live-dot 2.2s ease-in-out infinite',
+          flexShrink: 0,
+        }} />
         Expertise
-        <Sparkles size={9} style={{ opacity: 0.7 }} />
+        <Sparkles size={10} style={{ opacity: 0.8 }} />
       </motion.div>
 
       {/* Title */}
-      <h2 style={{
-        fontFamily: 'Syne, sans-serif', fontWeight: 900,
-        fontSize: 'clamp(2.6rem, 5.5vw, 5.8rem)',
-        lineHeight: 0.92, letterSpacing: '-0.045em',
-        color: 'var(--text)', marginBottom: 26,
-      }}>
+      <motion.h2
+        initial={{ opacity: 0, y: 32 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.92, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative', zIndex: 1,
+          fontFamily: 'Syne, sans-serif', fontWeight: 900,
+          fontSize: 'clamp(2.5rem, 5.5vw, 6rem)',
+          lineHeight: 0.9, letterSpacing: '-0.048em',
+          color: 'var(--text)', marginBottom: 28,
+        }}
+      >
         Skill{' '}
         <span style={{
-          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 30%, ${ROSE} 60%, ${GOLD} 100%)`,
+          background: `linear-gradient(135deg, ${GOLD} 0%, ${PLAT} 28%, ${ROSE} 58%, ${VIOLET} 80%, ${GOLD} 100%)`,
           backgroundSize: '300% auto',
           WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
           fontStyle: 'italic',
-          animation: 'sk-gold-shimmer 4.5s linear infinite',
+          animation: 'sk-gold-shimmer 4s linear infinite',
         }}>
           Constellation
         </span>
-      </h2>
+      </motion.h2>
 
-      <p style={{
-        fontFamily: 'Plus Jakarta Sans, sans-serif',
-        fontSize: 'clamp(0.87rem,1.25vw,1.04rem)',
-        color: 'var(--lux-text-muted)', lineHeight: 1.9,
-        maxWidth: 520, margin: '0 auto 32px',
-      }}>
+      <motion.p
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.75, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: 'relative', zIndex: 1,
+          fontFamily: 'Plus Jakarta Sans, sans-serif',
+          fontSize: 'clamp(0.9rem,1.3vw,1.06rem)',
+          color: 'var(--lux-text-muted)', lineHeight: 1.95,
+          maxWidth: 540, margin: '0 auto 36px',
+        }}
+      >
         A deep-dive into my technical proficiencies across GIS &amp; Remote Sensing,
         AI &amp; Machine Learning, and Web Engineering.
-      </p>
+      </motion.p>
 
-      {/* Decorative rule */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        style={{
-          height: 1, maxWidth: 420, margin: '0 auto',
-          background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.9), rgba(${ROSE_RGB},0.55), rgba(${GOLD_RGB},0.9), transparent)`,
-          transformOrigin: 'center',
-        }}
-      />
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1, duration: 0.45 }}
-        style={{
-          width: 8, height: 8, background: GOLD,
-          transform: 'rotate(45deg)', margin: '-4px auto 0',
-          boxShadow: `0 0 18px ${GOLD}, 0 0 35px rgba(${GOLD_RGB},0.4)`,
-        }}
-      />
+      {/* Decorative triple divider */}
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.7, delay: 0.42, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            height: 1, width: 'min(500px, 82vw)',
+            background: `linear-gradient(90deg, transparent, rgba(${GOLD_RGB},0.95), rgba(${ROSE_RGB},0.6), rgba(${VIOLET_RGB},0.4), rgba(${GOLD_RGB},0.95), transparent)`,
+            transformOrigin: 'center',
+          }}
+        />
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.3, delay: 0.58, ease: [0.16, 1, 0.3, 1] }}
+          style={{
+            height: 1, width: 'min(300px, 55vw)', opacity: 0.32,
+            background: `linear-gradient(90deg, transparent, rgba(${PLAT_RGB},0.8), transparent)`,
+            transformOrigin: 'center',
+          }}
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0, rotate: -45 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.65, delay: 1.05, type: 'spring', stiffness: 280 }}
+          style={{
+            width: 10, height: 10,
+            background: `linear-gradient(135deg, ${GOLD}, ${ROSE})`,
+            transform: 'rotate(45deg)',
+            margin: '-5px auto 0',
+            boxShadow: `0 0 22px ${GOLD}, 0 0 44px rgba(${GOLD_RGB},0.45)`,
+          }}
+        />
+      </div>
     </motion.div>
   );
 }
@@ -998,6 +1084,7 @@ export default function SkillsVisualization() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.65, delay: 0.2 }}
+          className="sk-controls-bar"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             flexWrap: 'wrap', gap: 14, marginTop: 44, marginBottom: 44,

@@ -19,14 +19,14 @@ const publications = [
 
 export default function ResearchPublications() {
   return (
-    <section id="research" className="bg-bg py-12 md:py-16 relative z-20 border-t border-stroke">
+    <section id="research" className="bg-bg py-8 md:py-10 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10">
         
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="mb-10"
         >
           <div className="flex items-center gap-4 mb-4">
             <div className="w-8 h-px bg-stroke" />

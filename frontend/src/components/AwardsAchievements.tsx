@@ -52,7 +52,7 @@ const itemVariants: Variants = {
 
 export default function AwardsAchievements() {
   return (
-    <section className="bg-bg py-12 md:py-16 relative z-20 overflow-hidden">
+    <section className="bg-bg py-8 md:py-10 relative z-20 overflow-hidden">
       <div className="max-w-[800px] mx-auto px-6 md:px-10">
 
         <motion.div
