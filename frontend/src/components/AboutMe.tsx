@@ -19,7 +19,7 @@ const EASE = {
 };
 
 /* ─────────────────────────────────────────────────────────────
-   Injected keyframes
+   Injected keyframes and Theme Variables
 ──────────────────────────────────────────────────────────────── */
 const AM_CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;0,900;1,700;1,900&display=swap');
@@ -31,6 +31,39 @@ const AM_CSS = `
 @keyframes am-drift-2 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(-30px,18px) scale(1.04)} 65%{transform:translate(25px,-22px) scale(0.98)} }
 @keyframes am-glow-pulse { 0%,100%{opacity:0.5; transform:scale(1)} 50%{opacity:1; transform:scale(1.05)} }
 @keyframes am-border-flow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+/* Theme Variables for Ultra-Premium Adaptive Design */
+#about {
+  --text-primary: rgba(255,255,255,0.92);
+  --text-secondary: rgba(255,255,255,0.85);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-very-muted: rgba(255,255,255,0.35);
+  --card-bg: rgba(255,255,255,0.03);
+  --card-bg-hover: rgba(255,255,255,0.05);
+  --card-border: rgba(255,255,255,0.07);
+  --btn-border: rgba(255,255,255,0.15);
+  --divider: rgba(255,255,255,0.05);
+  --track-bg: rgba(255,255,255,0.06);
+  --bg-inner: #0d0a1e;
+  --badge-bg: rgba(10,8,20,0.72);
+  --glow-opacity: 1;
+}
+
+:root.light #about, .light #about {
+  --text-primary: rgba(15,23,42,0.95);
+  --text-secondary: rgba(51,65,85,0.85);
+  --text-muted: rgba(100,116,139,0.75);
+  --text-very-muted: rgba(100,116,139,0.55);
+  --card-bg: rgba(255,255,255,0.6);
+  --card-bg-hover: rgba(255,255,255,0.9);
+  --card-border: rgba(226,232,240,0.8);
+  --btn-border: rgba(203,213,225,0.8);
+  --divider: rgba(226,232,240,0.8);
+  --track-bg: rgba(226,232,240,0.8);
+  --bg-inner: #ffffff;
+  --badge-bg: rgba(255,255,255,0.9);
+  --glow-opacity: 0.3;
+}
 `;
 
 /* ─────────────────────────────────────────────────────────────
@@ -69,6 +102,7 @@ function StatCard({ icon: Icon, label, value, suffix, color, delay }: {
 
   return (
     <motion.div
+      layout
       initial={{ opacity: 0, y: 32, scale: 0.9 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -78,8 +112,8 @@ function StatCard({ icon: Icon, label, value, suffix, color, delay }: {
       style={{
         position: 'relative', overflow: 'hidden',
         borderRadius: '1.25rem',
-        background: hov ? `linear-gradient(145deg, ${color}18 0%, ${color}08 100%)` : 'rgba(255,255,255,0.03)',
-        border: `1px solid ${hov ? color + '35' : 'rgba(255,255,255,0.07)'}`,
+        background: hov ? `linear-gradient(145deg, ${color}18 0%, ${color}08 100%)` : 'var(--card-bg)',
+        border: `1px solid ${hov ? color + '35' : 'var(--card-border)'}`,
         backdropFilter: 'blur(20px)',
         padding: 'clamp(14px,1.8vw,22px)',
         transition: 'background 0.4s, border-color 0.4s',
@@ -101,13 +135,13 @@ function StatCard({ icon: Icon, label, value, suffix, color, delay }: {
         fontSize: 'clamp(1.6rem,3vw,2.5rem)',
         fontWeight: 900, lineHeight: 1, letterSpacing: '-0.04em',
         fontFamily: "'Inter', sans-serif",
-        color: hov ? color : 'rgba(255,255,255,0.9)', transition: 'color 0.35s', marginBottom: 4,
+        color: hov ? color : 'var(--text-primary)', transition: 'color 0.35s', marginBottom: 4,
       }}>
         <AnimatedCounter to={value} suffix={suffix ?? ""} delay={delay + 0.3} />
       </div>
       <p style={{
         fontSize: '0.6rem', textTransform: 'uppercase', letterSpacing: '0.2em',
-        fontWeight: 700, color: 'rgba(255,255,255,0.35)', fontFamily: "'Inter', sans-serif",
+        fontWeight: 700, color: 'var(--text-very-muted)', fontFamily: "'Inter', sans-serif", transition: 'color 0.3s'
       }}>{label}</p>
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
@@ -132,16 +166,16 @@ function SkillBar({ name, level, color, delay }: { name: string; level: number; 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <span style={{
           fontSize: '0.72rem', fontWeight: 600,
-          color: hov ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.6)',
+          color: hov ? 'var(--text-primary)' : 'var(--text-secondary)',
           transition: 'color 0.3s', fontFamily: "'Inter', sans-serif", letterSpacing: '0.02em',
         }}>{name}</span>
         <motion.span
-          animate={{ color: hov ? color : 'rgba(255,255,255,0.4)' }}
+          animate={{ color: hov ? color : 'var(--text-muted)' }}
           transition={{ duration: 0.3 }}
           style={{ fontSize: '0.62rem', fontWeight: 700, fontFamily: 'monospace' }}
         >{level}%</motion.span>
       </div>
-      <div style={{ height: 3, borderRadius: 999, overflow: 'hidden', background: 'rgba(255,255,255,0.06)' }}>
+      <div style={{ height: 3, borderRadius: 999, overflow: 'hidden', background: 'var(--track-bg)' }}>
         <motion.div
           style={{ height: '100%', borderRadius: 999, background: `linear-gradient(90deg, ${color}80, ${color})` }}
           initial={{ width: 0 }}
@@ -168,12 +202,12 @@ function EduItem({ degree, uni, year, color, delay }: {
       style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, paddingTop: 3 }}>
-        <div style={{ width: 10, height: 10, borderRadius: '50%', border: `2px solid ${color}`, background: `${color}25` }} />
+        <motion.div whileHover={{ scale: 1.4 }} transition={{ ease: EASE.figmaSpring }} style={{ width: 10, height: 10, borderRadius: '50%', border: `2px solid ${color}`, background: `${color}25` }} />
         <div style={{ width: 1, minHeight: 28, marginTop: 4, background: `linear-gradient(180deg, ${color}50, transparent)` }} />
       </div>
       <div style={{ paddingBottom: 18 }}>
-        <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4, fontFamily: "'Inter', sans-serif" }}>{degree}</p>
-        <p style={{ fontSize: '0.68rem', color: 'rgba(255,255,255,0.4)', marginTop: 2, fontFamily: "'Inter', sans-serif" }}>{uni}</p>
+        <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4, fontFamily: "'Inter', sans-serif" }}>{degree}</p>
+        <p style={{ fontSize: '0.68rem', color: 'var(--text-muted)', marginTop: 2, fontFamily: "'Inter', sans-serif" }}>{uni}</p>
         <span style={{
           display: 'inline-block', marginTop: 5, fontSize: '0.57rem', fontWeight: 700,
           fontFamily: 'monospace', padding: '2px 8px', borderRadius: 999,
@@ -207,7 +241,7 @@ function ProfilePhotoCard() {
           zIndex: 0,
         }}
       >
-        <div style={{ margin: 2, height: 'calc(100% - 4px)', background: '#0d0a1e', borderRadius: '2rem' }} />
+        <div style={{ margin: 2, height: 'calc(100% - 4px)', background: 'var(--bg-inner)', borderRadius: '2rem' }} />
       </motion.div>
 
       {/* Outer orbit rings */}
@@ -252,7 +286,7 @@ function ProfilePhotoCard() {
           background: 'linear-gradient(145deg,rgba(124,58,237,0.3),rgba(6,182,212,0.1))',
           boxShadow: hov
             ? '0 40px 100px rgba(124,58,237,0.4), 0 20px 60px rgba(245,158,11,0.2), 0 0 0 2px rgba(167,139,250,0.4)'
-            : '0 24px 64px rgba(0,0,0,0.7), 0 8px 32px rgba(124,58,237,0.2)',
+            : '0 24px 64px rgba(0,0,0,0.3), 0 8px 32px rgba(124,58,237,0.2)',
           transition: 'box-shadow 0.5s',
         }}
       >
@@ -297,7 +331,7 @@ function ProfilePhotoCard() {
             </p>
             <p style={{
               fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.5)', fontWeight: 600, marginTop: 3,
+              color: 'rgba(255,255,255,0.7)', fontWeight: 600, marginTop: 3,
               fontFamily: "'Inter', sans-serif",
             }}>
               GIS · ML · Web Engineer
@@ -308,7 +342,7 @@ function ProfilePhotoCard() {
         {/* Available badge */}
         <div style={{
           position: 'absolute', top: 14, right: 14,
-          background: 'rgba(10,8,20,0.72)', backdropFilter: 'blur(12px)',
+          background: 'var(--badge-bg)', backdropFilter: 'blur(12px)',
           border: '1px solid rgba(52,211,153,0.28)', borderRadius: 999,
           padding: '4px 12px', display: 'flex', alignItems: 'center', gap: 5,
         }}>
@@ -316,7 +350,7 @@ function ProfilePhotoCard() {
             width: 5, height: 5, borderRadius: '50%', background: '#34d399',
             boxShadow: '0 0 6px rgba(52,211,153,0.8)', display: 'inline-block',
           }} />
-          <span style={{ fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: '0.55rem', fontWeight: 700, letterSpacing: '0.2em', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
             Available
           </span>
         </div>
@@ -328,12 +362,14 @@ function ProfilePhotoCard() {
         borderRadius: '50%', background: 'radial-gradient(circle,rgba(167,139,250,0.4) 0%,transparent 70%)',
         filter: 'blur(24px)', pointerEvents: 'none', zIndex: 0,
         animation: 'am-glow-pulse 3s ease-in-out infinite',
+        opacity: 'var(--glow-opacity)'
       }} />
       <div style={{
         position: 'absolute', bottom: -16, left: -16, width: 100, height: 100,
         borderRadius: '50%', background: 'radial-gradient(circle,rgba(245,158,11,0.35) 0%,transparent 70%)',
         filter: 'blur(20px)', pointerEvents: 'none', zIndex: 0,
         animation: 'am-glow-pulse 4s ease-in-out infinite 1s',
+        opacity: 'var(--glow-opacity)'
       }} />
     </motion.div>
   );
@@ -378,8 +414,8 @@ export default function AboutMe() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative w-full overflow-hidden section-py"
-      style={{ background: 'var(--bg, #07060f)', isolation: 'isolate' }}
+      className="relative w-full overflow-hidden section-py transition-colors duration-700 bg-white dark:bg-[#07060f]"
+      style={{ isolation: 'isolate' }}
     >
       <style>{AM_CSS}</style>
 
@@ -435,7 +471,7 @@ export default function AboutMe() {
           transition={{ duration: 0.7, ease: EASE.silkSmooth }}
           style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 'clamp(40px,6vw,72px)' }}
         >
-          <span className="float-badge" style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+          <span className="float-badge" style={{ display: 'flex', alignItems: 'center', gap: 7, color: 'var(--text-primary)' }}>
             <span style={{
               width: 6, height: 6, borderRadius: '50%', background: '#a78bfa', display: 'inline-block',
               boxShadow: '0 0 8px rgba(167,139,250,0.8)', animation: 'am-glow-pulse 2s ease-in-out infinite',
@@ -449,7 +485,7 @@ export default function AboutMe() {
           </div>
           <span style={{
             fontSize: '0.6rem', fontWeight: 700, textTransform: 'uppercase',
-            letterSpacing: '0.32em', color: 'rgba(167,139,250,0.45)', fontFamily: "'Inter', sans-serif",
+            letterSpacing: '0.32em', color: 'rgba(167,139,250,0.65)', fontFamily: "'Inter', sans-serif",
           }}>
             Engineer · Educator · Researcher
           </span>
@@ -465,7 +501,7 @@ export default function AboutMe() {
               transition={{ duration: 1.1, ease: EASE.silkSmooth }}
               style={{
                 fontSize: 'clamp(3.2rem,9vw,9rem)', fontWeight: 900, lineHeight: 0.88,
-                letterSpacing: '-0.045em', fontFamily: "'Inter', sans-serif", color: 'rgba(255,255,255,0.92)',
+                letterSpacing: '-0.045em', fontFamily: "'Inter', sans-serif", color: 'var(--text-primary)',
               }}
             >
               Er. Suraj{" "}
@@ -533,30 +569,32 @@ export default function AboutMe() {
                     },
                     { icon: <Briefcase size={11} style={{ color: '#f472b6', flexShrink: 0 }} />, text: 'GIS & Research Lead', style: {} },
                   ].map((pill, i) => (
-                    <span key={i} style={{
+                    <motion.span key={i} whileHover={{ scale: 1.05 }} transition={{ ease: EASE.figmaSpring }} style={{
                       display: 'flex', alignItems: 'center', gap: 6,
                       fontSize: '0.7rem', fontWeight: 500,
-                      color: 'rgba(255,255,255,0.5)', fontFamily: "'Inter', sans-serif",
+                      color: 'var(--text-secondary)', fontFamily: "'Inter', sans-serif",
                       padding: '6px 14px', borderRadius: 999,
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)',
+                      border: '1px solid var(--card-border)',
+                      background: 'var(--card-bg)', backdropFilter: 'blur(10px)',
+                      cursor: 'default',
                       ...pill.style,
                     }}>
                       {pill.icon}{pill.text}
-                    </span>
+                    </motion.span>
                   ))}
                 </motion.div>
 
                 {/* Education card */}
                 <motion.div
+                  layout
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.85, delay: 0.18, ease: EASE.silkSmooth }}
                   style={{
                     borderRadius: '1.5rem', overflow: 'hidden',
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.07)',
+                    background: 'var(--card-bg)',
+                    border: '1px solid var(--card-border)',
                     backdropFilter: 'blur(20px)',
                     padding: 'clamp(16px,2vw,24px)', position: 'relative',
                   }}
@@ -574,7 +612,7 @@ export default function AboutMe() {
                     }}>
                       <GraduationCap size={14} style={{ color: '#a78bfa' }} />
                     </div>
-                    <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: 'rgba(167,139,250,0.6)', fontFamily: "'Inter', sans-serif" }}>
+                    <span style={{ fontSize: '0.62rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.22em', color: '#a78bfa', fontFamily: "'Inter', sans-serif" }}>
                       Education
                     </span>
                   </div>
@@ -592,9 +630,9 @@ export default function AboutMe() {
             {/* Bio */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
               {[
-                { delay: 0.05, content: (<>Computer Engineering professional with deep expertise in{" "}<strong style={{ color: 'rgba(167,139,250,0.9)', fontWeight: 600 }}>GIS & Remote Sensing</strong>,{" "}<strong style={{ color: 'rgba(56,189,248,0.9)', fontWeight: 600 }}>Machine Learning</strong>, and{" "}<strong style={{ color: 'rgba(244,114,182,0.9)', fontWeight: 600 }}>Web Technologies</strong>. Passionate about leveraging technology for sustainable development and innovation in Nepal.</>) },
-                { delay: 0.13, content: (<>Earned a <strong style={{ color: 'rgba(167,139,250,0.9)', fontWeight: 600 }}>B.E. in Computer Engineering</strong>{" "}from Mid-West University and an{" "}<strong style={{ color: 'rgba(244,114,182,0.9)', fontWeight: 600 }}>M.Sc. in Information System Engineering</strong>{" "}from Purbanchal University. Completed a six-month internship at{" "}<strong style={{ color: 'rgba(56,189,248,0.9)', fontWeight: 600 }}>Nepal Telecom</strong>.</>) },
-                { delay: 0.21, content: (<>Currently working as a{" "}<strong style={{ color: 'rgba(52,211,153,0.9)', fontWeight: 600 }}>Coordinator</strong> at Shree Tri Shaheed Model Secondary School, Syangja — focusing on technology-driven learning, research, and capacity building in technical & vocational education.</>) },
+                { delay: 0.05, content: (<>Computer Engineering professional with deep expertise in{" "}<strong style={{ color: '#a78bfa', fontWeight: 600 }}>GIS & Remote Sensing</strong>,{" "}<strong style={{ color: '#38bdf8', fontWeight: 600 }}>Machine Learning</strong>, and{" "}<strong style={{ color: '#f472b6', fontWeight: 600 }}>Web Technologies</strong>. Passionate about leveraging technology for sustainable development and innovation in Nepal.</>) },
+                { delay: 0.13, content: (<>Earned a <strong style={{ color: '#a78bfa', fontWeight: 600 }}>B.E. in Computer Engineering</strong>{" "}from Mid-West University and an{" "}<strong style={{ color: '#f472b6', fontWeight: 600 }}>M.Sc. in Information System Engineering</strong>{" "}from Purbanchal University. Completed a six-month internship at{" "}<strong style={{ color: '#38bdf8', fontWeight: 600 }}>Nepal Telecom</strong>.</>) },
+                { delay: 0.21, content: (<>Currently working as a{" "}<strong style={{ color: '#34d399', fontWeight: 600 }}>Coordinator</strong> at Shree Tri Shaheed Model Secondary School, Syangja — focusing on technology-driven learning, research, and capacity building in technical & vocational education.</>) },
               ].map(({ delay, content }, i) => (
                 <motion.p
                   key={i}
@@ -604,7 +642,7 @@ export default function AboutMe() {
                   transition={{ duration: 0.85, delay, ease: EASE.silkSmooth }}
                   style={{
                     fontSize: 'clamp(0.82rem,1.1vw,0.95rem)', lineHeight: 1.9,
-                    color: 'rgba(255,255,255,0.55)', fontFamily: "'Inter', sans-serif", fontWeight: 400,
+                    color: 'var(--text-secondary)', fontFamily: "'Inter', sans-serif", fontWeight: 400,
                   }}
                 >{content}</motion.p>
               ))}
@@ -612,13 +650,14 @@ export default function AboutMe() {
 
             {/* Skill bars card */}
             <motion.div
+              layout
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.85, delay: 0.1, ease: EASE.silkSmooth }}
               style={{
                 borderRadius: '1.5rem', overflow: 'hidden',
-                background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                background: 'var(--card-bg)', border: '1px solid var(--card-border)',
                 backdropFilter: 'blur(20px)', padding: 'clamp(16px,2vw,24px)', position: 'relative',
               }}
             >
@@ -629,23 +668,23 @@ export default function AboutMe() {
               }} />
               <p style={{
                 fontSize: '0.62rem', textTransform: 'uppercase', letterSpacing: '0.28em',
-                fontWeight: 700, color: 'rgba(167,139,250,0.55)', marginBottom: 18,
-                fontFamily: "'Inter', sans-serif",
+                fontWeight: 700, color: '#a78bfa', marginBottom: 18,
+                fontFamily: "'Inter', sans-serif", opacity: 0.8
               }}>Core Expertise</p>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '12px 32px' }}>
                 {skills.map((s, i) => (<SkillBar key={s.name} {...s} delay={0.05 * i} />))}
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 20, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7, marginTop: 20, paddingTop: 18, borderTop: '1px solid var(--divider)' }}>
                 {expertise.map((skill) => (
                   <motion.span
                     key={skill}
-                    whileHover={{ scale: 1.06, borderColor: 'rgba(167,139,250,0.45)', color: 'rgba(255,255,255,0.85)' }}
+                    whileHover={{ scale: 1.06, borderColor: 'rgba(167,139,250,0.45)', color: 'var(--text-primary)' }}
                     transition={{ duration: 0.25, ease: EASE.figmaSpring }}
                     style={{
                       fontSize: '0.65rem', fontWeight: 600, fontFamily: "'Inter', sans-serif",
                       padding: '4px 12px', borderRadius: 999,
-                      border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.04)',
-                      color: 'rgba(255,255,255,0.45)', cursor: 'default', transition: 'all 0.25s',
+                      border: '1px solid var(--card-border)', background: 'var(--card-bg-hover)',
+                      color: 'var(--text-muted)', cursor: 'default', transition: 'all 0.25s',
                     }}
                   >{skill}</motion.span>
                 ))}
@@ -678,8 +717,8 @@ export default function AboutMe() {
               <motion.a href="/Suraj_Tharu_CV.pdf" download whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.3, ease: EASE.figmaSpring }} style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
                 padding: '11px 24px', borderRadius: 999,
-                border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.04)',
-                backdropFilter: 'blur(10px)', color: 'rgba(255,255,255,0.75)',
+                border: '1px solid var(--btn-border)', background: 'var(--card-bg)',
+                backdropFilter: 'blur(10px)', color: 'var(--text-secondary)',
                 fontSize: '0.82rem', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none',
               }}>
                 <Download size={14} style={{ flexShrink: 0 }} /> Download CV
@@ -687,8 +726,8 @@ export default function AboutMe() {
               <motion.a href="https://www.linkedin.com/in/suraj-tharu/" target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }} transition={{ duration: 0.3, ease: EASE.figmaSpring }} style={{
                 display: 'inline-flex', alignItems: 'center', gap: 8,
                 padding: '11px 24px', borderRadius: 999,
-                border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.04)',
-                backdropFilter: 'blur(10px)', color: 'rgba(255,255,255,0.75)',
+                border: '1px solid var(--btn-border)', background: 'var(--card-bg)',
+                backdropFilter: 'blur(10px)', color: 'var(--text-secondary)',
                 fontSize: '0.82rem', fontWeight: 600, fontFamily: "'Inter', sans-serif", textDecoration: 'none',
               }}>
                 <ExternalLink size={14} style={{ flexShrink: 0 }} /> LinkedIn
