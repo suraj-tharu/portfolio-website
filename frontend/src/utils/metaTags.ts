@@ -78,12 +78,12 @@ export const updateMetaTag = (name: string, content: string) => {
 
 // Default meta tags for homepage
 export const defaultMetaTags: MetaTagConfig = {
-    title: 'Portfolio - Engineer, Educator & Researcher',
-    description: 'Welcome to my portfolio. I am a full-stack engineer, educator, and researcher passionate about building innovative solutions.',
-    image: 'https://your-domain.com/og-image.jpg',
+    title: 'Suraj Tharu Chaudhary — Computer Engineer & GIS Researcher',
+    description: 'Official portfolio of Suraj Tharu Chaudhary — Computer Engineer, Senior Instructor, and GIS Researcher. Expert in Machine Learning, Remote Sensing, LULC Analysis, and Full-Stack Development.',
+    image: 'https://portfolio-website-vto2.onrender.com/IMG_20250922_201902.jpg',
     type: 'website',
     author: 'Suraj Tharu Chaudhary',
-    keywords: ['engineer', 'educator', 'researcher', 'portfolio', 'full-stack']
+    keywords: ['Suraj Tharu Chaudhary', 'Computer Engineer Nepal', 'GIS Researcher Nepal', 'Remote Sensing Expert', 'LULC Analysis', 'Machine Learning Nepal', 'Educator Nepal', 'Portfolio', 'Full Stack Developer', 'Data Science', 'MSc Information System Engineering', 'Purbanchal University']
 };
 
 // Preset configurations for different pages

@@ -1067,40 +1067,63 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   transition={{ duration: 1.1, delay: stagger.name, ease: [0.16, 1, 0.3, 1] }}
                   style={{
+                    position: 'relative',
                     fontFamily: '"Syne", system-ui, sans-serif',
                     fontWeight: 800,
                     fontSize: nameFontSize,
                     lineHeight: 1.04,
                     letterSpacing: '-0.038em',
                     marginBottom: isXS ? 12 : isSmall ? 14 : isMobile ? 18 : 24,
-                    /* Ultra-premium multi-stop gradient — vivid in BOTH modes */
-                    background: isDark
-                      ? `linear-gradient(148deg,
-                          #FFFFFF 0%,
-                          ${PALETTE.violet200} 28%,
-                          ${PALETTE.violet300} 48%,
-                          ${PALETTE.gold300} 68%,
-                          ${PALETTE.violet400} 85%,
-                          ${PALETTE.cyan300} 100%)`
-                      : `linear-gradient(148deg,
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'keep-all',
+                    overflowWrap: 'normal',
+                  }}
+                >
+                  {/* Light Mode Gradient */}
+                  <span
+                    style={{
+                      position: 'absolute', inset: 0,
+                      background: `linear-gradient(148deg,
                           ${PALETTE.violet900} 0%,
                           ${PALETTE.violet700} 28%,
                           ${PALETTE.violet600} 48%,
                           ${PALETTE.gold500} 68%,
                           ${PALETTE.violet700} 85%,
                           ${PALETTE.cyan500} 100%)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    backgroundSize: '200% 200%',
-                    animation: 'hero-name-shift 8s ease-in-out infinite',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'keep-all',
-                    overflowWrap: 'normal',
-                  }}
-                >
-                  {language === 'ne' ? 'सुरज थारु\nचौधरी' : 'Suraj Tharu\nChaudhary'}
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text', color: 'transparent',
+                      backgroundSize: '200% 200%',
+                      animation: 'hero-name-shift 8s ease-in-out infinite',
+                      opacity: isDark ? 0 : 1,
+                      transition: 'opacity 0.6s ease',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {language === 'ne' ? 'सुरज थारु\nचौधरी' : 'Suraj Tharu\nChaudhary'}
+                  </span>
+                  
+                  {/* Dark Mode Gradient */}
+                  <span
+                    style={{
+                      display: 'block',
+                      position: 'relative', zIndex: 1,
+                      background: `linear-gradient(148deg,
+                          #FFFFFF 0%,
+                          ${PALETTE.violet200} 28%,
+                          ${PALETTE.violet300} 48%,
+                          ${PALETTE.gold300} 68%,
+                          ${PALETTE.violet400} 85%,
+                          ${PALETTE.cyan300} 100%)`,
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text', color: 'transparent',
+                      backgroundSize: '200% 200%',
+                      animation: 'hero-name-shift 8s ease-in-out infinite',
+                      opacity: isDark ? 1 : 0,
+                      transition: 'opacity 0.6s ease',
+                    }}
+                  >
+                    {language === 'ne' ? 'सुरज थारु\nचौधरी' : 'Suraj Tharu\nChaudhary'}
+                  </span>
                 </motion.h1>
 
                 {/* Role Badge */}

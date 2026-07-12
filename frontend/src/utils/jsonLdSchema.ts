@@ -15,9 +15,9 @@ export const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Suraj Tharu Chaudhary',
-    url: 'https://your-domain.com',
-    image: 'https://your-domain.com/profile.jpg',
-    description: 'Full-stack engineer, educator, and researcher',
+    url: 'https://portfolio-website-vto2.onrender.com',
+    image: 'https://portfolio-website-vto2.onrender.com/IMG_20250922_201902.jpg',
+    description: 'Computer Engineer specializing in Machine Learning, Remote Sensing, Geospatial Analysis, and Full-Stack Development.',
     jobTitle: 'Senior Instructor & MSc Student',
     worksFor: {
         '@type': 'Organization',
@@ -28,13 +28,13 @@ export const personSchema = {
         name: 'Purbanchal University'
     },
     sameAs: [
-        'https://github.com/yourprofile',
-        'https://linkedin.com/in/yourprofile',
-        'https://twitter.com/yourprofile'
+        'https://github.com/suraj-tharu',
+        'https://www.linkedin.com/in/suraj-tharu/',
+        'https://scholar.google.com'
     ],
     contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+977-1234567890',
+        telephone: '+977-9800000000',
         contactType: 'General Contact'
     }
 };
@@ -124,17 +124,17 @@ export const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Suraj Tharu Chaudhary',
-    url: 'https://your-domain.com',
-    logo: 'https://your-domain.com/logo.png',
+    url: 'https://portfolio-website-vto2.onrender.com',
+    logo: 'https://portfolio-website-vto2.onrender.com/favicon.svg',
     description: 'Portfolio of Full-stack Engineer, Educator & Researcher',
     sameAs: [
-        'https://github.com/yourprofile',
-        'https://linkedin.com/in/yourprofile',
-        'https://twitter.com/yourprofile'
+        'https://github.com/suraj-tharu',
+        'https://www.linkedin.com/in/suraj-tharu/',
+        'https://scholar.google.com'
     ],
     contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+977-1234567890',
+        telephone: '+977-9800000000',
         contactType: 'Customer Service'
     }
 };
