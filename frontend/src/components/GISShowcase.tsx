@@ -112,7 +112,7 @@ export default function GISShowcase() {
   }, [activeLayer]);
 
   return (
-    <section id="gis-showcase" className="py-24 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">
+    <section id="gis-showcase" className="py-12 md:py-16 relative z-20 bg-[var(--bg)] border-t border-[var(--stroke)]">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10">
         
         {/* Header */}

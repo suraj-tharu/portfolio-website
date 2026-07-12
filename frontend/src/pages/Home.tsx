@@ -5,7 +5,6 @@ import Testimonials from '../components/Testimonials';
 import AboutMe from '../components/AboutMe';
 import SelectedWorks from '../components/SelectedWorks';
 import Explorations from '../components/Explorations';
-import AutomationHero from '../components/AutomationHero';
 import Journal from '../components/Journal';
 import Stats from '../components/Stats';
 import AcademicTimeline from '../components/AcademicTimeline';
@@ -38,8 +37,6 @@ export default function Home() {
       <AboutMe />
       <div className="section-divider" />
       <TeachingExperience />
-      <div className="section-divider" />
-      <AutomationHero />
       <div className="section-divider" />
       <SelectedWorks />
       <div className="section-divider" />

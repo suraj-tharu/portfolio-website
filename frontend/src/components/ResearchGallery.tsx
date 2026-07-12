@@ -10,7 +10,7 @@ const galleryItems = [
 
 export default function ResearchGallery() {
   return (
-    <section className="bg-bg py-24 relative z-20">
+    <section className="bg-bg py-12 md:py-16 relative z-20">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10">
         
         <div className="flex items-center gap-4 mb-12">

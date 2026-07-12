@@ -19,7 +19,7 @@ const publications = [
 
 export default function ResearchPublications() {
   return (
-    <section id="research" className="bg-bg py-24 relative z-20 border-t border-stroke">
+    <section id="research" className="bg-bg py-12 md:py-16 relative z-20 border-t border-stroke">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10">
         
         <motion.div 

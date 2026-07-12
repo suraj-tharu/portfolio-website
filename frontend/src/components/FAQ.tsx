@@ -81,7 +81,7 @@ export default function FAQ({ items = defaultFAQs }: FAQProps) {
         : items.filter(item => (item.category || 'General') === selectedCategory);
 
     return (
-        <section id="faq" className="py-20 md:py-32 relative z-20">
+        <section id="faq" className="py-12 md:py-16 relative z-20">
             <div className="max-w-4xl mx-auto px-6 md:px-10">
                 {/* Header */}
                 <div className="flex flex-col items-center text-center mb-16">

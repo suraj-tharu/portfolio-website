@@ -63,7 +63,7 @@ export default function Journal() {
   }) : defaultEntries;
 
   return (
-    <section className="bg-bg py-16 md:py-24 relative z-20">
+    <section className="bg-bg py-12 md:py-16 relative z-20">
       <div className="max-w-[1000px] mx-auto px-6 md:px-10 lg:px-16">
         
         {/* Header */}
