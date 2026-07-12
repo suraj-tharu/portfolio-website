@@ -50,16 +50,11 @@ export function useTheme() {
   const [theme, setTheme] = useState<Theme>(currentTheme);
 
   useEffect(() => {
-    // Sync local state if global changed before mount
-    if (theme !== currentTheme) {
-      setTheme(currentTheme);
-    }
-    
     listeners.add(setTheme);
     return () => {
       listeners.delete(setTheme);
     };
-  }, [theme]);
+  }, []);
 
   const toggleTheme = () => {
     setGlobalTheme(currentTheme === 'dark' ? 'light' : 'dark');

@@ -142,7 +142,7 @@ export function initUI() {
     ];
     let trailIdx = 0;
 
-    function spawnParticle(x, y) {
+    const spawnParticle = (x, y) => {
       if (document.body.classList.contains('a11y-reduce-motion')) return;
       const p = document.createElement('div');
       p.className = 'cur-particle';
