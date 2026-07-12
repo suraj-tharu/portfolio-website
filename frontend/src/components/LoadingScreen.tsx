@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 
 /* ─────────────────────────────────────────────────────────────
    Figma Smart-Animate inspired easing presets
@@ -534,25 +534,25 @@ function AuroraOrbs() {
   ];
   return (
     <div className="absolute inset-0 z-0 pointer-events-none">
-      {orbs.map((orb, i) => (
-        <div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: orb.size, height: orb.size,
-            borderRadius: '50%',
-            background: `radial-gradient(circle,${orb.color} 0%,transparent 70%)`,
-            filter: 'blur(80px)',
-            animation: `ls-orb ${orb.dur} ease-in-out infinite ${i % 2 === 0 ? '' : 'reverse'}`,
-            animationDelay: orb.delay,
-            ...(orb as Record<string, string>),
-            size: undefined,
-            color: undefined,
-            dur: undefined,
-            delay: undefined,
-          }}
-        />
-      ))}
+      {orbs.map((orb, i) => {
+        const { size, color, dur, delay: animDelay, ...pos } = orb;
+        return (
+          <div
+            key={i}
+            style={{
+              position: 'absolute',
+              width: size,
+              height: size,
+              borderRadius: '50%',
+              background: `radial-gradient(circle,${color} 0%,transparent 70%)`,
+              filter: 'blur(80px)',
+              animation: `ls-orb ${dur} ease-in-out infinite ${i % 2 === 0 ? '' : 'reverse'}`,
+              animationDelay: animDelay,
+              ...pos,
+            }}
+          />
+        );
+      })}
     </div>
   );
 }
