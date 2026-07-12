@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import GISShowcase from '../components/GISShowcase';
-import Stats from '../components/Stats';
+
 import GlobeShowcase from '../components/GlobeShowcase';
 
 export default function ResearchDashboard() {
@@ -34,10 +34,7 @@ export default function ResearchDashboard() {
           <GlobeShowcase />
         </motion.div>
 
-        {/* Stats Summary */}
-        <div className="mb-16">
-          <Stats />
-        </div>
+
 
         {/* GIS Interactive Showcase */}
         <div className="mb-24">

@@ -6,7 +6,7 @@ import AboutMe from '../components/AboutMe';
 import SelectedWorks from '../components/SelectedWorks';
 import Explorations from '../components/Explorations';
 import Journal from '../components/Journal';
-import Stats from '../components/Stats';
+
 import AcademicTimeline from '../components/AcademicTimeline';
 import SkillsVisualization from '../components/SkillsVisualization';
 import TeachingExperience from '../components/TeachingExperience';
@@ -56,8 +56,7 @@ export default function Home() {
       <div className="section-divider" />
       <Testimonials />
       <div className="section-divider" />
-      <Stats />
-      <div className="section-divider" />
+
       <InteractiveResume />
       <div className="section-divider" />
       <FAQ />

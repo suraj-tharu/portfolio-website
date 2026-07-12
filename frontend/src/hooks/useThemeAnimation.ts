@@ -125,8 +125,12 @@ export const useThemeAnimation = () => {
         const prefersColorScheme = window.matchMedia('(prefers-color-scheme: dark)');
         const handleColorSchemeChange = (e: MediaQueryListEvent) => {
             const isDark = e.matches;
-            if (!localStorage.getItem('theme-override')) {
-                document.documentElement.classList.toggle('dark', isDark);
+            if (!localStorage.getItem('theme')) {
+                // Dispatch event so global useTheme can catch it if needed, or just let useTheme handle it
+                // We shouldn't manually toggle 'dark' here as it bypasses the global React state
+                const root = document.documentElement;
+                root.classList.remove('light', 'dark');
+                root.classList.add(isDark ? 'dark' : 'light');
             }
         };
 

@@ -20,7 +20,6 @@ const SECTIONS = [
   { id: 'certifications', label: 'Certifications' },
   { id: 'awards',         label: 'Awards' },
   { id: 'testimonials',   label: 'Testimonials' },
-  { id: 'stats',          label: 'Stats' },
   { id: 'contact',        label: 'Contact' },
 ];
 

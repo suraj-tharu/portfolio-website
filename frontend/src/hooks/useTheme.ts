@@ -2,30 +2,68 @@ import { useState, useEffect } from 'react';
 
 type Theme = 'dark' | 'light';
 
-export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') return stored;
+// Global state
+let currentTheme: Theme = 'dark';
+if (typeof window !== 'undefined') {
+  const stored = localStorage.getItem('theme');
+  if (stored === 'dark' || stored === 'light') {
+    currentTheme = stored;
+  } else {
+    currentTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+}
 
-      // Default to dark mode for this site design, but fallback to system
-      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-    }
-    return 'dark';
+const listeners = new Set<(theme: Theme) => void>();
+
+const setGlobalTheme = (newTheme: Theme) => {
+  currentTheme = newTheme;
+  
+  if (typeof window !== 'undefined') {
+    const root = window.document.documentElement;
+    root.classList.remove('light', 'dark');
+    root.classList.add(newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+  
+  listeners.forEach(listener => listener(newTheme));
+};
+
+// Initialize DOM once on module load
+if (typeof window !== 'undefined') {
+  const root = window.document.documentElement;
+  root.classList.remove('light', 'dark');
+  root.classList.add(currentTheme);
+  
+  window.addEventListener('toggleTheme', () => {
+    setGlobalTheme(currentTheme === 'dark' ? 'light' : 'dark');
   });
 
+  const prefersColorScheme = window.matchMedia('(prefers-color-scheme: light)');
+  prefersColorScheme.addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      setGlobalTheme(e.matches ? 'light' : 'dark');
+    }
+  });
+}
+
+export function useTheme() {
+  const [theme, setTheme] = useState<Theme>(currentTheme);
+
   useEffect(() => {
-    const root = window.document.documentElement;
-
-    root.classList.remove('light', 'dark');
-    root.classList.add(theme);
-
-    localStorage.setItem('theme', theme);
+    // Sync local state if global changed before mount
+    if (theme !== currentTheme) {
+      setTheme(currentTheme);
+    }
+    
+    listeners.add(setTheme);
+    return () => {
+      listeners.delete(setTheme);
+    };
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    setGlobalTheme(currentTheme === 'dark' ? 'light' : 'dark');
   };
 
-  return { theme, toggleTheme, setTheme };
+  return { theme, toggleTheme, setTheme: setGlobalTheme };
 }
