@@ -66,12 +66,12 @@ export default function EmailSubscription() {
                     <div className="p-2 rounded-lg dark:bg-brand-light/20 bg-brand-light/10">
                         <Mail className="dark:text-brand-light text-brand-dark" size={24} />
                     </div>
-                    <h3 className="text-2xl font-display italic dark:text-text-primary text-gray-900">
+                    <h3 className="text-2xl font-display italic text-text-primary">
                         Stay Updated
                     </h3>
                 </div>
 
-                <p className="dark:text-text-secondary text-gray-700 mb-6">
+                <p className="text-text-secondary mb-6">
                     Get notified about new articles, projects, and insights directly in your inbox.
                 </p>
 
@@ -84,7 +84,7 @@ export default function EmailSubscription() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             disabled={isLoading}
-                            className="flex-1 px-4 py-3 rounded-lg dark:bg-surface/80 bg-white/80 dark:text-text-primary text-gray-900 dark:placeholder-text-muted placeholder-gray-500 border dark:border-stroke border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-light disabled:opacity-50"
+                            className="flex-1 px-4 py-3 rounded-lg dark:bg-surface/80 bg-white/80 text-text-primary dark:placeholder-text-muted placeholder-gray-500 border border-stroke focus:outline-none focus:ring-2 focus:ring-brand-light disabled:opacity-50"
                         />
                         <motion.button
                             type="submit"

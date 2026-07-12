@@ -31,7 +31,7 @@ export default function ResumeModal({ isOpen, onClose }: ResumeModalProps) {
             style={{ perspective: 1200 }}
           >
             {/* The Ticket */}
-            <div className={`relative pointer-events-auto flex flex-col md:flex-row w-full rounded-2xl overflow-hidden shadow-2xl ${isDark ? 'bg-[#0f0c29] text-white' : 'bg-white text-gray-900'} border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
+            <div className={`relative pointer-events-auto flex flex-col md:flex-row w-full rounded-2xl overflow-hidden shadow-2xl ${isDark ? 'bg-bg text-text-primary' : 'bg-bg text-text-primary'} border ${isDark ? 'border-white/10' : 'border-gray-200'}`}>
               
               {/* Close Button */}
               <button

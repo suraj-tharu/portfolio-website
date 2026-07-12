@@ -58,7 +58,7 @@ export const GlassmorphicCard: React.FC<{
     return (
         <Glassmorphic className={`p-6 md:p-8 ${className}`}>
             {title && (
-                <h3 className="text-xl font-semibold mb-4 dark:text-text-primary text-gray-900">
+                <h3 className="text-xl font-semibold mb-4 text-text-primary">
                     {title}
                 </h3>
             )}

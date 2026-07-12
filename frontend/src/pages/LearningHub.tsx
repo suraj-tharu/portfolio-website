@@ -94,7 +94,7 @@ function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) 
 
         {/* Title + description */}
         <div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white mb-1.5 leading-snug
+          <h3 className="text-base font-bold text-text-primary mb-1.5 leading-snug
             group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors">
             {mat.subject}
           </h3>
@@ -116,7 +116,7 @@ function ResourceCard({ mat, index }: { mat: LearningMaterial; index: number }) 
 
         {/* Download / unavailable CTA */}
         <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100 dark:border-white/6">
-          <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-white/35">
+          <div className="flex items-center gap-2 text-xs text-muted">
             <FileText size={11} />
             {hasFile ? (mat.grade === 'Project' || mat.grade === 'Blog' ? 'Link available' : 'File available') : 'No file yet'}
           </div>
@@ -248,7 +248,7 @@ export default function LearningHub() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-white dark:bg-[#09090f] text-slate-900 dark:text-white"
+      className="min-h-screen bg-bg text-text-primary"
     >
       {/* ── HERO ────────────────────────────────── */}
       <div ref={heroRef} className="relative min-h-[65vh] flex items-center overflow-hidden">
@@ -269,7 +269,7 @@ export default function LearningHub() {
           <motion.div
             initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
             className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-8
-              text-slate-400 dark:text-white/35"
+              text-muted"
           >
             <a href="/" className="hover:text-violet-600 dark:hover:text-violet-400 transition-colors">Home</a>
             <ChevronRight size={12} />
@@ -295,7 +295,7 @@ export default function LearningHub() {
                 className="font-display italic font-black tracking-tight leading-[0.88]
                   text-[clamp(3rem,8vw,6rem)] mb-6"
               >
-                <span className="text-slate-900 dark:text-white">Learning</span>
+                <span className="text-text-primary">Learning</span>
                 <br />
                 <span style={{
                   background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 50%, #0ea5e9 100%)',
@@ -345,12 +345,12 @@ export default function LearningHub() {
             >
               <div className="relative">
                 <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-violet-200/40 to-pink-200/30 dark:from-violet-900/30 dark:to-pink-900/20 blur-xl" />
-                <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] p-6 space-y-4">
+                <div className="relative rounded-2xl overflow-hidden border border-stroke bg-white dark:bg-white/[0.03] p-6 space-y-4">
                   <div className="flex items-center gap-3 mb-2">
                     <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 flex items-center justify-center">
                       <BookOpen size={15} className="text-white" />
                     </div>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">Latest Resources</span>
+                    <span className="text-sm font-bold text-text-primary">Latest Resources</span>
                   </div>
                   {loading ? (
                     <div className="flex items-center justify-center py-8">
@@ -365,15 +365,15 @@ export default function LearningHub() {
                           <Ic size={14} className="text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-slate-900 dark:text-white truncate">{m.subject}</p>
-                          <p className="text-[10px] text-slate-400 dark:text-white/35">{m.grade}</p>
+                          <p className="text-xs font-semibold text-text-primary truncate">{m.subject}</p>
+                          <p className="text-[10px] text-muted">{m.grade}</p>
                         </div>
                         {m.pdfUrl && m.pdfUrl !== '#' && <Download size={13} className="text-violet-500 shrink-0" />}
                       </div>
                     );
                   })}
                   {!loading && materials.length === 0 && (
-                    <p className="text-xs text-center text-slate-400 dark:text-white/30 py-4">No resources uploaded yet.</p>
+                    <p className="text-xs text-center text-muted py-4">No resources uploaded yet.</p>
                   )}
                 </div>
               </div>
@@ -397,7 +397,7 @@ export default function LearningHub() {
               <span className="text-xs font-bold uppercase tracking-[0.3em] text-violet-600 dark:text-violet-400">Downloads</span>
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-display italic font-black tracking-tight
-              text-slate-900 dark:text-white leading-tight">
+              text-text-primary leading-tight">
               Study <span style={{
                 background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -406,16 +406,16 @@ export default function LearningHub() {
           </div>
 
           <div className="relative w-full sm:w-80">
-            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-white/30 pointer-events-none" />
+            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted pointer-events-none" />
             <input
               type="text"
               placeholder="Search resources…"
               value={query}
               onChange={e => setQuery(e.target.value)}
               className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm
-                border border-slate-200 dark:border-white/10
+                border border-stroke
                 bg-white dark:bg-white/[0.04]
-                text-slate-900 dark:text-white
+                text-text-primary
                 placeholder:text-slate-400 dark:placeholder:text-white/30
                 focus:outline-none focus:border-violet-400 dark:focus:border-violet-500
                 focus:ring-2 focus:ring-violet-400/20 dark:focus:ring-violet-500/20
@@ -442,7 +442,7 @@ export default function LearningHub() {
                   border transition-all duration-200
                   ${active
                     ? 'bg-gradient-to-r from-violet-600 to-purple-600 text-white border-transparent shadow-[0_4px_16px_rgba(124,58,237,0.35)]'
-                    : 'border-slate-200 dark:border-white/10 bg-white dark:bg-white/[0.03] text-slate-600 dark:text-white/60 hover:border-violet-400 dark:hover:border-violet-500/50'
+                    : 'border-stroke bg-white dark:bg-white/[0.03] text-text-secondary hover:border-violet-400 dark:hover:border-violet-500/50'
                   }`}
               >
                 <Icon size={13} />
@@ -488,7 +488,7 @@ export default function LearningHub() {
                 ? filtered.map((mat, i) => <ResourceCard key={mat.id} mat={mat} index={i} />)
                 : (
                   <div className="col-span-full flex flex-col items-center gap-4 py-24 text-center">
-                    <Search size={40} className="text-slate-300 dark:text-white/15" />
+                    <Search size={40} className="text-muted" />
                     <p className="text-slate-500 dark:text-white/40 font-medium">
                       {query ? `No resources found for "${query}"` : 'No resources in this category yet.'}
                     </p>

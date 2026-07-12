@@ -42,8 +42,8 @@ function NavLink({
       <span className={`
         text-[13px] font-medium tracking-[-0.01em] transition-colors duration-300 whitespace-nowrap
         ${isActive
-          ? 'text-slate-900 dark:text-white'
-          : 'text-slate-500 dark:text-white/50 hover:text-slate-800 dark:hover:text-white/80'
+          ? 'text-text-primary'
+          : 'text-text-secondary hover:text-text-primary'
         }
       `}>
         {label}
@@ -89,7 +89,7 @@ function FullscreenMenu({
       exit={{ clipPath: 'circle(0% at calc(100% - 2.5rem) 2.5rem)' }}
       transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
       className="fixed inset-0 z-[9998] flex flex-col overflow-hidden
-        bg-white dark:bg-[#050508]"
+        bg-bg"
       aria-modal="true" role="dialog" aria-label="Navigation menu"
     >
       {/* Subtle grid pattern */}
@@ -120,12 +120,12 @@ function FullscreenMenu({
                 >
                   <span className="font-syne font-extrabold tracking-tight leading-none
                     text-[clamp(2rem,6vw,4.5rem)]
-                    text-slate-900 dark:text-white/90
+                    text-text-primary/90
                     group-hover:text-violet-600 dark:group-hover:text-violet-400
                     transition-colors duration-300">
                     {link.label}
                   </span>
-                  <span className="text-[11px] font-mono font-medium text-slate-300 dark:text-white/15
+                  <span className="text-[11px] font-mono font-medium text-muted
                     group-hover:text-violet-400 dark:group-hover:text-violet-500 transition-colors">
                     0{i + 1}
                   </span>
@@ -136,12 +136,12 @@ function FullscreenMenu({
                 >
                   <span className="font-syne font-extrabold tracking-tight leading-none
                     text-[clamp(2rem,6vw,4.5rem)]
-                    text-slate-900 dark:text-white/90
+                    text-text-primary/90
                     group-hover:text-violet-600 dark:group-hover:text-violet-400
                     transition-colors duration-300">
                     {link.label}
                   </span>
-                  <span className="text-[11px] font-mono font-medium text-slate-300 dark:text-white/15
+                  <span className="text-[11px] font-mono font-medium text-muted
                     group-hover:text-violet-400 dark:group-hover:text-violet-500 transition-colors">
                     0{i + 1}
                   </span>
@@ -162,12 +162,12 @@ function FullscreenMenu({
           border-t border-slate-200/40 dark:border-white/[0.04]"
       >
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2 text-xs text-slate-400 dark:text-white/30 font-body">
+          <div className="flex items-center gap-2 text-xs text-muted font-body">
             <MapPin size={12} className="text-violet-500/70 shrink-0" />
             Nawalparasi West, Nepal
           </div>
           <a href="mailto:suraj.xaudhary@gmail.com"
-            className="flex items-center gap-2 text-xs text-slate-400 dark:text-white/30 font-body
+            className="flex items-center gap-2 text-xs text-muted font-body
               hover:text-violet-600 dark:hover:text-violet-400 transition-colors">
             <Mail size={12} className="text-violet-500/70 shrink-0" />
             suraj.xaudhary@gmail.com
@@ -194,7 +194,7 @@ function FullscreenMenu({
             ].map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                 className="text-[10px] font-medium uppercase tracking-[0.15em] font-body
-                  text-slate-300 dark:text-white/20
+                  text-muted
                   hover:text-violet-600 dark:hover:text-violet-400
                   transition-colors duration-200"
               >
@@ -256,8 +256,8 @@ export default function Navbar() {
   /* Minimal control button */
   const controlBtn = `
     flex items-center justify-center w-9 h-9 rounded-full
-    text-slate-500 dark:text-white/50
-    hover:text-slate-900 dark:hover:text-white
+    text-text-secondary
+    hover:text-text-primary
     hover:bg-slate-100/80 dark:hover:bg-white/[0.06]
     transition-all duration-200 focus-visible:outline-none
   `;
@@ -313,10 +313,10 @@ export default function Navbar() {
           </div>
           {/* Name — hidden on small screens */}
           <div className="hidden sm:flex flex-col leading-none gap-0.5">
-            <span className="text-[12px] font-semibold text-slate-900 dark:text-white tracking-[-0.02em] font-body">
+            <span className="text-[12px] font-semibold text-text-primary tracking-[-0.02em] font-body">
               Er. Suraj Tharu
             </span>
-            <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 dark:text-white/30 font-body">
+            <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-muted font-body">
               Chaudhary
             </span>
           </div>

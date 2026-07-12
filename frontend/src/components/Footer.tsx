@@ -69,7 +69,7 @@ function NepalClock() {
       viewport={{ once: true }}
       transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-2xl
-                 border border-slate-200 dark:border-white/10
+                 border border-stroke
                  bg-white/70 dark:bg-white/[0.04]
                  shadow-sm dark:shadow-none backdrop-blur-md
                  transition-colors duration-300"
@@ -176,7 +176,7 @@ function SwissDivider() {
       <div
         className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full
                    bg-white dark:bg-[#07090f]
-                   border border-slate-200 dark:border-white/10
+                   border border-stroke
                    shadow-sm dark:shadow-none"
         style={{ boxShadow: '0 0 18px rgba(99,102,241,0.22)' }}
       >
@@ -485,7 +485,7 @@ export default function Footer() {
             style={{ fontSize: 'clamp(3rem,10vw,8rem)', letterSpacing: '-0.04em' }}
           >
             <motion.span
-              className="block text-slate-900 dark:text-white"
+              className="block text-text-primary"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

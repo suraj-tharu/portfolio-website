@@ -70,10 +70,10 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
             <div className="max-w-6xl mx-auto px-6 md:px-10">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-6xl font-display italic dark:text-text-primary text-gray-900 mb-4">
+                    <h2 className="text-4xl md:text-6xl font-display italic text-text-primary mb-4">
                         Learning Hub
                     </h2>
-                    <p className="text-lg dark:text-text-secondary text-gray-700">
+                    <p className="text-lg text-text-secondary">
                         Explore articles, tutorials, and insights on software engineering and technology
                     </p>
                 </div>
@@ -85,7 +85,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                         placeholder="Search articles..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-4 py-3 rounded-lg dark:bg-surface bg-white dark:text-text-primary text-gray-900 border dark:border-stroke border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-light"
+                        className="w-full px-4 py-3 rounded-lg bg-surface text-text-primary border border-stroke focus:outline-none focus:ring-2 focus:ring-brand-light"
                     />
                 </div>
 
@@ -93,7 +93,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                 <div className="space-y-6 mb-12">
                     {/* Categories */}
                     <div>
-                        <h3 className="text-sm font-semibold dark:text-text-primary text-gray-900 mb-3">
+                        <h3 className="text-sm font-semibold text-text-primary mb-3">
                             Categories
                         </h3>
                         <div className="flex flex-wrap gap-2">
@@ -101,7 +101,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                 onClick={() => setSelectedCategory(null)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === null
                                         ? 'dark:bg-brand-light bg-brand-dark dark:text-bg text-white'
-                                        : 'dark:bg-surface bg-gray-200 dark:text-text-primary text-gray-900 hover:dark:bg-surface/80'
+                                        : 'bg-surface text-text-primary hover:dark:bg-surface/80'
                                     }`}
                             >
                                 All
@@ -112,7 +112,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                     onClick={() => setSelectedCategory(cat)}
                                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${selectedCategory === cat
                                             ? 'dark:bg-brand-light bg-brand-dark dark:text-bg text-white'
-                                            : 'dark:bg-surface bg-gray-200 dark:text-text-primary text-gray-900 hover:dark:bg-surface/80'
+                                            : 'bg-surface text-text-primary hover:dark:bg-surface/80'
                                         }`}
                                 >
                                     {cat}
@@ -123,7 +123,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
 
                     {/* Tags */}
                     <div>
-                        <h3 className="text-sm font-semibold dark:text-text-primary text-gray-900 mb-3">
+                        <h3 className="text-sm font-semibold text-text-primary mb-3">
                             Tags
                         </h3>
                         <div className="flex flex-wrap gap-2">
@@ -133,7 +133,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                     onClick={() => toggleTag(tag)}
                                     className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${selectedTags.has(tag)
                                             ? 'dark:bg-brand-light bg-brand-dark dark:text-bg text-white'
-                                            : 'dark:bg-surface/40 bg-gray-100 dark:text-text-secondary text-gray-700 hover:dark:bg-surface/60'
+                                            : 'bg-surface-2 text-text-secondary hover:dark:bg-surface/60'
                                         }`}
                                 >
                                     #{tag}
@@ -180,11 +180,11 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                                         </span>
                                     </div>
 
-                                    <h3 className="text-xl font-semibold dark:text-text-primary text-gray-900 mb-2 line-clamp-2 group-hover:dark:text-brand-light group-hover:text-brand-dark transition-colors">
+                                    <h3 className="text-xl font-semibold text-text-primary mb-2 line-clamp-2 group-hover:dark:text-brand-light group-hover:text-brand-dark transition-colors">
                                         {post.title}
                                     </h3>
 
-                                    <p className="dark:text-text-secondary text-gray-700 mb-4 line-clamp-3">
+                                    <p className="text-text-secondary mb-4 line-clamp-3">
                                         {post.excerpt}
                                     </p>
 
@@ -209,7 +209,7 @@ export default function BlogWithTags({ posts, onPostSelect }: BlogWithTagsProps)
                     </div>
                 ) : (
                     <div className="text-center py-12">
-                        <p className="dark:text-text-secondary text-gray-700">
+                        <p className="text-text-secondary">
                             No articles found. Try adjusting your filters.
                         </p>
                     </div>
