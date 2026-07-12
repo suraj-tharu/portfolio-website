@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { sanityClient, BLOG_QUERY } from '../sanity/client';
 
 const defaultEntries = [
   { title: "The future of interactive web design", date: "Oct 12, 2026", read: "4 min read", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=100&q=80", url: "#" },
@@ -8,6 +9,16 @@ const defaultEntries = [
   { title: "Why typography matters in digital products", date: "Sep 15, 2026", read: "5 min read", img: "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?auto=format&fit=crop&w=100&q=80", url: "#" },
   { title: "My workflow for high-performance sites", date: "Aug 30, 2026", read: "8 min read", img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=100&q=80", url: "#" },
 ];
+
+type SanityBlog = {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  body: unknown[];
+  publishedAt: string;
+  imageUrl: string | null;
+  excerpt: string | null;
+};
 
 type Blog = {
   id: number;
@@ -29,38 +40,68 @@ const SkeletonEntry = () => (
 );
 
 export default function Journal() {
-  const [dbBlogs, setDbBlogs] = useState<Blog[]>([]);
+  const [entries, setEntries] = useState<typeof defaultEntries>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/portfolio-data')
-      .then(res => {
-        if (!res.ok) throw new Error('API not available');
-        return res.json();
-      })
-      .then(data => {
-        if (data.blogs && data.blogs.length > 0) {
-          setDbBlogs(data.blogs.slice(0, 4));
-        }
-      })
-      .catch(() => {})
-      .finally(() => {
-        // Short delay so skeleton is visible even on fast connections
-        setTimeout(() => setIsLoading(false), 600);
-      });
-  }, []);
+    let cancelled = false;
 
-  const displayEntries = dbBlogs.length > 0 ? dbBlogs.map((b, i) => {
-    const wordCount = b.content.split(/\s+/).length;
-    const readTime = Math.max(1, Math.ceil(wordCount / 200));
-    return {
-      title: b.title,
-      date: new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      read: `${readTime} min read`,
-      img: defaultEntries[i]?.img || defaultEntries[0].img,
-      url: `/blog/${b.slug}`
+    const loadBlogs = async () => {
+      // 1. Try Sanity first
+      try {
+        const sanityBlogs: SanityBlog[] = await sanityClient.fetch(BLOG_QUERY);
+        if (!cancelled && sanityBlogs && sanityBlogs.length > 0) {
+          const mapped = sanityBlogs.slice(0, 4).map((b, i) => ({
+            title: b.title,
+            date: new Date(b.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+            read: b.body ? `${Math.max(1, Math.ceil(JSON.stringify(b.body).split(' ').length / 200))} min read` : '3 min read',
+            img: b.imageUrl || defaultEntries[i % defaultEntries.length].img,
+            url: b.slug?.current ? `/blog/${b.slug.current}` : '#',
+          }));
+          setEntries(mapped);
+          setIsLoading(false);
+          return;
+        }
+      } catch {
+        // Sanity failed, try backend API
+      }
+
+      // 2. Fallback to backend API
+      try {
+        const res = await fetch('/api/portfolio-data');
+        if (res.ok) {
+          const data = await res.json();
+          const dbBlogs: Blog[] = data.blogs || [];
+          if (!cancelled && dbBlogs.length > 0) {
+            const mapped = dbBlogs.slice(0, 4).map((b, i) => {
+              const wordCount = b.content.split(/\s+/).length;
+              return {
+                title: b.title,
+                date: new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                read: `${Math.max(1, Math.ceil(wordCount / 200))} min read`,
+                img: defaultEntries[i % defaultEntries.length].img,
+                url: `/blog/${b.slug}`,
+              };
+            });
+            setEntries(mapped);
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch {
+        // Use defaults
+      }
+
+      // 3. Final fallback: static defaults
+      if (!cancelled) {
+        setEntries(defaultEntries);
+        setIsLoading(false);
+      }
     };
-  }) : defaultEntries;
+
+    loadBlogs();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <section className="bg-bg py-8 md:py-10 relative z-20">
@@ -98,7 +139,7 @@ export default function Journal() {
         <div className="flex flex-col gap-4">
           {isLoading
             ? Array.from({ length: 4 }).map((_, i) => <SkeletonEntry key={i} />)
-            : displayEntries.map((entry, i) => (
+            : entries.map((entry, i) => (
               <motion.a 
                 href={entry.url}
                 key={entry.title + i}

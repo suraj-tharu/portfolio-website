@@ -167,58 +167,95 @@ export default function LearningHub() {
     setMetaTags(pageMetaTags.learning);
   }, []);
 
-  // === Fetch real data from backend ===
+  // === Fetch real data — Sanity first, backend API fallback ===
   const [materials, setMaterials] = useState<LearningMaterial[]>([]);
   const [loading, setLoading]     = useState(true);
   const [error, setError]         = useState<string | null>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/learning-materials').then(r => r.ok ? r.json() : { materials: [] }),
-      fetch('/api/portfolio-data').then(r => r.ok ? r.json() : { projects: [], blogs: [] })
-    ])
-      .then(([matsData, portData]) => {
-        const rawMaterials = matsData.materials || [];
-        const rawProjects = portData.projects || [];
-        const rawBlogs = portData.blogs || [];
+    let cancelled = false;
 
-        // Map Projects into the LearningMaterial shape
-        const projectMaterials: LearningMaterial[] = rawProjects.map((p: {
-          id: number; title: string; description: string; liveUrl: string; githubUrl: string; createdAt: string;
-        }) => ({
-          id: p.id + 10000,
-          grade: 'Project',
-          category: 'Portfolio',
-          subject: p.title,
-          description: p.description,
-          pdfUrl: p.liveUrl || p.githubUrl || '#',
-          createdAt: p.createdAt
-        }));
+    const loadMaterials = async () => {
+      // 1. Try Sanity CMS first
+      try {
+        const { sanityClient, LEARNING_MATERIAL_QUERY } = await import('../sanity/client');
+        const sanityMaterials = await sanityClient.fetch(LEARNING_MATERIAL_QUERY);
+        if (!cancelled && sanityMaterials && sanityMaterials.length > 0) {
+          const mapped: LearningMaterial[] = sanityMaterials.map((m: {
+            _id: string; title: string; grade: string; subject: string;
+            description: string | null; pdfUrl: string | null; _createdAt: string;
+          }, i: number) => ({
+            id: i + 50000,
+            grade: m.grade || 'Project',
+            category: m.grade || 'Project',
+            subject: m.title,
+            description: m.description,
+            pdfUrl: m.pdfUrl,
+            createdAt: m._createdAt,
+          }));
+          setMaterials(mapped);
+          setLoading(false);
+          return;
+        }
+      } catch {
+        // Sanity not available, use backend
+      }
 
-        // Map Blogs into the LearningMaterial shape
-        const blogMaterials: LearningMaterial[] = rawBlogs.map((b: {
-          id: number; title: string; content: string; slug: string; createdAt: string;
-        }) => ({
-          id: b.id + 20000,
-          grade: 'Blog',
-          category: 'Article',
-          subject: b.title,
-          description: b.content ? b.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '',
-          pdfUrl: `/blog/${b.slug}`,
-          createdAt: b.createdAt
-        }));
+      // 2. Fallback to backend API
+      Promise.all([
+        fetch('/api/learning-materials').then(r => r.ok ? r.json() : { materials: [] }),
+        fetch('/api/portfolio-data').then(r => r.ok ? r.json() : { projects: [], blogs: [] })
+      ])
+        .then(([matsData, portData]) => {
+          const rawMaterials = matsData.materials || [];
+          const rawProjects = portData.projects || [];
+          const rawBlogs = portData.blogs || [];
 
-        const combined = [...rawMaterials, ...projectMaterials, ...blogMaterials].sort((a, b) => 
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+          // Map Projects into the LearningMaterial shape
+          const projectMaterials: LearningMaterial[] = rawProjects.map((p: {
+            id: number; title: string; description: string; liveUrl: string; githubUrl: string; createdAt: string;
+          }) => ({
+            id: p.id + 10000,
+            grade: 'Project',
+            category: 'Portfolio',
+            subject: p.title,
+            description: p.description,
+            pdfUrl: p.liveUrl || p.githubUrl || '#',
+            createdAt: p.createdAt
+          }));
 
-        setMaterials(combined);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('Could not load resources. Please try again later.');
-        setLoading(false);
-      });
+          // Map Blogs into the LearningMaterial shape
+          const blogMaterials: LearningMaterial[] = rawBlogs.map((b: {
+            id: number; title: string; content: string; slug: string; createdAt: string;
+          }) => ({
+            id: b.id + 20000,
+            grade: 'Blog',
+            category: 'Article',
+            subject: b.title,
+            description: b.content ? b.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '',
+            pdfUrl: `/blog/${b.slug}`,
+            createdAt: b.createdAt
+          }));
+
+          const combined = [...rawMaterials, ...projectMaterials, ...blogMaterials].sort((a, b) => 
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+
+          if (!cancelled) {
+            setMaterials(combined);
+            setLoading(false);
+          }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setError('Could not load resources. Please try again later.');
+            setLoading(false);
+          }
+        });
+    };
+
+    loadMaterials();
+    return () => { cancelled = true; };
   }, []);
 
   useEffect(() => {
