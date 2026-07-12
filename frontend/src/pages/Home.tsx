@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import Hero from '../components/Hero';
 import CredentialsStrip from '../components/CredentialsStrip';
 import Testimonials from '../components/Testimonials';
@@ -18,8 +19,13 @@ import AwardsAchievements from '../components/AwardsAchievements';
 import InteractiveResume from '../components/InteractiveResume';
 import Contact from '../components/Contact';
 import FAQ from '../components/FAQ';
+import { setMetaTags, pageMetaTags } from '../utils/metaTags';
 
 export default function Home() {
+  useEffect(() => {
+    setMetaTags(pageMetaTags.home);
+  }, []);
+
   return (
     <motion.main
       initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}

@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import GISShowcase from '../components/GISShowcase';
-
 import GlobeShowcase from '../components/GlobeShowcase';
+import { setMetaTags, pageMetaTags } from '../utils/metaTags';
 
 export default function ResearchDashboard() {
+  useEffect(() => {
+    setMetaTags(pageMetaTags.research);
+  }, []);
 
   return (
     <motion.div 

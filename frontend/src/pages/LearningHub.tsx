@@ -6,6 +6,7 @@ import {
   ArrowRight, Search, ExternalLink, ChevronRight,
   Code2, Database, Globe, Cpu, Sparkles, AlertCircle, Loader2,
 } from 'lucide-react';
+import { setMetaTags, pageMetaTags } from '../utils/metaTags';
 
 /* ═══════════════════════════════════════════════════════════
    TYPES
@@ -161,6 +162,10 @@ export default function LearningHub() {
   const activeCategory = searchParams.get('category') || 'all';
   const [query, setQuery] = useState('');
   const heroRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMetaTags(pageMetaTags.learning);
+  }, []);
 
   // === Fetch real data from backend ===
   const [materials, setMaterials] = useState<LearningMaterial[]>([]);

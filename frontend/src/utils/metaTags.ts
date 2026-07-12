@@ -88,19 +88,23 @@ export const defaultMetaTags: MetaTagConfig = {
 
 // Preset configurations for different pages
 export const pageMetaTags = {
-    home: {
-        title: 'Home',
-        description: 'Welcome to my portfolio. Full-stack engineer, educator, and researcher.',
-        keywords: ['portfolio', 'engineer', 'educator', 'researcher']
-    },
+    home: defaultMetaTags,
     research: {
-        title: 'Research & Projects',
-        description: 'Explore my research projects, innovations, and technical contributions.',
-        keywords: ['research', 'projects', 'innovations', 'technical']
+        title: 'Research & Projects | Suraj Tharu Chaudhary',
+        description: 'Explore Suraj Tharu Chaudhary\'s research in GIS, Remote Sensing, LULC Analysis, and Deep Learning for environmental engineering and sustainable development.',
+        keywords: ['GIS Research Nepal', 'Remote Sensing', 'LULC Analysis', 'Machine Learning Research', 'Suraj Tharu Chaudhary Projects'],
+        url: 'https://portfolio-website-vto2.onrender.com/research',
+        image: 'https://portfolio-website-vto2.onrender.com/IMG_20250922_201902.jpg',
+        type: 'website' as const,
+        author: 'Suraj Tharu Chaudhary'
     },
     learning: {
-        title: 'Learning Hub',
-        description: 'Educational resources and tutorials for aspiring engineers and developers.',
-        keywords: ['learning', 'tutorials', 'education', 'courses']
+        title: 'Learning Hub | Suraj Tharu Chaudhary',
+        description: 'Educational resources, tutorials, and class notes for Computer Engineering, GIS, and high school students in Nepal curated by Er. Suraj Tharu Chaudhary.',
+        keywords: ['Computer Engineering Notes Nepal', 'GIS Tutorials', 'SEE Computer Science', 'NEB Computer Notes', 'Teacher Training Nepal'],
+        url: 'https://portfolio-website-vto2.onrender.com/learning-hub',
+        image: 'https://portfolio-website-vto2.onrender.com/IMG_20250922_201902.jpg',
+        type: 'website' as const,
+        author: 'Suraj Tharu Chaudhary'
     }
 };
