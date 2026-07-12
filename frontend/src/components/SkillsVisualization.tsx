@@ -8,7 +8,7 @@ import type { LucideIcon } from 'lucide-react';
 import {
   Globe2, Brain, Code2, Map, Layers, Cpu, Eye, Database,
   LayoutDashboard, Server, GitBranch, Activity, Sparkles,
-  Zap, Star, Award,
+  Zap, Star,
 } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 /* ═══════════════════════════════════════════════════════════
    INJECTED KEYFRAMES & SCOPED CSS
@@ -369,7 +369,7 @@ function Particle({ x, y, delay, color }: { x: number; y: number; delay: number;
         height: 4,
         borderRadius: '50%',
         background: color,
-        animation: `ped-particle ${2.5 + Math.random() * 2}s ease-out ${delay}s infinite`,
+        animation: `ped-particle ${2.5 + ((x + y) % 2)}s ease-out ${delay}s infinite`,
         pointerEvents: 'none',
       }}
     />
@@ -465,7 +465,6 @@ function StatCard({ stat, index }: { stat: typeof STATS[0]; index: number }) {
 ═══════════════════════════════════════════════════════════ */
 export default function TeachingExperience() {
   const sectionRef = useRef<HTMLElement>(null);
-  const isInView    = useInView(sectionRef, { once: false, margin: '-80px' });
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
