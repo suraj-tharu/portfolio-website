@@ -208,27 +208,16 @@ export default function LearningHub() {
           setLoading(false);
           return;
         }
-            subject: b.title,
-            description: b.content ? b.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '',
-            pdfUrl: `/blog/${b.slug}`,
-            createdAt: b.createdAt
-          }));
+      } catch (err) {
+        console.error('Sanity fetch failed:', err);
+        if (!cancelled) setError('Could not load resources. Please try again later.');
+      }
 
-          const combined = [...rawMaterials, ...projectMaterials, ...blogMaterials].sort((a, b) => 
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-
-          if (!cancelled) {
-            setMaterials(combined);
-            setLoading(false);
-          }
-        })
-        .catch(() => {
-          if (!cancelled) {
-            setError('Could not load resources. Please try again later.');
-            setLoading(false);
-          }
-        });
+      // 2. Fallback to empty state if no Sanity data
+      if (!cancelled) {
+        setMaterials([]);
+        setLoading(false);
+      }
     };
 
     loadMaterials();

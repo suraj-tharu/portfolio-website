@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+
 import { motion } from 'framer-motion';
 import { Download, FileText, BookOpen, Layers, Archive, PenTool } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -19,12 +19,8 @@ const resourceDefs = [
 ];
 
 export default function StudentResources() {
-  const [materials, setMaterials] = useState<LearningMaterial[]>([]);
+  const materials: LearningMaterial[] = [];
 
-  useEffect(() => {
-    // Backend API removed - use static resources
-    setMaterials([]);
-  }, []);
 
   const countFor = (grade: string) =>
     grade === 'all'

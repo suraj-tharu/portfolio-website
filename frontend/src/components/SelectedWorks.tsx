@@ -293,21 +293,7 @@ function ProjectCard({ project, index }: { project: DisplayProject; index: numbe
 }
 
 export default function SelectedWorks() {
-  const [dbProjects, setDbProjects] = useState<{ title: string; description: string; imageUrl: string | null; githubUrl: string | null; liveUrl: string | null; id: number }[]>([]);
-
-  useEffect(() => {
-    // Backend API removed - use static defaultProjects
-    setDbProjects([]);
-  }, []);
-
-  const displayProjects: DisplayProject[] = dbProjects.length > 0
-    ? dbProjects.map((p, i) => ({
-        ...defaultProjects[i % defaultProjects.length],
-        title: p.title,
-        img: p.imageUrl || defaultProjects[i % defaultProjects.length].img,
-        url: p.liveUrl || p.githubUrl || '#',
-      }))
-    : defaultProjects;
+  const displayProjects: DisplayProject[] = defaultProjects;
 
   return (
     <section id="work" className="section-py relative z-20 bg-[var(--bg)] overflow-hidden">

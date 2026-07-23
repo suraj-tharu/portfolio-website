@@ -20,13 +20,7 @@ type SanityBlog = {
   excerpt: string | null;
 };
 
-type Blog = {
-  id: number;
-  title: string;
-  slug: string;
-  content: string;
-  createdAt: string;
-};
+
 
 // Skeleton card
 const SkeletonEntry = () => (

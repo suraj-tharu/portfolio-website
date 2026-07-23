@@ -903,7 +903,6 @@ function LuxuryHeader() {
    MAIN EXPORT
 ═══════════════════════════════════════════════════════ */
 export default function AcademicTimeline() {
-  const [timeline, setTimeline]     = useState<TimelineEvent[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const isInView   = useInView(sectionRef, { once: false, margin: '-20%' });
@@ -911,19 +910,14 @@ export default function AcademicTimeline() {
   // Auto-cycle
   useEffect(() => {
     if (!isInView) return;
-    const count = timeline.length || defaultTimeline.length;
+    const count = defaultTimeline.length;
     const id = window.setInterval(() => {
       setActiveIndex(prev => (prev + 1) % count);
     }, 4500);
     return () => clearInterval(id);
-  }, [isInView, timeline.length]);
+  }, [isInView]);
 
-  useEffect(() => {
-    // Backend API removed - use static data
-    setTimeline(defaultTimeline);
-  }, []);
-
-  const items = timeline.length > 0 ? timeline : defaultTimeline;
+  const items = defaultTimeline;
 
   return (
     <section
