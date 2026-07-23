@@ -22,13 +22,8 @@ export default function StudentResources() {
   const [materials, setMaterials] = useState<LearningMaterial[]>([]);
 
   useEffect(() => {
-    fetch('/api/learning-materials')
-      .then(r => {
-        if (!r.ok) throw new Error('API not available');
-        return r.json();
-      })
-      .then(data => setMaterials(data.materials || []))
-      .catch(() => {});
+    // Backend API removed - use static resources
+    setMaterials([]);
   }, []);
 
   const countFor = (grade: string) =>

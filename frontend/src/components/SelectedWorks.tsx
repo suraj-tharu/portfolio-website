@@ -296,13 +296,8 @@ export default function SelectedWorks() {
   const [dbProjects, setDbProjects] = useState<{ title: string; description: string; imageUrl: string | null; githubUrl: string | null; liveUrl: string | null; id: number }[]>([]);
 
   useEffect(() => {
-    fetch('/api/portfolio-data')
-      .then((r) => {
-        if (!r.ok) throw new Error('API not available');
-        return r.json();
-      })
-      .then((data) => { if (data.projects?.length > 0) setDbProjects(data.projects.slice(0, 6)); })
-      .catch(() => {/* use defaults */});
+    // Backend API removed - use static defaultProjects
+    setDbProjects([]);
   }, []);
 
   const displayProjects: DisplayProject[] = dbProjects.length > 0

@@ -62,37 +62,11 @@ export default function Journal() {
           setIsLoading(false);
           return;
         }
-      } catch {
-        // Sanity failed, try backend API
+      } catch (err) {
+        console.error('Sanity fetch failed, using fallbacks', err);
       }
 
-      // 2. Fallback to backend API
-      try {
-        const res = await fetch('/api/portfolio-data');
-        if (res.ok) {
-          const data = await res.json();
-          const dbBlogs: Blog[] = data.blogs || [];
-          if (!cancelled && dbBlogs.length > 0) {
-            const mapped = dbBlogs.slice(0, 4).map((b, i) => {
-              const wordCount = b.content.split(/\s+/).length;
-              return {
-                title: b.title,
-                date: new Date(b.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                read: `${Math.max(1, Math.ceil(wordCount / 200))} min read`,
-                img: defaultEntries[i % defaultEntries.length].img,
-                url: `/blog/${b.slug}`,
-              };
-            });
-            setEntries(mapped);
-            setIsLoading(false);
-            return;
-          }
-        }
-      } catch {
-        // Use defaults
-      }
-
-      // 3. Final fallback: static defaults
+      // 2. Fallback to default entries if Sanity fails or has no data
       if (!cancelled) {
         setEntries(defaultEntries);
         setIsLoading(false);

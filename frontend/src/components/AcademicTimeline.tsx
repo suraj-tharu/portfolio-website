@@ -919,22 +919,8 @@ export default function AcademicTimeline() {
   }, [isInView, timeline.length]);
 
   useEffect(() => {
-    fetch('/api/timeline')
-      .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-      .then(data => {
-        if (data.timeline?.length > 0) {
-          setTimeline(data.timeline.map((item: TimelineEvent) => ({
-            ...item,
-            type: item.type || (
-              item.role.toLowerCase().includes('b.e.') || item.role.toLowerCase().includes('msc')
-                ? 'education' : 'work'
-            ),
-          })));
-        } else {
-          setTimeline(defaultTimeline);
-        }
-      })
-      .catch(() => setTimeline(defaultTimeline));
+    // Backend API removed - use static data
+    setTimeline(defaultTimeline);
   }, []);
 
   const items = timeline.length > 0 ? timeline : defaultTimeline;

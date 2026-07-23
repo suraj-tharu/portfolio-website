@@ -31,12 +31,6 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-      },
-    },
   },
   plugins: [
     react(),

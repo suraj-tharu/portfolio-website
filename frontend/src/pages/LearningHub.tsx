@@ -208,40 +208,6 @@ export default function LearningHub() {
           setLoading(false);
           return;
         }
-      } catch {
-        // Sanity not available, use backend
-      }
-
-      // 2. Fallback to backend API
-      Promise.all([
-        fetch('/api/learning-materials').then(r => r.ok ? r.json() : { materials: [] }),
-        fetch('/api/portfolio-data').then(r => r.ok ? r.json() : { projects: [], blogs: [] })
-      ])
-        .then(([matsData, portData]) => {
-          const rawMaterials = matsData.materials || [];
-          const rawProjects = portData.projects || [];
-          const rawBlogs = portData.blogs || [];
-
-          // Map Projects into the LearningMaterial shape
-          const projectMaterials: LearningMaterial[] = rawProjects.map((p: {
-            id: number; title: string; description: string; liveUrl: string; githubUrl: string; createdAt: string;
-          }) => ({
-            id: p.id + 10000,
-            grade: 'Project',
-            category: 'Portfolio',
-            subject: p.title,
-            description: p.description,
-            pdfUrl: p.liveUrl || p.githubUrl || '#',
-            createdAt: p.createdAt
-          }));
-
-          // Map Blogs into the LearningMaterial shape
-          const blogMaterials: LearningMaterial[] = rawBlogs.map((b: {
-            id: number; title: string; content: string; slug: string; createdAt: string;
-          }) => ({
-            id: b.id + 20000,
-            grade: 'Blog',
-            category: 'Article',
             subject: b.title,
             description: b.content ? b.content.replace(/<[^>]*>?/gm, '').substring(0, 150) + '...' : '',
             pdfUrl: `/blog/${b.slug}`,
