@@ -61,6 +61,18 @@ export default defineConfig({
       workbox: {
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024, // 4 MiB — allows the large JS bundle
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
+        // Prevent the SW navigation fallback from intercepting non-HTML requests
+        // (e.g. manifest.webmanifest, sw.js, workbox files)
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [
+          /^\/manifest\.webmanifest$/,
+          /^\/sw\.js$/,
+          /^\/workbox-.*\.js$/,
+          /^\/favicon\.svg$/,
+          /^\/api\//,
+          /^\/admin/,
+          /^\/learning-hub/,
+        ],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

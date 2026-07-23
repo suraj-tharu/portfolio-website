@@ -140,6 +140,7 @@ app.use(helmet({
         "ws://127.0.0.1:5173",             // Vite Dev Server
         "wss://surajtharuchaudhary.com.np", // Production Socket
         "https://surajtharuchaudhary.com.np",// Production API
+        "https://*.sanity.io",             // Sanity CMS API
         "https://nominatim.openstreetmap.org",
         "https://api.github.com",          // GitHub Activity Feed
         "https://cdn.jsdelivr.net",        // Source maps
@@ -250,6 +251,20 @@ app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'asse
   maxAge: '1y',
   immutable: true,
 }));
+
+// Serve all frontend root assets (e.g., manifest.webmanifest, favicon.svg, sw.js)
+app.use(express.static(path.join(__dirname, 'frontend', 'dist'), {
+  maxAge: '1d',
+  index: false // Let the SPA wildcard handle index.html
+}));
+
+// Explicitly serve manifest.webmanifest — MUST be before the SPA wildcard,
+// otherwise the SW navigation route intercepts and returns index.html instead.
+app.get('/manifest.webmanifest', (req, res) => {
+  res.setHeader('Content-Type', 'application/manifest+json');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'manifest.webmanifest'));
+});
 
 // Catch legacy /icons/* requests (from cached manifests) and redirect to the modern favicon
 app.get('/icons/*', (req, res) => {
