@@ -212,6 +212,7 @@ type CategoryId = typeof CATEGORIES[number]['id'];
 ═══════════════════════════════════════════════════════════════ */
 interface D3Node extends d3.SimulationNodeDatum {
   id: string; group: number; radius: number; color: string;
+  x?: number; y?: number; vx?: number; vy?: number;
 }
 interface D3Link extends d3.SimulationLinkDatum<D3Node> {
   source: string | D3Node; target: string | D3Node;

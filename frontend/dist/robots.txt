@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://portfolio-website-vto2.onrender.com/sitemap.xml
+Sitemap: https://surajtharuchaudhary.com.np/sitemap.xml
