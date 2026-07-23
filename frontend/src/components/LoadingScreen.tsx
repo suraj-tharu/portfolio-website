@@ -20,15 +20,6 @@ const WORDS = [
   'Teach', 'Create', 'Discover',
 ];
 
-// Deep-space palette matching the portfolio
-const C = {
-  gold:    '#c9a84c',
-  goldMid: '#e8c96a',
-  violet:  '#8b5cf6',
-  cyan:    '#22d3ee',
-  pink:    '#ec4899',
-  white:   'rgba(255,255,255,0.92)',
-};
 
 type Props = { onComplete: () => void };
 
