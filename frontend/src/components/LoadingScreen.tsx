@@ -89,10 +89,8 @@ function StarField() {
     }));
 
     let raf: number;
-    let t = 0;
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
-      t += 0.012;
       for (const s of stars) {
         s.phase += s.speed * 0.04;
         const a = s.alpha * (0.6 + 0.4 * Math.sin(s.phase));
