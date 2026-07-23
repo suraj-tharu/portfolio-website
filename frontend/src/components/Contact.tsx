@@ -72,6 +72,7 @@ function LuxuryInput({
           onBlur={e => { setFocused(false); onBlur(e); }}
           onFocus={() => setFocused(true)}
           placeholder={placeholder}
+          autoComplete={name === 'message' ? 'off' : name}
           style={{ ...sharedStyle, resize: 'none', lineHeight: 1.6 } as React.CSSProperties}
           aria-invalid={!!error}
         />
@@ -83,6 +84,7 @@ function LuxuryInput({
           onBlur={e => { setFocused(false); onBlur(e); }}
           onFocus={() => setFocused(true)}
           placeholder={placeholder}
+          autoComplete={name === 'email' ? 'email' : name === 'name' ? 'name' : name === 'subject' ? 'off' : 'off'}
           style={sharedStyle as React.CSSProperties}
           aria-invalid={!!error}
         />

@@ -84,6 +84,7 @@ export default function EmailSubscription() {
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             disabled={isLoading}
+                            autoComplete="email"
                             className="flex-1 px-4 py-3 rounded-lg dark:bg-surface/80 bg-white/80 text-text-primary dark:placeholder-text-muted placeholder-gray-500 border border-stroke focus:outline-none focus:ring-2 focus:ring-brand-light disabled:opacity-50"
                         />
                         <motion.button

@@ -3,8 +3,9 @@ import { createClient } from '@sanity/client';
 export const sanityClient = createClient({
   projectId: 'lbzty0k5',
   dataset: 'production',
-  apiVersion: '2024-01-01', // use current date
-  useCdn: true, // `false` if you want to ensure fresh data
+  apiVersion: '2024-01-01',
+  useCdn: false,          // false = uses api.sanity.io (has CORS headers), true = CDN (no CORS for localhost)
+  withCredentials: false, // public read — no auth needed
 });
 
 // GROQ query helpers
