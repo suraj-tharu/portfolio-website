@@ -136,6 +136,10 @@ app.use(helmet({
         "ws://localhost:3000",
         "wss://localhost:3000",
         "ws://127.0.0.1:3000",
+        "ws://localhost:5173",             // Vite Dev Server
+        "ws://127.0.0.1:5173",             // Vite Dev Server
+        "wss://surajtharuchaudhary.com.np", // Production Socket
+        "https://surajtharuchaudhary.com.np",// Production API
         "https://nominatim.openstreetmap.org",
         "https://api.github.com",          // GitHub Activity Feed
         "https://cdn.jsdelivr.net",        // Source maps
@@ -250,6 +254,11 @@ app.use('/assets', express.static(path.join(__dirname, 'frontend', 'dist', 'asse
 // Catch legacy /icons/* requests (from cached manifests) and redirect to the modern favicon
 app.get('/icons/*', (req, res) => {
   res.redirect(301, '/favicon.svg');
+});
+
+// Explicitly serve the favicon.svg from the frontend dist
+app.get('/favicon.svg', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'favicon.svg'));
 });
 
 app.use(express.static(path.join(__dirname, '.'), {
