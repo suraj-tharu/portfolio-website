@@ -77,7 +77,8 @@ export default defineConfig({
           /^\/favicon\.svg$/,
           /^\/api\//,
           /^\/admin/,
-          /^\/learning-hub/,
+          /^\/assets\//,   // PDF uploads — must NOT be replaced by index.html
+          /^\/blog\//,     // Server-rendered blog pages
         ],
         runtimeCaching: [
           {
