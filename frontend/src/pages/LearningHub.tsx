@@ -209,8 +209,8 @@ export default function LearningHub() {
           return;
         }
       } catch (err) {
-        console.error('Sanity fetch failed:', err);
-        if (!cancelled) setError('Could not load resources. Please try again later.');
+        // Sanity unavailable — silently fall through to backend API
+        console.warn('Sanity fetch failed, falling back to backend API:', err);
       }
 
       // 2. Fallback to backend API if no Sanity data
