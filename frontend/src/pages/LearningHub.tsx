@@ -187,33 +187,7 @@ export default function LearningHub() {
     let cancelled = false;
 
     const loadMaterials = async () => {
-      // 1. Try Sanity CMS first
-      try {
-        const { sanityClient, LEARNING_MATERIAL_QUERY } = await import('../sanity/client');
-        const sanityMaterials = await sanityClient.fetch(LEARNING_MATERIAL_QUERY);
-        if (!cancelled && sanityMaterials && sanityMaterials.length > 0) {
-          const mapped: LearningMaterial[] = sanityMaterials.map((m: {
-            _id: string; title: string; grade: string; subject: string;
-            description: string | null; pdfUrl: string | null; _createdAt: string;
-          }, i: number) => ({
-            id: i + 50000,
-            grade: m.grade || 'Project',
-            category: m.grade || 'Project',
-            subject: m.title,
-            description: m.description,
-            pdfUrl: m.pdfUrl,
-            createdAt: m._createdAt,
-          }));
-          setMaterials(mapped);
-          setLoading(false);
-          return;
-        }
-      } catch (err) {
-        // Sanity unavailable — silently fall through to backend API
-        console.warn('Sanity fetch failed, falling back to backend API:', err);
-      }
-
-      // 2. Fallback to backend API if no Sanity data
+      // Fetch directly from backend API (Sanity fetch removed to prevent CORS console errors)
       Promise.all([
         fetch('/api/learning-materials').then(r => r.ok ? r.json().catch(() => ({ materials: [] })) : { materials: [] }).catch(() => ({ materials: [] })),
         fetch('/api/portfolio-data').then(r => r.ok ? r.json().catch(() => ({ projects: [], blogs: [] })) : { projects: [], blogs: [] }).catch(() => ({ projects: [], blogs: [] }))
