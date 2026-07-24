@@ -342,10 +342,10 @@ app.get('/api/timeline', async (req, res) => {
 app.get('*', (req, res, next) => {
   const urlPath = req.path;
   // Skip for server-rendered EJS pages and API endpoints
+  // NOTE: /learning-hub is handled by the React SPA (NOT the old EJS route)
   if (
     urlPath.startsWith('/api') ||
     urlPath.startsWith('/admin') ||
-    urlPath.startsWith('/learning-hub') ||
     urlPath.startsWith('/blog/') ||
     urlPath.startsWith('/dist/') ||
     urlPath.startsWith('/assets/') ||
@@ -362,15 +362,7 @@ app.get('*', (req, res, next) => {
   });
 });
 
-app.get('/learning-hub', async (req, res) => {
-  try {
-    const materials = await prisma.learningMaterial.findMany({ orderBy: { createdAt: 'asc' } });
-    res.render('learning-hub', { materials });
-  } catch (error) {
-    console.error('[DATABASE] Error fetching learning materials:', error);
-    res.render('learning-hub', { materials: [] });
-  }
-});
+// /learning-hub is now a React SPA route — no longer rendered server-side via EJS.
 
 // ─── ADMIN ROUTES & AUTH ──────────────────────────────────────────────────
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_for_dev_only';
