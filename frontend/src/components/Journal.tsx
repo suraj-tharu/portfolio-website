@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { sanityClient, BLOG_QUERY } from '../sanity/client';
 
 const defaultEntries = [
   { title: "The future of interactive web design", date: "Oct 12, 2026", read: "4 min read", img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=100&q=80", url: "#" },
@@ -9,19 +8,6 @@ const defaultEntries = [
   { title: "Why typography matters in digital products", date: "Sep 15, 2026", read: "5 min read", img: "https://images.unsplash.com/photo-1516924962500-2b4b3b99ea02?auto=format&fit=crop&w=100&q=80", url: "#" },
   { title: "My workflow for high-performance sites", date: "Aug 30, 2026", read: "8 min read", img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=100&q=80", url: "#" },
 ];
-
-type SanityBlog = {
-  _id: string;
-  title: string;
-  slug: { current: string };
-  body: unknown[];
-  publishedAt: string;
-  imageUrl: string | null;
-  excerpt: string | null;
-};
-
-
-
 // Skeleton card
 const SkeletonEntry = () => (
   <div className="flex items-center gap-4 sm:gap-6 p-3 sm:p-4 bg-surface/30 border border-stroke rounded-[40px] sm:rounded-full animate-pulse">
