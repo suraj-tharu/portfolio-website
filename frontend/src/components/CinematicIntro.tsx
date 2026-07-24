@@ -179,7 +179,8 @@ export default function CinematicIntro({ onComplete }: { onComplete: () => void 
       onComplete();
     }, INTRO_DURATION + 800);
     return () => { clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); };
-  }, [onComplete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (stage === 'done') return null;
 
