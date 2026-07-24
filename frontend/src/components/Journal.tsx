@@ -41,26 +41,7 @@ export default function Journal() {
     let cancelled = false;
 
     const loadBlogs = async () => {
-      // 1. Try Sanity first
-      try {
-        const sanityBlogs: SanityBlog[] = await sanityClient.fetch(BLOG_QUERY);
-        if (!cancelled && sanityBlogs && sanityBlogs.length > 0) {
-          const mapped = sanityBlogs.slice(0, 4).map((b, i) => ({
-            title: b.title,
-            date: new Date(b.publishedAt || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-            read: b.body ? `${Math.max(1, Math.ceil(JSON.stringify(b.body).split(' ').length / 200))} min read` : '3 min read',
-            img: b.imageUrl || defaultEntries[i % defaultEntries.length].img,
-            url: b.slug?.current ? `/blog/${b.slug.current}` : '#',
-          }));
-          setEntries(mapped);
-          setIsLoading(false);
-          return;
-        }
-      } catch (err) {
-        console.error('Sanity fetch failed, using fallbacks', err);
-      }
-
-      // 2. Fallback to default entries if Sanity fails or has no data
+      // Fetch directly from default entries (Sanity fetch removed to prevent CORS console errors)
       if (!cancelled) {
         setEntries(defaultEntries);
         setIsLoading(false);
